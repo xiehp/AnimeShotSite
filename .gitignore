@@ -16,4 +16,5 @@ hs_err_pid*
 .project
 *.prefs
 MANIFEST.MF
-*/target/classes/
+*/target/
+AnimeShotSite-*/.settings/*
