@@ -1,0 +1,58 @@
+<beans:beans xmlns="http://www.springframework.org/schema/batch" xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/batch
+           http://www.springframework.org/schema/batch/spring-batch-2.2.xsd">
+
+	<job id="ioSampleJob">
+		<step id="step1">
+			<tasklet>
+				<chunk reader="itemReader" writer="itemWriter" commit-interval="2" />
+			</tasklet>
+		</step>
+	</job>
+
+	<job id="baseJob" abstract="true">
+		<listeners>
+			<listener ref="listenerOne" />
+			<listeners>
+	</job>
+
+	<job id="job1" parent="baseJob">
+		<step id="step1" parent="standaloneStep" />
+
+		<listeners merge="true">
+			<listener ref="listenerTwo" />
+			<listeners>
+	</job>
+
+	<job id="footballJob">
+		<step id="playerload" parent="s1" next="gameLoad" />
+		<step id="gameLoad" parent="s2" next="playerSummarization" />
+		<step id="playerSummarization" parent="s3" />
+		<listeners>
+			<listener ref="sampleListener" />
+		</listeners>
+	</job>
+
+	<job-repository id="jobRepository" data-source="dataSource" transaction-manager="transactionManager" isolation-level-for-create="SERIALIZABLE" table-prefix="BATCH_" max-varchar-length="1000" />
+
+	<aop:config>
+		<aop:advisor pointcut="execution(* org.springframework.batch.core..*Repository+.*(..))" />
+		<advice-ref = txAdvice " />
+	</aop:config>
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+
+	<bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository" />
+		<property name="taskExecutor">
+			<bean class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
+		</property>
+	</bean>
+</beans:beans>

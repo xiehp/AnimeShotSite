@@ -8,4 +8,30 @@
 	<artifactId>AnimeShotSite-timer</artifactId>
 	<name>AnimeShotSite-timer</name>
 	<description>AnimeShotSite-timer</description>
+
+	<dependencies>
+		<!-- 本项目 -->
+		<dependency>
+			<groupId>xie</groupId>
+			<artifactId>AnimeShotSite-core</artifactId>
+		</dependency>
+		
+		<!-- 视频转换项目 -->
+		<dependency>
+			<groupId>xie</groupId>
+			<artifactId>video2img-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<!-- 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-batch</artifactId>
+		</dependency>
+		 -->
+	</dependencies>
 </project>
