@@ -8,11 +8,11 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.yjysh.framework.base.entity.BaseEntity;
+import xie.base.entity.BaseEntity;
 
 @Entity
 @Table(name = ShotTask.TABLE_NAME)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
 public class ShotTask extends BaseEntity {
 
 	private static final long serialVersionUID = 2981238492982330522L;

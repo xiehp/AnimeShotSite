@@ -1,6 +1,6 @@
 package xie.animeshotsite.constants;
 
-import com.yjysh.framework.common.utils.props.PropsUtil;
+import xie.common.utils.props.PropsUtil;
 
 public class ShotConstants {
 

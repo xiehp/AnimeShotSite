@@ -15,17 +15,16 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springside.modules.mapper.BeanMapper;
 
-import com.yjysh.framework.base.page.PageRequestUtil;
-import com.yjysh.framework.base.repository.BaseRepository;
-import com.yjysh.framework.base.repository.BaseSearchFilter;
-import com.yjysh.framework.base.repository.BaseSpecifications;
-import com.yjysh.framework.base.service.BaseService;
-import com.yjysh.framework.common.Constants;
-
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
+import xie.base.page.PageRequestUtil;
+import xie.base.repository.BaseRepository;
+import xie.base.repository.BaseSearchFilter;
+import xie.base.repository.BaseSpecifications;
+import xie.base.service.BaseService;
 import xie.animeshotsite.db.repository.AnimeEpisodeDao;
+import xie.common.Constants;
 import xie.common.string.XStringUtils;
 
 @Service

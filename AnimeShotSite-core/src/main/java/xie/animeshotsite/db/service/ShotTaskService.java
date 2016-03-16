@@ -8,13 +8,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.yjysh.framework.base.repository.BaseRepository;
-import com.yjysh.framework.base.service.BaseService;
-import com.yjysh.framework.common.utils.DateUtil;
-import com.yjysh.framework.common.utils.JsonUtil;
-
 import xie.animeshotsite.db.entity.ShotTask;
 import xie.animeshotsite.db.repository.ShotTaskDao;
+import xie.base.repository.BaseRepository;
+import xie.base.service.BaseService;
+import xie.common.date.DateUtil;
+import xie.common.utils.JsonUtil;
+import xie.v2i.config.Video2ImageProperties;
 
 @Service
 public class ShotTaskService extends BaseService<ShotTask, String> {
@@ -30,7 +30,7 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 	public List<ShotTask> findNeedRunTask() {
 		List<ShotTask> list1 = shotTaskDao.findByTaskResultAndScheduleTimeIsNull(ShotTask.TASK_RESULT_WAIT);
 		if (list1.isEmpty()) {
-			List<ShotTask> list2 = shotTaskDao.findByTaskResultAndScheduleTimeGreaterThan(ShotTask.TASK_RESULT_WAIT, DateUtil.getCurrentDate());
+			List<ShotTask> list2 = shotTaskDao.findByTaskResultAndScheduleTimeLessThan(ShotTask.TASK_RESULT_WAIT, DateUtil.getCurrentDate());
 			list1.addAll(list2);
 		}
 		return list1;
@@ -49,9 +49,13 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 		return shotTaskDao.save(shotTask);
 	}
 
-	public void addRunSpecifyEpisideTimeTask(String id, Date scheduleTime, Boolean forceUpload) {
-		Map<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("id", id);
+	public void addRunSpecifyEpisideTimeTask(String id, Date scheduleTime, Boolean forceUpload, String specifyTimes) {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put(Video2ImageProperties.KEY_id, id);
+		paramMap.put(Video2ImageProperties.KEY_specifyTimes, specifyTimes);
+		if (forceUpload != null) {
+			paramMap.put(Video2ImageProperties.KEY_forceUpload, forceUpload);
+		}
 		String jsonStr = JsonUtil.toJsonString(paramMap);
 
 		ShotTask shotTask = new ShotTask();
@@ -64,9 +68,21 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 		shotTaskDao.save(shotTask);
 	}
 
-	public void addRunNormalEpisideTimeTask(String id, Date scheduleTime, Boolean forceUpload) {
-		Map<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("id", id);
+	public void addRunNormalEpisideTimeTask(String id, Date scheduleTime, Boolean forceUpload, Long startTime, Long endTime, Long timeInterval) {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put(Video2ImageProperties.KEY_id, id);
+		if (startTime != null) {
+			paramMap.put(Video2ImageProperties.KEY_startTime, startTime);
+		}
+		if (endTime != null) {
+			paramMap.put(Video2ImageProperties.KEY_endTime, endTime);
+		}
+		if (timeInterval != null) {
+			paramMap.put(Video2ImageProperties.KEY_timeInterval, timeInterval);
+		}
+		if (forceUpload != null) {
+			paramMap.put(Video2ImageProperties.KEY_forceUpload, forceUpload);
+		}
 		String jsonStr = JsonUtil.toJsonString(paramMap);
 
 		ShotTask shotTask = new ShotTask();

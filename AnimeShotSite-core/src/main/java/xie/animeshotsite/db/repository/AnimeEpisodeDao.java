@@ -2,9 +2,8 @@ package xie.animeshotsite.db.repository;
 
 import java.util.List;
 
-import com.yjysh.framework.base.repository.BaseRepository;
-
 import xie.animeshotsite.db.entity.AnimeEpisode;
+import xie.base.repository.BaseRepository;
 
 public interface AnimeEpisodeDao extends BaseRepository<AnimeEpisode, String> {
 

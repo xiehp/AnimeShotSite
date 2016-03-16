@@ -9,7 +9,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.yjysh.framework.common.utils.DateUtil;
+import xie.common.date.DateUtil;
 
 @Entity
 @Table(name = ShotInfo.TABLE_NAME)

@@ -5,11 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.yjysh.framework.base.repository.BaseRepository;
-import com.yjysh.framework.base.service.BaseService;
-
 import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
+import xie.base.repository.BaseRepository;
+import xie.base.service.BaseService;
 
 @Service
 public class AnimeInfoService extends BaseService<AnimeInfo, String> {

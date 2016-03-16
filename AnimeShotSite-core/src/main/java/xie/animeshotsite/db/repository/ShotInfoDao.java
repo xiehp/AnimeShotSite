@@ -4,9 +4,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 
-import com.yjysh.framework.base.repository.BaseRepository;
-
 import xie.animeshotsite.db.entity.ShotInfo;
+import xie.base.repository.BaseRepository;
 
 public interface ShotInfoDao extends BaseRepository<ShotInfo, String> {
 

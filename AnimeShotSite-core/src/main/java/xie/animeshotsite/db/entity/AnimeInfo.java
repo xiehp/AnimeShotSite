@@ -11,7 +11,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.yjysh.framework.base.entity.BaseEntity;
+import xie.base.entity.BaseEntity;
 
 @Entity
 @Table(name = "anime_info")

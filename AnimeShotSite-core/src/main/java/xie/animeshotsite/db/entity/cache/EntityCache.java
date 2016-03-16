@@ -5,9 +5,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.yjysh.framework.base.repository.BaseRepository;
-import com.yjysh.framework.base.service.BaseService;
-
+import xie.base.repository.BaseRepository;
+import xie.base.service.BaseService;
 import xie.common.utils.XWaitTime;
 
 @Component

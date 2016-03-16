@@ -14,22 +14,21 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.yjysh.framework.base.entity.BaseEntity;
-import com.yjysh.framework.base.page.PageRequestUtil;
-import com.yjysh.framework.base.repository.BaseRepository;
-import com.yjysh.framework.base.repository.BaseSearchFilter;
-import com.yjysh.framework.base.repository.BaseSpecifications;
-import com.yjysh.framework.base.service.BaseService;
-import com.yjysh.framework.common.Constants;
-import com.yjysh.framework.common.utils.DateUtil;
-
 import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.repository.ShotInfoDao;
 import xie.animeshotsite.spring.SpringUtil;
-import xie.common.XNumberUtils;
+import xie.base.entity.BaseEntity;
+import xie.base.page.PageRequestUtil;
+import xie.base.repository.BaseRepository;
+import xie.base.repository.BaseSearchFilter;
+import xie.base.repository.BaseSpecifications;
+import xie.base.service.BaseService;
+import xie.common.Constants;
+import xie.common.date.DateUtil;
+import xie.common.number.XNumberUtils;
 
 @Service
 public class ShotInfoService extends BaseService<ShotInfo, String> {
@@ -78,11 +77,11 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		return shotInfoDao.save(shotInfo);
 	}
 
-	public void updateTietukuUrl(String animeEpisodeId, long timeStamp, String tietukuUrlId, String tietukuUrlPrefix) {
+	public ShotInfo updateTietukuUrl(String animeEpisodeId, long timeStamp, String tietukuUrlId, String tietukuUrlPrefix) {
 		ShotInfo shotInfo = shotInfoDao.findByAnimeEpisodeIdAndTimeStamp(animeEpisodeId, timeStamp);
 		shotInfo.setTietukuUrlPrefix(tietukuUrlPrefix);
 		shotInfo.setTietukuUrlId(tietukuUrlId);
-		shotInfoDao.save(shotInfo);
+		return shotInfoDao.save(shotInfo);
 	}
 
 	/**

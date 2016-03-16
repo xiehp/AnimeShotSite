@@ -3,10 +3,10 @@ package xie.animeshotsite.db.entity;
 import javax.persistence.MappedSuperclass;
 
 import com.tietuku.entity.util.TietukuUtils;
-import com.yjysh.framework.base.entity.BaseEntity;
 
 import xie.animeshotsite.constants.ShotConstants;
 import xie.animeshotsite.setup.ShotSiteSetup;
+import xie.base.entity.BaseEntity;
 
 @MappedSuperclass
 public abstract class BaseTietukuUrl extends BaseEntity {

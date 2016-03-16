@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ehcache updateCheck="false" name="sloth2Cache">
+
+	<diskStore path="java.io.tmpdir/ehcache/animeShotSite/demo" />
+
+	<!-- DefaultCache setting. -->
+	<defaultCache maxEntriesLocalHeap="10000" eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600"
+		overflowToDisk="true" maxEntriesLocalDisk="100000" />
+
+	<!-- Special objects setting. -->
+	<cache name="sloth2Cache" maxEntriesLocalHeap="2000" eternal="true"
+		overflowToDisk="true" maxEntriesLocalDisk="20000" />
+</ehcache>
