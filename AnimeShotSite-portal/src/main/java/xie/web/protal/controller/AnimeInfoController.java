@@ -13,16 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springside.modules.web.Servlets;
 
-import com.yjysh.framework.base.controller.BaseFunctionController;
-import com.yjysh.framework.base.entity.BaseEntity;
-import com.yjysh.framework.common.Constants;
-import com.yjysh.framework.sys.auth.entity.User;
-
 import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotInfoService;
+import xie.base.controller.BaseFunctionController;
+import xie.base.entity.BaseEntity;
+import xie.common.Constants;
+import xie.sys.auth.entity.User;
 
 @Controller
 @RequestMapping(value = "/anime")

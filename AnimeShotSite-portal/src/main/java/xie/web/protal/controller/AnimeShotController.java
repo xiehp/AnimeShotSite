@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springside.modules.web.Servlets;
 
-import com.yjysh.framework.base.controller.BaseFunctionController;
-import com.yjysh.framework.common.Constants;
-
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.entity.ShotInfo;
@@ -25,6 +22,8 @@ import xie.animeshotsite.db.repository.ShotInfoDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotInfoService;
+import xie.base.controller.BaseFunctionController;
+import xie.common.Constants;
 
 @Controller
 @RequestMapping(value = "/shot")

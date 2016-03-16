@@ -18,6 +18,11 @@
 		$("#animeEpisodeForm").attr("action", "${ctx}/managesite/animeEpisode/submitMuti");
 		$("#animeEpisodeForm").submit();
 	}
+
+	function doShotTask(type) {
+		$("#animeEpisodeForm").attr("action", "${ctx}/managesite/animeEpisode/addShotTask");
+		$("#animeEpisodeForm").submit();
+	}
 </script>
 
 <form id="animeEpisodeForm" class="form-horizontal" method="post">
@@ -158,17 +163,67 @@
 		</div>
 	</div>
 
-	<input type="submit" value="更新" onclick="doSubmit(false);" />
-	<input type="button" value="新建一个" onclick="doSubmit(true);" />
-	<input type="button" value="新建或更新多个" onclick="doSubmitMuti();" />
+	<div class="form-group">
+		<input type="submit" value="更新" onclick="doSubmit(false);" />
+		<input type="button" value="新建一个" onclick="doSubmit(true);" />
+		<input type="button" value="新建或更新多个" onclick="doSubmitMuti();" />
+	</div>
+
+
+	<div class="form-group">
+		<label class="col-sm-2 control-label">taskType</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="taskType" value="1" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">scheduleTime</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="scheduleTime" value="2016/03/15 22:22:22" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">startTime</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="startTime" value="${startTime}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">endTime</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="endTime" value="${endTime}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">timeInterval</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="timeInterval" value="${timeInterval}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">specifyTimes</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="specifyTimes" value="${specifyTimes}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">forceUpload</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="forceUpload" value="${forceUpload}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<input type="button" value="提交定时任务" onclick="doShotTask(1);" />
+		<input type="button" value="提交指定时间任务" onclick="doShotTask(2);" />
+	</div>
 
 </form>
 
-	<a href="${ctx}/managesite/anime/view/${animeEpisodeInfo.animeInfoId}">返回上层</a>
-	
+<a href="${ctx}/managesite/anime/view/${animeEpisodeInfo.animeInfoId}">返回上层</a>
+
 <br />
 <br />
-	<a href="${ctx}/managesite/shot/list/${animeEpisodeInfo.id}">截图一览</a>
+<a href="${ctx}/managesite/shot/list/${animeEpisodeInfo.id}">截图一览</a>
 
 <br />
 <br />

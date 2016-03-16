@@ -11,20 +11,17 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.yjysh.framework.base.controller.BaseFunctionController;
-import com.yjysh.framework.common.web.util.RequestUtil;
-import com.yjysh.framework.sys.auth.entity.User;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
-import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.ShotTaskService;
-import xie.v2i.config.Video2ImageProperties;
+import xie.animeshotsite.spring.SpringUtil;
+import xie.base.controller.BaseFunctionController;
+import xie.common.utils.SpringUtils;
+import xie.common.web.util.RequestUtil;
+import xie.sys.auth.entity.User;
 
 @Controller
 @RequestMapping(value = "managesite/animeEpisode")
@@ -34,6 +31,8 @@ public class AnimeEpisodeManagerController extends BaseFunctionController<User, 
 	private AnimeEpisodeService animeEpisodeService;
 	@Autowired
 	private ShotTaskService shotTaskService;
+	@Autowired
+	private SpringUtils springUtils;
 
 	protected String getJspRootPath() {
 		return "/managesite/animeEpisode/";
@@ -103,23 +102,37 @@ public class AnimeEpisodeManagerController extends BaseFunctionController<User, 
 	}
 
 	@RequestMapping(value = "/addShotTask")
-	@ResponseBody
-	public Map<String, Object> addShotTask(@RequestBody(required = false) Video2ImageProperties video2ImageProperties,
+	public String addShotTask(
 			@RequestParam String id,
-			@RequestParam String type,
+			@RequestParam String taskType,
 			@RequestParam(required = false) Date scheduleTime,
-			@RequestParam Boolean forceUpload) {
+			@RequestParam(required = false) Long startTime,
+			@RequestParam(required = false) Long endTime,
+			@RequestParam(required = false) Long timeInterval,
+			@RequestParam(required = false) String specifyTimes,
+			@RequestParam(required = false) Boolean forceUpload) {
 
 		Map<String, Object> map = null;
+		
+		System.out.println(springUtils);
+		System.out.println(animeEpisodeService);
+//		System.out.println((AnimeEpisodeService)springUtils.getBean(AnimeEpisodeService.class));
+		
+//		System.out.println(SpringUtil.getBean(SpringUtils.class));
+//		System.out.println((AnimeEpisodeService)SpringUtil.getBean(AnimeEpisodeService.class));
+//		
 
-		if ("1".equals(type)) {
-			shotTaskService.addRunNormalEpisideTimeTask(id, scheduleTime, forceUpload);
-		} else if ("2".equals(type)) {
-			shotTaskService.addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload);
+		if ("1".equals(taskType)) {
+			shotTaskService.addRunNormalEpisideTimeTask(id, scheduleTime, forceUpload, startTime, endTime, timeInterval);
+		} else if ("2".equals(taskType)) {
+			if (specifyTimes == null) {
+				map = getFailCode("type为2时，specifyTimes不能为空");
+			}
+			shotTaskService.addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes);
 		}
 
 		map = getSuccessCode();
 
-		return map;
+		return getJspRedirectFilePath("view/" + id);
 	}
 }

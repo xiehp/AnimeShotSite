@@ -12,9 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.yjysh.framework.base.controller.BaseFunctionController;
-import com.yjysh.framework.sys.auth.entity.User;
-
 import xie.animeshotsite.constants.ShotConstants;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
@@ -23,6 +20,8 @@ import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotInfoService;
 import xie.animeshotsite.utils.FilePathUtils;
+import xie.base.controller.BaseFunctionController;
+import xie.sys.auth.entity.User;
 
 @Controller
 @RequestMapping(value = "/image")
