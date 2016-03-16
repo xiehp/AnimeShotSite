@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import com.tietuku.entity.main.PostImage;
 import com.tietuku.entity.util.TietukuUtils;
 import com.tietuku.entity.vo.TietukuUploadResponse;
-import com.yjysh.framework.common.utils.JsonUtil;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
@@ -23,6 +22,7 @@ import xie.animeshotsite.db.service.ShotInfoService;
 import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.common.string.XStringUtils;
+import xie.common.utils.JsonUtil;
 import xie.v2i.listener.Video2ImageAdapter;
 import xie.v2i.utils.CImage;
 
@@ -112,12 +112,13 @@ public class SaveImageListener extends Video2ImageAdapter {
 			String tietukuImageUrlId = TietukuUtils.getImageUrlID(tietukuUrl);
 
 			// 更新贴图库数据库
-			shotInfoService.updateTietukuUrl(animeEpisodeId, time, tietukuImageUrlId, tietukuImageUrlPrefix);
+			shotInfo = shotInfoService.updateTietukuUrl(animeEpisodeId, time, tietukuImageUrlId, tietukuImageUrlPrefix);
 		}
 
 		// 修改剧集图片信息
 		if (!hasSaveEpisodeImageFlg) {
 			if (time > getTotalTime() / 2) {
+				// 剧集
 				AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
 				ImageUrl imageUrl = null;
 				if (XStringUtils.isBlank(animeEpisode.getTitleUrlId())) {
@@ -126,6 +127,7 @@ public class SaveImageListener extends Video2ImageAdapter {
 					animeEpisodeService.save(animeEpisode);
 				}
 
+				// 动画
 				AnimeInfo Animeinfo = animeInfoService.findOne(animeInfoId);
 				if (XStringUtils.isBlank(Animeinfo.getTitleUrlId())) {
 					if (imageUrl == null) {

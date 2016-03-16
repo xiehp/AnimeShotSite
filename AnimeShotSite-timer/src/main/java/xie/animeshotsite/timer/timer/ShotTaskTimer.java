@@ -5,20 +5,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 
+import javax.persistence.EntityManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.yjysh.framework.common.utils.JsonUtil;
 
 import xie.animeshotsite.db.entity.ShotTask;
 import xie.animeshotsite.db.repository.ShotTaskDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotTaskService;
+import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.timer.base.XTask;
 import xie.common.string.XStringUtils;
+import xie.common.utils.JsonUtil;
 
 @Component
 public class ShotTaskTimer extends TimerTask {
@@ -35,8 +37,15 @@ public class ShotTaskTimer extends TimerTask {
 	@Autowired
 	ShotTaskDao shotTaskDao;
 
+	@Autowired
+	EntityManager entityManager;
+
 	@Override
 	public void run() {
+		
+		// entityManager.getEntityManagerFactory().getCache().evictAll();
+		// sessionFactory.getCache().evictEntityRegions();
+		
 		List<ShotTask> list = shotTaskService.findNeedRunTask();
 		logger.info("list", list);
 
@@ -52,6 +61,7 @@ public class ShotTaskTimer extends TimerTask {
 				}
 
 				XTask task = (XTask) Class.forName(taskClass).newInstance();
+				task = (XTask) SpringUtil.getBean(Class.forName(taskClass));
 
 				// 更改标志
 				shotTask = shotTaskService.beginTask(shotTask);

@@ -32,7 +32,7 @@ public class MainTimer {
 		TimerTask timerTask = (TimerTask) SpringUtil.getBean(classTimerTask);
 
 		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(timerTask, 1000, 200000);
+		timer.scheduleAtFixedRate(timerTask, 1000, 121000);
 
 	}
 }

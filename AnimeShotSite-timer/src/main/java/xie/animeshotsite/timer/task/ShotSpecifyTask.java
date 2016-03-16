@@ -19,7 +19,7 @@ import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.timer.a2i.listener.SaveImageListener;
 import xie.animeshotsite.timer.base.XTask;
 import xie.animeshotsite.utils.FilePathUtils;
-import xie.common.XNumberUtils;
+import xie.common.number.XNumberUtils;
 import xie.v2i.app.Video2Image;
 import xie.v2i.config.Video2ImageProperties;
 

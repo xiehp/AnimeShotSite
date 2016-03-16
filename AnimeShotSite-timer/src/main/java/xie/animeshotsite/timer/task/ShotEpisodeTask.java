@@ -7,8 +7,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
@@ -19,11 +17,10 @@ import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.timer.a2i.listener.SaveImageListener;
 import xie.animeshotsite.timer.base.XTask;
 import xie.animeshotsite.utils.FilePathUtils;
+import xie.common.number.XNumberUtils;
 import xie.v2i.app.Video2Image;
 import xie.v2i.config.Video2ImageProperties;
 
-@Configuration
-@ComponentScan("xie")
 @Component
 public class ShotEpisodeTask implements XTask {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -55,9 +52,9 @@ public class ShotEpisodeTask implements XTask {
 		try {
 			logger.info("begin process animeEpisodeId: " + paramMap);
 			String animeEpisodeId = (String) paramMap.get(Video2ImageProperties.KEY_id);
-			Long startTime = (Long) paramMap.get(Video2ImageProperties.KEY_startTime);
-			Long endTime = (Long) paramMap.get(Video2ImageProperties.KEY_endTime);
-			Long interval = (Long) paramMap.get(Video2ImageProperties.KEY_timeInterval);
+			Long startTime = XNumberUtils.getLongValue(paramMap.get(Video2ImageProperties.KEY_startTime));
+			Long endTime = XNumberUtils.getLongValue(paramMap.get(Video2ImageProperties.KEY_endTime));
+			Long interval = XNumberUtils.getLongValue(paramMap.get(Video2ImageProperties.KEY_timeInterval));
 
 			Boolean forceUpload = (Boolean) paramMap.get(Video2ImageProperties.KEY_forceUpload);
 
