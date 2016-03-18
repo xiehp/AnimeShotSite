@@ -34,7 +34,7 @@
 
 		<form id="login-form" class="form-vertical">
 
-			<h3 class="form-title">中小企业信用评级系统</h3>
+			<h3 class="form-title">后台管理</h3>
 
 			<div id="sysAlert" class="alert alert-error hide">
 
@@ -89,9 +89,7 @@
 				</label> -->
 
 				<button type="submit" class="btn green pull-right">
-
-					Login <i class="m-icon-swapright m-icon-white"></i>
-
+					Login
 				</button>
 
 			</div>
@@ -111,79 +109,67 @@
 
 	<!-- BEGIN COPYRIGHT -->
 
-	<div class="copyright">2016 &copy; 望盛金融.</div>
+	<div></div>
 	<script src="${ctx }/static/js/jquery/jquery-1.11.3.min.js" type="text/javascript"></script>
 	<script src="${ctx }/static/media/js/jquery.validate.min.js"></script>
 	<script src="${ctx }/static/media/js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="${ctx }/static/media/js/jquery.backstretch.min.js" type="text/javascript"></script>
 	<script>
-		$(document)
-				.ready(
-						function() {
-							$('#username').focus();
-							$('#login-form')
-									.validate(
-											{
-												errorElement : 'label', //default input error message container
-												errorClass : 'help-inline', // default input error message class
-												rules : {
-													username : {
-														required : true
-													},
-													password : {
-														required : true
-													}
-												},
-												messages : {
-													username : {
-														required : "Username is required."
-													},
-													password : {
-														required : "Password is required."
-													}
-												},
-												highlight : function(element) { // hightlight error inputs
-													$(element).closest(
-															'.control-group')
-															.addClass('error'); // set error class to the control group
-												},
-												errorPlacement : function(
-														error, element) {
-													error
-															.addClass(
-																	'help-inline help-small no-left-padding')
-															.insertAfter(
-																	element
-																			.closest('.input-icon'));
-												},
-												submitHandler : function(form) {
-													loginSubmit();
-												}
-											});
-							$('#login-form input').keypress(function(e) {
-								if (e.which == 13) {
-									if ($('#login-form').validate().form()) {
-										loginSubmit();
-									}
-									return false;
-								}
-							});
-							/*
-							$.backstretch([
-							      "${ctx }/static/media/image/bg/1.jpg",
-							      "${ctx }/static/media/image/bg/2.jpg",
-							      "${ctx }/static/media/image/bg/3.jpg",
-							      "${ctx }/static/media/image/bg/4.jpg",
-							      "${ctx }/static/media/image/bg/5.jpg",
-							      "${ctx }/static/media/image/bg/6.jpg",
-							      "${ctx }/static/media/image/bg/7.jpg",
-							      "${ctx }/static/media/image/bg/8.jpg"
-							      ], {
-							        fade: 1000,
-							        duration: 4000
-							    });*/
+		$(document).ready(function() {
+			$('#username').focus();
+			$('#login-form').validate({
+				errorElement : 'label', //default input error message container
+				errorClass : 'help-inline', // default input error message class
+				rules : {
+					username : {
+						required : true
+					},
+					password : {
+						required : true
+					}
+				},
+				messages : {
+					username : {
+						required : "Username is required."
+					},
+					password : {
+						required : "Password is required."
+					}
+				},
+				highlight : function(element) { // hightlight error inputs
+					$(element).closest('.control-group').addClass('error'); // set error class to the control group
+				},
+				errorPlacement : function(error, element) {
+					error.addClass('help-inline help-small no-left-padding').insertAfter(element.closest('.input-icon'));
+				},
+				submitHandler : function(form) {
+					loginSubmit();
+				}
+			});
+			$('#login-form input').keypress(function(e) {
+				if (e.which == 13) {
+					if ($('#login-form').validate().form()) {
+						loginSubmit();
+					}
+					return false;
+				}
+			});
+			/*
+			$.backstretch([
+			      "${ctx }/static/media/image/bg/1.jpg",
+			      "${ctx }/static/media/image/bg/2.jpg",
+			      "${ctx }/static/media/image/bg/3.jpg",
+			      "${ctx }/static/media/image/bg/4.jpg",
+			      "${ctx }/static/media/image/bg/5.jpg",
+			      "${ctx }/static/media/image/bg/6.jpg",
+			      "${ctx }/static/media/image/bg/7.jpg",
+			      "${ctx }/static/media/image/bg/8.jpg"
+			      ], {
+			        fade: 1000,
+			        duration: 4000
+			    });*/
 
-						});
+		});
 
 		function loginSubmit() {
 			var param = {
@@ -205,9 +191,7 @@
 					}
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					console.log('XMLHttpRequest: ' + XMLHttpRequest
-							+ ',textStatus:' + textStatus + ',errorThrown:'
-							+ errorThrown);
+					console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
 				}
 			});
 

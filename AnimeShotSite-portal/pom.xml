@@ -5,7 +5,7 @@
 		<groupId>xie</groupId>
 		<artifactId>AnimeShotSite-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../AnimeShotSite-parent</relativePath>
+		<relativePath>../video2img-parent</relativePath>
 	</parent>
 
 	<artifactId>AnimeShotSite-portal</artifactId>

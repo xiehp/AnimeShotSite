@@ -33,14 +33,13 @@
 </script>
 <div>
 	<div class="blockTitle">
-		<c:out value="${animeInfo.name}" />
-		<small><c:out value="${animeEpisode.name}" /></small>
+		帮你随机选出了${ shotInfoList.size() }张图
 	</div>
 	<div class="row">
 		<c:forEach items="${ shotInfoList }" var="shotInfo">
 			<div style="min-height: 100px;" class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
 				<a href="${ctx}/shot/view/${shotInfo.id}">
-					<img src="${shotInfo.urlS}" class="img-responsive">
+					<img data-original="${shotInfo.urlS}" class="img-responsive imagelazy">
 					<div style="margin-top: 5px;">
 						${shotInfo.formatedMinSec}<span style="color: lightgray;">:${shotInfo.formatedMicroSec}</span>
 						<div style="margin-bottom: 10px;">

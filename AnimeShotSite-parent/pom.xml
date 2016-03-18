@@ -14,7 +14,7 @@
 
 	<properties>
 		<!-- 本项目 -->
-		<xie.AnimeShotSite.version>0.0.1-SNAPSHOT</xie.AnimeShotSite.version>
+		<xie.AnimeShotSite.version>${project.version}</xie.AnimeShotSite.version>
 
 		<!-- 文件拷贝时的编码 -->
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
