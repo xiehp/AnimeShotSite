@@ -9,7 +9,9 @@
 		<module>../AnimeShotSite-core</module>
 		<module>../AnimeShotSite-webbase</module>
 		<module>../AnimeShotSite-portal</module>
+		<!-- 
 		<module>../AnimeShotSite-manage</module>
+		-->
 	</modules>
 
 	<properties>
