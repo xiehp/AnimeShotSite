@@ -17,8 +17,17 @@
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 
 <!-- jquery -->
-<script src="${ BAIDU_STATIC_URL }jquery/2.1.4/jquery.js" type="text/javascript"></script>
-<script src="${ BAIDU_STATIC_URL }jquery-lazyload/1.9.5/jquery.lazyload.js" type="text/javascript"></script>
+<c:set var="useBaiduStaticUrlFlg" value="true" />
+<c:if test="${ useBaiduStaticUrlFlg eq true }">
+	<c:set var="staticResourceUrl" value="${ BAIDU_STATIC_URL }" />
+	${ staticResourceUrl }A
+</c:if>
+<c:if test="${ useBaiduStaticUrlFlg ne true }">
+	<c:set var="staticResourceUrl" value="${ ctx }/static/plugin/" />
+	${ staticResourceUrl }B
+</c:if>
+<script src="${ staticResourceUrl }jquery/2.1.4/jquery.js" type="text/javascript"></script>
+<script src="${ staticResourceUrl }jquery-lazyload/1.9.5/jquery.lazyload.js" type="text/javascript"></script>
 
 
 <!-- bootstrap -->

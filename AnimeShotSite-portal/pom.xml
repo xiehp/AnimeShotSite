@@ -81,7 +81,7 @@
 			<artifactId>tomcat-jdbc</artifactId>
 		</dependency>
 		
-		<!-- SPRINGSIDE begin -->
+		<!-- SPRINGSIDE begin
 		<dependency>
 			<groupId>io.springside</groupId>
 			<artifactId>springside-core</artifactId>
@@ -97,7 +97,7 @@
 		<dependency>
 			<groupId>io.springside</groupId>
 			<artifactId>springside-redis</artifactId>
-		</dependency>
+		</dependency> -->
 		<!-- SPRINGSIDE end -->
 
 		<!-- SPRING basic begin -->
@@ -473,7 +473,7 @@
 				<version>2.6</version>
 				<configuration>
 					<warName>${project.artifactId}</warName>
-			                <!-- 激活spring profile -->
+					<!-- 激活spring profile -->
 					<webResources>
 						<resource>
 							<filtering>true</filtering>
@@ -487,6 +487,27 @@
 					<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/locallib</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>

@@ -6,13 +6,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
-import org.springside.modules.mapper.JsonMapper;
 
 import xie.base.entity.BaseEntity;
 
 public class PageRequestUtil {
-
-	public static JsonMapper mapper = new JsonMapper();
 
 	/**
 	 * 创建分页请求.

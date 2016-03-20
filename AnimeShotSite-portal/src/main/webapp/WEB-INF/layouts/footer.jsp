@@ -80,7 +80,7 @@ function showComfirmAlert(confirmTitle, callback){
 }
 
 jQuery(document).ready(function() {       
-   App.init();
+   //App.init();
 });
 
 //用来存放当前正在操作的日期文本框的引用。  
