@@ -6,7 +6,6 @@
 	<description>loading list</description>
 
 	<import resource="security/applicationContext-shiro.xml" />
-	<import resource="deployContext.xml" />
 
 	<beans profile="production,test">
 		<!--

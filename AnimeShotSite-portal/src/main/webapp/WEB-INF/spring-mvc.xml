@@ -53,7 +53,7 @@
 	<mvc:default-servlet-handler/>
 	
 	<!-- 定义无需Controller的url<->view直接映射 -->
-	<mvc:view-controller path="/" view-name="redirect:/login"/>
+	<mvc:view-controller path="/" view-name="redirect:/index"/>
 	
 	<!-- 静态资源映射 -->
     <mvc:resources mapping="/static/**" location="/static/"/>

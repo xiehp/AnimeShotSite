@@ -37,17 +37,19 @@
 		</rollingPolicy>
 		
 		<encoder>
-			<pattern>%d{HH:mm:ss.SSS},%msg%n</pattern>
+			<pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
 		</encoder>
 	</appender>
 
 	<!-- project default level -->
 	<logger name="xie" level="INFO">
+		<!-- 
 		<appender-ref ref="businessLogFile"></appender-ref>
+		 -->
 	</logger>
 	
 	<!-- business log 使用独立的appender，不继承Root的appender -->
-	<logger name="business" level="WARN" additivity="false">
+	<logger name="business" level="INFO" additivity="false">
 		<appender-ref ref="businessLogFile" />
 	</logger>
 	
@@ -57,13 +59,14 @@
 	</logger>-->
 
 	<!--log4jdbc -->
-	<logger name="jdbc.sqltiming" level="WARN"/>
+	<logger name="jdbc.sqltiming" level="INFO"/>
 	
 	<!-- springside modules -->
 	<logger name="org.springside.modules" level="WARN" />
 	
 	<!-- cxf inbound/outbound logger -->
 	<logger name="org.apache.cxf.services" level="WARN" />
+	<logger name="org.hibernate" level="WARN" />
 	<logger name="org.hibernate.engine.internal" level="WARN" />
 	<logger name="xie.common.exception.ExceptionHandler" level="WARN" />
 

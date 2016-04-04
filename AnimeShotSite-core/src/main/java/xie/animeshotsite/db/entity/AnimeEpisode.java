@@ -43,6 +43,15 @@ public class AnimeEpisode extends BaseEntity {
 	/** 剧集名称 */
 	private String name;
 
+	/** 第几集名称 */
+	private String divisionName;
+
+	/** 剧集标题 */
+	private String title;
+
+	/** 剧集全称=动画全称+空格+DIVISION_NAME */
+	private String fullName;
+
 	/** 剧集类型 0:正片 1：花絮 2：SP 3：PV 4：片头 5：片尾 9：其他 */
 	private Integer type;
 
@@ -84,6 +93,9 @@ public class AnimeEpisode extends BaseEntity {
 	@NotFound(action = NotFoundAction.IGNORE)
 	private ImageUrl titleUrl;
 
+	/** 简介 */
+	private String summary;
+
 	private Integer sort;
 
 	private Integer status;
@@ -110,6 +122,30 @@ public class AnimeEpisode extends BaseEntity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDivisionName() {
+		return divisionName;
+	}
+
+	public void setDivisionName(String divisionName) {
+		this.divisionName = divisionName;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 	public Integer getType() {
@@ -215,6 +251,14 @@ public class AnimeEpisode extends BaseEntity {
 
 	public void setTitleUrl(ImageUrl titleUrl) {
 		this.titleUrl = titleUrl;
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
 	}
 
 	public Integer getSort() {

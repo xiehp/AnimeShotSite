@@ -34,7 +34,17 @@ public class AnimeInfo extends BaseEntity {
 	/** 处理动作 2：只截缺少部分 */
 	public static final Integer PROCESS_ACTION_PART = 2;
 
+	/** 名称 */
 	private String name;
+
+	/** 副标题 */
+	private String secondName;
+
+	/** 第几季名称 */
+	private String divisionName;
+
+	/** 动画全称=NAME+空格+DIVISION_NAME */
+	private String fullName;
 
 	private Integer type;
 
@@ -66,6 +76,12 @@ public class AnimeInfo extends BaseEntity {
 	@NotFound(action = NotFoundAction.IGNORE)
 	private ImageUrl titleUrl;
 
+	/** 简介 */
+	private String summary;
+
+	/** 排序 */
+	private String sort;
+
 	private Integer status;
 
 	public String getName() {
@@ -74,6 +90,30 @@ public class AnimeInfo extends BaseEntity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getSecondName() {
+		return secondName;
+	}
+
+	public void setSecondName(String secondName) {
+		this.secondName = secondName;
+	}
+
+	public String getDivisionName() {
+		return divisionName;
+	}
+
+	public void setDivisionName(String divisionName) {
+		this.divisionName = divisionName;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 	public Integer getType() {
@@ -146,6 +186,22 @@ public class AnimeInfo extends BaseEntity {
 
 	public void setTitleUrl(ImageUrl titleUrl) {
 		this.titleUrl = titleUrl;
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	public String getSort() {
+		return sort;
+	}
+
+	public void setSort(String sort) {
+		this.sort = sort;
 	}
 
 	public Integer getStatus() {

@@ -17,21 +17,19 @@ import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
-import xie.animeshotsite.db.service.ShotInfoService;
 import xie.base.controller.BaseFunctionController;
 import xie.common.Constants;
-import xie.sys.auth.entity.User;
 
 @Controller
 @RequestMapping(value = "/episode")
-public class AnimeEpisodeController extends BaseFunctionController<User, String> {
+public class AnimeEpisodeController extends BaseFunctionController<AnimeEpisode, String> {
 
 	@Autowired
 	private AnimeInfoService animeInfoService;
 	@Autowired
 	private AnimeEpisodeService animeEpisodeService;
 
-	protected String getJspRootPath() {
+	protected String getJspFileRootPath() {
 		return "/episode/";
 	};
 

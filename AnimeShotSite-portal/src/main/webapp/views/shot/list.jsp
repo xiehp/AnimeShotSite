@@ -5,7 +5,7 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<title>动画剧集截图一览</title>
+<title>动画截图网 截图一览 <c:out value="${animeEpisode.fullName}" /></title>
 <style>
 .blockTitle {
 	margin-top: 10px;
@@ -32,10 +32,23 @@
 	}
 </script>
 <div>
+	<!-- 标题 -->
 	<div class="blockTitle">
-		<c:out value="${animeInfo.name}" />
-		<small><c:out value="${animeEpisode.name}" /></small>
+		<c:out value="${animeInfo.fullName}" />
+		<small><c:out value="${animeEpisode.divisionName}" /></small>
+		<c:if test="${!empty animeEpisode.summary}">
+			<button type="button" class="btn btn-rimary btn-xs" data-toggle="collapse" data-target="#episodeSmmary">显示剧集简介</button>
+		</c:if>
 	</div>
+
+	<div class="row" style="text-align: left;">
+		<!-- 剧集简介 -->
+		<div class="col-md-12">
+			<div id="episodeSmmary" class="collapse">${animeEpisode.summary}</div>
+		</div>
+	</div>
+
+	<!-- 截图一览 -->
 	<div class="row">
 		<c:forEach items="${ shotInfoPage.content }" var="shotInfo">
 			<div style="min-height: 100px;" class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
@@ -62,5 +75,5 @@
 </div>
 
 <div>
-	<a href="${ctx}/episode/list/${animeEpisode.animeInfoId}">返回剧集列表</a>
+	<a class="btn btn-primary" href="${ctx}/episode/list/${animeEpisode.animeInfoId}">返回剧集列表</a>
 </div>

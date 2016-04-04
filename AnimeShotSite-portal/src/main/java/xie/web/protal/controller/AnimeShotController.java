@@ -1,5 +1,6 @@
 package xie.web.protal.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +39,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 	@Autowired
 	private ShotInfoDao shotInfoDao;
 
-	protected String getJspRootPath() {
+	protected String getJspFileRootPath() {
 		return "/shot/";
 	};
 
@@ -68,9 +69,11 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 	public String shotView(@PathVariable String id, Model model, ServletRequest request) throws Exception {
 		ShotInfo shotInfo = shotInfoService.findOne(id);
 		AnimeInfo animeInfo = animeInfoService.findOne(shotInfo.getAnimeInfoId());
+		AnimeEpisode animeEpisode = animeEpisodeService.findOne(shotInfo.getAnimeEpisodeId());
 
 		model.addAttribute("shotInfo", shotInfo);
 		model.addAttribute("animeInfo", animeInfo);
+		model.addAttribute("animeEpisode", animeEpisode);
 
 		ShotInfo previousShotInfo = shotInfoService.findPrevious(shotInfo.getAnimeEpisodeId(), shotInfo.getTimeStamp());
 		ShotInfo nextShotInfo = shotInfoService.findNext(shotInfo.getAnimeEpisodeId(), shotInfo.getTimeStamp());
@@ -97,7 +100,11 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 
 	@RequestMapping(value = "/random")
 	public String shotList(Model model) throws Exception {
-		List<ShotInfo> shotInfoList = shotInfoService.findRandom(20);
+		List<ShotInfo> shotInfoList = new ArrayList<ShotInfo>();
+		for (int i=0; i<4; i++) {
+			List<ShotInfo> list = shotInfoService.findRandom(5);
+			shotInfoList.addAll(list);
+		}
 		model.addAttribute("shotInfoList", shotInfoList);
 
 		return getJspFilePath("random");

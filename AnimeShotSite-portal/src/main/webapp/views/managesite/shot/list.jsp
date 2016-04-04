@@ -21,7 +21,7 @@
 	function masterLike(id) {
 		var param = {};
 		param.id = id;
-		$.homePost("/managesite/shot/masterLike", param, function(data) {
+		$.homePost("/${MANAGE_URL_STR}/shot/masterLike", param, function(data) {
 			if (data) {
 				$("#masterLike_" + id).text(data.newMasterCount);
 				$("#publicLike_" + id).text(data.newPublicCount);
@@ -64,4 +64,4 @@
 </div>
 
 
-<a href="${ctx}/managesite/animeEpisode/view/${animeEpisode.id}">返回上层</a>
+<a href="${ctx}/${MANAGE_URL_STR}/animeEpisode/view/${animeEpisode.id}">返回上层</a>

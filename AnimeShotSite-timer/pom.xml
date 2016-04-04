@@ -8,6 +8,115 @@
 	<artifactId>AnimeShotSite-timer</artifactId>
 	<name>AnimeShotSite-timer</name>
 	<description>AnimeShotSite-timer</description>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>test</id>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
+						<executions>
+							<execution>
+								<id>test-ant-jar-copy</id>
+								<phase>install</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<copy file="target/${project.build.finalName}.jar" todir="D:\work\server\application\AnimeShotTimerTest"></copy>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>timer-test-dependency-copy</id>
+								<phase>install</phase>
+								<goals>
+									<goal>copy-dependencies</goal>
+								</goals>
+								<configuration>
+									<includeGroupIds>xie</includeGroupIds>
+									<outputDirectory>D:\work\server\application\AnimeShotTimerTest\AnimeLib</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>product</id>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
+						<executions>
+							<execution>
+								<id>product-ant-jar-copy</id>
+								<phase>install</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<copy file="target/${project.build.finalName}.jar" todir="D:\work\server\application\AnimeShotTimer"></copy>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>timer-product-dependency-copy-self</id>
+								<phase>install</phase>
+								<goals>
+									<goal>copy-dependencies</goal>
+								</goals>
+								<configuration>
+									<includeGroupIds>xie</includeGroupIds>
+									<outputDirectory>D:\work\server\application\AnimeShotTimer\AnimeLib</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>timer-product-dependency-copy-other</id>
+								<phase>install</phase>
+								<goals>
+									<goal>copy-dependencies</goal>
+								</goals>
+								<configuration>
+									<excludeGroupIds>xie</excludeGroupIds>
+									<outputDirectory>D:\work\server\application\AnimeShotTimer\OtherLib</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<!-- 本项目 -->
@@ -34,4 +143,5 @@
 		</dependency>
 		 -->
 	</dependencies>
+
 </project>

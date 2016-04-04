@@ -30,7 +30,7 @@ public class ShotEpisodeTask implements XTask {
 	@Autowired
 	AnimeEpisodeService animeEpisodeService;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put(Video2ImageProperties.KEY_id, "4028e381534fa25f01534fbd571f0006");
 		paramMap.put(Video2ImageProperties.KEY_forceUpload, false);
@@ -44,11 +44,11 @@ public class ShotEpisodeTask implements XTask {
 	}
 
 	@Override
-	public void runTask(Map<String, Object> paramMap) {
+	public void runTask(Map<String, Object> paramMap) throws Exception {
 		run(paramMap);
 	}
 
-	private int run(Map<String, Object> paramMap) {
+	private int run(Map<String, Object> paramMap) throws Exception {
 		try {
 			logger.info("begin process animeEpisodeId: " + paramMap);
 			String animeEpisodeId = (String) paramMap.get(Video2ImageProperties.KEY_id);
@@ -98,6 +98,7 @@ public class ShotEpisodeTask implements XTask {
 			}
 		} catch (Exception e) {
 			logger.error("process 失败", e);
+			throw e;
 		}
 
 		return 0;

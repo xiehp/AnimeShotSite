@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.ServletRequest;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -21,24 +22,30 @@ import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotInfoService;
-import xie.base.controller.BaseFunctionController;
-import xie.sys.auth.entity.User;
+import xie.base.controller.BaseManagerController;
+import xie.base.service.BaseService;
+import xie.common.web.util.WebConstants;
 
 @Controller
-@RequestMapping(value = "managesite/shot")
-public class ShotManagerController extends BaseFunctionController<User, String> {
+@RequestMapping(value = WebConstants.MANAGE_URL_STR + "/shot")
+public class ShotManagerController extends BaseManagerController<ShotInfo, String> {
 
-	
 	private @Autowired AnimeInfoService animeInfoService;
-	
+
 	private @Autowired AnimeEpisodeService animeEpisodeService;
 
 	private @Autowired ShotInfoService shotInfoService;
+	
+	@Override
+	protected BaseService<ShotInfo, String> getBaseService() {
+		return shotInfoService;
+	}
 
-	protected String getJspRootPath() {
-		return "/managesite/shot/";
+	protected String getJspFileRootPath() {
+		return "/managesite/shot";
 	};
 
+	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/list/{animeEpisodeId}")
 	public String shotList(@PathVariable String animeEpisodeId, @RequestParam(value = "sortType", defaultValue = "timeStamp") String sortType, @RequestParam(value = "page", defaultValue = "1") int pageNumber, Model model, ServletRequest request)
 			throws Exception {
@@ -61,6 +68,7 @@ public class ShotManagerController extends BaseFunctionController<User, String> 
 		return getJspFilePath("list");
 	}
 
+	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/view/{id}")
 	public String shotView(@PathVariable String id, Model model, ServletRequest request) throws Exception {
 		ShotInfo shotInfo = shotInfoService.findOne(id);
@@ -77,6 +85,7 @@ public class ShotManagerController extends BaseFunctionController<User, String> 
 		return getJspFilePath("view");
 	}
 
+	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/masterLike")
 	@ResponseBody
 	public Map<String, Object> masterLike(@RequestParam String id) {

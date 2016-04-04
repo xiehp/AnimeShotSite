@@ -11,10 +11,10 @@
 	default-lazy-init="true">
 
 	<description>Spring DB 配置</description>
-
-	<context:property-placeholder ignore-resource-not-found="true" location="classpath*:/application.properties, classpath*:/application.development.properties" />
-
-	<!-- Tomcat JDBC连接池 -->
+<!--
+	<context:property-placeholder ignore-resource-not-found="true" location="classpath*:/application.properties" />
+-->
+	<!-- Tomcat JDBC连接池
 	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driver}" />
 		<property name="url" value="${jdbc.url}" />
@@ -24,7 +24,11 @@
 		<property name="maxIdle" value="${jdbc.pool.maxIdle}" />
 		<property name="minIdle" value="0" />
 		<property name="defaultAutoCommit" value="false" />
-	</bean>
+	</bean> 
+	-->
+	
+	
+	<import resource="deployContext.xml" />
 
 	<!-- Jpa Entity Manager 配置 -->
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -39,9 +43,9 @@
 				<prop key="hibernate.cache.use_second_level_cache">false</prop>
 
 				<prop key="hibernate.cache.use_query_cache">true</prop>
-				<prop key="hibernate.generate_statistics">true</prop>
+				<prop key="hibernate.generate_statistics">false</prop>
 				<prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
-				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.use_sql_comments">false</prop>
 				<prop key="hibernate.enable_lazy_load_no_trans">true</prop>
 			</props>

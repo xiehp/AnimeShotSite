@@ -7,7 +7,7 @@
 
 <title>动画剧集截图</title>
 
-<caption>动画名：${animeInfo.name}</caption>
+<caption>动画名：${animeEpisode.fullName}</caption>
 <br>
 <caption>时间：${shotInfo.timeStamp}</caption>
 <br>
@@ -18,23 +18,23 @@
 	<fmt:formatNumber value="${shotInfo.timeStamp / 1000 % 60}" pattern="#" />
 </caption>
 <br>
-<div  align="center">
+<div align="center">
 
 	<div>
-		<img alt="" src="${shotInfo.tietukuSUrl}" width="1000px">
+		<img alt="" src="${shotInfo.tietukuOUrl}" width="1000px">
 	</div>
 </div>
-<div>
+<div style="padding: 5px;">
 	<c:if test="${!empty previousShotInfo.id}">
-		<a href="${ctx}/shot/view/${previousShotInfo.id}">上一张</a>
-		<img alt="" src="${previousShotInfo.tietukuSUrl}" style="display: none;">
+		<a style="margin: 10px;" class="btn btn-primary" href="${ctx}/shot/view/${previousShotInfo.id}">上一张</a>
+		<img alt="" src="${previousShotInfo.tietukuOUrl}" style="display: none;">
 	</c:if>
 	<c:if test="${!empty nextShotInfo.id}">
-	<a href="${ctx}/shot/view/${nextShotInfo.id}">下一张</a>
-		<img alt="" src="${nextShotInfo.tietukuSUrl}" style="display: none;">
+		<a style="margin: 10px;" class="btn btn-primary" href="${ctx}/shot/view/${nextShotInfo.id}">下一张</a>
+		<img alt="" src="${nextShotInfo.tietukuOUrl}" style="display: none;">
 	</c:if>
 </div>
 
 <div>
-	<a href="${ctx}/shot/list/${shotInfo.animeEpisodeId}">返回截图一览</a>
+	<a class="btn btn-primary" href="${ctx}/shot/list/${shotInfo.animeEpisodeId}">返回截图一览</a>
 </div>

@@ -5,7 +5,7 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<title>动画列表一览</title>
+<title>动画截图网 动画列表一览</title>
 
 <div class="container-fluid">
 	<div class="row-fluid">
@@ -18,7 +18,7 @@
 					<a href="${ctx}/episode/list/${anime.id}">
 						<img data-original="${anime.titleUrl.urlS}" class="img-responsive imagelazy">
 						<div style="margin-top: 5px;">
-							<c:out value="${anime.name}" />
+							<c:out value="${anime.fullName}" />
 						</div>
 					</a>
 				</div>

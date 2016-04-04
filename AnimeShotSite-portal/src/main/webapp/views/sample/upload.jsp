@@ -14,7 +14,6 @@
 			<div class="span12">
 				<!-- BEGIN PAGE TITLE & BREADCRUMB-->
 				<h4 class="page-title">
-					<small>评级系统</small>
 				</h4>
 				<ul class="breadcrumb">
 					<li>

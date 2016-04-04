@@ -23,6 +23,7 @@ import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.common.string.XStringUtils;
 import xie.common.utils.JsonUtil;
+import xie.tietuku.spring.TietukuConfig;
 import xie.v2i.listener.Video2ImageAdapter;
 import xie.v2i.utils.CImage;
 
@@ -48,6 +49,8 @@ public class SaveImageListener extends Video2ImageAdapter {
 	private String number;
 	private File fullDetailPath;
 
+	private String tietukuToken;
+
 	private ShotInfoService shotInfoService;
 	private AnimeEpisodeService animeEpisodeService;
 	private AnimeInfoService animeInfoService;
@@ -69,6 +72,9 @@ public class SaveImageListener extends Video2ImageAdapter {
 		this.detailPath = detailPath;
 		this.number = number;
 		this.fullDetailPath = FilePathUtils.getShotDetailFolderDefault(detailPath, number);
+
+		TietukuConfig tietukuConfig = SpringUtil.getBean(TietukuConfig.class);
+		tietukuToken = tietukuConfig.getTietukuToken();
 	}
 
 	public boolean isForceUpdate() {
@@ -103,10 +109,15 @@ public class SaveImageListener extends Video2ImageAdapter {
 
 		if (forceUpload || XStringUtils.isBlank(shotInfo.getTietukuUrlId())) {
 			// 保存截图到贴图库网站
-			String responseStr = PostImage.doUpload(file);
+
+			String responseStr = PostImage.doUpload(file, tietukuToken);
 			logger.debug(responseStr);
 			TietukuUploadResponse responseUpload = JsonUtil.fromJsonString(responseStr, TietukuUploadResponse.class);
 			String tietukuUrl = responseUpload.getLinkurl();
+			if (tietukuUrl == null) {
+				logger.error("贴图库上传失败，返回值：{},{}", responseUpload.getCode(), responseUpload.getInfo());
+				throw new RuntimeException("贴图库上传失败，返回值：" + responseUpload.getCode() + "," + responseUpload.getInfo());
+			}
 
 			String tietukuImageUrlPrefix = TietukuUtils.getImageUrlPrefix(tietukuUrl);
 			String tietukuImageUrlId = TietukuUtils.getImageUrlID(tietukuUrl);

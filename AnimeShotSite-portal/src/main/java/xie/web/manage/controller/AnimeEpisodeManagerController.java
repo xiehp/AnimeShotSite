@@ -8,6 +8,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,17 +16,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
+import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.ShotTaskService;
-import xie.animeshotsite.spring.SpringUtil;
-import xie.base.controller.BaseFunctionController;
+import xie.base.controller.BaseManagerController;
+import xie.base.service.BaseService;
 import xie.common.utils.SpringUtils;
 import xie.common.web.util.RequestUtil;
-import xie.sys.auth.entity.User;
+import xie.common.web.util.WebConstants;
 
 @Controller
-@RequestMapping(value = "managesite/animeEpisode")
-public class AnimeEpisodeManagerController extends BaseFunctionController<User, String> {
+@RequestMapping(value = WebConstants.MANAGE_URL_STR + "/animeEpisode")
+public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEpisode, String> {
 
 	@Autowired
 	private AnimeEpisodeService animeEpisodeService;
@@ -33,11 +35,17 @@ public class AnimeEpisodeManagerController extends BaseFunctionController<User, 
 	private ShotTaskService shotTaskService;
 	@Autowired
 	private SpringUtils springUtils;
+	
+	@Override
+	protected BaseService<AnimeEpisode, String> getBaseService() {
+		return animeEpisodeService;
+	}
 
-	protected String getJspRootPath() {
-		return "/managesite/animeEpisode/";
+	protected String getJspFileRootPath() {
+		return "/managesite/animeEpisode";
 	};
 
+	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/list/{animeInfoId}")
 	public String list(@PathVariable String animeInfoId, HttpSession session, HttpServletRequest request) {
 
@@ -48,6 +56,7 @@ public class AnimeEpisodeManagerController extends BaseFunctionController<User, 
 		return getJspFilePath("list");
 	}
 
+	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/view/{animeEpisodeId}")
 	public String view(@PathVariable String animeEpisodeId, ServletRequest request) throws Exception {
 
@@ -57,19 +66,21 @@ public class AnimeEpisodeManagerController extends BaseFunctionController<User, 
 		return getJspFilePath("new");
 	}
 
+	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/new")
 	public String newAnime(ServletRequest request) throws Exception {
 
 		return getJspFilePath("new");
 	}
 
+	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/submit")
 	public String submit(AnimeEpisode animeEpisode, ServletRequest request) throws Exception {
 
 		AnimeEpisode newAnimeInfo = animeEpisodeService.save(animeEpisode);
 		request.setAttribute("animeEpisodeInfo", newAnimeInfo);
 
-		return getJspRedirectFilePath("view/" + newAnimeInfo.getId());
+		return getUrlRedirectPath("view/" + newAnimeInfo.getId());
 	}
 
 	/**
@@ -79,6 +90,7 @@ public class AnimeEpisodeManagerController extends BaseFunctionController<User, 
 	 * @return
 	 * @throws Exception
 	 */
+	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/submitMuti")
 	public String submitMuti(
 			@RequestParam(required = false, defaultValue = "1") Integer start,
@@ -98,9 +110,10 @@ public class AnimeEpisodeManagerController extends BaseFunctionController<User, 
 		request.setAttribute("end", end);
 		request.setAttribute("extention", extention);
 
-		return getJspRedirectFilePath("view/" + firstId);
+		return getUrlRedirectPath("view/" + firstId);
 	}
 
+	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/addShotTask")
 	public String addShotTask(
 			@RequestParam String id,
@@ -113,14 +126,14 @@ public class AnimeEpisodeManagerController extends BaseFunctionController<User, 
 			@RequestParam(required = false) Boolean forceUpload) {
 
 		Map<String, Object> map = null;
-		
+
 		System.out.println(springUtils);
 		System.out.println(animeEpisodeService);
-//		System.out.println((AnimeEpisodeService)springUtils.getBean(AnimeEpisodeService.class));
-		
-//		System.out.println(SpringUtil.getBean(SpringUtils.class));
-//		System.out.println((AnimeEpisodeService)SpringUtil.getBean(AnimeEpisodeService.class));
-//		
+		// System.out.println((AnimeEpisodeService)springUtils.getBean(AnimeEpisodeService.class));
+
+		// System.out.println(SpringUtil.getBean(SpringUtils.class));
+		// System.out.println((AnimeEpisodeService)SpringUtil.getBean(AnimeEpisodeService.class));
+		//
 
 		if ("1".equals(taskType)) {
 			shotTaskService.addRunNormalEpisideTimeTask(id, scheduleTime, forceUpload, startTime, endTime, timeInterval);
@@ -133,6 +146,6 @@ public class AnimeEpisodeManagerController extends BaseFunctionController<User, 
 
 		map = getSuccessCode();
 
-		return getJspRedirectFilePath("view/" + id);
+		return getUrlRedirectPath("view/" + id);
 	}
 }

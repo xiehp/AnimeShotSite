@@ -6,162 +6,82 @@
 
 <title>动画详情</title>
 
-
-<script type="text/javascript">
-	function updateOneColumn(columnName) {
-		var param = {};
-		param.id = "${animeInfo.id}";
-		param.columnName = columnName;
-		param.columnValue = $("#mainForm").find("input[name=" + columnName + "]").val();
-		$.homePost("/${MANAGE_URL_STR}/anime/updateOneColumn", param, function(data) {
-			if (data.success) {
-				$.showMessageModal(data.message);
-			} else {
-				$.showMessageModal(data.message);
-			}
-		});
-	}
-
-	$(function() {
-		$("#mainForm").find("input[name]").each(function() {
-			var params = {};
-			params.name = $(this).attr("name");
-			var buttonHtml = $("#updateOneColumnButtonTemplate").render(params);
-			$(this).parent().after(buttonHtml);
-		});
-
-		// 编辑器
-		var changesCount = 0;
-		var summaryEditor = CKEDITOR.replace('summaryEditor', {});
-		summaryEditor.on('change', function(ev) {
-			$("input[name=summary]").val(summaryEditor.getData());
-			document.getElementById('summaryCount').innerHTML = summaryEditor.getData().length;
-		});
-	});
-</script>
-
-<script id="updateOneColumnButtonTemplate" type="text/x-jsrender">
-<div class="col-sm-1">
-	<a class="btn btn-primary" value="更新" onclick="updateOneColumn('{{>name}}');">更新</a>
-</div>
-</script>
-
-<script src="//cdn.ckeditor.com/4.5.8/full/ckeditor.js"></script>
-
-<form id="mainForm" class="form-horizontal" action="${ctx}/${MANAGE_URL_STR}/anime/submit" method="post">
+<form class="form-horizontal" action="${ctx}/${MANAGE_URL_STR}/anime/submit" method="post">
 	<div class="form-group">
 		<label class="col-sm-2 control-label">ID</label>
-		<div class="col-sm-5">
+		<div class="col-sm-10">
 			<input class="form-control" name="id" value="${animeInfo.id}" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">名称</label>
-		<div class="col-sm-5">
+		<div class="col-sm-10">
 			<input class="form-control" name="name" value="${animeInfo.name}" />
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="col-sm-2 control-label">副标题</label>
-		<div class="col-sm-5">
-			<input class="form-control" name="secondName" value="${animeInfo.secondName}" />
-		</div>
-	</div>
-	<div class="form-group">
-		<label class="col-sm-2 control-label">第几季名称</label>
-		<div class="col-sm-5">
-			<input class="form-control" name="divisionName" value="${animeInfo.divisionName}" />
-		</div>
-	</div>
-	<div class="form-group">
-		<label class="col-sm-2 control-label">全称</label>
-		<div class="col-sm-5">
-			<input class="form-control" name="fullName" value="${animeInfo.fullName}" />
-		</div>
-	</div>
-	<div class="form-group">
-		<label class="col-sm-2 control-label"></label>
-		<div class="col-sm-9">
-			<textarea id="summaryEditor"><c:out value="${animeInfo.summary}"></c:out></textarea>
-		</div>
-		<div id="summaryCount" class="col-sm-1">
-		</div>
-	</div>
-	<div class="form-group">
-		<label class="col-sm-2 control-label">简介</label>
-		<div class="col-sm-5">
-			<input class="form-control" name="summary" value="<c:out value="${animeInfo.summary}"></c:out>" />
-		</div>
-	</div>
-	<div class="form-group">
 		<label class="col-sm-2 control-label">版本</label>
-		<div class="col-sm-5">
+		<div class="col-sm-10">
 			<input class="form-control" name="version" value="${empty animeInfo.version ? 0 : animeInfo.version}" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">type</label>
-		<div class="col-sm-5">
+		<div class="col-sm-10">
 			<input class="form-control" name="type" value="${animeInfo.type}" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">系列</label>
-		<div class="col-sm-5">
+		<div class="col-sm-10">
 			<input class="form-control" name="series" value="${animeInfo.series}" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">截图状态 =</label>
-		<div class="col-sm-5">
+		<div class="col-sm-10">
 			<input class="form-control" name="shotStatus" value="${animeInfo.shotStatus}" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">处理动作</label>
-		<div class="col-sm-5">
+		<div class="col-sm-10">
 			<input class="form-control" name="processAction" value="${animeInfo.processAction}" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">本地所在根路径</label>
-		<div class="col-sm-5">
+		<div class="col-sm-10">
 			<input class="form-control" name="localRootPath" value="${animeInfo.localRootPath}" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">本地所在相对路径</label>
-		<div class="col-sm-5">
+		<div class="col-sm-10">
 			<input class="form-control" name="localDetailPath" value="${animeInfo.localDetailPath}" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">图片ID</label>
-		<div class="col-sm-5">
+		<div class="col-sm-10">
 			<input class="form-control" name="titleUrlId" value="${animeInfo.titleUrlId}" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">图片</label>
-		<div class="col-sm-5">
+		<div class="col-sm-10">
 			<img alt="${animeInfo.titleUrl.urlS}" src="${animeInfo.titleUrl.urlS}"> ${animeInfo.titleUrl.urlS}
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">status</label>
-		<div class="col-sm-5">
+		<div class="col-sm-10">
 			<input class="form-control" name="status" value="${animeInfo.status}" />
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="col-sm-2 control-label">排序</label>
-		<div class="col-sm-5">
-			<input class="form-control" name="sort" value="${animeInfo.sort}" />
-		</div>
-	</div>
-	<div class="form-group">
 		<label class="col-sm-2 control-label">deleteFlag</label>
-		<div class="col-sm-5">
+		<div class="col-sm-10">
 			<input class="form-control" name="deleteFlag" value="${animeInfo.deleteFlag}" />
 		</div>
 	</div>
@@ -180,7 +100,7 @@
 						<a href="${ctx}/${MANAGE_URL_STR}/animeEpisode/view/${animeEpisode.id}">
 							<img data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy">
 							<div style="margin-top: 5px;">
-								<c:out value="${animeEpisode.divisionName}" />
+								<c:out value="${animeEpisode.name}" />
 							</div>
 						</a>
 					</div>
@@ -193,3 +113,4 @@
 <div>
 	<a href="${ctx}/${MANAGE_URL_STR}/animeEpisode/new"> 增加剧集信息 </a>
 </div>
+

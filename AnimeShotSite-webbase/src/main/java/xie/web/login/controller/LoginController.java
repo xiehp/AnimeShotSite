@@ -28,9 +28,11 @@ import xie.base.controller.BaseController;
 import xie.common.Constants;
 import xie.common.exception.NoPermissionException;
 import xie.common.utils.props.PropsKeys;
+import xie.common.web.util.WebConstants;
 import xie.sys.auth.entity.User;
 
 @Controller
+@RequestMapping(value = WebConstants.MANAGE_URL_STR)
 public class LoginController extends BaseController {
 	
 	@Autowired
@@ -71,7 +73,40 @@ public class LoginController extends BaseController {
 	}
 	
 	@RequestMapping(value="/webLogin", method = RequestMethod.POST)
-	public ResponseEntity<?> webLogin(@RequestBody User user) {
+	public String webLogin(@RequestParam String loginId, @RequestParam String pasword) {
+		
+		Map<String, Object> resultMap = getFailCode();
+		
+		Subject subject = SecurityUtils.getSubject();
+		if(subject.isAuthenticated()){
+			//已经登陆过
+			resultMap = getSuccessCode();
+		}else{
+			UsernamePasswordToken token = new UsernamePasswordToken(loginId, pasword);
+			try {
+				subject.login(token);
+				//登录成功
+				resultMap = getSuccessCode();
+			} catch (UnknownAccountException e) {
+				resultMap.put(Constants.MESSAGE, messageSource.getMessage(PropsKeys.LOGIN_UNKNOWNACCOUNT_EXCEPTION, null, null));
+			}catch (DisabledAccountException e) {
+				resultMap.put(Constants.MESSAGE, messageSource.getMessage(PropsKeys.LOGIN_DISABLEDACCOUNT_EXCEPTION, null, null));
+			}catch (NoPermissionException e) {
+				resultMap.put(Constants.MESSAGE, messageSource.getMessage(PropsKeys.LOGIN_NOPERMISSION_EXCEPTION, null, null));
+			}catch (IncorrectCredentialsException ae) { 
+				resultMap.put(Constants.MESSAGE, messageSource.getMessage(PropsKeys.LOGIN_INCORRECTCREDENTIALS_EXCEPTION, null, null));
+			}catch (AuthenticationException ae) { 
+				resultMap.put(Constants.MESSAGE, messageSource.getMessage(PropsKeys.LOGIN_AUTHENTICATION_EXCEPTION, null, null));
+			}catch(Exception e){
+				resultMap.put(Constants.MESSAGE, messageSource.getMessage(PropsKeys.LOGIN_OTHER_EXCEPTION, null, null));
+			}
+		}
+
+		return "/index";
+	}
+	
+	@RequestMapping(value="/webLoginAjax", method = RequestMethod.POST)
+	public ResponseEntity<?> webLoginAjax(@RequestBody User user) {
 		
 		Map<String, Object> resultMap = getFailCode();
 		

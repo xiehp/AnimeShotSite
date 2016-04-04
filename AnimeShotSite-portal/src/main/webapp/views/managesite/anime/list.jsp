@@ -8,10 +8,10 @@
 <div class="row">
 	<c:forEach items="${ animeInfoList }" var="anime">
 		<div class="col-lg-3 col-sm-4 col-xs-6 thumbnail">
-			<a href="${ctx}/managesite/anime/view/${anime.id}">
+			<a href="${ctx}/${MANAGE_URL_STR}/anime/view/${anime.id}">
 				<img data-original="${anime.titleUrl.urlS}" class="img-responsive imagelazy">
 				<div style="margin-top: 5px;">
-					<c:out value="${anime.name}" />
+					<c:out value="${anime.fullName}" />
 				</div>
 			</a>
 		</div>

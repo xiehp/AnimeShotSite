@@ -131,7 +131,8 @@ public class UserService extends BaseService<User, String> {
 		user.setSalt(Encodes.encodeHex(salt));
 
 		byte[] hashPassword = Digests.sha1(user.getPlainPassword().getBytes(), salt, HASH_INTERATIONS);
-		user.setPassword(Encodes.encodeHex(hashPassword));
+		String hashPasswordStr = Encodes.encodeHex(hashPassword);
+		user.setPassword(hashPasswordStr);
 	}
 
 	public User findUserByLoginName(String loginName) {

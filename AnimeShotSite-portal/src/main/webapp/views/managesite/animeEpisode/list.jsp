@@ -9,9 +9,9 @@
 	<c:forEach items="${ animeEpisodeList }" var="anime">
 		<div class="col-lg-6 col-sm-6 col-xs-6">
 			<a href="#">
-				<img src="${animeEpisode.name}" class="thumbnail img-responsive">
+				<img src="${animeEpisode.divisionName}" class="thumbnail img-responsive">
 			</a>
-			<a href="${ctx}/managesite/animeEpisode/view/${animeEpisode.id}">${animeEpisode.name}</a>
+			<a href="${ctx}/${MANAGE_URL_STR}/animeEpisode/view/${animeEpisode.id}">${animeEpisode.divisionName}</a>
 		</div>
 	</c:forEach>
 </div>

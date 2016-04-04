@@ -21,7 +21,6 @@ import xie.animeshotsite.db.service.ShotInfoService;
 import xie.base.controller.BaseFunctionController;
 import xie.base.entity.BaseEntity;
 import xie.common.Constants;
-import xie.sys.auth.entity.User;
 
 @Controller
 @RequestMapping(value = "/anime")
@@ -36,7 +35,7 @@ public class AnimeInfoController extends BaseFunctionController<AnimeInfo, Strin
 	@Autowired
 	ShotInfoService shotInfoService;
 
-	protected String getJspRootPath() {
+	protected String getJspFileRootPath() {
 		return "/anime/";
 	};
 

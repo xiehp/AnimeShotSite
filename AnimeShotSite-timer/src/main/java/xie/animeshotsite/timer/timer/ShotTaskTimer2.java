@@ -23,7 +23,7 @@ import xie.common.string.XStringUtils;
 import xie.common.utils.JsonUtil;
 
 @Component
-public class ShotTaskTimer extends TimerTask {
+public class ShotTaskTimer2 extends TimerTask {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -45,37 +45,19 @@ public class ShotTaskTimer extends TimerTask {
 		
 		// entityManager.getEntityManagerFactory().getCache().evictAll();
 		// sessionFactory.getCache().evictEntityRegions();
-		
-		shotTaskDao.count();
+
+		long count = shotTaskDao.count();
 		List<ShotTask> list = shotTaskService.findNeedRunTask();
 
-		boolean isBegin;
-		for (ShotTask shotTask : list) {
-			isBegin = false;
-			try {
-				String taskClass = shotTask.getTaskClass();
-				String paramStr = shotTask.getTaskParam();
-				Map<String, Object> param = new HashMap<>();
-				if (XStringUtils.isNotBlank(paramStr)) {
-					param = JsonUtil.fromJsonString(paramStr);
-				}
-
-				XTask task = (XTask) Class.forName(taskClass).newInstance();
-				task = (XTask) SpringUtil.getBean(Class.forName(taskClass));
-
-				// 更改标志
-				shotTask = shotTaskService.beginTask(shotTask);
-				isBegin = true;
-
-				task.runTask(param);
-
-				shotTask = shotTaskService.endTask(shotTask, true, null);
-				logger.info("process 成功 : " + shotTask.getId());
-
-			} catch (Exception e) {
-				shotTask = shotTaskService.endTask(shotTask, false, e.getMessage());
-				logger.error("process 失败", e);
-			}
+		System.out.println("list size:" + list.size());
+		System.out.println("count size:" + count);
+		
+		
+		try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

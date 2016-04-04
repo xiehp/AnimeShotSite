@@ -7,12 +7,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import xie.animeshotsite.spring.SpringUtil;
-import xie.animeshotsite.timer.timer.ShotTaskTimer;
+import xie.animeshotsite.timer.timer.ShotTaskTimer2;
 
 //@SpringBootApplication
 @Configuration
 @ComponentScan("xie")
-public class MainTimer {
+public class MainTimer2 {
 	public static void main(String[] args) {
 
 		// ConfigurableApplicationContext configurableApplicationContext = SpringApplication.run(BatchConfiguration.class, args);
@@ -23,7 +23,7 @@ public class MainTimer {
 		// createTimer(AnimeShotTimer.class);
 		System.setProperty("spring.profiles.default", "development");
 		// System.setProperty("spring.profiles.default", "production");
-		createTimer(ShotTaskTimer.class, 10000);
+		createTimer(ShotTaskTimer2.class);
 
 		printProfile();
 
@@ -58,18 +58,17 @@ public class MainTimer {
 		// System.out.println(tietukuPropertiesConfiger.getNowProfile());
 	}
 
-	/***
-	 * 
-	 * @param classTimerTask
-	 * @param period 执行间隔
-	 */
-	public static void createTimer(Class<? extends TimerTask> classTimerTask, long period) {
+	public static void createTimer(Class<? extends TimerTask> classTimerTask) {
+
+		// ApplicationContext context = new AnnotationConfigApplicationContext(MainTimer.class);
+		// TimerTask timerTask = (TimerTask) context.getBean(classTimerTask);
 
 		TimerTask timerTask = (TimerTask) SpringUtil.getBean(classTimerTask);
 
 		Timer timer = new Timer();
-		timer.schedule(timerTask, 1000, period);
-
+		// timer.scheduleAtFixedRate(timerTask, 1000, 121000);
+		// timer.scheduleAtFixedRate(timerTask, 1000, 5000);
+		timer.scheduleAtFixedRate(timerTask, 1000, 5000);
 	}
 
 	private static void printProfile() {
@@ -85,4 +84,5 @@ public class MainTimer {
 			System.out.println(value);
 		}
 	}
+	
 }

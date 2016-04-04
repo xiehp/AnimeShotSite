@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import xie.common.Constants;
+import xie.common.web.util.WebConstants;
+
 /**
  * 
  * 网页标题信息的拦截器类
@@ -67,8 +70,30 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 //			generatePageData(request , webPathVO);
 //		}
 
+		// 传给jsp页面的常量
+		// 后台管理页面
+		if (request.getRequestURI().contains(WebConstants.MANAGE_URL_STR)) {
+			System.out.println(request.getRequestURI());
+			request.setAttribute("canBaiduRecord", false);
+		} else {
+			request.setAttribute("canBaiduRecord", true);
+		}
+		request.setAttribute("MANAGE_URL_STR", WebConstants.MANAGE_URL_STR);
 
+		// 百度静态资源链接
 		request.setAttribute("BAIDU_STATIC_URL", "http://apps.bdimg.com/libs/");
+		
+		// 系统常量
+		// json
+		request.setAttribute("JSON_RESPONSE_KEY_CODE", Constants.JSON_RESPONSE_KEY_CODE);
+		request.setAttribute("JSON_RESPONSE_KEY_MESSAGE", Constants.JSON_RESPONSE_KEY_MESSAGE);
+		request.setAttribute("SUCCESS_CODE", Constants.SUCCESS_CODE);
+		request.setAttribute("FAIL_CODE", Constants.FAIL_CODE);
+		// 标志
+		request.setAttribute("FLAG_INT_YES", Constants.FLAG_INT_YES);
+		request.setAttribute("FLAG_INT_NO", Constants.FLAG_INT_NO);
+		request.setAttribute("FLAG_STR_YES", Constants.FLAG_STR_YES);
+		request.setAttribute("FLAG_STR_NO", Constants.FLAG_STR_NO);
 	}
 	
 //	/**

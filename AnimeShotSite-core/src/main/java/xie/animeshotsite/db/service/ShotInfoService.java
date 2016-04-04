@@ -125,6 +125,8 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		orders.add(order);
 		PageRequest pageRequest = PageRequestUtil.buildPageRequest(1, listCount, orders);
 		Page<ShotInfo> page = searchAllShots(searchParams, pageRequest);
+		List<ShotInfo> list = page.getContent();
+		list = setParentData(list);
 		return page.getContent();
 	}
 

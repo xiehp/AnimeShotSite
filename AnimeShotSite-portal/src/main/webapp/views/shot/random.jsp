@@ -32,15 +32,16 @@
 	}
 </script>
 <div>
-	<div class="blockTitle">
-		帮你随机选出了${ shotInfoList.size() }张图
-	</div>
+	<div class="blockTitle">帮你随机选出了${ shotInfoList.size() }张图</div>
 	<div class="row">
 		<c:forEach items="${ shotInfoList }" var="shotInfo">
 			<div style="min-height: 100px;" class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
 				<a href="${ctx}/shot/view/${shotInfo.id}">
 					<img data-original="${shotInfo.urlS}" class="img-responsive imagelazy">
 					<div style="margin-top: 5px;">
+						<div class="wordKeepLine" title="<c:out value='${shotInfo.animeEpisode.fullName}' />">
+							<c:out value="${shotInfo.animeEpisode.fullName}" />
+						</div>
 						${shotInfo.formatedMinSec}<span style="color: lightgray;">:${shotInfo.formatedMicroSec}</span>
 						<div style="margin-bottom: 10px;">
 							<a class="btn btn-primary btn-xs" onclick="publicLike('${shotInfo.id}');">
@@ -48,7 +49,6 @@
 								<div id="publicLike_${shotInfo.id}" class="badge">${shotInfo.publicLikeCount}</div>
 							</a>
 						</div>
-
 					</div>
 				</a>
 			</div>
@@ -57,5 +57,5 @@
 </div>
 
 <div>
-	<a href="${ctx}/episode/list/${animeEpisode.animeInfoId}">返回剧集列表</a>
+	<a class="btn btn-primary" href="${ctx}/index">返回首页</a>
 </div>

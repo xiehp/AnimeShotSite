@@ -14,7 +14,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.type.TypeFactory;
 import org.codehaus.jackson.type.JavaType;
-import org.json.simple.JSONObject;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -163,7 +162,8 @@ public class FormToEntityHttpMessageConverter extends
 			}
 		}
 
-		String json = JSONObject.toJSONString(result);
+//		String json = JSONObject.toJSONString(result);
+		String json = objectMapper.writeValueAsString(result);
 		JavaType javaType = getJavaType(clazz, null);
 		return readJavaType(javaType,json);
 	}

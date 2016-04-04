@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +29,12 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 	}
 
 	public List<ShotTask> findNeedRunTask() {
-		List<ShotTask> list1 = shotTaskDao.findByTaskResultAndScheduleTimeIsNull(ShotTask.TASK_RESULT_WAIT);
+		String ramdomId = String.valueOf(RandomUtils.nextInt());
+		List<ShotTask> list1 = shotTaskDao.findByTaskResultAndScheduleTimeIsNull(ramdomId, ShotTask.TASK_RESULT_WAIT);
+		logging.info("找到" + list1.size() + "条计划时间null数据");
 		if (list1.isEmpty()) {
-			List<ShotTask> list2 = shotTaskDao.findByTaskResultAndScheduleTimeLessThan(ShotTask.TASK_RESULT_WAIT, DateUtil.getCurrentDate());
+			List<ShotTask> list2 = shotTaskDao.findByTaskResultAndScheduleTimeLessThan(ramdomId, ShotTask.TASK_RESULT_WAIT, DateUtil.getCurrentDate());
+			logging.info("找到" + list2.size() + "条计划时间到达数据");
 			list1.addAll(list2);
 		}
 		return list1;

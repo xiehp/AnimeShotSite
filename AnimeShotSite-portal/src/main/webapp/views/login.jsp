@@ -6,13 +6,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>欢迎使用</title>
-<link rel="shortcut icon" type="image/x-icon" href="${ ctx }/static/img/logo.png" media="screen" />
-<link href="${ctx }/static/media/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-<link href="${ctx }/static/media/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-<link href="${ctx }/static/media/css/style-metro.css" rel="stylesheet" type="text/css" />
-<link href="${ctx }/static/media/css/style.css" rel="stylesheet" type="text/css" />
-<link href="${ctx }/static/media/css/uniform.default.css" rel="stylesheet" type="text/css" />
-<link href="${ctx }/static/media/css/login.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="login">
 	<!-- login page do not delete -->
@@ -32,7 +25,7 @@
 
 		<!-- BEGIN LOGIN FORM -->
 
-		<form id="login-form" class="form-vertical">
+		<form id="login-form" class="form-vertical" >
 
 			<h3 class="form-title">后台管理</h3>
 
@@ -88,9 +81,6 @@
 
 				</label> -->
 
-				<button type="submit" class="btn green pull-right">
-					Login
-				</button>
 
 			</div>
 
@@ -103,6 +93,7 @@
 		<!-- END LOGIN FORM -->
 
 
+				<button onclick="loginSubmitAjax();" >Login</button>
 	</div>
 
 	<!-- END LOGIN -->
@@ -110,12 +101,9 @@
 	<!-- BEGIN COPYRIGHT -->
 
 	<div></div>
-	<script src="${ctx }/static/js/jquery/jquery-1.11.3.min.js" type="text/javascript"></script>
-	<script src="${ctx }/static/media/js/jquery.validate.min.js"></script>
-	<script src="${ctx }/static/media/js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="${ctx }/static/media/js/jquery.backstretch.min.js" type="text/javascript"></script>
 	<script>
 		$(document).ready(function() {
+			/*
 			$('#username').focus();
 			$('#login-form').validate({
 				errorElement : 'label', //default input error message container
@@ -146,7 +134,8 @@
 					loginSubmit();
 				}
 			});
-			$('#login-form input').keypress(function(e) {
+
+			$('#loginButton').keypress(function(e) {
 				if (e.which == 13) {
 					if ($('#login-form').validate().form()) {
 						loginSubmit();
@@ -154,30 +143,16 @@
 					return false;
 				}
 			});
-			/*
-			$.backstretch([
-			      "${ctx }/static/media/image/bg/1.jpg",
-			      "${ctx }/static/media/image/bg/2.jpg",
-			      "${ctx }/static/media/image/bg/3.jpg",
-			      "${ctx }/static/media/image/bg/4.jpg",
-			      "${ctx }/static/media/image/bg/5.jpg",
-			      "${ctx }/static/media/image/bg/6.jpg",
-			      "${ctx }/static/media/image/bg/7.jpg",
-			      "${ctx }/static/media/image/bg/8.jpg"
-			      ], {
-			        fade: 1000,
-			        duration: 4000
-			    });*/
-
+			 */
 		});
 
-		function loginSubmit() {
+		function loginSubmitAjax() {
 			var param = {
 				"loginName" : $.trim($('#username').val()),
 				"password" : $.trim($('#password').val())
 			}
 			$.ajax({
-				url : '${ctx}/webLogin',
+				url : 'webLoginAjax',
 				contentType : 'application/json',
 				dataType : "json",
 				type : "post",
@@ -186,8 +161,7 @@
 					if (data && data.code == '10000') {
 						window.location.href = '${ctx}/index';
 					} else {
-						$('#errorContent').html(data.message);
-						$('#sysAlert').show();
+						alert(data.message);
 					}
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {

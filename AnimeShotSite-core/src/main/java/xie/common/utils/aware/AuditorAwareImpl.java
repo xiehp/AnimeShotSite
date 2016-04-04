@@ -26,14 +26,15 @@ public class AuditorAwareImpl implements AuditorAware<String>{
 		String userId = null;
 		try{
 			if(SecurityUtils.getSubject() == null || SecurityUtils.getSubject().getPrincipal() == null){
-				userId = "未登录用户";
+//				userId = "未登录用户";
+				userId = null;
 			}else{
 				ShiroUser user = (ShiroUser)SecurityUtils.getSubject().getPrincipal();
 				userId = user.id;
 			}
 		}catch(Exception e){
-			userId = "未登录用户";
-			_log.error("获取当前用户id失败！");
+			userId = null;
+			_log.debug("获取当前用户id失败！");
 		}
 		return userId;
 	}

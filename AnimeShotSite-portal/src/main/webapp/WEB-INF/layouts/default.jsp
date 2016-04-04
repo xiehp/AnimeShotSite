@@ -20,11 +20,9 @@
 <c:set var="useBaiduStaticUrlFlg" value="true" />
 <c:if test="${ useBaiduStaticUrlFlg eq true }">
 	<c:set var="staticResourceUrl" value="${ BAIDU_STATIC_URL }" />
-	${ staticResourceUrl }A
 </c:if>
 <c:if test="${ useBaiduStaticUrlFlg ne true }">
 	<c:set var="staticResourceUrl" value="${ ctx }/static/plugin/" />
-	${ staticResourceUrl }B
 </c:if>
 <script src="${ staticResourceUrl }jquery/2.1.4/jquery.js" type="text/javascript"></script>
 <script src="${ staticResourceUrl }jquery-lazyload/1.9.5/jquery.lazyload.js" type="text/javascript"></script>
@@ -48,12 +46,38 @@
 	}
 </script>
 
-<!-- self -->
+<!-- local js and css -->
+<script src="${ ctx }/static/js/template/jsrender.min.js" type="text/javascript"></script>
+
+<!-- self js and css -->
 <link href="${ ctx }/static/css/style.css" rel="stylesheet" type="text/css" />
 <script src="${ ctx }/static/js/homeInit.js" type="text/javascript"></script>
 <script src="${ ctx }/static/js/homeBase.js" type="text/javascript"></script>
 
 
+<!-- 百度 -->
+<c:if test="${ canBaiduRecord eq true }">
+	<!-- 百度收录推送 -->
+	<script>
+		(function() {
+			var bp = document.createElement('script');
+			bp.src = '//push.zhanzhang.baidu.com/push.js';
+			var s = document.getElementsByTagName("script")[0];
+			s.parentNode.insertBefore(bp, s);
+		})();
+	</script>
+
+	<!-- 百度统计 -->
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+			var hm = document.createElement("script");
+			hm.src = "//hm.baidu.com/hm.js?292dc181c5dbc431b3ded9d841c0920e";
+			var s = document.getElementsByTagName("script")[0];
+			s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+</c:if>
 
 <!-- END CORE PLUGINS -->
 <!-- END JAVASCRIPTS -->
@@ -84,6 +108,5 @@
 		</div>
 	</div>
 	<%@ include file="/WEB-INF/layouts/footer.jsp"%>
-	<script src="${ctx }/static/media/js/app.js"></script>
 </body>
 </html>

@@ -34,7 +34,7 @@ public class ShotSpecifyTask implements XTask {
 	@Autowired
 	AnimeEpisodeService animeEpisodeService;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		args = new String[3];
 		args[0] = "4028e381534fa25f01534fbd571f0006"; // 动画剧集ID
 		args[1] = "0"; // timeStamp
@@ -51,11 +51,11 @@ public class ShotSpecifyTask implements XTask {
 	}
 
 	@Override
-	public void runTask(Map<String, Object> paramMap) {
+	public void runTask(Map<String, Object> paramMap) throws Exception {
 		run(null, paramMap);
 	}
 
-	public int run(String[] args, Map<String, Object> paramMap) {
+	public int run(String[] args, Map<String, Object> paramMap) throws Exception {
 		try {
 			logger.info("begin process animeEpisodeId: " + paramMap);
 			String animeEpisodeId = (String) paramMap.get(Video2ImageProperties.KEY_id);
@@ -95,6 +95,7 @@ public class ShotSpecifyTask implements XTask {
 
 		} catch (Exception e) {
 			logger.error("process 失败", e);
+			throw e;
 		}
 
 		return 0;

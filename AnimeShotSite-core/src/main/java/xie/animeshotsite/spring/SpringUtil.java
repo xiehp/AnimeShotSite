@@ -6,7 +6,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.access.BeanFactoryLocator;
 import org.springframework.beans.factory.access.BeanFactoryReference;
-import org.springframework.context.access.ContextSingletonBeanFactoryLocator;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * 
@@ -43,14 +43,16 @@ public final class SpringUtil implements BeanFactoryAware {
 	private static BeanFactoryReference bfr;
 
 	/** The factory. */
+	private static ClassPathXmlApplicationContext ctx;
+
+	/** The factory. */
 	private static BeanFactory factory;
 
 	/**
 	 * 
 	 * 根据对象名获得对象
 	 * 
-	 * @param beanRef
-	 *            对象名
+	 * @param beanRef 对象名
 	 * @return Object对象
 	 */
 	@SuppressWarnings("unchecked")
@@ -62,12 +64,19 @@ public final class SpringUtil implements BeanFactoryAware {
 	 * 
 	 * 根据对象类型获得对象
 	 * 
-	 * @param clazz
-	 *            对象类型
+	 * @param clazz 对象类型
 	 * @return <X> X 对象
 	 */
 	public static <X> X getBean(final Class<X> clazz) {
 		return getBeanFactory().getBean(clazz);
+	}
+
+	public static String getProperty(String key) {
+		return ctx.getEnvironment().getProperty(key);
+	}
+
+	public static ClassPathXmlApplicationContext getCtx() {
+		return ctx;
 	}
 
 	/**
@@ -78,23 +87,26 @@ public final class SpringUtil implements BeanFactoryAware {
 		if (factory == null) {
 			synchronized (SpringUtil.class) {
 				if (factory == null) {
-					if (BEAN_TYPE.equalsIgnoreCase(BEAN_CONTENT_TYPE)) {
-						try {
-							if (null == locator) {
-								locator = ContextSingletonBeanFactoryLocator.getInstance("classpath*:beanRefContext.xml");
-							}
-							if (null == bfr) {
-								bfr = locator.useBeanFactory("beanfactory");
-							}
-							if (null == factory) {
-								factory = bfr.getFactory();
-							}
-						} catch (Exception e) {
-							LOG.error(e.getMessage(), e);
-						}
-					} else {
-						// factory = SpringWebUtil.getBeanFactory();
-					}
+					// if (BEAN_TYPE.equalsIgnoreCase(BEAN_CONTENT_TYPE)) {
+					// try {
+					// if (null == locator) {
+					// locator = ContextSingletonBeanFactoryLocator.getInstance("classpath*:beanRefContext.xml");
+					// }
+					// if (null == bfr) {
+					// bfr = locator.useBeanFactory("beanfactory");
+					// }
+					// if (null == factory) {
+					// factory = bfr.getFactory();
+					// }
+					// } catch (Exception e) {
+					// LOG.error(e.getMessage(), e);
+					// }
+					// } else {
+					// // factory = SpringWebUtil.getBeanFactory();
+					// }
+
+					ctx = new ClassPathXmlApplicationContext("classpath*:applicationContext.xml");
+					factory = ctx.getBeanFactory();
 				}
 			}
 		}

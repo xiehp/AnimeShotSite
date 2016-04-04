@@ -15,17 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import xie.animeshotsite.constants.ShotConstants;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
+import xie.animeshotsite.db.entity.ImageUrl;
 import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotInfoService;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseFunctionController;
-import xie.sys.auth.entity.User;
 
 @Controller
 @RequestMapping(value = "/image")
-public class ImageUrlController extends BaseFunctionController<User, String> {
+public class ImageUrlController extends BaseFunctionController<ImageUrl, String> {
 
 	@Autowired
 	AnimeInfoService animeInfoService;

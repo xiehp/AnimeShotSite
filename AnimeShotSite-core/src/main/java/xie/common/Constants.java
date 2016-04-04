@@ -24,6 +24,10 @@ public class Constants {
 	 * 操作失败
 	 */
 	public static final String FAIL_CODE = "10001";
+	
+	public static final String JSON_RESPONSE_KEY_CODE = "code";
+	public static final String JSON_RESPONSE_KEY_MESSAGE = "message";
+	public static final String JSON_RESPONSE_KEY_SUCCESS = "success";
 
 	/**
 	 * 默认管理员ID
@@ -37,7 +41,7 @@ public class Constants {
 	/**
 	 * 默认分页数
 	 */
-	public static final int DEFAULT_PAGE_SIZE = 10;
+	public static final int DEFAULT_PAGE_SIZE = 20;
 
 	/** 是否标志 */
 	public static final int FLAG_INT_YES = 1;

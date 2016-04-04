@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,8 @@ import xie.base.repository.BaseSpecifications;
 import xie.common.Constants;
 
 public abstract class BaseService<M, ID extends Serializable> {
+
+	protected Logger logging = LoggerFactory.getLogger(this.getClass());
 
 	public abstract BaseRepository<M, ID> getBaseRepository();
 
@@ -38,6 +42,10 @@ public abstract class BaseService<M, ID extends Serializable> {
 
 	public M findOne(ID id) {
 		return getBaseRepository().findOne(id);
+	}
+
+	public M findById(ID id) {
+		return getBaseRepository().findById(id);
 	}
 
 	public List<M> findAll() {
