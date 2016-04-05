@@ -45,7 +45,7 @@ public class AnimeEpisodeController extends BaseFunctionController<AnimeEpisode,
 		searchParams.put("EQ_deleteFlag", Constants.FLAG_INT_NO + "");
 
 		AnimeInfo animeInfo = animeInfoService.findOne(animeInfoId);
-		Page<AnimeEpisode> animeEpisodePage = animeEpisodeService.searchAllShots(searchParams, pageNumber, Constants.DEFAULT_PAGE_SIZE, sortType, AnimeEpisode.class);
+		Page<AnimeEpisode> animeEpisodePage = animeEpisodeService.searchByPage(searchParams, pageNumber, Constants.DEFAULT_PAGE_SIZE, sortType, AnimeEpisode.class);
 
 		model.addAttribute("animeInfo", animeInfo);
 		model.addAttribute("animeEpisodePage", animeEpisodePage);

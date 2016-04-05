@@ -12,10 +12,10 @@
 		<div class="row">
 			<!-- 图片 -->
 			<div class="col-xs-4">
-				<img src="${animeInfo.titleUrl.urlS}" width="100%" />
+				<img src="${animeInfo.titleUrl.urlS}" idth="100%" />
 			</div>
 			<!-- 信息 -->
-			<div class="col-xs-8">
+			<div class="col-xs-7">
 				<!-- 名称 -->
 				<div class="blockTitle" style="margin-left: 0px;">
 					<span><c:out value="${animeInfo.fullName}" /></span> <span><c:out value="${animeInfo.secondName}" /></span>

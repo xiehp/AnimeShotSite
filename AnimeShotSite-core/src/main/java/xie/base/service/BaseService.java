@@ -60,7 +60,7 @@ public abstract class BaseService<M, ID extends Serializable> {
 		return getBaseRepository().findAll(pageable);
 	}
 
-	public Page<M> searchAllShots(Map<String, Object> searchParams, int pageNumber, int defaultPageSize, String sortType, Class<M> c) {
+	public Page<M> searchByPage(Map<String, Object> searchParams, int pageNumber, int defaultPageSize, String sortType, Class<M> c) {
 
 		// 创建分页对象
 		PageRequest pageRequest = PageRequestUtil.buildPageRequest(pageNumber, defaultPageSize, sortType);

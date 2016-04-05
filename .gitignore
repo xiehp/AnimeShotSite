@@ -24,3 +24,6 @@ AnimeShotSite-manage
 application.development.properties
 application.properties
 application.test.properties
+replay_pid*.log
+tietuku*.properties
+animeshotsiteinst1_329761_all_sql.zip
