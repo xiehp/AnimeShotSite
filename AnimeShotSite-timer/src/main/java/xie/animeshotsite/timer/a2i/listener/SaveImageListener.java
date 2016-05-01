@@ -15,6 +15,7 @@ import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.entity.ImageUrl;
 import xie.animeshotsite.db.entity.ShotInfo;
+import xie.animeshotsite.db.repository.ShotInfoDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ImageUrlService;
@@ -43,6 +44,7 @@ public class SaveImageListener extends Video2ImageAdapter {
 
 	private String animeInfoId;
 	private String animeEpisodeId;
+	private AnimeEpisode animeEpisode;
 	private File rootPath;
 	/** 不带number的path */
 	private String detailPath;
@@ -52,18 +54,21 @@ public class SaveImageListener extends Video2ImageAdapter {
 	private String tietukuToken;
 
 	private ShotInfoService shotInfoService;
+	private ShotInfoDao shotInfoDao;
 	private AnimeEpisodeService animeEpisodeService;
 	private AnimeInfoService animeInfoService;
 	private ImageUrlService imageUrlService;
 
 	public SaveImageListener(String animeInfoId, String animeEpisodeId, String rootPath, String detailPath, String number) {
 		shotInfoService = SpringUtil.getBean(ShotInfoService.class);
+		shotInfoDao = SpringUtil.getBean(ShotInfoDao.class);
 		animeEpisodeService = SpringUtil.getBean(AnimeEpisodeService.class);
 		animeInfoService = SpringUtil.getBean(AnimeInfoService.class);
 		imageUrlService = SpringUtil.getBean(ImageUrlService.class);
 
 		this.animeInfoId = animeInfoId;
 		this.animeEpisodeId = animeEpisodeId;
+		animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
 		if (rootPath != null) {
 			this.rootPath = new File(rootPath);
 		} else {
@@ -94,24 +99,38 @@ public class SaveImageListener extends Video2ImageAdapter {
 	}
 
 	@Override
-	public void isRefreshedAfterChangeTime(long time, BufferedImage image) {
+	public void isRefreshedAfterChangeTime(long setTime, long originalTime, BufferedImage image) {
 		// 保存截图到本地硬盘
-		logger.info("isRefreshedAfterChangeTime time:" + time);
-		File file = CImage.getFilePath(time, fullDetailPath);
+		logger.info("isRefreshedAfterChangeTime setTime:" + setTime + ", originalTime" + originalTime);
+
+		ShotInfo shotInfo = shotInfoDao.findByAnimeEpisodeIdAndTimeStamp(animeEpisodeId, setTime);
+		String fileName = String.valueOf(setTime);
+		if (shotInfo != null) {
+			logger.info("获取shotInfo数据, " + "id:" + shotInfo.getId() + ", timeStamp:" + shotInfo.getTimeStamp() + ", version:" + shotInfo.getVersion());
+			fileName = shotInfo.getLocalFileName();
+		} else {
+			logger.info("获取shotInfo数据, null");
+			fileName = animeEpisode.getFullName() + setTime;
+			if (XStringUtils.isBlank(fileName)) {
+				fileName = String.valueOf(setTime);
+			}
+		}
+		File file = CImage.getFilePath(fileName, fullDetailPath);
 		file = CImage.saveImage(image, file);
 		if (file == null) {
 			// TODO 保存失败
-			logger.error("保存失败，路径：{}，时间： {}", fullDetailPath, time);
+			logger.error("保存失败，路径：{}，时间： {}", fullDetailPath, setTime);
 		}
 
 		// 保存到数据库
-		ShotInfo shotInfo = shotInfoService.saveShotInfo(animeInfoId, animeEpisodeId, time, rootPath.getAbsolutePath(), detailPath, file.getName(), forceUpdate);
+		shotInfo = shotInfoService.createShotInfo(animeInfoId, animeEpisodeId, setTime, originalTime, rootPath.getAbsolutePath(), detailPath, file.getName(), forceUpdate);
+		logger.info("保存到数据库, " + "id:" + shotInfo.getId() + ", timeStamp:" + shotInfo.getTimeStamp() + ", version:" + shotInfo.getVersion());
 
 		if (forceUpload || XStringUtils.isBlank(shotInfo.getTietukuUrlId())) {
 			// 保存截图到贴图库网站
 
 			String responseStr = PostImage.doUpload(file, tietukuToken);
-			logger.debug(responseStr);
+			logger.info(responseStr);
 			TietukuUploadResponse responseUpload = JsonUtil.fromJsonString(responseStr, TietukuUploadResponse.class);
 			String tietukuUrl = responseUpload.getLinkurl();
 			if (tietukuUrl == null) {
@@ -123,12 +142,14 @@ public class SaveImageListener extends Video2ImageAdapter {
 			String tietukuImageUrlId = TietukuUtils.getImageUrlID(tietukuUrl);
 
 			// 更新贴图库数据库
-			shotInfo = shotInfoService.updateTietukuUrl(animeEpisodeId, time, tietukuImageUrlId, tietukuImageUrlPrefix);
+			shotInfo = shotInfoService.setTietukuUrl(shotInfo, tietukuImageUrlId, tietukuImageUrlPrefix);
 		}
+
+		shotInfoService.save(shotInfo);
 
 		// 修改剧集图片信息
 		if (!hasSaveEpisodeImageFlg) {
-			if (time > getTotalTime() / 2) {
+			if (setTime > getTotalTime() / 2) {
 				// 剧集
 				AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
 				ImageUrl imageUrl = null;

@@ -6,7 +6,7 @@
 
 <title>动画详情</title>
 
-<form class="form-horizontal" action="${ctx}/${MANAGE_URL_STR}/anime/submit" method="post">
+<form class="form-horizontal" action="${ctx}${MANAGE_URL_STR}/anime/submit" method="post">
 	<div class="form-group">
 		<label class="col-sm-2 control-label">ID</label>
 		<div class="col-sm-10">
@@ -88,7 +88,7 @@
 
 	<input type="submit" />
 
-	<a href="${ctx}/${MANAGE_URL_STR}/anime/list">返回上层</a>
+	<a href="${ctx}${MANAGE_URL_STR}/anime/list">返回上层</a>
 </form>
 
 <div>
@@ -97,7 +97,7 @@
 			<div class="row">
 				<c:forEach items="${ animeEpisodeList }" var="animeEpisode">
 					<div class="col-lg-3 col-sm-4 col-xs-6 thumbnail">
-						<a href="${ctx}/${MANAGE_URL_STR}/animeEpisode/view/${animeEpisode.id}">
+						<a href="${ctx}${MANAGE_URL_STR}/animeEpisode/view/${animeEpisode.id}">
 							<img data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy">
 							<div style="margin-top: 5px;">
 								<c:out value="${animeEpisode.name}" />
@@ -111,6 +111,6 @@
 </div>
 
 <div>
-	<a href="${ctx}/${MANAGE_URL_STR}/animeEpisode/new"> 增加剧集信息 </a>
+	<a href="${ctx}${MANAGE_URL_STR}/animeEpisode/new"> 增加剧集信息 </a>
 </div>
 

@@ -34,7 +34,7 @@
 				<p>
 					Error message:
 					<br />
-					${exception}
+					<c:out value="${exception} "/>
 				</p>
 
 			</div>

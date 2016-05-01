@@ -5,7 +5,7 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<title>动画截图网 截图一览 <c:out value="${animeEpisode.fullName}" /></title>
+<title>动画截图网 <c:out value="${animeEpisode.fullName}" /></title>
 <style>
 .blockTitle {
 	margin-top: 10px;
@@ -21,21 +21,18 @@
 }
 </style>
 <script>
-	function publicLike(id) {
-		var param = {};
-		param.id = id;
-		$.homePost("/shot/publicLike", param, function(data) {
-			if (data) {
-				$("#publicLike_" + id).text(data.newCount);
-			}
-		});
+	<c:if test="${IS_MANAGER}">
+	function masterLike(id) {
+		home.masterLike("${MANAGE_URL_STR}/shot/masterLike", id, "#masterLike_" + id, "#publicLike_" + id);
 	}
+	
+	</c:if>
 </script>
 <div>
 	<!-- 标题 -->
 	<div class="blockTitle">
 		<c:out value="${animeInfo.fullName}" />
-		<small><c:out value="${animeEpisode.divisionName}" /></small>
+		<small><c:out value="${animeEpisode.divisionName}" /></small> <small><c:out value="${animeEpisode.title}" /></small>
 		<c:if test="${!empty animeEpisode.summary}">
 			<button type="button" class="btn btn-rimary btn-xs" data-toggle="collapse" data-target="#episodeSmmary">显示剧集简介</button>
 		</c:if>
@@ -57,10 +54,16 @@
 					<div style="margin-top: 5px;">
 						${shotInfo.formatedMinSec}<span style="color: lightgray;">:${shotInfo.formatedMicroSec}</span>
 						<div style="margin-bottom: 10px;">
-							<a class="btn btn-primary btn-xs" onclick="publicLike('${shotInfo.id}');">
+							<a class="btn btn-primary btn-xs" onclick="home.publicLike('${shotInfo.id}');">
 								<span class="glyphicon glyphicon-star"></span>喜欢
 								<div id="publicLike_${shotInfo.id}" class="badge">${shotInfo.publicLikeCount}</div>
 							</a>
+							<c:if test="${IS_MASTER}">
+								<a class="btn btn-primary btn-xs" onclick="home.masterLike('${MANAGE_URL_STR}/shot/masterLike', '${shotInfo.id}');">
+									<span class="glyphicon glyphicon-star"></span>推荐
+									<div id="masterLike_${shotInfo.id}" class="badge">${shotInfo.masterRecommendRank}</div>
+								</a>
+							</c:if>
 						</div>
 
 					</div>
@@ -76,4 +79,23 @@
 
 <div>
 	<a class="btn btn-primary" href="${ctx}/episode/list/${animeEpisode.animeInfoId}">返回剧集列表</a>
+</div>
+
+<div style="margin-top: 50px;">
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="row">
+				<c:if test="${!empty subtitleLineList}">字幕一览</c:if>
+				<table>
+					<c:forEach items="${ subtitleLineList }" var="subtitleLine">
+						<tr>
+							<td style="padding-right: 5px; font-size: 10px;">${subtitleLine.startTimeMinSecMicro}</td>
+							<td style="padding-right: 5px; font-size: 10px;">${subtitleLine.endTimeMinSecMicro}</td>
+							<td style="font-size: 10px;">${subtitleLine.text}</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</div>
+		</div>
+	</div>
 </div>

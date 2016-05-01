@@ -98,6 +98,9 @@ public class AnimeEpisode extends BaseEntity {
 
 	private Integer sort;
 
+	/** 是否显示 */
+	private Integer showFlg;
+
 	private Integer status;
 
 	public String getAnimeInfoId() {
@@ -267,6 +270,14 @@ public class AnimeEpisode extends BaseEntity {
 
 	public void setSort(Integer sort) {
 		this.sort = sort;
+	}
+
+	public Integer getShowFlg() {
+		return showFlg;
+	}
+
+	public void setShowFlg(Integer showFlg) {
+		this.showFlg = showFlg;
 	}
 
 	public Integer getStatus() {

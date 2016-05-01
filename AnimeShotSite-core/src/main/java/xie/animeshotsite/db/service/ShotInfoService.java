@@ -59,29 +59,31 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 	 * @param updateFlg 如果已经存在，是否进行更新
 	 * @return
 	 */
-	public ShotInfo saveShotInfo(String animeInfoId, String animeEpisodeId, long timeStamp, String rootPath, String localDetailPath, String fileName, boolean updateFlg) {
+	public ShotInfo createShotInfo(String animeInfoId, String animeEpisodeId, long timeStamp, long originalTime, String rootPath, String localDetailPath, String fileName, boolean forceUpdateFlg) {
 		ShotInfo shotInfo = shotInfoDao.findByAnimeEpisodeIdAndTimeStamp(animeEpisodeId, timeStamp);
 		if (shotInfo == null) {
 			shotInfo = new ShotInfo();
 		} else {
-			if (!updateFlg) {
+			if (!forceUpdateFlg) {
 				return shotInfo;
 			}
 		}
 		shotInfo.setAnimeInfoId(animeInfoId);
 		shotInfo.setAnimeEpisodeId(animeEpisodeId);
+		shotInfo.setOriginalTime(originalTime);
 		shotInfo.setTimeStamp(timeStamp);
 		// shotInfo.setLocalRootPath(rootPath);
 		// shotInfo.setLocalDetailPath(localDetailPath);
 		shotInfo.setLocalFileName(fileName);
-		return shotInfoDao.save(shotInfo);
+		return shotInfo;
 	}
 
-	public ShotInfo updateTietukuUrl(String animeEpisodeId, long timeStamp, String tietukuUrlId, String tietukuUrlPrefix) {
-		ShotInfo shotInfo = shotInfoDao.findByAnimeEpisodeIdAndTimeStamp(animeEpisodeId, timeStamp);
+	public ShotInfo setTietukuUrl(ShotInfo shotInfo, String tietukuUrlId, String tietukuUrlPrefix) {
+		logging.info("updateTietukuUrl, shotInfoID：" + shotInfo.getId() + ", animeEpisodeId:" + shotInfo.getAnimeEpisodeId() + ", timeStamp:" + shotInfo.getTimeStamp() + ", tietukuUrlId:" + tietukuUrlId + ", tietukuUrlPrefix:" + tietukuUrlPrefix);
+
 		shotInfo.setTietukuUrlPrefix(tietukuUrlPrefix);
 		shotInfo.setTietukuUrlId(tietukuUrlId);
-		return shotInfoDao.save(shotInfo);
+		return shotInfo;
 	}
 
 	/**
@@ -141,6 +143,15 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		return list;
 	}
 
+	public ShotInfo setParentData(ShotInfo shotInfo) {
+		if (shotInfo == null) {
+			return shotInfo;
+		}
+		shotInfo.setAnimeInfo(entityCache.findOne(animeInfoDao, shotInfo.getAnimeInfoId()));
+		shotInfo.setAnimeEpisode(entityCache.findOne(animeEpisodeDao, shotInfo.getAnimeEpisodeId()));
+		return shotInfo;
+	}
+
 	public Page<ShotInfo> searchAllShots(Map<String, Object> searchParams, int pageNumber, int defaultPageSize, String sortType) {
 
 		// 创建分页对象
@@ -157,9 +168,9 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		// Specification<ShotInfo> spec = DynamicSpecifications.bySearchFilter(filters.values(), ShotInfo.class);
 		Map<String, BaseSearchFilter> filters = BaseSearchFilter.parse(searchParams);
 		Specification<ShotInfo> spec = BaseSpecifications.bySearchFilter(filters.values(), ShotInfo.class);
-		Page<ShotInfo> userPage = shotInfoDao.findAll(spec, pageRequest);
+		Page<ShotInfo> page = shotInfoDao.findAll(spec, pageRequest);
 
-		return userPage;
+		return page;
 	}
 
 	public ShotInfo publicLikeAdd(String id) {

@@ -159,7 +159,7 @@
 				data : JSON.stringify(param),
 				success : function(data) {
 					if (data && data.code == '10000') {
-						window.location.href = '${ctx}/index';
+						window.location.href = '${ctx}';
 					} else {
 						alert(data.message);
 					}

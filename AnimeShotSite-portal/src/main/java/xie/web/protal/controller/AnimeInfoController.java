@@ -15,7 +15,6 @@ import org.springside.modules.web.Servlets;
 
 import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
-import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotInfoService;
 import xie.base.controller.BaseFunctionController;
@@ -30,8 +29,6 @@ public class AnimeInfoController extends BaseFunctionController<AnimeInfo, Strin
 	AnimeInfoDao animeInfoDao;
 	@Autowired
 	AnimeInfoService animeInfoService;
-	@Autowired
-	private AnimeEpisodeService animeEpisodeService;
 	@Autowired
 	ShotInfoService shotInfoService;
 
@@ -48,6 +45,7 @@ public class AnimeInfoController extends BaseFunctionController<AnimeInfo, Strin
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		// 增加删除过滤
 		searchParams.put("EQ_deleteFlag", Constants.FLAG_STR_NO);
+		searchParams.put("EQ_showFlg", Constants.FLAG_STR_YES);
 		sortType = BaseEntity.COLUMN_CREATE_DATE;
 		Page<AnimeInfo> animeInfoPage = animeInfoService.searchByPage(searchParams, pageNumber, Constants.DEFAULT_PAGE_SIZE, sortType, AnimeInfo.class);
 

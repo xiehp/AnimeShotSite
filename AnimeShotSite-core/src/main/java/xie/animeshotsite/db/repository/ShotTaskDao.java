@@ -15,4 +15,7 @@ public interface ShotTaskDao extends BaseRepository<ShotTask, String> {
 
 	@Query(value = " from ShotTask where id <> ?1 and taskResult = ?2 and scheduleTime is null")
 	List<ShotTask> findByTaskResultAndScheduleTimeIsNull(String randomId, Integer taskResult);
+
+	@Query(value = " from ShotTask where taskType = ?1 and taskResult = ?2 and (scheduleTime < ?3 or scheduleTime is null) order by scheduleTime")
+	List<ShotTask> findNeedRunTask(String taskType, Integer taskResult, Date nowDate);
 }

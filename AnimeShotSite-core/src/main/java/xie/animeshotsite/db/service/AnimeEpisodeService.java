@@ -57,11 +57,17 @@ public class AnimeEpisodeService extends BaseService<AnimeEpisode, String> {
 	 * @return
 	 */
 	public List<AnimeEpisode> getNewestAnimeEpisodeList(int listCount) {
+		// 检索条件
 		Map<String, Object> searchParams = new HashMap<>();
+		searchParams.put("EQ_showFlg", Constants.FLAG_INT_YES);
+
+		// 排序条件
 		List<Order> orders = new ArrayList<>();
 		Order order = new Order(Direction.DESC, ShotInfo.COLUMN_CREATE_DATE);
 		orders.add(order);
 		PageRequest pageRequest = PageRequestUtil.buildPageRequest(1, listCount, orders);
+
+		// 检索
 		Page<AnimeEpisode> page = searchAllShots(searchParams, pageRequest, AnimeEpisode.class);
 		List<AnimeEpisode> list = page.getContent();
 		for (AnimeEpisode animeEpisode : list) {
@@ -117,7 +123,8 @@ public class AnimeEpisodeService extends BaseService<AnimeEpisode, String> {
 
 		// 删除所有现存剧集数据
 		for (AnimeEpisode animeEpisode : list) {
-			delete(animeEpisode);
+			// delete(animeEpisode);
+			// TODO 
 		}
 
 		return firstId;

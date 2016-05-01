@@ -113,7 +113,11 @@ $.datepicker._gotoToday = function(id) {
 }
 
 function backToLogin(){
-	window.location.href=baseUrl + '/index';
+	window.location.href=baseUrl;
+}
+
+function backToIndex(){
+	window.location.href=baseUrl;
 }
 </script>
 <!-- 提示层 -->

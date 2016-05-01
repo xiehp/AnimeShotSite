@@ -57,5 +57,5 @@
 </div>
 
 <div>
-	<a class="btn btn-primary" href="${ctx}/index">返回首页</a>
+	<a class="btn btn-primary" href="${ctx}">返回首页</a>
 </div>

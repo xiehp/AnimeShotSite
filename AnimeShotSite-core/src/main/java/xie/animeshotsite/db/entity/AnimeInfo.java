@@ -80,7 +80,10 @@ public class AnimeInfo extends BaseEntity {
 	private String summary;
 
 	/** 排序 */
-	private String sort;
+	private Integer sort;
+
+	/** 是否显示 */
+	private Integer showFlg;
 
 	private Integer status;
 
@@ -196,12 +199,20 @@ public class AnimeInfo extends BaseEntity {
 		this.summary = summary;
 	}
 
-	public String getSort() {
+	public Integer getSort() {
 		return sort;
 	}
 
-	public void setSort(String sort) {
+	public void setSort(Integer sort) {
 		this.sort = sort;
+	}
+
+	public Integer getShowFlg() {
+		return showFlg;
+	}
+
+	public void setShowFlg(Integer showFlg) {
+		this.showFlg = showFlg;
 	}
 
 	public Integer getStatus() {

@@ -17,7 +17,7 @@ import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.timer.a2i.listener.SaveImageListener;
-import xie.animeshotsite.timer.base.XTask;
+import xie.animeshotsite.timer.base.XBaseTask;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.common.number.XNumberUtils;
 import xie.v2i.app.Video2Image;
@@ -26,7 +26,7 @@ import xie.v2i.config.Video2ImageProperties;
 @Configuration
 @ComponentScan("xie")
 @Component
-public class ShotSpecifyTask implements XTask {
+public class ShotSpecifyTask extends XBaseTask {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired

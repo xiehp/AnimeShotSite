@@ -43,6 +43,7 @@ public class AnimeEpisodeController extends BaseFunctionController<AnimeEpisode,
 		// 增加删除过滤
 		searchParams.put("EQ_animeInfoId", animeInfoId);
 		searchParams.put("EQ_deleteFlag", Constants.FLAG_INT_NO + "");
+		searchParams.put("EQ_showFlg", Constants.FLAG_STR_YES);
 
 		AnimeInfo animeInfo = animeInfoService.findOne(animeInfoId);
 		Page<AnimeEpisode> animeEpisodePage = animeEpisodeService.searchByPage(searchParams, pageNumber, Constants.DEFAULT_PAGE_SIZE, sortType, AnimeEpisode.class);

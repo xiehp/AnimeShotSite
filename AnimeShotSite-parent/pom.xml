@@ -108,13 +108,18 @@
 			</dependency>
 			<dependency>
 				<groupId>xie</groupId>
+				<artifactId>xcommon</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>xie</groupId>
 				<artifactId>tietuku-api</artifactId>
 				<version>0.0.1</version>
 			</dependency>
 			<dependency>
 				<groupId>xie</groupId>
-				<artifactId>xcommon</artifactId>
-				<version>1.0.0</version>
+				<artifactId>XSubtitle</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 
 			<!-- junit-io -->

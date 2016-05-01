@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
+import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotTaskService;
+import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseManagerController;
 import xie.base.service.BaseService;
+import xie.common.string.XStringUtils;
 import xie.common.utils.SpringUtils;
 import xie.common.web.util.RequestUtil;
 import xie.common.web.util.WebConstants;
@@ -32,10 +35,12 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 	@Autowired
 	private AnimeEpisodeService animeEpisodeService;
 	@Autowired
+	private AnimeInfoService animeInfoService;
+	@Autowired
 	private ShotTaskService shotTaskService;
 	@Autowired
 	private SpringUtils springUtils;
-	
+
 	@Override
 	protected BaseService<AnimeEpisode, String> getBaseService() {
 		return animeEpisodeService;
@@ -63,12 +68,48 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 		AnimeEpisode animeEpisodeInfo = animeEpisodeService.findOne(animeEpisodeId);
 		request.setAttribute("animeEpisodeInfo", animeEpisodeInfo);
 
+		AnimeInfo animeInfo = animeInfoService.findOne(animeEpisodeInfo.getAnimeInfoId());
+		request.setAttribute("animeInfo", animeInfo);
+
 		return getJspFilePath("new");
 	}
 
 	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/new")
 	public String newAnime(ServletRequest request) throws Exception {
+		if (request.getAttribute("animeEpisodeInfo") == null) {
+
+			AnimeEpisode animeEpisodeInfo = new AnimeEpisode();
+
+			animeEpisodeInfo.setAnimeInfoId(request.getParameter("animeInfoId"));
+			animeEpisodeInfo.setDivisionName("第[[0]]集");
+			animeEpisodeInfo.setProcessAction(0);
+			animeEpisodeInfo.setShotStatus(0);
+			animeEpisodeInfo.setStatus(0);
+			animeEpisodeInfo.setType(0);
+			animeEpisodeInfo.setLocalRootPath(FilePathUtils.getRootDefault().getAbsolutePath());
+			animeEpisodeInfo.setShotLocalRootPath(FilePathUtils.getRootDefault().getAbsolutePath());
+			animeEpisodeInfo.setShowFlg(0);
+			animeEpisodeInfo.setDeleteFlag(0);
+
+			String animeInfoId = request.getParameter("animeInfoId");
+			if (XStringUtils.isNotBlank(animeInfoId)) {
+				AnimeInfo animeInfo = animeInfoService.findOne(animeInfoId);
+				request.setAttribute("animeInfo", animeInfo);
+
+				if (XStringUtils.isNotBlank(animeInfo.getLocalRootPath())) {
+					animeEpisodeInfo.setLocalRootPath(animeInfo.getLocalRootPath());
+					animeEpisodeInfo.setShotLocalRootPath(animeInfo.getLocalRootPath());
+				}
+
+				if (XStringUtils.isNotBlank(animeInfo.getLocalDetailPath())) {
+					animeEpisodeInfo.setLocalDetailPath(animeInfo.getLocalDetailPath());
+					animeEpisodeInfo.setShotLocalDetailPath(animeInfo.getLocalDetailPath());
+				}
+			}
+
+			request.setAttribute("animeEpisodeInfo", animeEpisodeInfo);
+		}
 
 		return getJspFilePath("new");
 	}
@@ -129,11 +170,6 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 
 		System.out.println(springUtils);
 		System.out.println(animeEpisodeService);
-		// System.out.println((AnimeEpisodeService)springUtils.getBean(AnimeEpisodeService.class));
-
-		// System.out.println(SpringUtil.getBean(SpringUtils.class));
-		// System.out.println((AnimeEpisodeService)SpringUtil.getBean(AnimeEpisodeService.class));
-		//
 
 		if ("1".equals(taskType)) {
 			shotTaskService.addRunNormalEpisideTimeTask(id, scheduleTime, forceUpload, startTime, endTime, timeInterval);

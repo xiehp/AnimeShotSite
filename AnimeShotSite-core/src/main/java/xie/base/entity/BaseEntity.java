@@ -1,16 +1,11 @@
 package xie.base.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -19,7 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-public abstract class BaseEntity implements Serializable {
+public abstract class BaseEntity extends IdEntity {
 
 	private static final long serialVersionUID = -4913519870385296330L;
 
@@ -30,11 +25,11 @@ public abstract class BaseEntity implements Serializable {
 	public static final String COLUMN_DELETE_FLAG = "deleteFlag";
 	public static final String COLUMN_VERSION = "version";
 
-	@Id
-	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
-	@Column(name = "ID", unique = true, nullable = false, length = 32)
-	private String id;
+//	@Id
+//	@GeneratedValue(generator = "system-uuid")
+//	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+//	@Column(name = "ID", unique = true, nullable = false, length = 32)
+//	private String id;
 
 	@CreatedBy
 	private String createBy;
@@ -49,13 +44,13 @@ public abstract class BaseEntity implements Serializable {
 
 	private Integer deleteFlag = 0;
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
+//	public String getId() {
+//		return id;
+//	}
+//
+//	public void setId(String id) {
+//		this.id = id;
+//	}
 
 	public Date getCreateDate() {
 		return createDate;

@@ -37,7 +37,10 @@ public class ShotInfo extends BaseTietukuUrl {
 	@Transient
 	private AnimeEpisode animeEpisode;
 
-	/** 时间戳 */
+	/** 原始视频时间戳 */
+	private Long originalTime;
+
+	/** 预计获取的时间戳 */
 	private Long timeStamp;
 
 	/** 时间偏移，新生成的图片可能和第一次片源不一样 */
@@ -100,6 +103,14 @@ public class ShotInfo extends BaseTietukuUrl {
 
 	public void setAnimeEpisode(AnimeEpisode animeEpisode) {
 		this.animeEpisode = animeEpisode;
+	}
+
+	public Long getOriginalTime() {
+		return originalTime;
+	}
+
+	public void setOriginalTime(Long originalTime) {
+		this.originalTime = originalTime;
 	}
 
 	public Long getTimeStamp() {

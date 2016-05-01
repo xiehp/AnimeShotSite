@@ -10,20 +10,26 @@
 
 <script>
 	function doSubmit(newFlg) {
-		if (newFlg) {
-			$("input[name=id]").val("");
+		if (confirm("是否继续？")) {
+			if (newFlg) {
+				$("input[name=id]").val("");
+			}
+			$("#mainForm").attr("action", "${ctx}${MANAGE_URL_STR}/animeEpisode/submit");
+			$("#mainForm").submit();
 		}
-		$("#mainForm").attr("action", "${ctx}/${MANAGE_URL_STR}/animeEpisode/submit");
-		$("#mainForm").submit();
 	}
 	function doSubmitMuti() {
-		$("#mainForm").attr("action", "${ctx}/${MANAGE_URL_STR}/animeEpisode/submitMuti");
-		$("#mainForm").submit();
+		if (confirm("是否继续？")) {
+			$("#mainForm").attr("action", "${ctx}${MANAGE_URL_STR}/animeEpisode/submitMuti");
+			$("#mainForm").submit();
+		}
 	}
 
 	function doShotTask(type) {
-		$("#mainForm").attr("action", "${ctx}/${MANAGE_URL_STR}/animeEpisode/addShotTask");
-		$("#mainForm").submit();
+		if (confirm("是否继续？")) {
+			$("#mainForm").attr("action", "${ctx}${MANAGE_URL_STR}/animeEpisode/addShotTask");
+			$("#mainForm").submit();
+		}
 	}
 
 	function updateOneColumn(columnName) {
@@ -31,7 +37,7 @@
 		param.id = "${animeEpisodeInfo.id}";
 		param.columnName = columnName;
 		param.columnValue = $("#mainForm").find("[name=" + columnName + "]").val();
-		$.homePost("/${MANAGE_URL_STR}/animeEpisode/updateOneColumn", param, function(data) {
+		$.homePost("${MANAGE_URL_STR}/animeEpisode/updateOneColumn", param, function(data) {
 			if (data.success) {
 				$.showMessageModal(data.message);
 			} else {
@@ -55,7 +61,31 @@
 			$("input[name=summary]").val(summaryEditor.getData());
 			document.getElementById('summaryCount').innerHTML = summaryEditor.getData().length;
 		});
+		
+		if ($('#fullName').val() == null || $('#fullName').val() == "") {
+			nameChanged();
+		}
 	});
+
+	var seriesChangedFlg = false;
+	function nameChanged() {
+		// 全称
+		$('#fullName').val($('#animeFullName').val() + ' ' + $('#divisionName').val());
+
+		// 改变本地相对路径
+		//var nowDate = new Date();
+		//$('#localDetailPath').val("\\" + nowDate.getFullYear() + "\\" + $('#name').val() + "\\" + "第一季");
+
+		// 该变系列 
+		//if (!seriesChangedFlg) {
+		//	$('#series').val($('#divisionName').val());
+		//}
+
+	}
+
+	function seriesChanged() {
+		seriesChangedFlg = true;
+	}
 </script>
 
 <script id="updateOneColumnButtonTemplate" type="text/x-jsrender">
@@ -71,7 +101,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">ID</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="id" value="${animeEpisodeInfo.id}" />
+			<input class="form-control" id="id" name="id" value="${animeEpisodeInfo.id}" />
 		</div>
 	</div>
 	<div class="form-group">
@@ -83,13 +113,13 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">名称</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="name" value="${animeEpisodeInfo.name}" />
+			<input class="form-control" id="name" name="name" value="${animeEpisodeInfo.name}" " />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">第几集名称</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="divisionName" value="${animeEpisodeInfo.divisionName}" />
+			<input class="form-control" id="divisionName" name="divisionName" value="${animeEpisodeInfo.divisionName}" onchange="nameChanged();" />
 		</div>
 	</div>
 	<div class="form-group">
@@ -99,9 +129,15 @@
 		</div>
 	</div>
 	<div class="form-group">
+		<label class="col-sm-2 control-label">动画全称</label>
+		<div class="col-sm-5">
+			<input readonly="readonly" class="form-control" id="animeFullName" name="animeFullName" value="${animeInfo.fullName}" />
+		</div>
+	</div>
+	<div class="form-group">
 		<label class="col-sm-2 control-label">全称</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="fullName" value="${animeEpisodeInfo.fullName}" />
+			<input class="form-control" id="fullName" name="fullName" value="${animeEpisodeInfo.fullName}" />
 		</div>
 	</div>
 	<div class="form-group">
@@ -109,8 +145,7 @@
 		<div class="col-sm-9">
 			<textarea id="summaryEditor"><c:out value="${animeEpisodeInfo.summary}"></c:out></textarea>
 		</div>
-		<div id="summaryCount" class="col-sm-1">
-		</div>
+		<div id="summaryCount" class="col-sm-1"></div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">简介</label>
@@ -145,13 +180,13 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">本地所在根路径</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="localRootPath" value="${animeEpisodeInfo.localRootPath}" />
+			<input class="form-control" id="localRootPath" name="localRootPath" value="${animeEpisodeInfo.localRootPath}" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">本地所在相对路径</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="localDetailPath" value="${animeEpisodeInfo.localDetailPath}" />
+			<input class="form-control" id="localDetailPath" name="localDetailPath" value="${animeEpisodeInfo.localDetailPath}" />
 		</div>
 	</div>
 	<div class="form-group">
@@ -163,19 +198,19 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">截图的本地根路径</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="shotLocalRootPath" value="${animeEpisodeInfo.shotLocalRootPath}" />
+			<input class="form-control" id="shotLocalRootPath" name="shotLocalRootPath" value="${animeEpisodeInfo.shotLocalRootPath}" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">截图的本地相对路径</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="shotLocalDetailPath" value="${animeEpisodeInfo.shotLocalDetailPath}" />
+			<input class="form-control" id="shotLocalDetailPath" name="shotLocalDetailPath" value="${animeEpisodeInfo.shotLocalDetailPath}" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">序号，每个剧集唯一</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="number" value='${empty animeEpisodeInfo.number ? "[[0]]" : animeEpisodeInfo.number}' />
+			<input class="form-control" id="number" name="number" value='${empty animeEpisodeInfo.number ? "[[0]]" : animeEpisodeInfo.number}' />
 		</div>
 	</div>
 	<div class="form-group">
@@ -193,13 +228,19 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">sort</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="sort" value="${animeEpisodeInfo.sort}" />
+			<input class="form-control" id="sort" name="sort" value="${empty animeEpisodeInfo.sort ? " [[0]]" : animeEpisodeInfo.sort}" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">status</label>
 		<div class="col-sm-5">
 			<input class="form-control" name="status" value="${animeEpisodeInfo.status}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">showFlg</label>
+		<div class="col-sm-5">
+			<input class="form-control" name="showFlg" value="${animeEpisodeInfo.showFlg}" />
 		</div>
 	</div>
 	<div class="form-group">
@@ -226,7 +267,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">位数扩展</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="extention" value="${extention}" />
+			<input class="form-control" name="extention" value="${empty extention ? 2 : extention}" />
 		</div>
 	</div>
 
@@ -271,7 +312,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">timeInterval</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="timeInterval" value="${timeInterval}" />
+			<input class="form-control" name="timeInterval" value="${empty timeInterval ? 5000 : timeInterval}" />
 		</div>
 	</div>
 	<div class="form-group">
@@ -293,11 +334,11 @@
 
 </form>
 
-<a href="${ctx}/${MANAGE_URL_STR}/anime/view/${animeEpisodeInfo.animeInfoId}">返回上层</a>
+<a href="${ctx}${MANAGE_URL_STR}/anime/view/${animeEpisodeInfo.animeInfoId}">返回上层</a>
 
 <br />
 <br />
-<a href="${ctx}/${MANAGE_URL_STR}/shot/list/${animeEpisodeInfo.id}">截图一览</a>
+<a href="${ctx}${MANAGE_URL_STR}/shot/list/${animeEpisodeInfo.id}">截图一览</a>
 
 <br />
 <br />

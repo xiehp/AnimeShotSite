@@ -5,13 +5,13 @@
 	<nav class="navbar navbar-inverse" role="navigation">
 
 		<div class="navbar-header">
-			<a class="navbar-brand" href="${ctx}/index">动画截图网</a>
+			<a class="navbar-brand" href="${ctx}/">动画截图网</a>
 		</div>
 
 		<div>
 			<ul class="nav navbar-nav">
 				<li class="active">
-					<a href="${ctx}/index">首页</a>
+					<a href="${ctx}/">首页</a>
 				</li>
 
 				<li>
@@ -21,6 +21,23 @@
 				<li>
 					<a href="${ctx}/shot/random">随便看</a>
 				</li>
+
+				<c:if test="${IS_MASTER}">
+					<li>
+						<a href="javascript:void(0);" onclick="clearCache();">清除缓存</a>
+					</li>
+					<script>
+						function clearCache() {
+							if (confirm("是否清除缓存")) {
+								$.homePost("/cleanCache", null, function(data) {
+									if (data && data.size) {
+										alert("清除缓存个数:" + data.size);
+									}
+								});
+							}
+						}
+					</script>
+				</c:if>
 
 				<c:if test="${! empty aaa  }">
 					<li class="dropdown">

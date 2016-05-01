@@ -8,20 +8,6 @@
 
 
 <script type="text/javascript">
-	function updateOneColumn(columnName) {
-		var param = {};
-		param.id = "${animeInfo.id}";
-		param.columnName = columnName;
-		param.columnValue = $("#mainForm").find("input[name=" + columnName + "]").val();
-		$.homePost("/${MANAGE_URL_STR}/anime/updateOneColumn", param, function(data) {
-			if (data.success) {
-				$.showMessageModal(data.message);
-			} else {
-				$.showMessageModal(data.message);
-			}
-		});
-	}
-
 	$(function() {
 		$("#mainForm").find("input[name]").each(function() {
 			var params = {};
@@ -38,17 +24,50 @@
 			document.getElementById('summaryCount').innerHTML = summaryEditor.getData().length;
 		});
 	});
+
+	function updateOneColumn(columnName) {
+		var param = {};
+		param.id = "${animeInfo.id}";
+		param.columnName = columnName;
+		param.columnValue = $("#mainForm").find("input[name=" + columnName + "]").val();
+		$.homePost("${MANAGE_URL_STR}/anime/updateOneColumn", param, function(data) {
+			if (data.success) {
+				$.showMessageModal(data.message);
+			} else {
+				$.showMessageModal(data.message);
+			}
+		});
+	}
+
+	var seriesChangedFlg = false;
+	function nameChanged() {
+		// 全称
+		$('#fullName').val($('#name').val() + ' ' + $('#divisionName').val());
+
+		// 改变本地相对路径
+		var nowDate = new Date();
+		$('#localDetailPath').val("\\" + nowDate.getFullYear() + "\\" + $('#name').val() + "\\" + "第一季");
+
+		// 该变系列 
+		if (!seriesChangedFlg) {
+			$('#series').val($('#name').val());
+		}
+	}
+
+	function seriesChanged() {
+		seriesChangedFlg = true;
+	}
 </script>
 
 <script id="updateOneColumnButtonTemplate" type="text/x-jsrender">
-<div class="col-sm-1">
+<div class="col-md-1">
 	<a class="btn btn-primary" value="更新" onclick="updateOneColumn('{{>name}}');">更新</a>
 </div>
 </script>
 
 <script src="//cdn.ckeditor.com/4.5.8/full/ckeditor.js"></script>
 
-<form id="mainForm" class="form-horizontal" action="${ctx}/${MANAGE_URL_STR}/anime/submit" method="post">
+<form id="mainForm" class="form-horizontal" action="${ctx}${MANAGE_URL_STR}/anime/submit" method="post">
 	<div class="form-group">
 		<label class="col-sm-2 control-label">ID</label>
 		<div class="col-sm-5">
@@ -58,7 +77,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">名称</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="name" value="${animeInfo.name}" />
+			<input class="form-control" id="name" name="name" value="${animeInfo.name}" onchange="nameChanged();" />
 		</div>
 	</div>
 	<div class="form-group">
@@ -70,13 +89,13 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">第几季名称</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="divisionName" value="${animeInfo.divisionName}" />
+			<input class="form-control" id="divisionName" name="divisionName" value="${animeInfo.divisionName}" onchange="nameChanged();" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">全称</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="fullName" value="${animeInfo.fullName}" />
+			<input class="form-control" id="fullName" name="fullName" value="${animeInfo.fullName}" />
 		</div>
 	</div>
 	<div class="form-group">
@@ -84,8 +103,7 @@
 		<div class="col-sm-9">
 			<textarea id="summaryEditor"><c:out value="${animeInfo.summary}"></c:out></textarea>
 		</div>
-		<div id="summaryCount" class="col-sm-1">
-		</div>
+		<div id="summaryCount" class="col-sm-1"></div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">简介</label>
@@ -108,7 +126,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">系列</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="series" value="${animeInfo.series}" />
+			<input class="form-control" id="series" name="series" value="${animeInfo.series}" onclick="seriesChanged();" />
 		</div>
 	</div>
 	<div class="form-group">
@@ -132,7 +150,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">本地所在相对路径</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="localDetailPath" value="${animeInfo.localDetailPath}" />
+			<input class="form-control" id="localDetailPath" name="localDetailPath" value="${animeInfo.localDetailPath}" />
 		</div>
 	</div>
 	<div class="form-group">
@@ -160,6 +178,12 @@
 		</div>
 	</div>
 	<div class="form-group">
+		<label class="col-sm-2 control-label">showFlg</label>
+		<div class="col-sm-5">
+			<input class="form-control" name="showFlg" value="${animeInfo.showFlg}" />
+		</div>
+	</div>
+	<div class="form-group">
 		<label class="col-sm-2 control-label">deleteFlag</label>
 		<div class="col-sm-5">
 			<input class="form-control" name="deleteFlag" value="${animeInfo.deleteFlag}" />
@@ -168,7 +192,7 @@
 
 	<input type="submit" />
 
-	<a href="${ctx}/${MANAGE_URL_STR}/anime/list">返回上层</a>
+	<a href="${ctx}${MANAGE_URL_STR}/anime/list">返回上层</a>
 </form>
 
 <div>
@@ -177,7 +201,7 @@
 			<div class="row">
 				<c:forEach items="${ animeEpisodeList }" var="animeEpisode">
 					<div class="col-lg-3 col-sm-4 col-xs-6 thumbnail">
-						<a href="${ctx}/${MANAGE_URL_STR}/animeEpisode/view/${animeEpisode.id}">
+						<a href="${ctx}${MANAGE_URL_STR}/animeEpisode/view/${animeEpisode.id}">
 							<img data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy">
 							<div style="margin-top: 5px;">
 								<c:out value="${animeEpisode.divisionName}" />
@@ -191,5 +215,27 @@
 </div>
 
 <div>
-	<a href="${ctx}/${MANAGE_URL_STR}/animeEpisode/new"> 增加剧集信息 </a>
+	<a href="${ctx}${MANAGE_URL_STR}/animeEpisode/new?animeInfoId=${animeInfo.id}"> 增加剧集信息 </a>
+</div>
+
+
+<div>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="row">
+				<table>
+					<c:forEach items="${ subtitleInfoList }" var="subtitleInfo">
+						<tr>
+							<td style="font-size: 10px;padding: 3px;"><a href="${ctx}${MANAGE_URL_STR}/subtitle/view/${subtitleInfo.id}">${subtitleInfo.id}</a></td>
+							<td style="font-size: 10px;padding: 3px;">${subtitleInfo.localFileName}</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div>
+	<a href="${ctx}${MANAGE_URL_STR}/subtitle/new?animeInfoId=${animeInfo.id}"> 增加字幕信息 </a>
 </div>

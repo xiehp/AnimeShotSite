@@ -123,6 +123,11 @@
 		$('#messageModal .modal-body').text(message);
 	}
 
+	$.showConfirmModal = function(message) {
+		$('#messageModal').modal('show');
+		$('#messageModal .modal-body').text(message);
+	}
+
 	/** 将值从json填充到对应的form */
 	$.homeLoadJsonToForm = function(containerId, jsonObj) {
 		var key, value, tagName, type, arr;

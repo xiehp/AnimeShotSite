@@ -14,11 +14,13 @@ public abstract class IdEntity implements Serializable {
 
 	private static final long serialVersionUID = 4560753499836400652L;
 
+	public static final String COLUMN_ID = "id";
+
 	@Id
 	@GeneratedValue(generator = "system-uuid")
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	@Column(name = "ID", unique = true, nullable = false, length = 32)
-	protected String id;
+	private String id;
 
 	public String getId() {
 		return id;

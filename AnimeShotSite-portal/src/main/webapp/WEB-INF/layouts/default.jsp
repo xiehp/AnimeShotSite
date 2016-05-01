@@ -14,7 +14,21 @@
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 <link rel="shortcut icon" type="image/x-icon" href="${ ctx }/static/img/logo.png" media="screen" />
-<!-- BEGIN GLOBAL MANDATORY STYLES -->
+
+<!-- 初始化所有参数 -->
+<script>
+	var global = {};
+	var baseUrl;
+	if (global.ctx == null) {
+		global.ctx = '${ctx}';
+		global.baseUrl = '${ctx}';
+		baseUrl = '${ctx}';
+	}
+	var IS_MASTER = false;
+	<c:if test="${IS_MASTER}">
+	IS_MASTER = "${IS_MASTER}";
+	</c:if>
+</script>
 
 <!-- jquery -->
 <c:set var="useBaiduStaticUrlFlg" value="true" />
@@ -36,16 +50,6 @@
 <link href="${ ctx }/static/media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
 -->
 
-<script>
-	var global = {};
-	var baseUrl;
-	if (global.ctx == null) {
-		global.ctx = '${ctx}';
-		global.baseUrl = '${ctx}';
-		baseUrl = '${ctx}';
-	}
-</script>
-
 <!-- local js and css -->
 <script src="${ ctx }/static/js/template/jsrender.min.js" type="text/javascript"></script>
 
@@ -53,15 +57,21 @@
 <link href="${ ctx }/static/css/style.css" rel="stylesheet" type="text/css" />
 <script src="${ ctx }/static/js/homeInit.js" type="text/javascript"></script>
 <script src="${ ctx }/static/js/homeBase.js" type="text/javascript"></script>
+<script src="${ ctx }/static/js/homeBussness.js" type="text/javascript"></script>
 
 
-<!-- 百度 -->
+<!-- 收录统计 -->
 <c:if test="${ canBaiduRecord eq true }">
 	<!-- 百度收录推送 -->
 	<script>
 		(function() {
 			var bp = document.createElement('script');
-			bp.src = '//push.zhanzhang.baidu.com/push.js';
+			var curProtocol = window.location.protocol.split(':')[0];
+			if (curProtocol === 'https') {
+				bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+			} else {
+				bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+			}
 			var s = document.getElementsByTagName("script")[0];
 			s.parentNode.insertBefore(bp, s);
 		})();
@@ -77,29 +87,26 @@
 			s.parentNode.insertBefore(hm, s);
 		})();
 	</script>
+
+	<!-- 360收录推送 -->
+	<script>
+		(function() {
+			var src = document.location.protocol + '//js.passport.qihucdn.com/11.0.1.js?a1d5ba23049ed1de4d6a6aa4db2557c6';
+			document.write('<script src="' + src + '" id="sozz"><\/script>');
+		})();
+	</script>
 </c:if>
 
-<!-- END CORE PLUGINS -->
-<!-- END JAVASCRIPTS -->
-
-<!-- END GLOBAL MANDATORY STYLES -->
-<decorator:head />
 <style type="text/css">
 .page-content {
-	width: 1024px;
+	max-width: 1280px;
 }
 </style>
-<script src="//hm.baidu.com/hm.js?ce02602c958d6f6018b4a2b08090d822"></script>
-<script>
-	var _hmt = _hmt || [];
-	(function() {
-		var hm = document.createElement("script");
-		hm.src = "//hm.baidu.com/hm.js?ce02602c958d6f6018b4a2b08090d822";
-		var s = document.getElementsByTagName("script")[0];
-		s.parentNode.insertBefore(hm, s);
-	})();
-</script>
+
+<decorator:head />
+
 </head>
+
 <body class="<shiro:principal property="showSidebar"></shiro:principal>">
 	<%@ include file="/WEB-INF/layouts/header.jsp"%>
 	<div class="page-container row-fluid" align="center">
@@ -109,4 +116,5 @@
 	</div>
 	<%@ include file="/WEB-INF/layouts/footer.jsp"%>
 </body>
+
 </html>

@@ -4,7 +4,7 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<title>动画截图网 首页</title>
+<title>动画截图网</title>
 
 <div class="container-fluid">
 	<div class="row-fluid">
@@ -48,7 +48,7 @@
 							</div>
 							<c:out value="${shot.animeEpisode.divisionName}" />
 							<br>
-							<div style="margin-top: 5px;">${shot.formatedMinSec}<span style="color: lightgray;">:${shot.formatedMicroSec}</span>
+							<div style="margin-top: 5px;">${shot.formatedMinSec}<span style="color: lightgray;">.${shot.formatedMicroSec}</span>
 							</div>
 						</a>
 					</div>
@@ -70,7 +70,7 @@
 							</div>
 							<c:out value="${shot.animeEpisode.divisionName}" />
 							<br>
-							<div style="margin-top: 5px;">${shot.formatedMinSec}<span style="color: lightgray;">:${shot.formatedMicroSec}</span>
+							<div style="margin-top: 5px;">${shot.formatedMinSec}<span style="color: lightgray;">.${shot.formatedMicroSec}</span>
 							</div>
 						</a>
 					</div>
@@ -92,7 +92,7 @@
 							</div>
 							<c:out value="${shot.animeEpisode.divisionName}" />
 							<br>
-							<div style="margin-top: 5px;">${shot.formatedMinSec}<span style="color: lightgray;">:${shot.formatedMicroSec}</span>
+							<div style="margin-top: 5px;">${shot.formatedMinSec}<span style="color: lightgray;">.${shot.formatedMicroSec}</span>
 							</div>
 						</a>
 					</div>

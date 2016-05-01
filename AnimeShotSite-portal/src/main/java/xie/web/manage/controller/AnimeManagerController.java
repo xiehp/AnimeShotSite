@@ -14,16 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
+import xie.animeshotsite.db.entity.SubtitleInfo;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ImageUrlService;
+import xie.animeshotsite.db.service.SubtitleInfoService;
+import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseManagerController;
 import xie.base.service.BaseService;
 import xie.common.web.util.WebConstants;
 
 @Controller
 @RequestMapping(value = WebConstants.MANAGE_URL_STR + "/anime")
-public class AnimeController extends BaseManagerController<AnimeInfo, String> {
+public class AnimeManagerController extends BaseManagerController<AnimeInfo, String> {
 
 	@Autowired
 	private AnimeInfoService animeInfoService;
@@ -32,8 +35,11 @@ public class AnimeController extends BaseManagerController<AnimeInfo, String> {
 	private AnimeEpisodeService animeEpisodeService;
 
 	@Autowired
+	private SubtitleInfoService subtitleInfoService;
+
+	@Autowired
 	private ImageUrlService imageUrlService;
-	
+
 	@Override
 	protected BaseService<AnimeInfo, String> getBaseService() {
 		return animeInfoService;
@@ -65,12 +71,30 @@ public class AnimeController extends BaseManagerController<AnimeInfo, String> {
 		List<AnimeEpisode> animeEpisodeList = animeEpisodeService.findByAnimeInfoId(animeInfoId);
 		request.setAttribute("animeEpisodeList", animeEpisodeList);
 
+		// 获得字幕 列表
+		List<SubtitleInfo> subtitleInfoList = subtitleInfoService.findByAnimeInfoId(animeInfoId);
+		request.setAttribute("subtitleInfoList", subtitleInfoList);
+
 		return getJspFilePath("new");
 	}
 
 	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/new")
 	public String newAnime(ServletRequest request) throws Exception {
+		if (request.getAttribute("animeInfo") == null) {
+			AnimeInfo animeInfo = new AnimeInfo();
+
+			animeInfo.setProcessAction(0);
+			animeInfo.setShotStatus(0);
+			animeInfo.setStatus(0);
+			animeInfo.setType(0);
+			animeInfo.setLocalRootPath(FilePathUtils.getRootDefault().getAbsolutePath());
+			animeInfo.setSort(1);
+			animeInfo.setShowFlg(1);
+			animeInfo.setDeleteFlag(0);
+
+			request.setAttribute("animeInfo", animeInfo);
+		}
 
 		return getJspFilePath("new");
 	}

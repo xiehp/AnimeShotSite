@@ -22,27 +22,94 @@ CHANGE COLUMN `NAME` `NAME` VARCHAR(50) NULL COMMENT '剧集名称' ,
 CHANGE COLUMN `TITLE` `TITLE` VARCHAR(50) NULL DEFAULT NULL COMMENT '剧集标题' ,
 ADD COLUMN `FULL_NAME` VARCHAR(100) NULL COMMENT '剧集全称=动画全称+空格+DIVISION_NAME' AFTER `TITLE`;
 
-
------------------------------以上为已更新sql---------------------------------------
------------------------------以上为已更新sql---------------------------------------
------------------------------以上为已更新sql---------------------------------------
------------------------------以上为已更新sql---------------------------------------
------------------------------以上为已更新sql---------------------------------------
------------------------------以下为未更新sql---------------------------------------
------------------------------以下为未更新sql---------------------------------------
------------------------------以下为未更新sql---------------------------------------
------------------------------以下为未更新sql---------------------------------------
------------------------------以下为未更新sql---------------------------------------
-
-
-
-ALTER TABLE `animeshottest`.`anime_episode` 
+ALTER TABLE `anime_episode` 
 CHANGE COLUMN `SHOT_STATUS` `SHOT_STATUS` INT(1) NULL DEFAULT '0' COMMENT '截图状态 0：未截图 1：部分截图 2：已截图' ,
 CHANGE COLUMN `PROCESS_ACTION` `PROCESS_ACTION` INT(1) NULL DEFAULT '0' COMMENT '处理动作 0：不做任何事情 1：完整截图 2：只截缺少部分' ;
 
+ALTER TABLE `anime_episode` 
+ADD COLUMN `SHOW_FLG` INT(1) NULL DEFAULT '1' COMMENT '显示flg' AFTER `SORT`;
+ALTER TABLE `anime_info` 
+ADD COLUMN `SHOW_FLG` INT(1) NULL DEFAULT '1' COMMENT '显示flg' AFTER `SORT`;
+
+
+CREATE TABLE `subtitle_info` (
+  `ID` VARCHAR(32) NOT NULL,
+  `STATUS` INT(1) NULL,
+  `CREATE_BY` VARCHAR(32) NULL,
+  `CREATE_DATE` TIMESTAMP NULL,
+  `UPDATE_BY` VARCHAR(32) NULL,
+  `UPDATE_DATE` TIMESTAMP NULL,
+  `VERSION` INT(11) NULL,
+  `DELETE_FLAG` INT(1) NULL,
+  PRIMARY KEY (`ID`))
+COMMENT = '字幕信息表';
+
+ALTER TABLE `subtitle_info` 
+ADD COLUMN `ANIME_INFO_ID` VARCHAR(32) NOT NULL COMMENT '动画信息的id' AFTER `DELETE_FLAG`,
+ADD COLUMN `ANIME_EPISODE_ID` VARCHAR(32) NOT NULL COMMENT '动画剧集ID' AFTER `ANIME_INFO_ID`,
+ADD COLUMN `LANGUAGE` VARCHAR(45) NULL COMMENT '语言' AFTER `ANIME_EPISODE_ID`;
+
+ALTER TABLE `subtitle_info` 
+ADD COLUMN `FILE_TYPE` VARCHAR(45) NULL COMMENT '字幕文件类型 ASS STR ...' AFTER `LANGUAGE`,
+ADD COLUMN `FILE_LOCATION` VARCHAR(45) NULL COMMENT '1:外部文件字幕（需要指明本地文件地址） 2:内嵌字幕' AFTER `FILE_TYPE`,
+ADD COLUMN `SHOW_FLG` VARCHAR(45) NULL COMMENT '是否最为图片字幕显示在网页上' AFTER `FILE_LOCATION`,
+ADD COLUMN `LOCAL_ROOT_PATH` VARCHAR(100) NULL AFTER `SHOW_FLG`,
+ADD COLUMN `LOCAL_DETAIL_PATH` VARCHAR(100) NULL AFTER `LOCAL_ROOT_PATH`,
+ADD COLUMN `LOCAL_FILE_NAME` VARCHAR(100) NULL AFTER `LOCAL_DETAIL_PATH`;
 
 
 
+CREATE TABLE `subtitle_line` (
+  `ID` VARCHAR(32) NOT NULL,
+  `STATUS` INT(1) NULL,
+  `CREATE_BY` VARCHAR(32) NULL,
+  `CREATE_DATE` TIMESTAMP NULL,
+  `UPDATE_BY` VARCHAR(32) NULL,
+  `UPDATE_DATE` TIMESTAMP NULL,
+  `VERSION` INT(11) NULL,
+  `DELETE_FLAG` INT(1) NULL,
+  PRIMARY KEY (`ID`))
+COMMENT = '字幕行表';
+
+ALTER TABLE `subtitle_line` 
+ADD COLUMN `ANIME_INFO_ID` VARCHAR(32) NOT NULL COMMENT '动画信息的id' AFTER `DELETE_FLAG`,
+ADD COLUMN `ANIME_EPISODE_ID` VARCHAR(32) NOT NULL COMMENT '动画剧集ID' AFTER `ANIME_INFO_ID`,
+ADD COLUMN `LANGUAGE` VARCHAR(45) NULL COMMENT '语言' AFTER `ANIME_EPISODE_ID`,
+ADD COLUMN `LINE_INDEX` INT(11) NOT NULL DEFAULT 0 COMMENT '字幕原始文件该字幕行的排序 ' AFTER `LANGUAGE`,
+ADD COLUMN `LAYER` INT(11) NOT NULL DEFAULT 0 COMMENT '字幕所在层级' AFTER `LINE_INDEX`,
+ADD COLUMN `START_TIME` INT(11) NOT NULL COMMENT '开始时间' AFTER `LAYER`,
+ADD COLUMN `END_TIME` INT(11) NOT NULL COMMENT '结束时间' AFTER `START_TIME`,
+ADD COLUMN `TEXT` VARCHAR(45) NULL COMMENT '字幕文本' AFTER `END_TIME`,
+ADD COLUMN `STYLE` VARCHAR(45) NULL AFTER `TEXT`,
+ADD COLUMN `NAME` VARCHAR(45) NULL AFTER `STYLE`,
+ADD COLUMN `MARGIN_L` VARCHAR(45) NULL AFTER `NAME`,
+ADD COLUMN `MARGIN_R` VARCHAR(45) NULL AFTER `MARGIN_L`,
+ADD COLUMN `MARGINV` VARCHAR(45) NULL AFTER `MARGIN_R`;
+
+ALTER TABLE `subtitle_line` 
+ADD COLUMN `SUBTITLE_INFO_ID` VARCHAR(32) NOT NULL COMMENT '字幕信息ID' AFTER `ANIME_EPISODE_ID`;
+
+ALTER TABLE `subtitle_line` 
+CHANGE COLUMN `TEXT` `TEXT` VARCHAR(512) NULL DEFAULT NULL COMMENT '字幕文本' ;
+
+
+ALTER TABLE `shot_info` 
+ADD COLUMN `ORIGINAL_TIME` INT(11) NOT NULL COMMENT '原始视频内时间，可能会和TIME_STAMP有几毫秒差距' AFTER `ANIME_EPISODE_ID`;
+
+ALTER TABLE `shot_task` 
+ADD COLUMN `TASK_TYPE` VARCHAR(20) COMMENT '执行类型 SHOT SUBTITLE' AFTER `TARGET_ID`;
+
+
+-----------------------------以上为已更新sql---------------------------------------
+-----------------------------以上为已更新sql---------------------------------------
+-----------------------------以上为已更新sql---------------------------------------
+-----------------------------以上为已更新sql---------------------------------------
+-----------------------------以上为已更新sql---------------------------------------
+-----------------------------以下为未更新sql---------------------------------------
+-----------------------------以下为未更新sql---------------------------------------
+-----------------------------以下为未更新sql---------------------------------------
+-----------------------------以下为未更新sql---------------------------------------
+-----------------------------以下为未更新sql---------------------------------------
 
 
 

@@ -21,7 +21,7 @@
 
 			<!-- BEGIN LOGO -->
 
-			<a class="brand" href="${ ctx }/index"> <img
+			<a class="brand" href="${ ctx }"> <img
 				src="${ ctx }/static/img/logo.png" alt="logo" width="20" />
 				望盛金融
 			</a>

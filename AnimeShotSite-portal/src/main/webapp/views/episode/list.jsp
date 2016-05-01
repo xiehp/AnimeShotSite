@@ -2,10 +2,9 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<title>动画截图网 剧集一览</title>
+<title>动画截图网 ${animeInfo.fullName} ${animeInfo.secondName}</title>
 
 <div class="container-fluid">
 	<div class="row-fluid">
@@ -44,7 +43,6 @@
 		</div>
 	</div>
 </div>
-
 
 <div>
 	<tags:pagination page="${animeEpisodePage}" paginationSize="10" />

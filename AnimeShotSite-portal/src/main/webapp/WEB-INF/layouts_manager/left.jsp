@@ -17,7 +17,7 @@
 <i>&nbsp;</i>
 </li>
 <li>
-<a href="{{baseUrl}}/index">
+<a href="{{baseUrl}}">
 <i class="icon-home"></i> 
 <span class="title">首页</span>
 </a>

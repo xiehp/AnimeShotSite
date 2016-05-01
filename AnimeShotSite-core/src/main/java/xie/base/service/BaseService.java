@@ -1,6 +1,8 @@
 package xie.base.service;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,12 +13,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springside.modules.mapper.BeanMapper;
 
 import xie.base.page.PageRequestUtil;
 import xie.base.repository.BaseRepository;
 import xie.base.repository.BaseSearchFilter;
 import xie.base.repository.BaseSpecifications;
 import xie.common.Constants;
+import xie.common.string.XStringUtils;
 
 public abstract class BaseService<M, ID extends Serializable> {
 
@@ -74,7 +78,7 @@ public abstract class BaseService<M, ID extends Serializable> {
 
 	public Page<M> searchAllShots(Map<String, Object> searchParams, PageRequest pageRequest, Class<M> c) {
 
-		searchParams.put("EQ_deleteFlag", Constants.FLAG_INT_NO + "");
+		searchParams.put("EQ_deleteFlag", Constants.FLAG_INT_NO);
 
 		// Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 		// Specification<ShotInfo> spec = DynamicSpecifications.bySearchFilter(filters.values(), ShotInfo.class);
@@ -83,5 +87,46 @@ public abstract class BaseService<M, ID extends Serializable> {
 		Page<M> userPage = getBaseRepository().findAll(spec, pageRequest);
 
 		return userPage;
+	}
+
+	public M saveMuti(String param, Integer start, Integer end, Integer extention,
+			Map<String, Object> requestMap, Class<M> entityClass) throws InstantiationException, IllegalAccessException {
+		String[] paramArray = new String[0];
+		if (param != null && param.length() > 0) {
+			paramArray = param.split(",");
+		}
+
+		if (extention == null || extention < 1) {
+			extention = String.valueOf(end).length();
+		}
+
+		String pattern = "";
+		for (int i = 0; i < extention; i++) {
+			pattern += "0";
+		}
+
+		// 新建数据
+		DecimalFormat decimalFormat = new DecimalFormat(pattern);
+		M firstEntity = null;
+		for (int i = start; i < end + 1; i++) {
+			M entity = entityClass.newInstance();
+			String[] formatedParamArray = new String[paramArray.length + 1];
+			formatedParamArray[0] = decimalFormat.format(i);
+			for (int k = 1; k < formatedParamArray.length; k++) {
+				formatedParamArray[k] = paramArray[k - 1];
+			}
+
+			Map<String, Object> paramMap = new HashMap<>();
+			paramMap.putAll(requestMap);
+			XStringUtils.formatStr(paramMap, formatedParamArray);
+			BeanMapper.copy(paramMap, entity);
+			M newEntity = save(entity);
+
+			if (firstEntity == null) {
+				firstEntity = newEntity;
+			}
+		}
+
+		return firstEntity;
 	}
 }

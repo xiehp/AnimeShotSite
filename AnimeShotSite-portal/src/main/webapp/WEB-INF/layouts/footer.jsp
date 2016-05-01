@@ -2,7 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javascript">
 function backToLogin(){
-	window.location.href=baseUrl + '/index';
+	window.location.href=baseUrl;
+}
+function backToIndex(){
+	window.location.href=baseUrl;
 }
 </script>
 

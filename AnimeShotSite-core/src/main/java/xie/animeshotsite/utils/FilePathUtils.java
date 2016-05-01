@@ -6,6 +6,7 @@ import xie.animeshotsite.constants.ShotConstants;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.entity.ShotInfo;
+import xie.common.string.XStringUtils;
 
 public class FilePathUtils {
 
@@ -32,11 +33,11 @@ public class FilePathUtils {
 	}
 
 	public static File getAnimeRoot(AnimeInfo animeInfo, AnimeEpisode animeEpisode) {
-		if (animeEpisode != null && animeEpisode.getLocalRootPath() != null) {
+		if (animeEpisode != null && XStringUtils.isNotBlank(animeEpisode.getLocalRootPath())) {
 			return new File(animeEpisode.getLocalRootPath(), ShotConstants.LOCAL_ROOT_ANIME_PATH);
 		}
 
-		if (animeInfo != null && animeInfo.getLocalRootPath() != null) {
+		if (animeInfo != null && XStringUtils.isNotBlank(animeInfo.getLocalRootPath())) {
 			return new File(animeInfo.getLocalRootPath(), ShotConstants.LOCAL_ROOT_ANIME_PATH);
 		}
 

@@ -173,20 +173,37 @@ public class ShiroRDbRealm extends AuthorizingRealm {
 			}
 			return "";
 		}
-		
-		public String getSkinPath() {
-			return skinPath;
+
+		public String getId() {
+			return id;
+		}
+
+		public String getLoginName() {
+			return loginName;
 		}
 
 		public String getUserName() {
 			return userName;
 		}
+
+		public String getEmail() {
+			return email;
+		}
+
+		public String getMobile() {
+			return mobile;
+		}
+
+		public String getSkinPath() {
+			return skinPath;
+		}
+
 		/**
 		 * 本函数输出将作为默认的<shiro:principal/>输出.
 		 */
 		@Override
 		public String toString() {
-			return loginName;
+			return "loginName:" + loginName + ", userName:" + userName + ", id:" + id;
 		}
 
 		/**

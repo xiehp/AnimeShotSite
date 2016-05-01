@@ -3,11 +3,14 @@ package xie.animeshotsite.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import xie.common.Constants;
 import xie.common.web.util.WebConstants;
+import xie.sys.auth.service.realm.ShiroRDbRealm.ShiroUser;
 
 /**
  * 
@@ -30,112 +33,146 @@ import xie.common.web.util.WebConstants;
  */
 public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 	private final static String CHANGE_PAGE_DATA_FALG_NAME = "CHANGE_PAGE_DATA_FALG_NAME";
-	
+
 	/**
 	 * 
 	 * 修改网页标题信息
-	 * @param request   请求对象
-	 * @param response  回复对象
-	 * @param handler   提交对象
-	 * @return  成功则返回true，失败则返回false
+	 * 
+	 * @param request 请求对象
+	 * @param response 回复对象
+	 * @param handler 提交对象
+	 * @return 成功则返回true，失败则返回false
 	 */
 	@Override
-	public boolean preHandle(final HttpServletRequest request,final HttpServletResponse response,
-			final Object handler) {		
+	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response,
+			final Object handler) {
 
-		//set constants to request attribute
-//		request.setAttribute("FLAG_YES", CommonConstants.FLAG_YES);
-//		request.setAttribute("FLAG_NO", CommonConstants.FLAG_NO);
-//		request.setAttribute("FLAG_INT_YES", CommonConstants.FLAG_INT_YES);
-//		request.setAttribute("FLAG_INT_NO", CommonConstants.FLAG_INT_NO);
-//		request.setAttribute("STATE_NORMAL", CommonConstants.STATE_NORMAL);
-//		request.setAttribute("STATE_STOP", CommonConstants.STATE_STOP);
-		
+		// System.out.println(request.getRequestURI());
+
+		// set constants to request attribute
+		// request.setAttribute("FLAG_YES", CommonConstants.FLAG_YES);
+		// request.setAttribute("FLAG_NO", CommonConstants.FLAG_NO);
+		// request.setAttribute("FLAG_INT_YES", CommonConstants.FLAG_INT_YES);
+		// request.setAttribute("FLAG_INT_NO", CommonConstants.FLAG_INT_NO);
+		// request.setAttribute("STATE_NORMAL", CommonConstants.STATE_NORMAL);
+		// request.setAttribute("STATE_STOP", CommonConstants.STATE_STOP);
+
 		return true;
 	}
-	
+
 	/**
 	 * 
 	 * 如果网页数据修改标识为'Y',则生成新的网页信息
-	 * @param request   请求对象
-	 * @param response  回复对象
-	 * @param handler   提交对象
-	 * @param modelAndView   可视化对象
+	 * 
+	 * @param request 请求对象
+	 * @param response 回复对象
+	 * @param handler 提交对象
+	 * @param modelAndView 可视化对象
 	 */
 	@Override
-	public void postHandle(final HttpServletRequest request,final HttpServletResponse response,final Object handler,final ModelAndView modelAndView) {
-//		final WebPathVO webPathVO = ThreadUtil.getWebPathVO();
-//
-//		if(CommonConstants.FLAG_YES.equals(request.getAttribute(CHANGE_PAGE_DATA_FALG_NAME))){
-//			generatePageData(request , webPathVO);
-//		}
+	public void postHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler, final ModelAndView modelAndView) {
+		// final WebPathVO webPathVO = ThreadUtil.getWebPathVO();
+		//
+		// if(CommonConstants.FLAG_YES.equals(request.getAttribute(CHANGE_PAGE_DATA_FALG_NAME))){
+		// generatePageData(request , webPathVO);
+		// }
 
-		// 传给jsp页面的常量
-		// 后台管理页面
-		if (request.getRequestURI().contains(WebConstants.MANAGE_URL_STR)) {
-			System.out.println(request.getRequestURI());
-			request.setAttribute("canBaiduRecord", false);
-		} else {
-			request.setAttribute("canBaiduRecord", true);
+		String requestURL = request.getRequestURL().toString();
+
+		// 是否为静态资源
+		boolean isStaticUrl = false;
+		if (requestURL.endsWith(".css")) {
+			isStaticUrl = true;
+		} else if (requestURL.endsWith(".js")) {
+			isStaticUrl = true;
+		} else if (requestURL.endsWith(".png")) {
+			isStaticUrl = true;
+		} else if (requestURL.endsWith(".jpg")) {
+			isStaticUrl = true;
 		}
-		request.setAttribute("MANAGE_URL_STR", WebConstants.MANAGE_URL_STR);
 
-		// 百度静态资源链接
-		request.setAttribute("BAIDU_STATIC_URL", "http://apps.bdimg.com/libs/");
-		
-		// 系统常量
-		// json
-		request.setAttribute("JSON_RESPONSE_KEY_CODE", Constants.JSON_RESPONSE_KEY_CODE);
-		request.setAttribute("JSON_RESPONSE_KEY_MESSAGE", Constants.JSON_RESPONSE_KEY_MESSAGE);
-		request.setAttribute("SUCCESS_CODE", Constants.SUCCESS_CODE);
-		request.setAttribute("FAIL_CODE", Constants.FAIL_CODE);
-		// 标志
-		request.setAttribute("FLAG_INT_YES", Constants.FLAG_INT_YES);
-		request.setAttribute("FLAG_INT_NO", Constants.FLAG_INT_NO);
-		request.setAttribute("FLAG_STR_YES", Constants.FLAG_STR_YES);
-		request.setAttribute("FLAG_STR_NO", Constants.FLAG_STR_NO);
+		if (!isStaticUrl) {
+			System.out.println(request.getRequestURL());
+
+			// 告诉前台当前登陆用户角色或权限
+			ShiroUser shiroUser = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+			System.out.println("shiroUser:" + shiroUser);
+			if (shiroUser != null && WebConstants.SITE_MANAGER_ID.equals(shiroUser.getId()) && WebConstants.SITE_MANAGER_LOGIN_ID.equals(shiroUser.getLoginName())) {
+				request.setAttribute("IS_MASTER", true);
+			} else {
+				request.setAttribute("IS_MASTER", false);
+			}
+
+			// 传给jsp页面的常量
+			// 后台管理页面
+			if (requestURL.contains(WebConstants.MANAGE_URL_STR)) {
+				request.setAttribute("canBaiduRecord", false);
+//			} else if (!requestURL.contains(WebConstants.SITE_URL)) {
+//				request.setAttribute("canBaiduRecord", false);
+			} else {
+				request.setAttribute("canBaiduRecord", true);
+			}
+			System.out.println("canBaiduRecord: " + request.getAttribute("canBaiduRecord"));
+
+			request.setAttribute("MANAGE_URL_STR", WebConstants.MANAGE_URL_STR);
+
+			// 百度静态资源链接
+			request.setAttribute("BAIDU_STATIC_URL", "http://apps.bdimg.com/libs/");
+
+			// 系统常量
+			// json
+			request.setAttribute("JSON_RESPONSE_KEY_CODE", Constants.JSON_RESPONSE_KEY_CODE);
+			request.setAttribute("JSON_RESPONSE_KEY_MESSAGE", Constants.JSON_RESPONSE_KEY_MESSAGE);
+			request.setAttribute("SUCCESS_CODE", Constants.SUCCESS_CODE);
+			request.setAttribute("FAIL_CODE", Constants.FAIL_CODE);
+			// 标志
+			request.setAttribute("FLAG_INT_YES", Constants.FLAG_INT_YES);
+			request.setAttribute("FLAG_INT_NO", Constants.FLAG_INT_NO);
+			request.setAttribute("FLAG_STR_YES", Constants.FLAG_STR_YES);
+			request.setAttribute("FLAG_STR_NO", Constants.FLAG_STR_NO);
+		}
 	}
-	
-//	/**
-//	 * 
-//	 * 生成网页信息
-//	 * @param request   请求对象
-//	 * @param webPathVO   网页路径对象
-//	 */
-//	protected void generatePageData(final HttpServletRequest request, final WebPathVO webPathVO){
-////		final HtmlPageBean htmlPageBean = (HtmlPageBean)request.getAttribute(CommonConstants.HTML_PAGE_BEAN);
-////		htmlPageBean.setWebPathVO(webPathVO);
-////		
-////		String title = htmlPageBean.getPageTitle();
-////		if(title == null){
-////			title = webPathVO.getPageTitle();
-////		}
-////		title = StringUtil.removeNullTrim(title);
-////		
-////		final List<MenuVO> menuVOList = MenuLoad.getInstance().getAllParentMenuById(webPathVO.getMenuId());
-////
-////		final String showTitle;
-////		if("".equals(title) && !menuVOList.isEmpty()){
-////			showTitle = menuVOList.get(menuVOList.size()-1).getMenuName();
-////		}else{
-////			showTitle = title;
-////		}
-////		
-////		htmlPageBean.setMenuVOList(menuVOList);
-////		htmlPageBean.setPageTitle(showTitle);
-////		htmlPageBean.setMenuVOs(menuVOList.toArray(new MenuVO[menuVOList.size()]));
-////		
-////		fixHtmlPage(request,htmlPageBean);
-//		
-//	}
-//	
-//	/**
-//	 * 
-//	 * 装载网页信息
-//	 * @param request  请求对象
-//	 * @param htmlPageBean   网页信息
-//	 */
-//	protected void fixHtmlPage(final HttpServletRequest request, final HtmlPageBean htmlPageBean){
-//		
-//	}
+
+	// /**
+	// *
+	// * 生成网页信息
+	// * @param request 请求对象
+	// * @param webPathVO 网页路径对象
+	// */
+	// protected void generatePageData(final HttpServletRequest request, final WebPathVO webPathVO){
+	//// final HtmlPageBean htmlPageBean = (HtmlPageBean)request.getAttribute(CommonConstants.HTML_PAGE_BEAN);
+	//// htmlPageBean.setWebPathVO(webPathVO);
+	////
+	//// String title = htmlPageBean.getPageTitle();
+	//// if(title == null){
+	//// title = webPathVO.getPageTitle();
+	//// }
+	//// title = StringUtil.removeNullTrim(title);
+	////
+	//// final List<MenuVO> menuVOList = MenuLoad.getInstance().getAllParentMenuById(webPathVO.getMenuId());
+	////
+	//// final String showTitle;
+	//// if("".equals(title) && !menuVOList.isEmpty()){
+	//// showTitle = menuVOList.get(menuVOList.size()-1).getMenuName();
+	//// }else{
+	//// showTitle = title;
+	//// }
+	////
+	//// htmlPageBean.setMenuVOList(menuVOList);
+	//// htmlPageBean.setPageTitle(showTitle);
+	//// htmlPageBean.setMenuVOs(menuVOList.toArray(new MenuVO[menuVOList.size()]));
+	////
+	//// fixHtmlPage(request,htmlPageBean);
+	//
+	// }
+	//
+	// /**
+	// *
+	// * 装载网页信息
+	// * @param request 请求对象
+	// * @param htmlPageBean 网页信息
+	// */
+	// protected void fixHtmlPage(final HttpServletRequest request, final HtmlPageBean htmlPageBean){
+	//
+	// }
 }

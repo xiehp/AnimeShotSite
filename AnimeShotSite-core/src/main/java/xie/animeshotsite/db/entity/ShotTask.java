@@ -20,6 +20,11 @@ public class ShotTask extends BaseEntity {
 	public static final String TABLE_NAME = "shot_task";
 	public static final String ENTITY_NAME = ShotTask.class.getSimpleName();
 
+	/** 任务类型 截图 */
+	public static final String TASK_TYPE_SHOT = "SHOT";
+	/** 任务类型 字幕 */
+	public static final String TASK_TYPE_SUBTITLE = "SUBTITLE";
+
 	/** 任务状态 未执行 */
 	public static final Integer TASK_RESULT_WAIT = 0;
 	/** 任务状态 成功 */
@@ -28,6 +33,9 @@ public class ShotTask extends BaseEntity {
 	public static final Integer TASK_RESULT_PROCESSING = 2;
 	/** 任务状态 失败 */
 	public static final Integer TASK_RESULT_FAIL = 3;
+
+	/** 任务类型 */
+	private String taskType;
 
 	/** 执行任务的java class */
 	private String taskClass;
@@ -55,6 +63,14 @@ public class ShotTask extends BaseEntity {
 
 	/** 执行结果信息 */
 	private Integer status;
+
+	public String getTaskType() {
+		return taskType;
+	}
+
+	public void setTaskType(String taskType) {
+		this.taskType = taskType;
+	}
 
 	public String getTaskClass() {
 		return taskClass;

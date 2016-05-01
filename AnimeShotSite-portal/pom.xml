@@ -30,7 +30,7 @@
 				<tomcat.deploy.active.spring.profile>test</tomcat.deploy.active.spring.profile>
 				<tomcat.deploy.server>tomcat8_test</tomcat.deploy.server>
 				<tomcat.deploy.url>http://192.168.4.50:8680/manager/text</tomcat.deploy.url>
-				<tomcat.deploy.war.exclude.jar>%regex[WEB-INF/lib/(?!Anime)(?!video2img)(?!xcommon)(?!tietuku-api).*]</tomcat.deploy.war.exclude.jar>
+				<tomcat.deploy.war.exclude.jar>%regex[WEB-INF/lib/(?!Anime)(?!video2img)(?!xcommon)(?!XSubtitle)(?!tietuku-api).*]</tomcat.deploy.war.exclude.jar>
 			</properties>
 		</profile>
 		<profile>
@@ -39,7 +39,7 @@
 				<tomcat.deploy.active.spring.profile>production</tomcat.deploy.active.spring.profile>
 				<tomcat.deploy.server>tomcat8_product</tomcat.deploy.server>
 				<tomcat.deploy.url>http://115.28.215.116:34702/manager/text</tomcat.deploy.url>
-				<tomcat.deploy.war.exclude.jar>%regex[WEB-INF/lib/(?!Anime)(?!video2img)(?!xcommon)(?!tietuku-api).*]</tomcat.deploy.war.exclude.jar>
+				<tomcat.deploy.war.exclude.jar>%regex[WEB-INF/lib/(?!Anime)(?!video2img)(?!xcommon)(?!XSubtitle)(?!tietuku-api).*]</tomcat.deploy.war.exclude.jar>
 			</properties>
 		</profile>
 	</profiles>

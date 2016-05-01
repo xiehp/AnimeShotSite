@@ -6,6 +6,7 @@ import java.util.TimerTask;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import xie.animeshotsite.db.entity.ShotTask;
 import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.timer.timer.ShotTaskTimer;
 
@@ -23,7 +24,8 @@ public class MainTimer {
 		// createTimer(AnimeShotTimer.class);
 		System.setProperty("spring.profiles.default", "development");
 		// System.setProperty("spring.profiles.default", "production");
-		createTimer(ShotTaskTimer.class, 10000);
+		createTimer(ShotTaskTimer.class, 10000, ShotTask.TASK_TYPE_SHOT);
+		createTimer(ShotTaskTimer.class, 10000, ShotTask.TASK_TYPE_SUBTITLE);
 
 		printProfile();
 
@@ -63,13 +65,12 @@ public class MainTimer {
 	 * @param classTimerTask
 	 * @param period 执行间隔
 	 */
-	public static void createTimer(Class<? extends TimerTask> classTimerTask, long period) {
-
-		TimerTask timerTask = (TimerTask) SpringUtil.getBean(classTimerTask);
+	public static void createTimer(Class<? extends TimerTask> classTimerTask, long period, String taskType) {
+		ShotTaskTimer shotTaskTimer = (ShotTaskTimer) SpringUtil.getBean(classTimerTask);
+		shotTaskTimer.setTaskType(taskType);
 
 		Timer timer = new Timer();
-		timer.schedule(timerTask, 1000, period);
-
+		timer.schedule(shotTaskTimer, 1000, period);
 	}
 
 	private static void printProfile() {
