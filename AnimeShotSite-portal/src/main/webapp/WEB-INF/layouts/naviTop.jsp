@@ -29,7 +29,7 @@
 					<script>
 						function clearCache() {
 							if (confirm("是否清除缓存")) {
-								$.homePost("/cleanCache", null, function(data) {
+								$.homePost("/tool/cleanCache", null, function(data) {
 									if (data && data.size) {
 										alert("清除缓存个数:" + data.size);
 									}

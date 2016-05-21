@@ -89,6 +89,8 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 			animeEpisodeInfo.setType(0);
 			animeEpisodeInfo.setLocalRootPath(FilePathUtils.getRootDefault().getAbsolutePath());
 			animeEpisodeInfo.setShotLocalRootPath(FilePathUtils.getRootDefault().getAbsolutePath());
+			animeEpisodeInfo.setWidth(1920);
+			animeEpisodeInfo.setHeight(1080);
 			animeEpisodeInfo.setShowFlg(0);
 			animeEpisodeInfo.setDeleteFlag(0);
 

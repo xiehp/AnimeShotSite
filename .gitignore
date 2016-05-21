@@ -27,3 +27,6 @@ application.test.properties
 replay_pid*.log
 tietuku*.properties
 animeshotsiteinst1_329761_all_sql.zip
+
+sitemap_detail.xml
+

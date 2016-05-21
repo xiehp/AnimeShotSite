@@ -4,19 +4,20 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
 <head>
-
 <title><decorator:title default="动画截图网" /></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<meta http-equiv="Cache-Control" content="no-store" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
+<meta http-equiv="Cache-Control" content="max-age=6" />
+<meta http-equiv="Content-Language" content="zh-cn" />
 <link rel="shortcut icon" type="image/x-icon" href="${ ctx }/static/img/logo.png" media="screen" />
+<decorator:head />
 
 <!-- 初始化所有参数 -->
 <script>
+	var _speedMark = new Date();
 	var global = {};
 	var baseUrl;
 	if (global.ctx == null) {
@@ -28,93 +29,67 @@
 	<c:if test="${IS_MASTER}">
 	IS_MASTER = "${IS_MASTER}";
 	</c:if>
+	var IS_JS_DEBUG = false;
+	<c:if test="${IS_JS_DEBUG}">
+	IS_JS_DEBUG = "${IS_JS_DEBUG}";
+	</c:if>
+
+	var canBaiduRecord = false;
+	<c:if test="${canBaiduRecord eq true}">
+	canBaiduRecord = "${canBaiduRecord}";
+	</c:if>
 </script>
 
-<!-- jquery -->
-<c:set var="useBaiduStaticUrlFlg" value="true" />
-<c:if test="${ useBaiduStaticUrlFlg eq true }">
+<c:set var="staticResourceUrl" value="${ ctx }/static/plugin/" />
+<c:set var="jqueryVersion" value="2.2.1" />
+<c:set var="bootstrapVersion" value="3.3.6" />
+<c:set var="jqueryLazyloadVersion" value="jquery_lazyload/1.9.7" />
+<c:set var="jqueryCookieVersion" value="1.4.1" />
+
+<c:set var="useCdnStatic" value="bootcss" />
+<c:if test="${ useCdnStatic eq 'baidu' }">
 	<c:set var="staticResourceUrl" value="${ BAIDU_STATIC_URL }" />
+	<c:set var="jqueryVersion" value="2.1.4" />
+	<c:set var="bootstrapVersion" value="3.3.4" />
+	<c:set var="jqueryLazyloadVersion" value="jquery-lazyload/1.9.5" />
 </c:if>
-<c:if test="${ useBaiduStaticUrlFlg ne true }">
-	<c:set var="staticResourceUrl" value="${ ctx }/static/plugin/" />
+<c:if test="${ useCdnStatic eq 'bootcss' }">
+	<c:set var="staticResourceUrl" value="http://cdn.bootcss.com/" />
 </c:if>
-<script src="${ staticResourceUrl }jquery/2.1.4/jquery.js" type="text/javascript"></script>
-<script src="${ staticResourceUrl }jquery-lazyload/1.9.5/jquery.lazyload.js" type="text/javascript"></script>
 
-
-<!-- bootstrap -->
-<link href="${ BAIDU_STATIC_URL }bootstrap/3.3.4/css/bootstrap.css" rel="stylesheet" type="text/css" />
-<script src="${ BAIDU_STATIC_URL }bootstrap/3.3.4/js/bootstrap.js" type="text/javascript"></script>
-<!-- 
-<link href="${ ctx }/static/media/css/jquery-ui-1.10.1.custom.min.css" rel="stylesheet" type="text/css"/>
-<link href="${ ctx }/static/media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
--->
-
-<!-- local js and css -->
-<script src="${ ctx }/static/js/template/jsrender.min.js" type="text/javascript"></script>
-
-<!-- self js and css -->
+<link href="${ staticResourceUrl }bootstrap/${bootstrapVersion}/css/bootstrap.css" rel="stylesheet" type="text/css" />
 <link href="${ ctx }/static/css/style.css" rel="stylesheet" type="text/css" />
-<script src="${ ctx }/static/js/homeInit.js" type="text/javascript"></script>
+
+<script src="${ staticResourceUrl }jquery/${jqueryVersion}/jquery.js" type="text/javascript"></script>
+<script src="${ staticResourceUrl }jquery-cookie/${jqueryCookieVersion}/jquery.cookie.js" type="text/javascript"></script>
+
 <script src="${ ctx }/static/js/homeBase.js" type="text/javascript"></script>
-<script src="${ ctx }/static/js/homeBussness.js" type="text/javascript"></script>
-
-
-<!-- 收录统计 -->
-<c:if test="${ canBaiduRecord eq true }">
-	<!-- 百度收录推送 -->
-	<script>
-		(function() {
-			var bp = document.createElement('script');
-			var curProtocol = window.location.protocol.split(':')[0];
-			if (curProtocol === 'https') {
-				bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-			} else {
-				bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-			}
-			var s = document.getElementsByTagName("script")[0];
-			s.parentNode.insertBefore(bp, s);
-		})();
-	</script>
-
-	<!-- 百度统计 -->
-	<script>
-		var _hmt = _hmt || [];
-		(function() {
-			var hm = document.createElement("script");
-			hm.src = "//hm.baidu.com/hm.js?292dc181c5dbc431b3ded9d841c0920e";
-			var s = document.getElementsByTagName("script")[0];
-			s.parentNode.insertBefore(hm, s);
-		})();
-	</script>
-
-	<!-- 360收录推送 -->
-	<script>
-		(function() {
-			var src = document.location.protocol + '//js.passport.qihucdn.com/11.0.1.js?a1d5ba23049ed1de4d6a6aa4db2557c6';
-			document.write('<script src="' + src + '" id="sozz"><\/script>');
-		})();
-	</script>
-</c:if>
-
-<style type="text/css">
-.page-content {
-	max-width: 1280px;
-}
-</style>
-
-<decorator:head />
-
 </head>
 
 <body class="<shiro:principal property="showSidebar"></shiro:principal>">
 	<%@ include file="/WEB-INF/layouts/header.jsp"%>
+	<c:if test="${IS_MASTER}">
+		<input id="aaaaa">
+		<script type="text/javascript">
+			document.getElementById("aaaaa").value = document.documentElement.clientWidth + "," + window.innerWidth;
+		</script>
+	</c:if>
 	<div class="page-container row-fluid" align="center">
 		<div id="main" class="page-content">
 			<decorator:body />
 		</div>
 	</div>
 	<%@ include file="/WEB-INF/layouts/footer.jsp"%>
+
+	<!-- jquery -->
+	<script src="${ staticResourceUrl }${jqueryLazyloadVersion}/jquery.lazyload.js" type="text/javascript"></script>
+	<!-- bootstrap -->
+	<script src="${ staticResourceUrl }bootstrap/${bootstrapVersion}/js/bootstrap.js" type="text/javascript"></script>
+	<!-- local js -->
+	<script src="${ ctx }/static/js/template/jsrender.min.js" type="text/javascript"></script>
+	<!-- self js -->
+	<script src="${ ctx }/static/js/homeBussness.js" type="text/javascript"></script>
+	<script src="${ ctx }/static/js/homeInit.js" type="text/javascript"></script>
 </body>
 
 </html>

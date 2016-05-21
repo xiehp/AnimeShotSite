@@ -63,7 +63,7 @@ public class UserController extends BaseFunctionController<User, String> {
 		searchParams.put("EQ_deleteFlag", Constants.FLAG_INT_NO + "");
 		searchParams.put("EQ_userType", Constants.USER_TYPE_BACKGROUND + "");
 		
-		Page<UserVo> list = userService.searchAllUsers(searchParams, pageNumber, Constants.DEFAULT_PAGE_SIZE, sortType);
+		Page<UserVo> list = userService.searchAllUsers(searchParams, pageNumber, Constants.PAGE_SIZE_DEFAULT, sortType);
 	
 		model.addAttribute("userList", list);
 		// 将搜索条件编码成字符串，用于排序，分页的URL

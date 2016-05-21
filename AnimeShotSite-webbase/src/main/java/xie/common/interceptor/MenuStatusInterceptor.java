@@ -69,7 +69,7 @@ public class MenuStatusInterceptor implements HandlerInterceptor {
 			return;
 		}
 		if (resource.getResourceLevel() == Constants.RESOURCE_LEVEL_FOUR) {
-			if (resource.getIsShow() == Constants.FLAG_INT_YES) {
+			if (Constants.FLAG_INT_YES.equals(resource.getIsShow())) {
 				// 资源显示标志
 				request.setAttribute(Constants.FOURTH_MENU_STATUA_KEY, resource.getIdentity());
 			}

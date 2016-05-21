@@ -5,7 +5,7 @@
 		<pattern>/test/*</pattern>
 		<pattern>/login</pattern>
 	</excludes>
-	
+
 	<decorator name="default" page="default.jsp">
 		<pattern>/*</pattern>
 	</decorator>

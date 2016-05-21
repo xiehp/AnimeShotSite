@@ -56,8 +56,6 @@ public class CacheControlHeaderFilter implements Filter {
 		String expiresSecondsParam = filterConfig.getInitParameter(PARAM_EXPIRES_SECONDS);
 		if (expiresSecondsParam != null) {
 			expiresSeconds = Long.valueOf(expiresSecondsParam);
-		} else {
-			expiresSeconds = Servlets.ONE_YEAR_SECONDS;
 		}
 	}
 

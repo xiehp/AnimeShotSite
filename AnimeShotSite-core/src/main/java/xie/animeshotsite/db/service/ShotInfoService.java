@@ -13,12 +13,15 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springside.modules.mapper.BeanMapper;
 
 import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.repository.ShotInfoDao;
+import xie.animeshotsite.db.vo.ShotInfoVO;
+import xie.animeshotsite.setup.ShotSiteSetup;
 import xie.animeshotsite.spring.SpringUtil;
 import xie.base.entity.BaseEntity;
 import xie.base.page.PageRequestUtil;
@@ -41,6 +44,29 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 	private AnimeEpisodeDao animeEpisodeDao;
 	@Autowired
 	private EntityCache entityCache;
+	@Autowired
+	private ShotSiteSetup shotSiteSetup;
+	
+	public ShotInfoVO  convertToVO(ShotInfo shotInfo){
+		if(shotInfo==null){
+			return null;
+		}
+		
+		ShotInfoVO shotInfoVO = new ShotInfoVO();
+		BeanMapper.copy(shotInfo, shotInfoVO);
+		
+		String url =shotInfoVO.getTietukuOUrl();
+		if(url!=null){
+			String siteDomain = shotSiteSetup.getSiteDomain();
+			String lowerUrl = url.toLowerCase();
+			if (lowerUrl.contains("i1.")|| lowerUrl.contains("i2.")|| lowerUrl.contains("i3.")|| lowerUrl.contains("i4.")){
+				url=url.replaceAll("\\.[a-z0-9]+\\.[a-z]+", "."+siteDomain);
+			}
+			shotInfoVO.setTietukuOUrlChangeDomain(url);
+		}
+		
+		return shotInfoVO;
+	}
 
 	@Override
 	public BaseRepository<ShotInfo, String> getBaseRepository() {
@@ -95,7 +121,7 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 	public List<ShotInfo> getMasterRecommandShotList(Integer inDay, int listCount) {
 		Map<String, Object> searchParams = new HashMap<>();
 		searchParams.put("GT_" + ShotInfo.COLUMN_MASTER_RECOMMEND_DATE, DateUtil.seekDate(DateUtil.getCurrentDate(), -inDay));
-		Page<ShotInfo> page = searchAllShots(searchParams, 1, listCount, BaseEntity.COLUMN_CREATE_BY);
+		Page<ShotInfo> page = searchAllShots(searchParams, 1, listCount, BaseEntity.COLUMN_CREATE_DATE);
 		List<ShotInfo> list = page.getContent();
 		list = setParentData(list);
 		return list;
@@ -108,11 +134,16 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 	 * @return
 	 */
 	public List<ShotInfo> getNewestShotList(int listCount) {
+		// 检索条件
 		Map<String, Object> searchParams = new HashMap<>();
+
+		// 排序，分页条件
 		List<Order> orders = new ArrayList<>();
 		Order order = new Order(Direction.DESC, ShotInfo.COLUMN_CREATE_DATE);
 		orders.add(order);
 		PageRequest pageRequest = PageRequestUtil.buildPageRequest(1, listCount, orders);
+
+		// 检索
 		Page<ShotInfo> page = searchAllShots(searchParams, pageRequest);
 
 		List<ShotInfo> list = page.getContent();
@@ -205,13 +236,5 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		List<ShotInfo> list = shotInfoDao.findRandom(from, number);
 		list = setParentData(list);
 		return list;
-	}
-
-	public static void main(String[] args) {
-		ShotInfoService shotInfoService = SpringUtil.getBean(ShotInfoService.class);
-		shotInfoService.findRandom(22);
-		shotInfoService.findRandom(22);
-		shotInfoService.findRandom(22);
-		shotInfoService.findRandom(22);
 	}
 }

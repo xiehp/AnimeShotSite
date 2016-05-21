@@ -14,6 +14,9 @@ public interface SubtitleLineDao extends BaseRepository<SubtitleLine, String> {
 	@Query(value = "from SubtitleLine where subtitleInfoId = ?1 order by startTime, layer, lineIndex)")
 	List<SubtitleLine> findBySubtitleInfoId(String subtitleInfoId);
 
+	@Query(value = "from SubtitleLine where subtitleInfoId in (?1) order by startTime, layer, lineIndex)")
+	List<SubtitleLine> findBySubtitleInfoId(List<String> subtitleInfoIdList);
+
 	SubtitleLine findBySubtitleInfoIdAndLineIndex(String subtitleInfoId, Integer lineIndex);
 
 	/**

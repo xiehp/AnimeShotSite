@@ -47,7 +47,7 @@ public class AnimeInfoController extends BaseFunctionController<AnimeInfo, Strin
 		searchParams.put("EQ_deleteFlag", Constants.FLAG_STR_NO);
 		searchParams.put("EQ_showFlg", Constants.FLAG_STR_YES);
 		sortType = BaseEntity.COLUMN_CREATE_DATE;
-		Page<AnimeInfo> animeInfoPage = animeInfoService.searchByPage(searchParams, pageNumber, Constants.DEFAULT_PAGE_SIZE, sortType, AnimeInfo.class);
+		Page<AnimeInfo> animeInfoPage = animeInfoService.searchPageByParams(searchParams, pageNumber, Constants.PAGE_SIZE_DEFAULT, sortType, AnimeInfo.class);
 
 		model.addAttribute("animeInfoPage", animeInfoPage);
 		// 将搜索条件编码成字符串，用于排序，分页的URL

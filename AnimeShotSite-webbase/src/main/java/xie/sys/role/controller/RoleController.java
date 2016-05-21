@@ -50,7 +50,7 @@ public class RoleController extends BaseController {
 		//增加删除过滤
 		searchParams.put("EQ_deleteFlag", Constants.FLAG_INT_NO + "");
 		
-		Page<Role> list = roleService.searchAllRoles(searchParams, pageNumber, Constants.DEFAULT_PAGE_SIZE, sortType);
+		Page<Role> list = roleService.searchAllRoles(searchParams, pageNumber, Constants.PAGE_SIZE_DEFAULT, sortType);
 		
 		List<RoleVo> voList = BeanMapper.mapList(list.getContent(), RoleVo.class);
 		

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,7 @@ import xie.animeshotsite.db.service.ShotInfoService;
 import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.db.service.SubtitleLineService;
 import xie.base.controller.BaseFunctionController;
+import xie.base.http.CookieUtils;
 import xie.common.Constants;
 import xie.common.constant.XConst;
 
@@ -75,7 +77,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		// 增加删除过滤
 		searchParams.put("EQ_animeEpisodeId", animeEpisodeId);
 
-		int pageSize = Constants.DEFAULT_PAGE_SIZE;
+		int pageSize = Constants.PAGE_SIZE_DEFAULT;
 		AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
 		AnimeInfo animeInfo = animeInfoService.findOne(animeEpisode.getAnimeInfoId());
 		Page<ShotInfo> shotInfoPage = shotInfoService.searchAllShots(searchParams, pageNumber, pageSize, sortType);
@@ -94,7 +96,20 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 					entityCache.put("subtitleInfoList" + animeEpisodeId, subtitleInfoList, XConst.SECOND_10_MIN * 1000);
 				}
 				if (subtitleInfoList.size() > 0) {
-					subtitleLineList = subtitleLineDao.findBySubtitleInfoId(subtitleInfoList.get(0).getId());
+					List<String> searchSubtitleInfoIdList = new ArrayList<String>();
+					for (SubtitleInfo subtitleInfo : subtitleInfoList) {
+						if (!Constants.FLAG_INT_YES.equals(subtitleInfo.getShowFlg())) {
+							continue;
+						}
+
+						if (Constants.FLAG_INT_YES.equals(subtitleInfo.getDeleteFlag())) {
+							continue;
+						}
+
+						searchSubtitleInfoIdList.add(subtitleInfo.getId());
+					}
+
+					subtitleLineList = subtitleLineDao.findBySubtitleInfoId(searchSubtitleInfoIdList);
 					entityCache.put("subtitleLineList" + animeEpisodeId, subtitleLineList, XConst.SECOND_10_MIN * 1000);
 				}
 			}
@@ -120,24 +135,42 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		return getUrlRedirectPath("list/" + animeEpisodeId + "?page=" + pageNumber);
 	}
 
+	private List<String> defaultShowLanage = new ArrayList<String>();
+
+	{
+		defaultShowLanage = new ArrayList<String>();
+		defaultShowLanage.add("jp");
+		defaultShowLanage.add("sc");
+	}
+
 	@RequestMapping(value = "/view/{id}")
-	public String shotView(@PathVariable String id, Model model, ServletRequest request) throws Exception {
-		ShotInfo shotInfo = entityCache.findOne(shotInfoDao, id);
+	public String shotView(
+			@PathVariable String id,
+			@RequestParam(required = false) String scorllTop,
+			@RequestParam(required = false) List<String> defaultShowLanage,
+			Model model, HttpServletRequest request) throws Exception {
+
+		if (defaultShowLanage == null || defaultShowLanage.size() == 0) {
+			defaultShowLanage = this.defaultShowLanage;
+		}
+
+		ShotInfo shotInfo = shotInfoDao.findOne(id);
+		shotInfo = shotInfoService.convertToVO(shotInfo);
 		AnimeInfo animeInfo = entityCache.findOne(animeInfoDao, shotInfo.getAnimeInfoId());
 		AnimeEpisode animeEpisode = entityCache.findOne(animeEpisodeDao, shotInfo.getAnimeEpisodeId());
 
 		model.addAttribute("shotInfo", shotInfo);
-		model.addAttribute("animeI", animeInfo);
+		model.addAttribute("animeInfo", animeInfo);
 		model.addAttribute("animeEpisode", animeEpisode);
 
 		// 算出当前数据在列表中的页数
 		int rowNumber = shotInfoDao.getRowNumber(shotInfo.getAnimeEpisodeId(), shotInfo.getTimeStamp(), Constants.FLAG_INT_NO);
-		int pageSize = Constants.DEFAULT_PAGE_SIZE;
+		int pageSize = Constants.PAGE_SIZE_DEFAULT;
 		model.addAttribute("rowNumber", rowNumber);
 		int pageNumber = (rowNumber - 1) / pageSize + 1;
 		model.addAttribute("pageNumber", (rowNumber - 1) / pageSize + 1);
 		if (pageNumber > 1) {
-			model.addAttribute("pageNumberUrl", "/" + pageNumber);
+			model.addAttribute("pageNumberUrl", "?page=" + pageNumber);
 		}
 
 		// 搜索前后页
@@ -149,8 +182,26 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		// 搜索字幕
 		Long startTime = shotInfo.getTimeStamp();
 		Long endTime = nextShotInfo == null ? startTime + 5000 : nextShotInfo.getTimeStamp();
-		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), startTime, endTime);
+		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), defaultShowLanage, startTime, endTime);
 		model.addAttribute("subtitleLineList", subtitleLineList);
+
+		// 前台页面cookie等参数设置
+		model.addAttribute("scorllTop", scorllTop); // 用户提交时滚屏高度
+		String ShotViewImgWidth = CookieUtils.getCookieValue(request, "ShotViewImgWidth"); // 用户设定的图片展示宽度
+		if (ShotViewImgWidth != null && !ShotViewImgWidth.matches("[0-9]+")) {
+			ShotViewImgWidth = null;
+		}
+		model.addAttribute("ShotViewImgWidth", ShotViewImgWidth);
+		String ShotImgDivWidth = null;// 需要设置的图片div宽度
+		if (ShotViewImgWidth != null) {
+			ShotImgDivWidth = ShotViewImgWidth;
+		} else {
+			ShotImgDivWidth = CookieUtils.getCookieValue(request, "ShotImgDivWidth"); // 用户提交前获得的图片div宽度
+			if (ShotImgDivWidth != null && !ShotImgDivWidth.matches("[0-9]+")) {
+				ShotImgDivWidth = null;
+			}
+		}
+		model.addAttribute("ShotImgDivWidth", ShotImgDivWidth);
 
 		return getJspFilePath("view");
 	}

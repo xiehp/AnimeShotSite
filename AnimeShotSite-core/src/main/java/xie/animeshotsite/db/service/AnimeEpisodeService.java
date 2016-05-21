@@ -11,19 +11,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springside.modules.mapper.BeanMapper;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
+import xie.animeshotsite.db.entity.ImageUrl;
 import xie.animeshotsite.db.entity.ShotInfo;
+import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.base.page.PageRequestUtil;
 import xie.base.repository.BaseRepository;
-import xie.base.repository.BaseSearchFilter;
-import xie.base.repository.BaseSpecifications;
 import xie.base.service.BaseService;
-import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.common.Constants;
 import xie.common.string.XStringUtils;
 
@@ -34,6 +32,8 @@ public class AnimeEpisodeService extends BaseService<AnimeEpisode, String> {
 	private AnimeEpisodeDao animeEpisodeDao;
 	@Autowired
 	private AnimeInfoDao animeInfoDao;
+	@Autowired
+	private ImageUrlService imageUrlService;
 
 	@Override
 	public BaseRepository<AnimeEpisode, String> getBaseRepository() {
@@ -63,12 +63,12 @@ public class AnimeEpisodeService extends BaseService<AnimeEpisode, String> {
 
 		// 排序条件
 		List<Order> orders = new ArrayList<>();
-		Order order = new Order(Direction.DESC, ShotInfo.COLUMN_CREATE_DATE);
+		Order order = new Order(Direction.DESC, ShotInfo.COLUMN_UPDATE_DATE);
 		orders.add(order);
 		PageRequest pageRequest = PageRequestUtil.buildPageRequest(1, listCount, orders);
 
 		// 检索
-		Page<AnimeEpisode> page = searchAllShots(searchParams, pageRequest, AnimeEpisode.class);
+		Page<AnimeEpisode> page = searchPageByParams(searchParams, pageRequest, AnimeEpisode.class);
 		List<AnimeEpisode> list = page.getContent();
 		for (AnimeEpisode animeEpisode : list) {
 			animeEpisode.setAnimeInfo(animeInfoDao.findOne(animeEpisode.getAnimeInfoId()));
@@ -124,9 +124,18 @@ public class AnimeEpisodeService extends BaseService<AnimeEpisode, String> {
 		// 删除所有现存剧集数据
 		for (AnimeEpisode animeEpisode : list) {
 			// delete(animeEpisode);
-			// TODO 
+			// TODO
 		}
 
 		return firstId;
+	}
+
+	/**
+	 * 新增加一个图片title
+	 */
+	public void saveTitleUrl(AnimeEpisode animeEpisode, String rootPath, String detailPath, String name, String tietukuImageUrlId, String tietukuImageUrlPrefix) {
+		ImageUrl imageUrl = imageUrlService.saveImageInfo(rootPath, detailPath, name, tietukuImageUrlId, tietukuImageUrlPrefix);
+		animeEpisode.setTitleUrlId(imageUrl.getId());
+		animeEpisodeDao.save(animeEpisode);
 	}
 }

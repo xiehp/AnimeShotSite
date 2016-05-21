@@ -5,7 +5,7 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<title>动画截图网 <c:out value="${animeEpisode.fullName}" /></title>
+<title>动画截图网 <c:out value='${animeEpisode.fullName}' /> 第${shotInfoPage.number + 1}页</title>
 <style>
 .blockTitle {
 	margin-top: 10px;
@@ -19,13 +19,27 @@
 	margin-left: 10px;
 	font-size: 12px;
 }
+
+.subtitleTable {
+	padding-right: 5px;
+	font-size: 10px;
+	text-align: left;
+}
+
+pre {
+	white-space: pre-wrap; /*css-3*/
+	white-space: -moz-pre-wrap; /*Mozilla,since1999*/
+	white-space: -pre-wrap; /*Opera4-6*/
+	white-space: -o-pre-wrap; /*Opera7*/
+	word-wrap: break-word; /*InternetExplorer5.5+*/
+}
 </style>
 <script>
 	<c:if test="${IS_MANAGER}">
 	function masterLike(id) {
 		home.masterLike("${MANAGE_URL_STR}/shot/masterLike", id, "#masterLike_" + id, "#publicLike_" + id);
 	}
-	
+
 	</c:if>
 </script>
 <div>
@@ -52,49 +66,45 @@
 				<a href="${ctx}/shot/view/${shotInfo.id}">
 					<img data-original="${shotInfo.urlS}" class="img-responsive imagelazy">
 					<div style="margin-top: 5px;">
-						${shotInfo.formatedMinSec}<span style="color: lightgray;">:${shotInfo.formatedMicroSec}</span>
-						<div style="margin-bottom: 10px;">
-							<a class="btn btn-primary btn-xs" onclick="home.publicLike('${shotInfo.id}');">
-								<span class="glyphicon glyphicon-star"></span>喜欢
-								<div id="publicLike_${shotInfo.id}" class="badge">${shotInfo.publicLikeCount}</div>
-							</a>
-							<c:if test="${IS_MASTER}">
-								<a class="btn btn-primary btn-xs" onclick="home.masterLike('${MANAGE_URL_STR}/shot/masterLike', '${shotInfo.id}');">
-									<span class="glyphicon glyphicon-star"></span>推荐
-									<div id="masterLike_${shotInfo.id}" class="badge">${shotInfo.masterRecommendRank}</div>
-								</a>
-							</c:if>
-						</div>
-
+						${shotInfo.formatedMinSec}<span style="display: none; color: lightgray;">:${shotInfo.formatedMicroSec}</span>
 					</div>
 				</a>
+				<div class="btn btn-primary btn-xs" onclick="home.publicLike('${shotInfo.id}');">
+					<span class="glyphicon glyphicon-star"></span>喜欢
+					<div id="publicLike_${shotInfo.id}" class="badge">${shotInfo.publicLikeCount}</div>
+				</div>
+				<c:if test="${IS_MASTER}">
+					<div class="btn btn-primary btn-xs" onclick="home.masterLike('${MANAGE_URL_STR}/shot/masterLike', '${shotInfo.id}');">
+						<span class="glyphicon glyphicon-star"></span>推荐
+						<div id="masterLike_${shotInfo.id}" class="badge">${shotInfo.masterRecommendRank}</div>
+					</div>
+				</c:if>
 			</div>
 		</c:forEach>
 	</div>
 </div>
 
 <div>
-	<tags:pagination page="${shotInfoPage}" paginationSize="10" />
+	<tags:paginationRestPage page="${shotInfoPage}" paginationSize="6" />
 </div>
 
 <div>
-	<a class="btn btn-primary" href="${ctx}/episode/list/${animeEpisode.animeInfoId}">返回剧集列表</a>
+	<a class="btn btn-primary" href="${ctx}/episode/list/${animeEpisode.animeInfoId}" title="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' />">返回剧集列表</a>
 </div>
 
 <div style="margin-top: 50px;">
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="row">
-				<c:if test="${!empty subtitleLineList}">字幕一览</c:if>
-				<table>
-					<c:forEach items="${ subtitleLineList }" var="subtitleLine">
-						<tr>
-							<td style="padding-right: 5px; font-size: 10px;">${subtitleLine.startTimeMinSecMicro}</td>
-							<td style="padding-right: 5px; font-size: 10px;">${subtitleLine.endTimeMinSecMicro}</td>
-							<td style="font-size: 10px;">${subtitleLine.text}</td>
-						</tr>
-					</c:forEach>
-				</table>
+				<c:if test="${!empty subtitleLineList}">
+					<div style="font-weight: 700;">字幕一览</div>
+					<div>
+						<pre class="subtitleTable">
+<c:forEach items="${ subtitleLineList }" var="subtitleLine">${subtitleLine.startTimeMinSecMicro} ${subtitleLine.endTimeMinSecMicro} <c:out value='${subtitleLine.text}' />
+</c:forEach>
+						</pre>
+					</div>
+				</c:if>
 			</div>
 		</div>
 	</div>

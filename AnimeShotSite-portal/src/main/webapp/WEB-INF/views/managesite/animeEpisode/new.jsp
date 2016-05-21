@@ -214,6 +214,18 @@
 		</div>
 	</div>
 	<div class="form-group">
+		<label class="col-sm-2 control-label">宽度</label>
+		<div class="col-sm-5">
+			<input class="form-control" id="width" name="width" value='${animeEpisodeInfo.width}' />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">高度</label>
+		<div class="col-sm-5">
+			<input class="form-control" id="height" name="height" value='${animeEpisodeInfo.height}' />
+		</div>
+	</div>
+	<div class="form-group">
 		<label class="col-sm-2 control-label">图片ID</label>
 		<div class="col-sm-5">
 			<input class="form-control" name="titleUrlId" value="${animeEpisodeInfo.titleUrlId}" />

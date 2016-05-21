@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<style>
-<!--
--->
-</style>
 <!-- 出错用模态框（Modal） 
 aria-hidden="true"
 aria-labelledby="myModalLabel" 
@@ -24,8 +20,5 @@ aria-labelledby="myModalLabel"
 				 -->
 			</div>
 		</div>
-		<!-- /.modal-content -->
 	</div>
-	<!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->

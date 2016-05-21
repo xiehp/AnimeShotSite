@@ -61,6 +61,8 @@
 			$("input[name=summary]").val(summaryEditor.getData());
 			document.getElementById('summaryCount').innerHTML = summaryEditor.getData().length;
 		});
+		
+		// 初始化select
 	});
 </script>
 

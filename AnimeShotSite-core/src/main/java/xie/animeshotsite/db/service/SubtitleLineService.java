@@ -3,13 +3,16 @@ package xie.animeshotsite.db.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import xie.animeshotsite.db.entity.SubtitleInfo;
 import xie.animeshotsite.db.entity.SubtitleLine;
+import xie.animeshotsite.db.repository.SubtitleInfoDao;
 import xie.animeshotsite.db.repository.SubtitleLineDao;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.repository.BaseRepository;
@@ -23,6 +26,8 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 
 	@Autowired
 	private SubtitleLineDao subtitleLineDao;
+	@Autowired
+	private SubtitleInfoDao subtitleInfoDao;
 
 	@Override
 	public BaseRepository<SubtitleLine, String> getBaseRepository() {
@@ -40,15 +45,15 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 	public void saveSubtitleLine(SubtitleInfo subtitleInfo, Boolean forceDelete) {
 		File file = null;
 		try {
-
 			// 创建字幕数据
 			file = FilePathUtils.getCommonFilePath(subtitleInfo.getLocalRootPath(), subtitleInfo.getLocalDetailPath(), subtitleInfo.getLocalFileName());
 			Subtitle subtitle = SubtitleFactory.createSubtitle(file);
 			if (subtitle != null) {
 				List<XSubtitleLine> list = subtitle.getSubtitleLineList();
-				if (list.size() > 0) {
+				if (list != null && list.size() > 0) {
 					// 删除老的数据
 					if (forceDelete) {
+						logging.error("删除老的数据");
 						deleteBySubtitleInfoId(subtitleInfo.getId());
 					}
 
@@ -56,12 +61,13 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 					for (XSubtitleLine xSubtitleLine : list) {
 						saveSubtitleLine(xSubtitleLine, subtitleInfo);
 					}
+
+					logging.error("创建字幕数据成功，文件：{}", file.getAbsolutePath());
 				}
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			logging.error("创建字幕失败 {}", file == null ? "" : file.getAbsolutePath());
-			logging.error("创建字幕失败", e);
+			logging.error("创建字幕数据失败, {}", file == null ? "" : file.getAbsolutePath());
+			logging.error("创建字幕数据失败", e);
 		}
 	}
 
@@ -101,11 +107,12 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 	 * 同时将总体时间少于时间段一半的字幕去除掉<br>
 	 * 
 	 * @param animeEpisodeId
+	 * @param defaultShowLanage
 	 * @param startTime
 	 * @param endTime
 	 * @return
 	 */
-	public List<SubtitleLine> findByTimeRemoveDuplicate(String animeEpisodeId, Long shotStartTime, Long shotEndTime) {
+	public List<SubtitleLine> findByTimeRemoveDuplicate(String animeEpisodeId, List<String> showLanage, Long shotStartTime, Long shotEndTime) {
 		List<SubtitleLine> list = subtitleLineDao.findByTime(animeEpisodeId, shotStartTime, shotEndTime);
 
 		if (shotEndTime <= shotStartTime) {
@@ -114,20 +121,47 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 
 		Long subtitleStartTime;
 		Long subtitleEndTime;
+		String subtitleText;
 
+		Set<String> duplicateRemoveSet = new HashSet<String>();
 		List<SubtitleLine> newList = new ArrayList<SubtitleLine>();
 		for (SubtitleLine subtitleLine : list) {
 			subtitleStartTime = subtitleLine.getStartTime();
 			subtitleEndTime = subtitleLine.getEndTime();
+			subtitleText = subtitleLine.getText();
+			SubtitleInfo subtitleInfo = subtitleInfoDao.findById(subtitleLine.getSubtitleInfoId());
 
-			if (isInTime(shotStartTime, shotEndTime, subtitleStartTime, subtitleEndTime)) {
-				newList.add(subtitleLine);
+			// 判断该语言是否需要显示
+			if (showLanage != null && !showLanage.contains(subtitleInfo.getLanguage())) {
+				continue;
 			}
+
+			// 去除时间和文本同时一样的字幕
+			if (duplicateRemoveSet.contains(subtitleStartTime + subtitleText + subtitleEndTime)) {
+				continue;
+			}
+
+			// 判断是否在合适的时间段中
+			if (!isInTime(shotStartTime, shotEndTime, subtitleStartTime, subtitleEndTime)) {
+				continue;
+			}
+
+			newList.add(subtitleLine);
+			duplicateRemoveSet.add(subtitleStartTime + subtitleText + subtitleEndTime);
 		}
 
 		return newList;
 	}
 
+	/**
+	 * 判断是否在合适的时间段中
+	 * 
+	 * @param startTime
+	 * @param endTime
+	 * @param calcStartTime
+	 * @param calcEndTime
+	 * @return
+	 */
 	private boolean isInTime(Long startTime, Long endTime, Long calcStartTime, Long calcEndTime) {
 
 		boolean defaultResult = true;

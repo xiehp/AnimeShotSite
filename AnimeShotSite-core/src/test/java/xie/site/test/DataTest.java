@@ -10,7 +10,7 @@ public class DataTest {
 	public static void main(String[] args) {
 		ShotInfoService shotInfoService = SpringUtil.getBean(ShotInfoService.class);
 		List<ShotInfo> list = shotInfoService.getMasterRecommandShotList(7, 44);
-		
+
 		System.out.println(list);
 	}
 }

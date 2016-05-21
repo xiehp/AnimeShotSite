@@ -95,7 +95,7 @@ public class SubtitleManagerController extends BaseManagerController<SubtitleInf
 			subtitleInfo.setAnimeInfoId(animeInfoId);
 			subtitleInfo.setFileType("ass");
 			
-			subtitleInfo.setLocalRootPath(FilePathUtils.getRootDefault().getAbsolutePath());
+			subtitleInfo.setLocalRootPath(FilePathUtils.getAnimeRootDefault().getAbsolutePath());
 			subtitleInfo.setLocalDetailPath("");
 			subtitleInfo.setShowFlg(1);
 			subtitleInfo.setFileLocation("1");
@@ -106,11 +106,11 @@ public class SubtitleManagerController extends BaseManagerController<SubtitleInf
 				request.setAttribute("animeInfo", animeInfo);
 
 				if (XStringUtils.isNotBlank(animeInfo.getLocalRootPath())) {
-					subtitleInfo.setLocalRootPath(animeInfo.getLocalRootPath());
+					subtitleInfo.setLocalRootPath(FilePathUtils.getAnimeRoot(animeInfo, null).getAbsolutePath());
 				}
 
 				if (XStringUtils.isNotBlank(animeInfo.getLocalDetailPath())) {
-					subtitleInfo.setLocalDetailPath(animeInfo.getLocalDetailPath());
+					subtitleInfo.setLocalDetailPath(animeInfo.getLocalDetailPath() + "\\字幕");
 				}
 			}
 

@@ -45,6 +45,19 @@ function HomeFuction() {
 			console.warn("masterLike arguments error.");
 		}
 	}
+
+	this.setAnimeTitleImage = function(url, animeInfoId, animeEpisodeId, animeShotId) {
+		var param = {};
+		param.animeInfoId = animeInfoId;
+		param.animeEpisodeId = animeEpisodeId;
+		param.animeShotId = animeShotId;
+
+		$.homePost(url, param, function(data) {
+			if (data) {
+				$.showMessageModal("更新成功");
+			}
+		});
+	}
 }
 
 var home = new HomeFuction();

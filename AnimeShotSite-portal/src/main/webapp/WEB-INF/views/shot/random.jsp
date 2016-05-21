@@ -5,7 +5,7 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<title>动画剧集截图一览</title>
+<title>动画截图网 随便看 帮你随机挑选20张动漫图片</title>
 <style>
 .blockTitle {
 	margin-top: 10px;

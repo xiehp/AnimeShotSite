@@ -1,12 +1,14 @@
 package xie.animeshotsite.timer.task;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -33,6 +35,8 @@ public class ShotSpecifyTask extends XBaseTask {
 	AnimeInfoService animeInfoService;
 	@Autowired
 	AnimeEpisodeService animeEpisodeService;
+	@Autowired
+	ApplicationContext applicationContext;
 
 	public static void main(String[] args) throws Exception {
 		args = new String[3];
@@ -45,6 +49,7 @@ public class ShotSpecifyTask extends XBaseTask {
 		paramMap.put(Video2ImageProperties.KEY_forceUpload, false);
 		paramMap.put(Video2ImageProperties.KEY_specifyTimes, "100000,200000");
 
+		// ShotSpecifyTask shotSpecifyTime = SpringUtil.getBean(ShotSpecifyTask.class);
 		ShotSpecifyTask shotSpecifyTime = SpringUtil.getBean(ShotSpecifyTask.class);
 		int aaa = shotSpecifyTime.run(args, paramMap);
 		System.exit(aaa);
@@ -68,6 +73,10 @@ public class ShotSpecifyTask extends XBaseTask {
 			File animeEpisodeFile = FilePathUtils.getAnimeFullFilePath(animeInfo, animeEpisode, animeEpisode.getLocalFileName());
 
 			logger.info("begin process : " + animeEpisodeFile.getAbsolutePath());
+			if (!animeEpisodeFile.exists()) {
+				logger.error("文件不存在：" + animeEpisodeFile.getAbsolutePath());
+				throw new FileNotFoundException("文件不存在：" + animeEpisodeFile.getAbsolutePath());
+			}
 
 			SaveImageListener saveImageListener = new SaveImageListener(animeEpisode.getAnimeInfoId(), animeEpisode.getId(), animeEpisode.getLocalRootPath(), animeEpisode.getLocalDetailPath(), animeEpisode.getNumber());
 			File fileMrl = animeEpisodeFile;

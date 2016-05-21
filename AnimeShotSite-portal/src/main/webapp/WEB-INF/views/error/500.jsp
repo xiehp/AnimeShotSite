@@ -6,8 +6,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>500</title>
-<link href="${ctx}/static/media/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-<link href="${ctx}/static/media/css/error.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="page-500-full-page">
 	<div class="row-fluid">

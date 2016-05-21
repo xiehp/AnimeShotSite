@@ -195,6 +195,25 @@
 		}
 	}
 
+	$.log = function(message) {
+		if (IS_JS_DEBUG) {
+			console.log(message);
+			//alert(message);
+		}
+	}
+
+	$.warn = function(message) {
+		if (IS_JS_DEBUG) {
+			console.warn(message);
+		}
+	}
+
+	$.error = function(message) {
+		if (IS_JS_DEBUG) {
+			console.error(message);
+		}
+	}
+
 	$.homeAutoComplete = function(element, url) {
 		$('#' + element).autocomplete({
 			source : function(request, response) {
@@ -215,6 +234,7 @@
 		var m = d.getMonth() + 1;
 		return d.getFullYear() + '-' + m + '-' + d.getDate();
 	}
+
 	// 日期增加天数
 	$.homeAddDate = function(date, days) {
 		var d = new Date(date);
@@ -250,8 +270,41 @@
 		})
 	}
 
+	/** 编码html特殊字符 */
 	$.escapeHtml = function(s) {
 		return (s) ? $("<p>").text(s).html() : "";
 	}
 
+	/** 根据父级tag名获得对象的父级对象 */
+	$.getParentTagByTagName = function(object, parentTagName) {
+		var parent = object.parentNode;
+		while (true) {
+			if (parent == null) {
+				break;
+			}
+			if (parent.tagName == parentTagName) {
+				break;
+			}
+		}
+		return parent;
+	};
+
+	$.getWidthAndHeight = function() {
+
+	};
+
 })(jQuery);
+
+// cookie操作
+var HomeCookie = {};
+HomeCookie.setCookie = function(name, value) {
+	return $.cookie(name, value);
+}
+
+HomeCookie.getCookieValue = function(name) {
+	return $.cookie(name);
+}
+
+HomeCookie.removeCookie = function(name) {
+	return $.cookie(name, null);
+}

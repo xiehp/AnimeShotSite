@@ -22,6 +22,7 @@ import xie.animeshotsite.db.service.ShotInfoService;
 import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.db.service.SubtitleLineService;
 import xie.base.controller.BaseController;
+import xie.common.Constants;
 import xie.common.utils.XWaitTime;
 
 @Controller
@@ -97,7 +98,9 @@ public class IndexController extends BaseController {
 		{
 			Long animeEpisodeCount = entityCache.get("animeEpisodeCount" + "Index");
 			if (animeEpisodeCount == null) {
-				animeEpisodeCount = animeEpisodeDao.count();
+//				animeEpisodeCount = animeEpisodeDao.count();
+				animeEpisodeCount = animeEpisodeDao.countByShowFlgAndDeleteFlag(Constants.FLAG_INT_YES, Constants.FLAG_INT_NO);
+
 				entityCache.put("animeEpisodeCount" + "Index", animeEpisodeCount);
 			}
 			request.setAttribute("animeEpisodeCount", animeEpisodeCount);

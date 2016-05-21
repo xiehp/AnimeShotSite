@@ -1,38 +1,36 @@
 package xie.animeshotsite.interceptor;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import xie.animeshotsite.setup.ShotSiteSetup;
 import xie.common.Constants;
+import xie.common.string.XStringUtils;
 import xie.common.web.util.WebConstants;
 import xie.sys.auth.service.realm.ShiroRDbRealm.ShiroUser;
 
 /**
- * 
- * 网页标题信息的拦截器类
- *
- * <pre>
- * Pattern : Value Object
- * Thread Safe : No
- *
- * Change History
- *
- * Name                 Date                    Description
- * -------              -------                 -----------------
- * 020191              2014-3-31            Create the class
- *
- * </pre>
- *
- * @author 020191
- * @version 1.0
+ * 通用处理
  */
 public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 	private final static String CHANGE_PAGE_DATA_FALG_NAME = "CHANGE_PAGE_DATA_FALG_NAME";
+	Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	@Autowired(required = false)
+	private ApplicationContext applicationContext;
+
+	@Autowired
+	private ShotSiteSetup shotSiteSetup;
 
 	/**
 	 * 
@@ -42,20 +40,37 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 	 * @param response 回复对象
 	 * @param handler 提交对象
 	 * @return 成功则返回true，失败则返回false
+	 * @throws IOException
 	 */
 	@Override
 	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response,
-			final Object handler) {
+			final Object handler) throws IOException {
 
-		// System.out.println(request.getRequestURI());
+		// 判断是否是合适的host
+		logger.debug("getHeader Host:{1}", request.getHeader("Host"));
+		logger.debug("getServerName:{1}", request.getServerName());
+		logger.debug("X-Forwarded-Host:{1}", request.getHeader("X-Forwarded-Host"));
 
-		// set constants to request attribute
-		// request.setAttribute("FLAG_YES", CommonConstants.FLAG_YES);
-		// request.setAttribute("FLAG_NO", CommonConstants.FLAG_NO);
-		// request.setAttribute("FLAG_INT_YES", CommonConstants.FLAG_INT_YES);
-		// request.setAttribute("FLAG_INT_NO", CommonConstants.FLAG_INT_NO);
-		// request.setAttribute("STATE_NORMAL", CommonConstants.STATE_NORMAL);
-		// request.setAttribute("STATE_STOP", CommonConstants.STATE_STOP);
+		if (XStringUtils.isNotBlank(shotSiteSetup.getAnimesiteServerHost())) {
+			String serverName = request.getHeader("X-Forwarded-Host");
+			if (XStringUtils.isBlank(serverName)) {
+				serverName = request.getServerName();
+			}
+
+			if ("127.0.0.1".equals(serverName) || "localhost".equals(serverName)) {
+				// 来自本地，则不做跳转
+			} else if ("XXXXX".equals(serverName)) {
+				// 其他不需要跳转的host
+			} else {
+				if (!shotSiteSetup.getAnimesiteServerHost().startsWith(serverName)) {
+					// serverName不符合配置文件设定的值，进行跳转
+					response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+					// response.sendRedirect("http://" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
+					response.setHeader("Location", "http://" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
+					return false;
+				}
+			}
+		}
 
 		return true;
 	}
@@ -93,43 +108,60 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 
 		if (!isStaticUrl) {
 			System.out.println(request.getRequestURL());
+			System.out.println(applicationContext);
 
 			// 告诉前台当前登陆用户角色或权限
-			ShiroUser shiroUser = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-			System.out.println("shiroUser:" + shiroUser);
-			if (shiroUser != null && WebConstants.SITE_MANAGER_ID.equals(shiroUser.getId()) && WebConstants.SITE_MANAGER_LOGIN_ID.equals(shiroUser.getLoginName())) {
-				request.setAttribute("IS_MASTER", true);
-			} else {
-				request.setAttribute("IS_MASTER", false);
+			{
+				ShiroUser shiroUser = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+				System.out.println("shiroUser:" + shiroUser);
+				if (shiroUser != null && WebConstants.SITE_MANAGER_ID.equals(shiroUser.getId()) && WebConstants.SITE_MANAGER_LOGIN_ID.equals(shiroUser.getLoginName())) {
+					request.setAttribute("IS_MASTER", true);
+				} else {
+					request.setAttribute("IS_MASTER", false);
+				}
 			}
+			
+			// 是否需要js debug
+			request.setAttribute("IS_JS_DEBUG", shotSiteSetup.getAnimesiteJsDebug());
 
-			// 传给jsp页面的常量
-			// 后台管理页面
-			if (requestURL.contains(WebConstants.MANAGE_URL_STR)) {
+			// 判断是否需要网站统计和搜索引擎推送
+			{
 				request.setAttribute("canBaiduRecord", false);
-//			} else if (!requestURL.contains(WebConstants.SITE_URL)) {
-//				request.setAttribute("canBaiduRecord", false);
-			} else {
-				request.setAttribute("canBaiduRecord", true);
+				if (requestURL.contains(WebConstants.MANAGE_URL_STR)) {
+					// 后台页面，不统计
+					request.setAttribute("canBaiduRecord", false);
+				} else {
+					// 其他页面，则判断配置文件是否允许
+					if ("1".equals(shotSiteSetup.getAnimesiteSearchTrafficStatistics())) {
+						request.setAttribute("canBaiduRecord", true);
+					}
+				}
+				System.out.println("canBaiduRecord: " + request.getAttribute("canBaiduRecord"));
 			}
-			System.out.println("canBaiduRecord: " + request.getAttribute("canBaiduRecord"));
-
-			request.setAttribute("MANAGE_URL_STR", WebConstants.MANAGE_URL_STR);
 
 			// 百度静态资源链接
 			request.setAttribute("BAIDU_STATIC_URL", "http://apps.bdimg.com/libs/");
 
 			// 系统常量
-			// json
-			request.setAttribute("JSON_RESPONSE_KEY_CODE", Constants.JSON_RESPONSE_KEY_CODE);
-			request.setAttribute("JSON_RESPONSE_KEY_MESSAGE", Constants.JSON_RESPONSE_KEY_MESSAGE);
-			request.setAttribute("SUCCESS_CODE", Constants.SUCCESS_CODE);
-			request.setAttribute("FAIL_CODE", Constants.FAIL_CODE);
-			// 标志
-			request.setAttribute("FLAG_INT_YES", Constants.FLAG_INT_YES);
-			request.setAttribute("FLAG_INT_NO", Constants.FLAG_INT_NO);
-			request.setAttribute("FLAG_STR_YES", Constants.FLAG_STR_YES);
-			request.setAttribute("FLAG_STR_NO", Constants.FLAG_STR_NO);
+			{
+				// 其他
+				request.setAttribute("MANAGE_URL_STR", WebConstants.MANAGE_URL_STR);
+
+				// json
+				request.setAttribute("JSON_RESPONSE_KEY_CODE", Constants.JSON_RESPONSE_KEY_CODE);
+				request.setAttribute("JSON_RESPONSE_KEY_MESSAGE", Constants.JSON_RESPONSE_KEY_MESSAGE);
+				request.setAttribute("SUCCESS_CODE", Constants.SUCCESS_CODE);
+				request.setAttribute("FAIL_CODE", Constants.FAIL_CODE);
+
+				// 标志
+				request.setAttribute("FLAG_INT_YES", Constants.FLAG_INT_YES);
+				request.setAttribute("FLAG_INT_NO", Constants.FLAG_INT_NO);
+				request.setAttribute("FLAG_STR_YES", Constants.FLAG_STR_YES);
+				request.setAttribute("FLAG_STR_NO", Constants.FLAG_STR_NO);
+
+				// server处理
+				request.setAttribute("requestURI", request.getRequestURI());
+			}
 		}
 	}
 

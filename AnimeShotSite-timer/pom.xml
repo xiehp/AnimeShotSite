@@ -34,6 +34,7 @@
 								<configuration>
 									<target>
 										<copy file="target/${project.build.finalName}.jar" todir="D:\work\server\application\AnimeShotTimerTest"></copy>
+										<copy file="bat/startTimer.bat" todir="D:\work\server\application\AnimeShotTimer"></copy>
 									</target>
 								</configuration>
 							</execution>
@@ -45,7 +46,7 @@
 						<artifactId>maven-dependency-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>timer-test-dependency-copy</id>
+								<id>timer-test-dependency-copy-AnimeLib</id>
 								<phase>install</phase>
 								<goals>
 									<goal>copy-dependencies</goal>
@@ -53,6 +54,17 @@
 								<configuration>
 									<includeGroupIds>xie</includeGroupIds>
 									<outputDirectory>D:\work\server\application\AnimeShotTimerTest\AnimeLib</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>timer-test-dependency-copy-otherLib</id>
+								<phase>install</phase>
+								<goals>
+									<goal>copy-dependencies</goal>
+								</goals>
+								<configuration>
+									<excludeGroupIds>xie</excludeGroupIds>
+									<outputDirectory>D:\work\server\application\AnimeShotTimerTest\OtherLib</outputDirectory>
 								</configuration>
 							</execution>
 						</executions>
@@ -79,6 +91,7 @@
 								<configuration>
 									<target>
 										<copy file="target/${project.build.finalName}.jar" todir="D:\work\server\application\AnimeShotTimer"></copy>
+										<copy file="bat/startTimer.bat" todir="D:\work\server\application\AnimeShotTimer"></copy>
 									</target>
 								</configuration>
 							</execution>
@@ -90,7 +103,7 @@
 						<artifactId>maven-dependency-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>timer-product-dependency-copy-self</id>
+								<id>timer-product-dependency-copy-AnimeLib</id>
 								<phase>install</phase>
 								<goals>
 									<goal>copy-dependencies</goal>
@@ -101,7 +114,7 @@
 								</configuration>
 							</execution>
 							<execution>
-								<id>timer-product-dependency-copy-other</id>
+								<id>timer-product-dependency-copy-otherLib</id>
 								<phase>install</phase>
 								<goals>
 									<goal>copy-dependencies</goal>

@@ -27,10 +27,10 @@
 	
 	<!-- 综合时间与大小的滚动策略，先按小时滚动，小时内的文件大于10mb时再按大小滚动 -->
 	<appender name="businessLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>logs/business.log</file>
+		<file>logs/business-timer.log</file>
 		
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>logs/business-%d{yyyy-MM-dd_HH}.%i.zip</fileNamePattern>
+			<fileNamePattern>logs/business-timer-%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<maxFileSize>10MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>

@@ -3,6 +3,8 @@ package xie.animeshotsite.timer.main;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,6 +16,9 @@ import xie.animeshotsite.timer.timer.ShotTaskTimer;
 @Configuration
 @ComponentScan("xie")
 public class MainTimer {
+
+	private static Logger logger = LoggerFactory.getLogger(MainTimer.class);
+
 	public static void main(String[] args) {
 
 		// ConfigurableApplicationContext configurableApplicationContext = SpringApplication.run(BatchConfiguration.class, args);
@@ -24,40 +29,41 @@ public class MainTimer {
 		// createTimer(AnimeShotTimer.class);
 		System.setProperty("spring.profiles.default", "development");
 		// System.setProperty("spring.profiles.default", "production");
+
 		createTimer(ShotTaskTimer.class, 10000, ShotTask.TASK_TYPE_SHOT);
 		createTimer(ShotTaskTimer.class, 10000, ShotTask.TASK_TYPE_SUBTITLE);
 
 		printProfile();
 
-		// System.out.println(SpringUtil.getProperty("tomcat.deploy.active.spring.profile"));
-		// System.out.println(SpringUtil.getCtx().getEnvironment().getDefaultProfiles().length);
-		// System.out.println(SpringUtil.getCtx().getEnvironment().getActiveProfiles().length);
-		// System.out.println(SpringUtil.getCtx().getEnvironment().getPropertySources().size());
+		// logger.info(SpringUtil.getProperty("tomcat.deploy.active.spring.profile"));
+		// logger.info(SpringUtil.getCtx().getEnvironment().getDefaultProfiles().length);
+		// logger.info(SpringUtil.getCtx().getEnvironment().getActiveProfiles().length);
+		// logger.info(SpringUtil.getCtx().getEnvironment().getPropertySources().size());
 		//
-		// System.out.println(SpringUtil.getCtx().getEnvironment().getSystemEnvironment());
-		// System.out.println(SpringUtil.getCtx().getEnvironment().getSystemProperties());
+		// logger.info(SpringUtil.getCtx().getEnvironment().getSystemEnvironment());
+		// logger.info(SpringUtil.getCtx().getEnvironment().getSystemProperties());
 		//
 		// SpringUtil.getCtx().getEnvironment().setActiveProfiles("develoment");
-		// System.out.println(SpringUtil.getBean(TietukuConfig.class));
-		// System.out.println(SpringUtil.getBean(TietukuConfig.class).getTietukuToken());
-		// System.out.println(SpringUtil.getCtx().getEnvironment().getPropertySources().get("tietuku").getProperty("token"));
+		// logger.info(SpringUtil.getBean(TietukuConfig.class));
+		// logger.info(SpringUtil.getBean(TietukuConfig.class).getTietukuToken());
+		// logger.info(SpringUtil.getCtx().getEnvironment().getPropertySources().get("tietuku").getProperty("token"));
 		//
 		// SpringUtil.getCtx().getEnvironment().setActiveProfiles("test");
-		// System.out.println(SpringUtil.getBean(TietukuConfig.class));
-		// System.out.println(SpringUtil.getBean(TietukuConfig.class).getTietukuToken());
-		// System.out.println(SpringUtil.getCtx().getEnvironment().getPropertySources().get("tietuku").getProperty("token"));
+		// logger.info(SpringUtil.getBean(TietukuConfig.class));
+		// logger.info(SpringUtil.getBean(TietukuConfig.class).getTietukuToken());
+		// logger.info(SpringUtil.getCtx().getEnvironment().getPropertySources().get("tietuku").getProperty("token"));
 		// SpringUtil.getCtx().getEnvironment().setActiveProfiles("production");
-		// System.out.println(SpringUtil.getBean(TietukuConfig.class));
-		// System.out.println(SpringUtil.getBean(TietukuConfig.class).getTietukuToken());
-		// System.out.println(SpringUtil.getCtx().getEnvironment().getPropertySources().get("tietuku").getProperty("token"));
+		// logger.info(SpringUtil.getBean(TietukuConfig.class));
+		// logger.info(SpringUtil.getBean(TietukuConfig.class).getTietukuToken());
+		// logger.info(SpringUtil.getCtx().getEnvironment().getPropertySources().get("tietuku").getProperty("token"));
 		// SpringUtil.getCtx().getEnvironment().setActiveProfiles("ggg");
-		// System.out.println(SpringUtil.getBean(TietukuConfig.class));
-		// System.out.println(SpringUtil.getBean(TietukuConfig.class).getTietukuToken());
-		// System.out.println(SpringUtil.getCtx().getEnvironment().getPropertySources().get("tietuku").getProperty("token"));
+		// logger.info(SpringUtil.getBean(TietukuConfig.class));
+		// logger.info(SpringUtil.getBean(TietukuConfig.class).getTietukuToken());
+		// logger.info(SpringUtil.getCtx().getEnvironment().getPropertySources().get("tietuku").getProperty("token"));
 
 		// TietukuPropertiesConfiger tietukuPropertiesConfiger = SpringUtil.getBean(TietukuPropertiesConfiger.class);
-		// System.out.println(tietukuPropertiesConfiger);
-		// System.out.println(tietukuPropertiesConfiger.getNowProfile());
+		// logger.info(tietukuPropertiesConfiger);
+		// logger.info(tietukuPropertiesConfiger.getNowProfile());
 	}
 
 	/***
@@ -75,15 +81,15 @@ public class MainTimer {
 
 	private static void printProfile() {
 		String[] defaultProfiles = SpringUtil.getCtx().getEnvironment().getDefaultProfiles();
-		System.out.println("当前默认的profile：" + defaultProfiles.length);
+		logger.info("当前默认的profile：" + defaultProfiles.length);
 		for (String value : defaultProfiles) {
-			System.out.println(value);
+			logger.info(value);
 		}
 
 		String[] activeProfiles = SpringUtil.getCtx().getEnvironment().getActiveProfiles();
-		System.out.println("当前激活的profile：" + activeProfiles.length);
+		logger.info("当前激活的profile：" + activeProfiles.length);
 		for (String value : activeProfiles) {
-			System.out.println(value);
+			logger.info(value);
 		}
 	}
 }

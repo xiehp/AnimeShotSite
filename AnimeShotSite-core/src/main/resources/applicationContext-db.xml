@@ -26,8 +26,8 @@
 		<property name="defaultAutoCommit" value="false" />
 	</bean> 
 	-->
-	
-	
+
+
 	<import resource="deployContext.xml" />
 
 	<!-- Jpa Entity Manager 配置 -->

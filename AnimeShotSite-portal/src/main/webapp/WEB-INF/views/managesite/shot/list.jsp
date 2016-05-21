@@ -41,17 +41,13 @@
 				<a href="${ctx}/shot/view/${shotInfo.id}">
 					<img src="${shotInfo.urlS}" class="img-responsive">
 					<div style="margin-top: 5px;">
-						${shotInfo.formatedMinSec}<span style="color: lightgray;">:${shotInfo.formatedMicroSec}</span>
-						<div>
-							<a class="btn btn-primary btn-xs" href="#" onclick="publicLike('${shotInfo.id}');">
-								<span class="glyphicon glyphicon-star"></span>喜欢 <span id="publicLike_${shotInfo.id}" class="badge">${shotInfo.publicLikeCount}</span>
-							</a>
-						</div>
-						<div>
-							<a class="btn btn-primary btn-xs" onclick="masterLike('${shotInfo.id}');">
-								<span class="glyphicon glyphicon-star"></span>推荐 <span id="masterLike_${shotInfo.id}" class="badge">${shotInfo.masterRecommendRank}</span>
-							</a>
-						</div>
+						${shotInfo.formatedMinSec}<span style="display: none; color: lightgray;">:${shotInfo.formatedMicroSec}</span>
+					</div>
+					<div class="btn btn-primary btn-xs" href="#" onclick="publicLike('${shotInfo.id}');">
+						<span class="glyphicon glyphicon-star"></span>喜欢 <span id="publicLike_${shotInfo.id}" class="badge">${shotInfo.publicLikeCount}</span>
+					</div>
+					<div class="btn btn-primary btn-xs" onclick="masterLike('${shotInfo.id}');">
+						<span class="glyphicon glyphicon-star"></span>推荐 <span id="masterLike_${shotInfo.id}" class="badge">${shotInfo.masterRecommendRank}</span>
 					</div>
 				</a>
 			</div>

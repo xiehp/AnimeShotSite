@@ -46,7 +46,7 @@ public class AnimeEpisodeController extends BaseFunctionController<AnimeEpisode,
 		searchParams.put("EQ_showFlg", Constants.FLAG_STR_YES);
 
 		AnimeInfo animeInfo = animeInfoService.findOne(animeInfoId);
-		Page<AnimeEpisode> animeEpisodePage = animeEpisodeService.searchByPage(searchParams, pageNumber, Constants.DEFAULT_PAGE_SIZE, sortType, AnimeEpisode.class);
+		Page<AnimeEpisode> animeEpisodePage = animeEpisodeService.searchPageByParams(searchParams, pageNumber, Constants.PAGE_SIZE_40, sortType, AnimeEpisode.class);
 
 		model.addAttribute("animeInfo", animeInfo);
 		model.addAttribute("animeEpisodePage", animeEpisodePage);

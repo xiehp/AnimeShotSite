@@ -7,6 +7,7 @@ import com.tietuku.entity.util.TietukuUtils;
 import xie.animeshotsite.constants.ShotConstants;
 import xie.animeshotsite.setup.ShotSiteSetup;
 import xie.base.entity.BaseEntity;
+import xie.common.utils.props.PropsUtil;
 
 @MappedSuperclass
 public abstract class BaseTietukuUrl extends BaseEntity {

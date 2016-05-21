@@ -4,26 +4,28 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<title>动画截图网 ${animeInfo.fullName} ${animeInfo.secondName}</title>
+<title>动画截图网 <c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /></title>
 
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="row">
 			<!-- 图片 -->
-			<div class="col-xs-4">
-				<img src="${animeInfo.titleUrl.urlS}" idth="100%" />
+			<div class="col-sm-4 col-xs-12">
+				<img src="${animeInfo.titleUrl.urlS}" width="100%" />
 			</div>
 			<!-- 信息 -->
-			<div class="col-xs-7">
+			<div class="col-sm-8 col-xs-12">
 				<!-- 名称 -->
 				<div class="blockTitle" style="margin-left: 0px;">
-					<span><c:out value="${animeInfo.fullName}" /></span> <span><c:out value="${animeInfo.secondName}" /></span>
+					<span><c:out value='${animeInfo.fullName}' /></span> <span><c:out value='${animeInfo.secondName}' /></span>
 				</div>
 
 				<!-- 动画简介 -->
 				<div style="text-align: left;">
-					<div>动画简介</div>
-					<div>${animeInfo.summary}</div>
+					<div style="font-weight: 700;">动画简介</div>
+					<div>
+						${animeInfo.summary}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -31,11 +33,11 @@
 		<!-- 列表 -->
 		<div class="row" style="margin-top: 10px;">
 			<c:forEach items="${ animeEpisodePage.content }" var="animeEpisode">
-				<div class="col-lg-2 col-sm-2 col-xs-2 thumbnail">
+				<div class="col-lg-2 col-md-2 col-sm-3 col-xs-4 thumbnail">
 					<a href="${ctx}/shot/list/${animeEpisode.id}">
 						<img data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy">
 						<div style="margin-top: 5px;">
-							<c:out value="${animeEpisode.divisionName}" />
+							<c:out value='${animeEpisode.divisionName}' />
 						</div>
 					</a>
 				</div>

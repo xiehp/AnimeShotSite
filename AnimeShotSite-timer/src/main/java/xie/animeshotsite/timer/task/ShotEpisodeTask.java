@@ -1,6 +1,7 @@
 package xie.animeshotsite.timer.task;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,6 +65,10 @@ public class ShotEpisodeTask extends XBaseTask {
 			File animeEpisodeFile = FilePathUtils.getAnimeFullFilePath(animeInfo, animeEpisode, animeEpisode.getLocalFileName());
 
 			logger.info("begin process : " + animeEpisodeFile.getAbsolutePath());
+			if (!animeEpisodeFile.exists()) {
+				logger.error("文件不存在：" + animeEpisodeFile.getAbsolutePath());
+				throw new FileNotFoundException("文件不存在：" + animeEpisodeFile.getAbsolutePath());
+			}
 
 			SaveImageListener saveImageListener = new SaveImageListener(animeEpisode.getAnimeInfoId(), animeEpisode.getId(), animeEpisode.getLocalRootPath(), animeEpisode.getLocalDetailPath(), animeEpisode.getNumber());
 			File fileMrl = animeEpisodeFile;

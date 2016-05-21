@@ -60,7 +60,7 @@ public class UserOperAspect {
 	@Before("controllerAspect()")
 	public void doBefore(JoinPoint joinPoint) throws ClassNotFoundException{
 		
-		if(logFlag == Constants.FLAG_INT_YES) {
+		if(Constants.FLAG_INT_YES.equals(logFlag)) {
 			String className = joinPoint.getTarget().getClass().getName();
 			String methodName = joinPoint.getSignature().getName();
 			HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.

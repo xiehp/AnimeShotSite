@@ -10,6 +10,10 @@ public class Constants {
 	public static final String UTF8_ENCODE = "UTF-8";
 	public static final String ISO8859_ENCODE = "ISO8859-1";
 
+	public static final String MAVEN_PROFILE_DEVELOPMENT = "development";
+	public static final String MAVEN_PROFILE_TEST = "test";
+	public static final String MAVEN_PROFILE_PRODUCTION = "production";
+
 	/**
 	 * 未登录
 	 */
@@ -24,7 +28,7 @@ public class Constants {
 	 * 操作失败
 	 */
 	public static final String FAIL_CODE = "10001";
-	
+
 	public static final String JSON_RESPONSE_KEY_CODE = "code";
 	public static final String JSON_RESPONSE_KEY_MESSAGE = "message";
 	public static final String JSON_RESPONSE_KEY_SUCCESS = "success";
@@ -41,11 +45,12 @@ public class Constants {
 	/**
 	 * 默认分页数
 	 */
-	public static final int DEFAULT_PAGE_SIZE = 20;
+	public static final int PAGE_SIZE_DEFAULT = 20;
+	public static final int PAGE_SIZE_40 = 20;
 
 	/** 是否标志 */
-	public static final int FLAG_INT_YES = 1;
-	public static final int FLAG_INT_NO = 0;
+	public static final Integer FLAG_INT_YES = 1;
+	public static final Integer FLAG_INT_NO = 0;
 	/** 是否标志 */
 	public static final String FLAG_STR_YES = "1";
 	public static final String FLAG_STR_NO = "0";

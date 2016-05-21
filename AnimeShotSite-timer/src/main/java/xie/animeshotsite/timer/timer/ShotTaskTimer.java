@@ -8,6 +8,7 @@ import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +36,8 @@ public class ShotTaskTimer extends TimerTask {
 	ShotTaskService shotTaskService;
 	@Autowired
 	ShotTaskDao shotTaskDao;
+	@Autowired
+	ApplicationContext applicationContext;
 
 	String taskType;
 	
@@ -44,10 +47,6 @@ public class ShotTaskTimer extends TimerTask {
 
 	@Override
 	public void run() {
-
-		// entityManager.getEntityManagerFactory().getCache().evictAll();
-		// sessionFactory.getCache().evictEntityRegions();
-
 		shotTaskDao.count();
 		List<ShotTask> list = shotTaskService.findNeedRunTask(taskType);
 		if (list.size() > 0) {
@@ -56,9 +55,8 @@ public class ShotTaskTimer extends TimerTask {
 			logger.debug("找到" + list.size() + "条计划数据" + "， 类型：" + taskType);
 		}
 
-		boolean isBegin;
-		for (ShotTask shotTask : list) {
-			isBegin = false;
+		if (list.size() > 0) {
+			ShotTask shotTask  = list.get(0);
 			try {
 				String taskClass = shotTask.getTaskClass();
 				String paramStr = shotTask.getTaskParam();
@@ -68,11 +66,11 @@ public class ShotTaskTimer extends TimerTask {
 				}
 
 				XTask task = (XTask) Class.forName(taskClass).newInstance();
-				task = (XTask) SpringUtil.getBean(Class.forName(taskClass));
-
+//				task = (XTask) SpringUtil.getBean(Class.forName(taskClass));
+				task = (XTask) applicationContext.getBean(Class.forName(taskClass));
+				
 				// 更改标志
 				shotTask = shotTaskService.beginTask(shotTask);
-				isBegin = true;
 
 				task.runTask(param);
 
