@@ -23,7 +23,6 @@ import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.common.string.XStringUtils;
 import xie.common.utils.JsonUtil;
-import xie.common.utils.XWaitTime;
 import xie.tietuku.spring.TietukuConfig;
 import xie.v2i.listener.Video2ImageAdapter;
 import xie.v2i.utils.CImage;
@@ -33,11 +32,7 @@ public class SaveImageListener extends Video2ImageAdapter {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	private int maxUploadPerHour = 300;
-
-	private int nowUploadPerHour = 0;
-
-	private XWaitTime uploadPerHourWait = new XWaitTime(3600 * 1000);
+	private UploadPerHourCouter uploadPerHourCouter;
 
 	/** 是否已经保存过剧集和动画信息的图片 */
 	private boolean hasSaveEpisodeImageFlg = false;
@@ -71,6 +66,7 @@ public class SaveImageListener extends Video2ImageAdapter {
 		animeEpisodeService = SpringUtil.getBean(AnimeEpisodeService.class);
 		animeInfoService = SpringUtil.getBean(AnimeInfoService.class);
 		imageUrlService = SpringUtil.getBean(ImageUrlService.class);
+		uploadPerHourCouter =  SpringUtil.getBean(UploadPerHourCouter.class);
 
 		this.animeInfoId = animeInfoId;
 		this.animeEpisodeId = animeEpisodeId;
@@ -133,24 +129,8 @@ public class SaveImageListener extends Video2ImageAdapter {
 		logger.info("保存到数据库, " + "id:" + shotInfo.getId() + ", timeStamp:" + shotInfo.getTimeStamp() + ", version:" + shotInfo.getVersion());
 
 		if (forceUpload || XStringUtils.isBlank(shotInfo.getTietukuUrlId())) {
-			// 判断当前是否刷新上传次数
-			if (uploadPerHourWait.isTimeout()) {
-				nowUploadPerHour = 0;
-				uploadPerHourWait.resetNowtime();
-			}
-
-			// 上传前判断是否已经超限
-			nowUploadPerHour++;
-			if (nowUploadPerHour > maxUploadPerHour) {
-				logger.info("达到最大每小时上传限制" + maxUploadPerHour + ", 等待一小时。");
-				try {
-					Thread.sleep(3600 * 1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				nowUploadPerHour = 1;
-				uploadPerHourWait.resetNowtime();
-			}
+			// 增加次数，同时判断当前是否刷新上传次数，以及暂停操作
+			uploadPerHourCouter.addCount();
 
 			// 保存截图到贴图库网站
 			String responseStr = PostImage.doUpload(file, tietukuToken);

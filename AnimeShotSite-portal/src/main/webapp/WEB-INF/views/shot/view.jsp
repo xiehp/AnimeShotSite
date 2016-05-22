@@ -62,7 +62,7 @@ overflow: scroll;
 			时间：${shotInfo.formatedMinSec}<span style="color: lightgray;">.${shotInfo.formatedMicroSec} (${shotInfo.timeStamp})</span>
 		</div>
 		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-			尺寸：<span id="imgWidth">${animeEp.width}</span>×<span id="imgHeight">${animeEpisode.height}</span> <span style="font-size: xx-small;">设置图片宽度</span>
+			尺寸：<span id="imgWidth">${animeEpisode.width}</span>×<span id="imgHeight">${animeEpisode.height}</span> <span style="font-size: xx-small;">设置图片宽度</span>
 			<input id="ShotViewImgWidth" type="text" value="${ShotViewImgWidth}" style="width: 50px; height: 18px; font-size: xx-small;" onchange="changeShotViewImgWidth();">
 			<input id="ShotImgDivWidth" type="hidden" value="${ShotImgDivWidth}">
 		</div>
