@@ -27,14 +27,14 @@
 			if (page.hasPrevious()) {
 		%>
 		<li>
-			<a href="${requestURI}">&lt;&lt;</a>
+			<a href="?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />">&lt;&lt;</a>
 		</li>
 		<li>
 			<c:if test="${current - 1 eq 1}">
-				<a href="${requestURI}">&lt;</a>
+				<a href="?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />">&lt;</a>
 			</c:if>
 			<c:if test="${current - 1 ne 1}">
-				<a href="?page=${current - 1}">&lt;</a>
+				<a href="?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />&page=${current - 1}">&lt;</a>
 			</c:if>
 		</li>
 		<%
@@ -60,10 +60,10 @@
 				<c:otherwise>
 					<li>
 						<c:if test="${i eq 1}">
-							<a href="${requestURI}">${i}</a>
+							<a href="?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />">${i}</a>
 						</c:if>
 						<c:if test="${i ne 1}">
-							<a href="?page=${i}">${i}</a>
+							<a href="?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />&page=${i}">${i}</a>
 						</c:if>
 					</li>
 				</c:otherwise>
@@ -74,10 +74,10 @@
 			if (page.hasNext()) {
 		%>
 		<li>
-			<a href="?page=${current+1}">&gt;</a>
+			<a href="?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />&page=${current+1}">&gt;</a>
 		</li>
 		<li>
-			<a href="?page=${page.totalPages}">&gt;&gt;</a>
+			<a href="?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />&page=${page.totalPages}">&gt;&gt;</a>
 		</li>
 		<%
 			} else {
@@ -94,12 +94,9 @@
 	</ul>
 
 	<div style="margin-top: -20px; margin-bottom: 20px; font-size: 8px;">
-		<span> ${current}/${page.totalPages}页 共${page.totalElements}条</span>
+		<span> ${page.number + 1}/${page.totalPages}页 共${page.totalElements}条</span>
 		<c:if test="${page.totalPages > 1}">
-			跳转到
-			<input id="goPageNumber" type="text" style="width: 40px;">
-			页
-			<input type="button" value="跳转" onclick="goPage()">
+			跳转到 <input id="goPageNumber" type="text" style="width: 40px;"> 页 <input type="button" value="跳转" onclick="goPage()">
 			<script type="text/javascript">
 				function goPage() {
 					var goPageNumber = document.getElementById("goPageNumber").value;
@@ -122,9 +119,9 @@
 
 					// 跳转
 					if (goPageNumber == 1) {
-						document.location.href = "${requestURI}";
+						document.location.href = "?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />";
 					} else {
-						document.location.href = "${requestURI}" + "?page=" + goPageNumber;
+						document.location.href = "?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />" + "&page=" + goPageNumber;
 					}
 				}
 			</script>

@@ -2,6 +2,7 @@ package xie.animeshotsite.timer.a2i.listener;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,13 +61,15 @@ public class SaveImageListener extends Video2ImageAdapter {
 	private AnimeInfoService animeInfoService;
 	private ImageUrlService imageUrlService;
 
+	private PostImage postImage;
+
 	public SaveImageListener(String animeInfoId, String animeEpisodeId, String rootPath, String detailPath, String number) {
 		shotInfoService = SpringUtil.getBean(ShotInfoService.class);
 		shotInfoDao = SpringUtil.getBean(ShotInfoDao.class);
 		animeEpisodeService = SpringUtil.getBean(AnimeEpisodeService.class);
 		animeInfoService = SpringUtil.getBean(AnimeInfoService.class);
 		imageUrlService = SpringUtil.getBean(ImageUrlService.class);
-		uploadPerHourCouter =  SpringUtil.getBean(UploadPerHourCouter.class);
+		uploadPerHourCouter = SpringUtil.getBean(UploadPerHourCouter.class);
 
 		this.animeInfoId = animeInfoId;
 		this.animeEpisodeId = animeEpisodeId;
@@ -82,6 +85,7 @@ public class SaveImageListener extends Video2ImageAdapter {
 
 		TietukuConfig tietukuConfig = SpringUtil.getBean(TietukuConfig.class);
 		tietukuToken = tietukuConfig.getTietukuToken();
+		postImage = new PostImage();
 	}
 
 	public boolean isForceUpdate() {
@@ -98,6 +102,10 @@ public class SaveImageListener extends Video2ImageAdapter {
 
 	public void setForceUpload(boolean forceUpdload) {
 		this.forceUpload = forceUpdload;
+	}
+
+	public void close() throws IOException {
+		postImage.close();
 	}
 
 	@Override
@@ -133,29 +141,48 @@ public class SaveImageListener extends Video2ImageAdapter {
 			uploadPerHourCouter.addCount();
 
 			// 保存截图到贴图库网站
-			String responseStr = PostImage.doUpload(file, tietukuToken);
-			logger.info(responseStr);
-			TietukuUploadResponse responseUpload = JsonUtil.fromJsonString(responseStr, TietukuUploadResponse.class);
-			String tietukuUrl = responseUpload.getLinkurl();
+			String responseStr = null;
+			TietukuUploadResponse responseUpload = null;
+			String tietukuUrl = null;
+			try {
+				logger.error("贴图库上传");
+				responseStr = postImage.doUpload(file, tietukuToken);
+			} catch (Exception e) {
+				logger.error("贴图库上传失败，", e);
+			}
+			logger.info("responseStr:" + responseStr);
+			if (responseStr != null) {
+				responseUpload = JsonUtil.fromJsonString(responseStr, TietukuUploadResponse.class);
+				tietukuUrl = responseUpload.getLinkurl();
+			}
 			if (tietukuUrl == null) {
-				logger.error("贴图库上传失败，返回值：{},{}", responseUpload.getCode(), responseUpload.getInfo());
-				if ("483".equals(responseUpload.getCode())) {
-					try {
+				if (responseUpload != null) {
+					logger.error("贴图库上传失败，返回值：{},{}", responseUpload.getCode(), responseUpload.getInfo());
+				}
+				try {
+					if ("483".equals(responseUpload.getCode())) {
 						Thread.sleep(3600 * 1000);
+					}
 
-						responseStr = PostImage.doUpload(file, tietukuToken);
-						logger.info(responseStr);
+					logger.error("贴图库上传失败，再次上传");
+					try {
+						responseStr = postImage.doUpload(file, tietukuToken);
+					} catch (Exception e) {
+						logger.error("贴图库再次上传失败，", e);
+					}
+					logger.info("responseStr:" + responseStr);
+					if (responseStr != null) {
 						responseUpload = JsonUtil.fromJsonString(responseStr, TietukuUploadResponse.class);
 						tietukuUrl = responseUpload.getLinkurl();
-						if (tietukuUrl == null) {
+					}
+					if (tietukuUrl == null) {
+						if (responseUpload != null) {
 							logger.error("贴图库上传失败，返回值：{},{}", responseUpload.getCode(), responseUpload.getInfo());
 							throw new RuntimeException("贴图库上传失败，返回值：" + responseUpload.getCode() + "," + responseUpload.getInfo());
 						}
-					} catch (InterruptedException e) {
-						e.printStackTrace();
 					}
-				} else {
-					throw new RuntimeException("贴图库上传失败，返回值：" + responseUpload.getCode() + "," + responseUpload.getInfo());
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 

@@ -65,13 +65,10 @@ public abstract class BaseService<M, ID extends Serializable> {
 	}
 
 	public Page<M> searchPageByParams(Map<String, Object> searchParams, int pageNumber, int defaultPageSize, String sortType, Class<M> c) {
-
 		// 创建分页对象
 		PageRequest pageRequest = PageRequestUtil.buildPageRequest(pageNumber, defaultPageSize, sortType);
 
-		Map<String, BaseSearchFilter> filters = BaseSearchFilter.parse(searchParams);
-		Specification<M> spec = BaseSpecifications.bySearchFilter(filters.values(), c);
-		Page<M> userPage = getBaseRepository().findAll(spec, pageRequest);
+		Page<M> userPage = searchPageByParams(searchParams, pageRequest, c);
 
 		return userPage;
 	}

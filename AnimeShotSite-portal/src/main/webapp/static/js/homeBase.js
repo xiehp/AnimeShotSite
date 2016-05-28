@@ -198,7 +198,7 @@
 	$.log = function(message) {
 		if (IS_JS_DEBUG) {
 			console.log(message);
-			//alert(message);
+			// alert(message);
 		}
 	}
 
@@ -249,6 +249,7 @@
 		}
 		return d.getFullYear() + '-' + m + '-' + tag + d.getDate();
 	}
+
 	$.homeDateCompare = function(startDateID, endDateID) {
 		$('#' + startDateID).on('change', function() {
 			endDate = new Date($('#' + endDateID).val())
@@ -273,6 +274,25 @@
 	/** 编码html特殊字符 */
 	$.escapeHtml = function(s) {
 		return (s) ? $("<p>").text(s).html() : "";
+	}
+	
+	/** 替换正则特殊字符，（加斜杠） */
+	$.replaceExp = function(keywordHidden) {
+		keywordHidden = keywordHidden.replace(/\\/g, "\\\\");
+		// keywordHidden = keywordHidden.replace(/\$/g, "\\$");
+		keywordHidden = keywordHidden.replace(/\*/g, "\\*");
+		keywordHidden = keywordHidden.replace(/\+/g, "\\+");
+		keywordHidden = keywordHidden.replace(/\./g, "\\.");
+		keywordHidden = keywordHidden.replace(/\?/g, "\\?");
+		keywordHidden = keywordHidden.replace(/\^/g, "\\^");
+		keywordHidden = keywordHidden.replace(/\|/g, "\\|");
+		keywordHidden = keywordHidden.replace(/\[/g, "\\[");
+		keywordHidden = keywordHidden.replace(/\]/g, "\\]");
+		keywordHidden = keywordHidden.replace(/\{/g, "\\{");
+		keywordHidden = keywordHidden.replace(/\}/g, "\\}");
+		keywordHidden = keywordHidden.replace(/\(/g, "\\(");
+		keywordHidden = keywordHidden.replace(/\)/g, "\\)");
+		return keywordHidden;
 	}
 
 	/** 根据父级tag名获得对象的父级对象 */

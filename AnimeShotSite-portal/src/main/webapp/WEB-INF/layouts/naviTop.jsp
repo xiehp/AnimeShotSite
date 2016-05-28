@@ -19,6 +19,10 @@
 				</li>
 
 				<li>
+					<a href="${ctx}/search">字幕搜索</a>
+				</li>
+
+				<li>
 					<a href="${ctx}/shot/random">随便看</a>
 				</li>
 

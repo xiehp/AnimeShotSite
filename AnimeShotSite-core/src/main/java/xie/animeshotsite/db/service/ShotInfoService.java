@@ -22,7 +22,6 @@ import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.repository.ShotInfoDao;
 import xie.animeshotsite.db.vo.ShotInfoVO;
 import xie.animeshotsite.setup.ShotSiteSetup;
-import xie.animeshotsite.spring.SpringUtil;
 import xie.base.entity.BaseEntity;
 import xie.base.page.PageRequestUtil;
 import xie.base.repository.BaseRepository;
@@ -123,7 +122,7 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		searchParams.put("GT_" + ShotInfo.COLUMN_MASTER_RECOMMEND_DATE, DateUtil.seekDate(DateUtil.getCurrentDate(), -inDay));
 		Page<ShotInfo> page = searchAllShots(searchParams, 1, listCount, BaseEntity.COLUMN_CREATE_DATE);
 		List<ShotInfo> list = page.getContent();
-		list = setParentData(list);
+		list = fillParentData(list);
 		return list;
 	}
 
@@ -147,7 +146,7 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		Page<ShotInfo> page = searchAllShots(searchParams, pageRequest);
 
 		List<ShotInfo> list = page.getContent();
-		list = setParentData(list);
+		list = fillParentData(list);
 		return list;
 	}
 
@@ -159,11 +158,11 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		PageRequest pageRequest = PageRequestUtil.buildPageRequest(1, listCount, orders);
 		Page<ShotInfo> page = searchAllShots(searchParams, pageRequest);
 		List<ShotInfo> list = page.getContent();
-		list = setParentData(list);
+		list = fillParentData(list);
 		return page.getContent();
 	}
 
-	public List<ShotInfo> setParentData(List<ShotInfo> list) {
+	public List<ShotInfo> fillParentData(List<ShotInfo> list) {
 		if (list == null) {
 			return list;
 		}
@@ -234,7 +233,7 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		long count = shotInfoDao.count();
 		Integer from = RandomUtils.nextInt((int) count);
 		List<ShotInfo> list = shotInfoDao.findRandom(from, number);
-		list = setParentData(list);
+		list = fillParentData(list);
 		return list;
 	}
 }

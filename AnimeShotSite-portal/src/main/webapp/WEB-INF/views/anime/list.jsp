@@ -5,7 +5,7 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<title>动画截图网 动画列表一览</title>
+<title>动画列表一览 - 动画截图网 </title>
 
 <div class="container-fluid">
 	<div class="row-fluid">

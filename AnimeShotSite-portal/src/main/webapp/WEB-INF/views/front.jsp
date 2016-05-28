@@ -8,13 +8,13 @@
 <head>
 <title>动画截图网</title>
 <meta name="keywords" content="动画截图网,动画截图,动漫截图,acg截图,动画图片,动漫图片,acg图片,新番截图,截图字幕,截图台词,字幕截图,截图时间,截图,截屏,图片,anime shot,anime image" />
-<meta name="description" content="本站提供动画截图以及每张截图对应的字幕。截图一般以5秒为间隔，字幕尽量以外挂的形式显示。" />
+<meta name="description" content="本站提供动画截图,动漫截图以及每张截图对应的字幕台词。截图一般以5秒为间隔，字幕尽量以外挂的形式显示。" />
+<meta name='yandex-verification' content='64ecf3910c1154ef' />
 </head>
 
 <div class="container-fluid">
 	<div class="row-fluid">
-		<div align="left"><h1>本站提供动画截图以及每张截图对应的字幕。截图一般以5秒为间隔，字幕尽量以外挂的形式显示。</h1></div>
-		<div align="left">PS：最近由于图片服务商硬盘崩溃，导致某些图片暂时无法读取。</div>
+		<div align="left"><h1 style="font-size: 14px;">本站提供动画截图,动漫截图以及每张截图对应的字幕台词。截图一般以5秒为间隔，字幕尽量以外挂的形式显示。</h1></div>
 
 		<div>
 			<div class="blockTitle">

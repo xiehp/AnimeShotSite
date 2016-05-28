@@ -8,12 +8,20 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import xie.animeshotsite.db.entity.AnimeEpisode;
+import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.entity.SubtitleInfo;
 import xie.animeshotsite.db.entity.SubtitleLine;
+import xie.animeshotsite.db.entity.cache.EntityCache;
+import xie.animeshotsite.db.repository.AnimeEpisodeDao;
+import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.repository.SubtitleInfoDao;
 import xie.animeshotsite.db.repository.SubtitleLineDao;
+import xie.animeshotsite.db.repository.impl.SubtitleInfoDaoImpl;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.repository.BaseRepository;
 import xie.base.service.BaseService;
@@ -28,6 +36,14 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 	private SubtitleLineDao subtitleLineDao;
 	@Autowired
 	private SubtitleInfoDao subtitleInfoDao;
+	@Autowired
+	private AnimeInfoDao animeInfoDao;
+	@Autowired
+	private AnimeEpisodeDao animeEpisodeDao;
+	@Autowired
+	private EntityCache entityCache;
+	@Autowired
+	private SubtitleInfoDaoImpl subtitleInfoDaoImpl;
 
 	@Override
 	public BaseRepository<SubtitleLine, String> getBaseRepository() {
@@ -203,6 +219,37 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 		}
 
 		return defaultResult;
+	}
+
+	/**
+	 * 检索字幕文本<br>
+	 * 当检索文本中包含空格，则做分割，作为and条件合并<br>
+	 */
+	public Page<SubtitleLine> searchSubtitleLineByText(String animeName, String keyword, PageRequest pageRequest) {
+		Page<SubtitleLine> page = subtitleInfoDaoImpl.searchSubtitleLineByText(animeName, keyword, pageRequest);
+		return page;
+	}
+
+	/**
+	 * 填入动画信息和剧集信息
+	 */
+	public void fillParentData(List<SubtitleLine> subtitleLineList) {
+		for (SubtitleLine subtitleLine : subtitleLineList) {
+			fillParentData(subtitleLine);
+		}
+	}
+
+	/**
+	 * 填入动画信息和剧集信息
+	 */
+	public void fillParentData(SubtitleLine subtitleLine) {
+		if (subtitleLine != null) {
+			AnimeInfo animeInfo = entityCache.findOne(animeInfoDao, subtitleLine.getAnimeInfoId());
+			subtitleLine.setAnimeInfo(animeInfo);
+
+			AnimeEpisode animeEpisode = entityCache.findOne(animeEpisodeDao, subtitleLine.getAnimeEpisodeId());
+			subtitleLine.setAnimeEpisode(animeEpisode);
+		}
 	}
 
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException {

@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<title>动画截图网 <c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /></title>
+<title><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> - 动画截图网</title>
 
 <div class="container-fluid">
 	<div class="row-fluid">

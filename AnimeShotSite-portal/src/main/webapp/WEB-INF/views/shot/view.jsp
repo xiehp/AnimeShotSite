@@ -5,8 +5,8 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<title><c:out value='${animeEpisode.fullName}' /> <c:out value='${shotInfo.formatedTime}' /></title>
 <head>
+<title><c:out value='${animeEpisode.fullName}' /> <c:out value='${shotInfo.formatedTimeChina}' /></title>
 <meta property="og:title" content="<c:out value='${animeEpisode.fullName}' /> <c:out value='${shotInfo.formatedTime}' />" />
 <meta property="og:type" content="photo" />
 <meta property="og:url" content="${ctx}/shot/view/${shotInfo.id}" />
@@ -59,7 +59,7 @@ overflow: scroll;
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	<div style="width: 360px; white-space: nowrap; word-break: keep-all;">
 		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-			时间：${shotInfo.formatedMinSec}<span style="color: lightgray;">.${shotInfo.formatedMicroSec} (${shotInfo.timeStamp})</span>
+			时间：${shotInfo.formatedTimeChina} (${shotInfo.timeStamp})</span>
 		</div>
 		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 			尺寸：<span id="imgWidth">${animeEpisode.width}</span>×<span id="imgHeight">${animeEpisode.height}</span> <span style="font-size: xx-small;">设置图片宽度</span>

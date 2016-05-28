@@ -71,7 +71,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 			@PathVariable String animeEpisodeId,
 			@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "sortType", defaultValue = "timeStamp") String sortType,
-			Model model, ServletRequest request)
+			Model model, HttpServletRequest request)
 					throws Exception {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		// 增加删除过滤
@@ -79,8 +79,17 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 
 		int pageSize = Constants.PAGE_SIZE_DEFAULT;
 		AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
+		if (animeEpisode == null) {
+			// 剧集不存在，重定向到动画列表
+			return "redirect:/anime/list";
+		}
 		AnimeInfo animeInfo = animeInfoService.findOne(animeEpisode.getAnimeInfoId());
 		Page<ShotInfo> shotInfoPage = shotInfoService.searchAllShots(searchParams, pageNumber, pageSize, sortType);
+		if (pageNumber > shotInfoPage.getTotalPages() && shotInfoPage.getTotalPages() > 0) {
+			// 页数不对， 并且有数据，直接定位到最后一页
+			String pageUrl = shotInfoPage.getTotalPages() > 1 ? "?page=" + shotInfoPage.getTotalPages() : "";
+			return getUrlRedirectPath("list/" + animeEpisode.getId() + pageUrl);
+		}
 
 		model.addAttribute("animeInfo", animeInfo);
 		model.addAttribute("animeEpisode", animeEpisode);
@@ -119,9 +128,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		// 将搜索条件编码成字符串，用于排序，分页的URL
 		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
 
-		return
-
-		getJspFilePath("list");
+		return getJspFilePath("list");
 	}
 
 	@RequestMapping(value = "/list/{animeEpisodeId}/{page}")
@@ -164,7 +171,11 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		model.addAttribute("animeEpisode", animeEpisode);
 
 		// 算出当前数据在列表中的页数
-		int rowNumber = shotInfoDao.getRowNumber(shotInfo.getAnimeEpisodeId(), shotInfo.getTimeStamp(), Constants.FLAG_INT_NO);
+		Integer rowNumber = entityCache.get("shotRowNumber_" + shotInfo.getId());
+		if (rowNumber == null) {
+			rowNumber = shotInfoDao.getRowNumber(shotInfo.getAnimeEpisodeId(), shotInfo.getTimeStamp(), Constants.FLAG_INT_NO);
+			entityCache.put("shotRowNumber_" + shotInfo.getId(), rowNumber);
+		}
 		int pageSize = Constants.PAGE_SIZE_DEFAULT;
 		model.addAttribute("rowNumber", rowNumber);
 		int pageNumber = (rowNumber - 1) / pageSize + 1;

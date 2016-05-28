@@ -117,16 +117,32 @@ public class ShotInfo extends BaseTietukuUrl {
 		return timeStamp;
 	}
 
+	/**
+	 * @return mm:ss
+	 */
 	public String getFormatedMinSec() {
 		return DateUtil.formatTime(timeStamp, 0);
 	}
 
+	/**
+	 * @return SSS
+	 */
 	public String getFormatedMicroSec() {
 		return DateUtil.formatTime(timeStamp, 1);
 	}
 
+	/**
+	 * @return mm:ss:SSS
+	 */
 	public String getFormatedTime() {
 		return DateUtil.formatTime(timeStamp, 2);
+	}
+
+	/**
+	 * @return "mm分ss秒SSS", SSS为0时省略
+	 */
+	public String getFormatedTimeChina() {
+		return DateUtil.formatTime(timeStamp, 3);
 	}
 
 	public void setTimeStamp(Long timeStamp) {

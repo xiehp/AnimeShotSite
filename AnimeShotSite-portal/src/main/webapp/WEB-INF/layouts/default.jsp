@@ -35,8 +35,12 @@
 	</c:if>
 
 	var canBaiduRecord = false;
+	var canBaiduIndex = false;
 	<c:if test="${canBaiduRecord eq true}">
 	canBaiduRecord = "${canBaiduRecord}";
+	</c:if>
+	<c:if test="${canBaiduIndex eq true}">
+	canBaiduIndex = "${canBaiduIndex}";
 	</c:if>
 </script>
 

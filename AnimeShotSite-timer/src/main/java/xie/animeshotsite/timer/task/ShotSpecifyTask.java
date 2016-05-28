@@ -102,6 +102,7 @@ public class ShotSpecifyTask extends XBaseTask {
 				logger.error("process 失败");
 			}
 
+			saveImageListener.close();
 		} catch (Exception e) {
 			logger.error("process 失败", e);
 			throw e;

@@ -120,21 +120,26 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 					request.setAttribute("IS_MASTER", false);
 				}
 			}
-			
+
 			// 是否需要js debug
 			request.setAttribute("IS_JS_DEBUG", shotSiteSetup.getAnimesiteJsDebug());
 
 			// 判断是否需要网站统计和搜索引擎推送
 			{
-				request.setAttribute("canBaiduRecord", false);
+				boolean canBaiduRecord = false; // 是否让搜索引擎统计和索引
 				if (requestURL.contains(WebConstants.MANAGE_URL_STR)) {
 					// 后台页面，不统计
-					request.setAttribute("canBaiduRecord", false);
+					canBaiduRecord = false;
 				} else {
 					// 其他页面，则判断配置文件是否允许
 					if ("1".equals(shotSiteSetup.getAnimesiteSearchTrafficStatistics())) {
-						request.setAttribute("canBaiduRecord", true);
+						canBaiduRecord = true;
 					}
+				}
+				request.setAttribute("canBaiduRecord", canBaiduRecord);
+				if (request.getAttribute("canBaiduIndex") == null) {
+					// 页面没有自行设定是否可以索引，则认为可以索引
+					request.setAttribute("canBaiduIndex", true);
 				}
 				System.out.println("canBaiduRecord: " + request.getAttribute("canBaiduRecord"));
 			}

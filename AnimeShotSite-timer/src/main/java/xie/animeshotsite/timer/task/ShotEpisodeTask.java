@@ -101,6 +101,8 @@ public class ShotEpisodeTask extends XBaseTask {
 			} else {
 				logger.error("process 失败");
 			}
+
+			saveImageListener.close();
 		} catch (Exception e) {
 			logger.error("process 失败", e);
 			throw e;
