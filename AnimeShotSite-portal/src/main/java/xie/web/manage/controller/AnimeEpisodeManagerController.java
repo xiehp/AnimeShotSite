@@ -23,13 +23,14 @@ import xie.animeshotsite.db.service.ShotTaskService;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseManagerController;
 import xie.base.service.BaseService;
+import xie.common.date.DateUtil;
 import xie.common.string.XStringUtils;
 import xie.common.utils.SpringUtils;
 import xie.common.web.util.RequestUtil;
-import xie.common.web.util.WebConstants;
+import xie.common.web.util.ShotWebConstants;
 
 @Controller
-@RequestMapping(value = WebConstants.MANAGE_URL_STR + "/animeEpisode")
+@RequestMapping(value = ShotWebConstants.MANAGE_URL_STR + "/animeEpisode")
 public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEpisode, String> {
 
 	@Autowired
@@ -185,5 +186,13 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 		map = getSuccessCode();
 
 		return getUrlRedirectPath("view/" + id);
+	}
+
+	@Override
+	public Map<String, Object> updateOneColumn(String id, String columnName, String columnValue) {
+		if ("showFlg".equals(columnName)) {
+			super.updateOneColumn(id, "showDate", DateUtil.convertToString(new Date()));
+		}
+		return super.updateOneColumn(id, columnName, columnValue);
 	}
 }

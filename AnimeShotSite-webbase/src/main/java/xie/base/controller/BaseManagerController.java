@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import xie.base.entity.IdEntity;
 import xie.base.service.BaseService;
 import xie.common.java.XReflectionUtils;
 import xie.common.string.XStringUtils;
 
-public abstract class BaseManagerController<M, ID extends Serializable> extends BaseController {
+public abstract class BaseManagerController<M extends IdEntity, ID extends Serializable> extends BaseController {
 
 	protected abstract BaseService<M, ID> getBaseService();
 

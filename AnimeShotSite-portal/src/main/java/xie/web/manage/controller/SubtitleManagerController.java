@@ -30,10 +30,10 @@ import xie.base.controller.BaseManagerController;
 import xie.base.service.BaseService;
 import xie.common.string.XStringUtils;
 import xie.common.web.util.RequestUtil;
-import xie.common.web.util.WebConstants;
+import xie.common.web.util.ShotWebConstants;
 
 @Controller
-@RequestMapping(value = WebConstants.MANAGE_URL_STR + "/subtitle")
+@RequestMapping(value = ShotWebConstants.MANAGE_URL_STR + "/subtitle")
 public class SubtitleManagerController extends BaseManagerController<SubtitleInfo, String> {
 
 	@Autowired
@@ -94,7 +94,7 @@ public class SubtitleManagerController extends BaseManagerController<SubtitleInf
 
 			subtitleInfo.setAnimeInfoId(animeInfoId);
 			subtitleInfo.setFileType("ass");
-			
+
 			subtitleInfo.setLocalRootPath(FilePathUtils.getAnimeRootDefault().getAbsolutePath());
 			subtitleInfo.setLocalDetailPath("");
 			subtitleInfo.setShowFlg(1);
@@ -159,6 +159,45 @@ public class SubtitleManagerController extends BaseManagerController<SubtitleInf
 			AnimeEpisode animeEpisode = list.get(i);
 			requestMap.put("animeEpisodeId", animeEpisode.getId());
 			SubtitleInfo subtitleInfo = getBaseService().saveMuti(param, i + 1, i + 1, extention, requestMap, SubtitleInfo.class);
+			if (firstSubtitleInfo == null) {
+				firstSubtitleInfo = subtitleInfo;
+			}
+		}
+
+		request.setAttribute("subtitleInfo", firstSubtitleInfo);
+
+		request.setAttribute("param", param);
+		request.setAttribute("start", start);
+		request.setAttribute("end", end);
+		request.setAttribute("extention", extention);
+
+		return getUrlRedirectPath("view/" + firstSubtitleInfo.getId());
+	}
+
+	/**
+	 * 根据当前已有剧集以及规则生成字幕信息<br>
+	 * 通过位数扩展生成的值和语言作为唯一标识，如果字幕中已存在，则不生成<br>
+	 * 通过位数扩展生成的值，和剧集中的唯一标识符对应<br>
+	 * 
+	 * @param extention 开始和结束扩展的最小位数，如果不指定， 则以end当前位数做扩展
+	 * @param param 参数
+	 * @return
+	 * @throws Exception
+	 */
+	@RequiresPermissions(value = "userList:add")
+	@RequestMapping(value = "/submitMutiByEpisode")
+	public String submitMutiByEpisode(
+			@RequestParam(required = false, defaultValue = "1") Integer start,
+			@RequestParam Integer end,
+			@RequestParam(required = false) Integer extention,
+			@RequestParam(required = false) String param,
+			HttpServletRequest request) throws Exception {
+
+		Map<String, Object> requestMap = RequestUtil.getAllParams(request);
+
+		SubtitleInfo firstSubtitleInfo = null;
+		for (int i = start - 1; i < end; i++) {
+			SubtitleInfo subtitleInfo = subtitleInfoService.saveMutiByEpisode(param, i + 1, i + 1, extention, requestMap, SubtitleInfo.class);
 			if (firstSubtitleInfo == null) {
 				firstSubtitleInfo = subtitleInfo;
 			}

@@ -27,6 +27,7 @@
 
 	function doShotTask(type) {
 		if (confirm("是否继续？")) {
+			$("#taskType").val(type);
 			$("#mainForm").attr("action", "${ctx}${MANAGE_URL_STR}/animeEpisode/addShotTask");
 			$("#mainForm").submit();
 		}
@@ -61,7 +62,7 @@
 			$("input[name=summary]").val(summaryEditor.getData());
 			document.getElementById('summaryCount').innerHTML = summaryEditor.getData().length;
 		});
-		
+
 		if ($('#fullName').val() == null || $('#fullName').val() == "") {
 			nameChanged();
 		}
@@ -256,6 +257,12 @@
 		</div>
 	</div>
 	<div class="form-group">
+		<label class="col-sm-2 control-label">showDate</label>
+		<div class="col-sm-5">
+			<input class="form-control" name="showDate" value="<fmt:formatDate value='${animeEpisodeInfo.showDate}' pattern='yyyy-MM-dd HH:mm:ss'/>" />
+		</div>
+	</div>
+	<div class="form-group">
 		<label class="col-sm-2 control-label">deleteFlag</label>
 		<div class="col-sm-5">
 			<input class="form-control" name="deleteFlag" value="${animeEpisodeInfo.deleteFlag}" />
@@ -300,7 +307,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">taskType</label>
 		<div class="col-sm-5">
-			<input class="form-control" name="taskType" value="1" />
+			<input class="form-control" id="taskType" name="taskType" value="1" />
 		</div>
 	</div>
 	<div class="form-group">

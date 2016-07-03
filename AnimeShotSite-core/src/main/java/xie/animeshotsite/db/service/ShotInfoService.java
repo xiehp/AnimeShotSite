@@ -2,6 +2,7 @@ package xie.animeshotsite.db.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springside.modules.mapper.BeanMapper;
 
@@ -22,13 +22,9 @@ import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.repository.ShotInfoDao;
 import xie.animeshotsite.db.vo.ShotInfoVO;
 import xie.animeshotsite.setup.ShotSiteSetup;
-import xie.base.entity.BaseEntity;
 import xie.base.page.PageRequestUtil;
 import xie.base.repository.BaseRepository;
-import xie.base.repository.BaseSearchFilter;
-import xie.base.repository.BaseSpecifications;
 import xie.base.service.BaseService;
-import xie.common.Constants;
 import xie.common.date.DateUtil;
 import xie.common.number.XNumberUtils;
 
@@ -45,25 +41,25 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 	private EntityCache entityCache;
 	@Autowired
 	private ShotSiteSetup shotSiteSetup;
-	
-	public ShotInfoVO  convertToVO(ShotInfo shotInfo){
-		if(shotInfo==null){
+
+	public ShotInfoVO convertToVO(ShotInfo shotInfo) {
+		if (shotInfo == null) {
 			return null;
 		}
-		
+
 		ShotInfoVO shotInfoVO = new ShotInfoVO();
 		BeanMapper.copy(shotInfo, shotInfoVO);
-		
-		String url =shotInfoVO.getTietukuOUrl();
-		if(url!=null){
+
+		String url = shotInfoVO.getTietukuOUrl();
+		if (url != null) {
 			String siteDomain = shotSiteSetup.getSiteDomain();
 			String lowerUrl = url.toLowerCase();
-			if (lowerUrl.contains("i1.")|| lowerUrl.contains("i2.")|| lowerUrl.contains("i3.")|| lowerUrl.contains("i4.")){
-				url=url.replaceAll("\\.[a-z0-9]+\\.[a-z]+", "."+siteDomain);
+			if (lowerUrl.contains("i1.") || lowerUrl.contains("i2.") || lowerUrl.contains("i3.") || lowerUrl.contains("i4.")) {
+				url = url.replaceAll("\\.[a-z0-9]+\\.[a-z]+", "." + siteDomain);
 			}
 			shotInfoVO.setTietukuOUrlChangeDomain(url);
 		}
-		
+
 		return shotInfoVO;
 	}
 
@@ -81,7 +77,15 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 	}
 
 	/**
-	 * @param updateFlg 如果已经存在，是否进行更新
+	 * 
+	 * @param animeInfoId
+	 * @param animeEpisodeId
+	 * @param timeStamp
+	 * @param originalTime
+	 * @param rootPath 不需要
+	 * @param localDetailPath 不需要
+	 * @param fileName
+	 * @param forceUpdateFlg 如果已经存在，是否进行更新
 	 * @return
 	 */
 	public ShotInfo createShotInfo(String animeInfoId, String animeEpisodeId, long timeStamp, long originalTime, String rootPath, String localDetailPath, String fileName, boolean forceUpdateFlg) {
@@ -118,9 +122,21 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 	 * @return
 	 */
 	public List<ShotInfo> getMasterRecommandShotList(Integer inDay, int listCount) {
-		Map<String, Object> searchParams = new HashMap<>();
-		searchParams.put("GT_" + ShotInfo.COLUMN_MASTER_RECOMMEND_DATE, DateUtil.seekDate(DateUtil.getCurrentDate(), -inDay));
-		Page<ShotInfo> page = searchAllShots(searchParams, 1, listCount, BaseEntity.COLUMN_CREATE_DATE);
+		Map<String, Object> searchParams = new LinkedHashMap<>();
+		if (inDay != null) {
+			searchParams.put("GT_" + ShotInfo.COLUMN_MASTER_RECOMMEND_DATE, DateUtil.seekDate(DateUtil.getCurrentDate(), -inDay));
+		}
+		searchParams.put("GT_" + ShotInfo.COLUMN_MASTER_RECOMMEND_RANK, 0);
+
+		// 排序，分页条件
+		List<Order> orders = new ArrayList<>();
+		Order order1 = new Order(Direction.DESC, ShotInfo.COLUMN_MASTER_RECOMMEND_RANK);
+		Order order2 = new Order(Direction.DESC, ShotInfo.COLUMN_MASTER_RECOMMEND_DATE);
+		orders.add(order1);
+		orders.add(order2);
+		PageRequest pageRequest = PageRequestUtil.buildPageRequest(1, listCount, orders);
+
+		Page<ShotInfo> page = searchPageByParams(searchParams, pageRequest, ShotInfo.class);
 		List<ShotInfo> list = page.getContent();
 		list = fillParentData(list);
 		return list;
@@ -143,7 +159,7 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		PageRequest pageRequest = PageRequestUtil.buildPageRequest(1, listCount, orders);
 
 		// 检索
-		Page<ShotInfo> page = searchAllShots(searchParams, pageRequest);
+		Page<ShotInfo> page = searchPageByParams(searchParams, pageRequest, ShotInfo.class);
 
 		List<ShotInfo> list = page.getContent();
 		list = fillParentData(list);
@@ -152,28 +168,29 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 
 	public List<ShotInfo> getPublicLikeShotList(int listCount) {
 		Map<String, Object> searchParams = new HashMap<>();
+
 		List<Order> orders = new ArrayList<>();
 		Order order = new Order(Direction.DESC, ShotInfo.COLUMN_PUBLIC_LIKE_COUNT);
 		orders.add(order);
 		PageRequest pageRequest = PageRequestUtil.buildPageRequest(1, listCount, orders);
-		Page<ShotInfo> page = searchAllShots(searchParams, pageRequest);
+
+		Page<ShotInfo> page = searchPageByParams(searchParams, pageRequest, ShotInfo.class);
 		List<ShotInfo> list = page.getContent();
 		list = fillParentData(list);
 		return page.getContent();
 	}
 
 	public List<ShotInfo> fillParentData(List<ShotInfo> list) {
-		if (list == null) {
+		if (list == null || list.size() == 0) {
 			return list;
 		}
 		for (ShotInfo shotInfo : list) {
-			shotInfo.setAnimeInfo(entityCache.findOne(animeInfoDao, shotInfo.getAnimeInfoId()));
-			shotInfo.setAnimeEpisode(entityCache.findOne(animeEpisodeDao, shotInfo.getAnimeEpisodeId()));
+			fillParentData(shotInfo);
 		}
 		return list;
 	}
 
-	public ShotInfo setParentData(ShotInfo shotInfo) {
+	public ShotInfo fillParentData(ShotInfo shotInfo) {
 		if (shotInfo == null) {
 			return shotInfo;
 		}
@@ -182,26 +199,26 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		return shotInfo;
 	}
 
-	public Page<ShotInfo> searchAllShots(Map<String, Object> searchParams, int pageNumber, int defaultPageSize, String sortType) {
+	// public Page<ShotInfo> searchAllShots(Map<String, Object> searchParams, int pageNumber, int defaultPageSize, String sortType) {
+	//
+	// // 创建分页对象
+	// PageRequest pageRequest = PageRequestUtil.buildPageRequest(pageNumber, defaultPageSize, sortType);
+	//
+	// return searchAllShots(searchParams, pageRequest);
+	// }
 
-		// 创建分页对象
-		PageRequest pageRequest = PageRequestUtil.buildPageRequest(pageNumber, defaultPageSize, sortType);
-
-		return searchAllShots(searchParams, pageRequest);
-	}
-
-	public Page<ShotInfo> searchAllShots(Map<String, Object> searchParams, PageRequest pageRequest) {
-
-		searchParams.put("EQ_deleteFlag", Constants.FLAG_INT_NO + "");
-
-		// Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
-		// Specification<ShotInfo> spec = DynamicSpecifications.bySearchFilter(filters.values(), ShotInfo.class);
-		Map<String, BaseSearchFilter> filters = BaseSearchFilter.parse(searchParams);
-		Specification<ShotInfo> spec = BaseSpecifications.bySearchFilter(filters.values(), ShotInfo.class);
-		Page<ShotInfo> page = shotInfoDao.findAll(spec, pageRequest);
-
-		return page;
-	}
+	// public Page<ShotInfo> searchAllShots(Map<String, Object> searchParams, PageRequest pageRequest) {
+	//
+	// searchParams.put("EQ_deleteFlag", Constants.FLAG_INT_NO + "");
+	//
+	// // Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+	// // Specification<ShotInfo> spec = DynamicSpecifications.bySearchFilter(filters.values(), ShotInfo.class);
+	// Map<String, BaseSearchFilter> filters = BaseSearchFilter.parse(searchParams);
+	// Specification<ShotInfo> spec = BaseSpecifications.bySearchFilter(filters.values(), ShotInfo.class);
+	// Page<ShotInfo> page = shotInfoDao.findAll(spec, pageRequest);
+	//
+	// return page;
+	// }
 
 	public ShotInfo publicLikeAdd(String id) {
 		ShotInfo shotInfo = null;
@@ -229,9 +246,8 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		return shotInfo;
 	}
 
-	public List<ShotInfo> findRandom(Integer number) {
-		long count = shotInfoDao.count();
-		Integer from = RandomUtils.nextInt((int) count);
+	public List<ShotInfo> findRandom(int range, int number) {
+		int from = RandomUtils.nextInt(range);
 		List<ShotInfo> list = shotInfoDao.findRandom(from, number);
 		list = fillParentData(list);
 		return list;

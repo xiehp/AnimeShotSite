@@ -42,7 +42,11 @@
 	var seriesChangedFlg = false;
 	function nameChanged() {
 		// 全称
-		$('#fullName').val($('#name').val() + ' ' + $('#divisionName').val());
+		var fullName = $('#name').val();
+		if ($('#divisionName').val() != "") {
+			fullName = fullName + ' ' + $('#divisionName').val();
+		}
+		$('#fullName').val(fullName);
 
 		// 改变本地相对路径
 		var nowDate = new Date();

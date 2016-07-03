@@ -61,7 +61,9 @@ public class CreateSiteMap {
 
 		// 增加首页loc
 		addUrl("/", XSiteMap.CHANGEFREQ_DAILY, "1.0", null, "首页");
-		addUrl("/anime/list", XSiteMap.CHANGEFREQ_DAILY, "0.9", null, "动画列表");
+		addUrl("/anime/list", XSiteMap.CHANGEFREQ_WEEKLY, "0.9", null, "动画列表");
+		addUrl("/search", XSiteMap.CHANGEFREQ_WEEKLY, "0.9", null, "字幕台词搜索");
+		addUrl("/search", XSiteMap.CHANGEFREQ_MONTHLY, "0.9", null, "随便看");
 
 		// 增加所有剧集的截图列表的第一页loc
 		{
@@ -83,7 +85,7 @@ public class CreateSiteMap {
 			Page<AnimeInfo> animeInfoPage = animeInfoService.searchPageByParams(searchParams, 1, Integer.MAX_VALUE, BaseEntity.COLUMN_CREATE_DATE, AnimeInfo.class);
 			List<AnimeInfo> animeInfoList = animeInfoPage.getContent();
 			for (AnimeInfo animeInfo : animeInfoList) {
-				addUrl("/episode/list/" + animeInfo.getId(), XSiteMap.CHANGEFREQ_WEEKLY, "0.7", DateUtil.convertToString(animeInfo.getUpdateDate(), "yyyy-MM-dd"), "剧集列表 " + animeInfo.getFullName());
+				addUrl("/episode/list/" + animeInfo.getId(), XSiteMap.CHANGEFREQ_MONTHLY, "0.7", DateUtil.convertToString(animeInfo.getUpdateDate(), "yyyy-MM-dd"), "剧集列表 " + animeInfo.getFullName());
 			}
 		}
 

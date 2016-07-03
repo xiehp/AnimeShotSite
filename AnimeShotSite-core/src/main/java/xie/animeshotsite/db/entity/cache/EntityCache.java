@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.repository.ShotInfoDao;
+import xie.base.entity.IdEntity;
 import xie.base.repository.BaseRepository;
 import xie.base.service.BaseService;
 import xie.common.utils.XWaitTime;
@@ -110,7 +111,7 @@ public class EntityCache {
 
 	}
 
-	public <T> T findOne(BaseService<T, String> service, String id) {
+	public <T extends IdEntity> T findOne(BaseService<T, String> service, String id) {
 		return findOne(service.getBaseRepository(), id);
 	}
 

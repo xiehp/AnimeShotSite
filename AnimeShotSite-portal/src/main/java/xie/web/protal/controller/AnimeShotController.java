@@ -36,6 +36,7 @@ import xie.base.controller.BaseFunctionController;
 import xie.base.http.CookieUtils;
 import xie.common.Constants;
 import xie.common.constant.XConst;
+import xie.common.web.util.ShotWebConstants;
 
 @Controller
 @RequestMapping(value = "/shot")
@@ -77,14 +78,13 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		// 增加删除过滤
 		searchParams.put("EQ_animeEpisodeId", animeEpisodeId);
 
-		int pageSize = Constants.PAGE_SIZE_DEFAULT;
 		AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
 		if (animeEpisode == null) {
 			// 剧集不存在，重定向到动画列表
 			return "redirect:/anime/list";
 		}
 		AnimeInfo animeInfo = animeInfoService.findOne(animeEpisode.getAnimeInfoId());
-		Page<ShotInfo> shotInfoPage = shotInfoService.searchAllShots(searchParams, pageNumber, pageSize, sortType);
+		Page<ShotInfo> shotInfoPage = shotInfoService.searchPageByParams(searchParams, pageNumber, ShotWebConstants.SHOT_LIST_PAGE_NUMBER, sortType, ShotInfo.class);
 		if (pageNumber > shotInfoPage.getTotalPages() && shotInfoPage.getTotalPages() > 0) {
 			// 页数不对， 并且有数据，直接定位到最后一页
 			String pageUrl = shotInfoPage.getTotalPages() > 1 ? "?page=" + shotInfoPage.getTotalPages() : "";
@@ -148,17 +148,18 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		defaultShowLanage = new ArrayList<String>();
 		defaultShowLanage.add("jp");
 		defaultShowLanage.add("sc");
+		defaultShowLanage.add("1000");
 	}
 
 	@RequestMapping(value = "/view/{id}")
 	public String shotView(
 			@PathVariable String id,
 			@RequestParam(required = false) String scorllTop,
-			@RequestParam(required = false) List<String> defaultShowLanage,
+			@RequestParam(required = false) List<String> showLanage,
 			Model model, HttpServletRequest request) throws Exception {
 
-		if (defaultShowLanage == null || defaultShowLanage.size() == 0) {
-			defaultShowLanage = this.defaultShowLanage;
+		if (showLanage == null || showLanage.size() == 0) {
+			showLanage = this.defaultShowLanage;
 		}
 
 		ShotInfo shotInfo = shotInfoDao.findOne(id);
@@ -176,7 +177,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 			rowNumber = shotInfoDao.getRowNumber(shotInfo.getAnimeEpisodeId(), shotInfo.getTimeStamp(), Constants.FLAG_INT_NO);
 			entityCache.put("shotRowNumber_" + shotInfo.getId(), rowNumber);
 		}
-		int pageSize = Constants.PAGE_SIZE_DEFAULT;
+		int pageSize = ShotWebConstants.SHOT_LIST_PAGE_NUMBER;
 		model.addAttribute("rowNumber", rowNumber);
 		int pageNumber = (rowNumber - 1) / pageSize + 1;
 		model.addAttribute("pageNumber", (rowNumber - 1) / pageSize + 1);
@@ -193,7 +194,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		// 搜索字幕
 		Long startTime = shotInfo.getTimeStamp();
 		Long endTime = nextShotInfo == null ? startTime + 5000 : nextShotInfo.getTimeStamp();
-		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), defaultShowLanage, startTime, endTime);
+		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), showLanage, startTime, endTime);
 		model.addAttribute("subtitleLineList", subtitleLineList);
 
 		// 前台页面cookie等参数设置
@@ -235,8 +236,9 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 	@RequestMapping(value = "/random")
 	public String random(Model model) throws Exception {
 		List<ShotInfo> shotInfoList = new ArrayList<ShotInfo>();
-		for (int i = 0; i < 4; i++) {
-			List<ShotInfo> list = shotInfoService.findRandom(5);
+		int count = (int) shotInfoDao.count();
+		for (int i = 0; i < 10; i++) {
+			List<ShotInfo> list = shotInfoService.findRandom(count - 2, 2);
 			shotInfoList.addAll(list);
 		}
 		model.addAttribute("shotInfoList", shotInfoList);

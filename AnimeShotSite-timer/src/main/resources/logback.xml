@@ -10,16 +10,16 @@
 	<!-- 演示按时间滚动的策略 -->
 	<appender name="defaultlogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>logs/framework.log</file>
-		
+
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>logs/framework.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>logs/framework.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
 			<!-- 保留 30天数据，默认无限-->
 			<maxHistory>7</maxHistory>
 			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-				<maxFileSize>100MB</maxFileSize>
+				<maxFileSize>10MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
 		</rollingPolicy>
-		
+
 		<encoder>
 			<pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
 		</encoder>
@@ -28,14 +28,14 @@
 	<!-- 综合时间与大小的滚动策略，先按小时滚动，小时内的文件大于10mb时再按大小滚动 -->
 	<appender name="businessLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>logs/business-timer.log</file>
-		
+
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>logs/business-timer-%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<maxFileSize>10MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
 		</rollingPolicy>
-		
+
 		<encoder>
 			<pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
 		</encoder>
@@ -59,7 +59,7 @@
 	</logger>-->
 
 	<!--log4jdbc -->
-	<logger name="jdbc.sqltiming" level="INFO"/>
+	<logger name="jdbc.sqltiming" level="INFO" />
 	
 	<!-- springside modules -->
 	<logger name="org.springside.modules" level="WARN" />

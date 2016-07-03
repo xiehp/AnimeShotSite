@@ -63,7 +63,7 @@ public class AnimeEpisodeService extends BaseService<AnimeEpisode, String> {
 
 		// 排序条件
 		List<Order> orders = new ArrayList<>();
-		Order order = new Order(Direction.DESC, ShotInfo.COLUMN_UPDATE_DATE);
+		Order order = new Order(Direction.DESC, "showDate");
 		orders.add(order);
 		PageRequest pageRequest = PageRequestUtil.buildPageRequest(1, listCount, orders);
 

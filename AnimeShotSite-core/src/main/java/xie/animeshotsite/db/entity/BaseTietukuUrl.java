@@ -4,7 +4,7 @@ import javax.persistence.MappedSuperclass;
 
 import com.tietuku.entity.util.TietukuUtils;
 
-import xie.animeshotsite.constants.ShotConstants;
+import xie.animeshotsite.constants.ShotCoreConstants;
 import xie.animeshotsite.setup.ShotSiteSetup;
 import xie.base.entity.BaseEntity;
 import xie.common.utils.props.PropsUtil;
@@ -64,7 +64,7 @@ public abstract class BaseTietukuUrl extends BaseEntity {
 	 * 获得小图URL
 	 */
 	public String getUrlS() {
-		if (ShotConstants.IMAGE_URL_GET_MODE_TIETUKU.equals(ShotSiteSetup.IMAGE_URL_GET_MODE)) {
+		if (ShotCoreConstants.IMAGE_URL_GET_MODE_TIETUKU.equals(ShotSiteSetup.IMAGE_URL_GET_MODE)) {
 			return TietukuUtils.getImageThumbnailUrl(getTietukuUrlPrefix(), getTietukuUrlId());
 		} else {
 			return "\\image\\type\\id"; // TODO 本地图片获取方式
@@ -75,7 +75,7 @@ public abstract class BaseTietukuUrl extends BaseEntity {
 	 * 获得中图URL
 	 */
 	public String getUrlM() {
-		if (ShotConstants.IMAGE_URL_GET_MODE_TIETUKU.equals(ShotSiteSetup.IMAGE_URL_GET_MODE)) {
+		if (ShotCoreConstants.IMAGE_URL_GET_MODE_TIETUKU.equals(ShotSiteSetup.IMAGE_URL_GET_MODE)) {
 			return TietukuUtils.getImageShowUrl(getTietukuUrlPrefix(), getTietukuUrlId());
 		} else {
 			return "\\image\\image\\id"; // TODO 本地图片获取方式
@@ -86,7 +86,7 @@ public abstract class BaseTietukuUrl extends BaseEntity {
 	 * 获得大图URL
 	 */
 	public String getUrlL() {
-		if (ShotConstants.IMAGE_URL_GET_MODE_TIETUKU.equals(ShotSiteSetup.IMAGE_URL_GET_MODE)) {
+		if (ShotCoreConstants.IMAGE_URL_GET_MODE_TIETUKU.equals(ShotSiteSetup.IMAGE_URL_GET_MODE)) {
 			return TietukuUtils.getImageOriginalUrl(getTietukuUrlPrefix(), getTietukuUrlId());
 		} else {
 			return "\\image\\type\\id"; // TODO 本地图片获取方式

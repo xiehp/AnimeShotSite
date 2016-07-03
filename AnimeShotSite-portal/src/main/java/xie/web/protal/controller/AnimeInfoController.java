@@ -18,7 +18,6 @@ import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotInfoService;
 import xie.base.controller.BaseFunctionController;
-import xie.base.entity.BaseEntity;
 import xie.common.Constants;
 
 @Controller
@@ -38,7 +37,7 @@ public class AnimeInfoController extends BaseFunctionController<AnimeInfo, Strin
 
 	@RequestMapping(value = "/list")
 	public String list(
-			@RequestParam(value = "sortType", defaultValue = "sort") String sortType,
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType,
 			@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			Model model, HttpSession session, HttpServletRequest request) {
 
@@ -46,7 +45,6 @@ public class AnimeInfoController extends BaseFunctionController<AnimeInfo, Strin
 		// 增加删除过滤
 		searchParams.put("EQ_deleteFlag", Constants.FLAG_STR_NO);
 		searchParams.put("EQ_showFlg", Constants.FLAG_STR_YES);
-		sortType = BaseEntity.COLUMN_CREATE_DATE;
 		Page<AnimeInfo> animeInfoPage = animeInfoService.searchPageByParams(searchParams, pageNumber, Constants.PAGE_SIZE_DEFAULT, sortType, AnimeInfo.class);
 
 		model.addAttribute("animeInfoPage", animeInfoPage);

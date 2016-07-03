@@ -11,10 +11,11 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springside.modules.mapper.BeanMapper;
 
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-public abstract class BaseEntity extends IdEntity {
+public class BaseEntity extends IdEntity implements IBaseEntity {
 
 	private static final long serialVersionUID = -4913519870385296330L;
 
@@ -25,11 +26,11 @@ public abstract class BaseEntity extends IdEntity {
 	public static final String COLUMN_DELETE_FLAG = "deleteFlag";
 	public static final String COLUMN_VERSION = "version";
 
-//	@Id
-//	@GeneratedValue(generator = "system-uuid")
-//	@GenericGenerator(name = "system-uuid", strategy = "uuid")
-//	@Column(name = "ID", unique = true, nullable = false, length = 32)
-//	private String id;
+	// @Id
+	// @GeneratedValue(generator = "system-uuid")
+	// @GenericGenerator(name = "system-uuid", strategy = "uuid")
+	// @Column(name = "ID", unique = true, nullable = false, length = 32)
+	// private String id;
 
 	@CreatedBy
 	private String createBy;
@@ -44,13 +45,13 @@ public abstract class BaseEntity extends IdEntity {
 
 	private Integer deleteFlag = 0;
 
-//	public String getId() {
-//		return id;
-//	}
-//
-//	public void setId(String id) {
-//		this.id = id;
-//	}
+	// public String getId() {
+	// return id;
+	// }
+	//
+	// public void setId(String id) {
+	// this.id = id;
+	// }
 
 	public Date getCreateDate() {
 		return createDate;
@@ -98,5 +99,43 @@ public abstract class BaseEntity extends IdEntity {
 
 	public void setDeleteFlag(Integer deleteFlag) {
 		this.deleteFlag = deleteFlag;
+	}
+
+	/**
+	 * 将内容拷贝到vo中
+	 */
+	public <X> X copyTo(X vo) {
+		BeanMapper.copy(this, vo);
+		return vo;
+	}
+
+	/**
+	 * 将除了baseEntity中的所有内容拷贝到vo中
+	 */
+	public <X extends BaseEntity> X copyToWithOutBaseInfo(X vo) {
+		BaseEntity tempBaseEntity = new BaseEntity();
+		BeanMapper.copy(vo, tempBaseEntity);
+		BeanMapper.copy(this, vo);
+		BeanMapper.copy(tempBaseEntity, vo);
+		return vo;
+	}
+
+	/**
+	 * 从vo中将内容拷贝过来
+	 */
+	public <X> BaseEntity copyFrom(X vo) {
+		BeanMapper.copy(vo, this);
+		return this;
+	}
+
+	/**
+	 * 从vo中将除了baseEntity的所有内容拷贝过来
+	 */
+	public <X extends BaseEntity> BaseEntity copyFromWithOutBaseInfo(X vo) {
+		BaseEntity tempBaseEntity = new BaseEntity();
+		BeanMapper.copy(this, tempBaseEntity);
+		BeanMapper.copy(vo, this);
+		BeanMapper.copy(tempBaseEntity, this);
+		return this;
 	}
 }

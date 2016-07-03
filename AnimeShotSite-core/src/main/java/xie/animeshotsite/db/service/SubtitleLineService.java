@@ -3,6 +3,7 @@ package xie.animeshotsite.db.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +26,7 @@ import xie.animeshotsite.db.repository.impl.SubtitleInfoDaoImpl;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.repository.BaseRepository;
 import xie.base.service.BaseService;
+import xie.common.date.DateUtil;
 import xie.subtitle.Subtitle;
 import xie.subtitle.SubtitleFactory;
 import xie.subtitle.line.XSubtitleLine;
@@ -69,16 +71,24 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 				if (list != null && list.size() > 0) {
 					// 删除老的数据
 					if (forceDelete) {
-						logging.error("删除老的数据");
+						Date startDate = new Date();
+						logging.warn("删除老的数据, " + startDate);
 						deleteBySubtitleInfoId(subtitleInfo.getId());
+						logging.warn("删除老的数据成功, " + new Date() + ", 耗时：" + (new Date().getTime() - startDate.getTime()));
 					}
 
 					// 保存新数据
+					Date startDate = new Date();
+					List<SubtitleLine> listSubtitleLine = new ArrayList<>();
 					for (XSubtitleLine xSubtitleLine : list) {
-						saveSubtitleLine(xSubtitleLine, subtitleInfo);
+						SubtitleLine subtitleLine = getSubtitleLine(xSubtitleLine, subtitleInfo);
+						listSubtitleLine.add(subtitleLine);
+					}
+					if (listSubtitleLine.size() > 0) {
+						listSubtitleLine = getBaseRepository().save(listSubtitleLine);
 					}
 
-					logging.error("创建字幕数据成功，文件：{}", file.getAbsolutePath());
+					logging.info("创建字幕数据成功，文件：{}，耗时：{}", file.getAbsolutePath(),  DateUtil.formatTime(new Date().getTime() - startDate.getTime(), 3));
 				}
 			}
 		} catch (IOException e) {
@@ -87,7 +97,7 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 		}
 	}
 
-	public SubtitleLine saveSubtitleLine(XSubtitleLine xSubtitleLine, SubtitleInfo subtitleInfo) {
+	public SubtitleLine getSubtitleLine(XSubtitleLine xSubtitleLine, SubtitleInfo subtitleInfo) {
 		Integer lineIndex = xSubtitleLine.getLineIndex();
 		SubtitleLine subtitleLine = subtitleLineDao.findBySubtitleInfoIdAndLineIndex(subtitleInfo.getId(), lineIndex);
 		if (subtitleLine == null) {
@@ -114,6 +124,11 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 		// subtitleLine.setMarginR(xSubtitleLine.getMarginR());
 		// subtitleLine.setMarginV(xSubtitleLine.getMarginV());
 
+		return subtitleLine;
+	}
+
+	public SubtitleLine saveSubtitleLine(XSubtitleLine xSubtitleLine, SubtitleInfo subtitleInfo) {
+		SubtitleLine subtitleLine = getSubtitleLine(xSubtitleLine, subtitleInfo);
 		subtitleLine = getBaseRepository().save(subtitleLine);
 		return subtitleLine;
 	}

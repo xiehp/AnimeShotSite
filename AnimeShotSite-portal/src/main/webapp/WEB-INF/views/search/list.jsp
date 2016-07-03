@@ -124,16 +124,18 @@
 </script>
 <div>
 	<!-- 搜索框 -->
-	<div style="margin-bottom: 20px;">
-		<span style="font-size: 20px;">请输入要搜索的动画名</span>
-		<input class="input-lg enter-search-event" id="animeName" name="animeName" value="<c:out value='${name}' />">
-		<input type="hidden" id="animeNameHidden" value="<c:out value='${name}' />">
-	</div>
-	<div style="margin-bottom: 20px;">
-		<span style="font-size: 20px;">请输入要搜索的字幕</span>
-		<input class="input-lg enter-search-event" id="keyword" name="keyword" value="<c:out value='${keyword}' />">
-		<input type="hidden" id="keywordHidden" value="<c:out value='${keyword}' />">
-		<a herf="javascript:void(0);" class="btn btn-lg btn-primary" onclick="searchKeyword();">搜索</a>
+	<div class="row">
+		<div class="col-sm-12" style="margin-bottom: 20px;">
+			<span style="font-size: 20px;">请输入要搜索的动画名</span>
+			<input class="input-lg enter-search-event" id="animeName" name="animeName" value="<c:out value='${name}' />">
+			<input type="hidden" id="animeNameHidden" value="<c:out value='${name}' />">
+		</div>
+		<div class="col-sm-12" style="margin-bottom: 20px;">
+			<span style="font-size: 20px;">请输入要搜索的字幕</span>
+			<input class="input-lg enter-search-event" id="keyword" name="keyword" value="<c:out value='${keyword}' />">
+			<input type="hidden" id="keywordHidden" value="<c:out value='${keyword}' />">
+			<a herf="javascript:void(0);" class="btn btn-lg btn-primary" onclick="searchKeyword();">搜索</a>
+		</div>
 	</div>
 
 	<!-- 标题 -->

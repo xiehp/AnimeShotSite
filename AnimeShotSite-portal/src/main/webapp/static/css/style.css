@@ -3,15 +3,14 @@
 body, button, input, select, textarea, h1, h2, h3, h4, h5, h6 {
 	font-family: Microsoft YaHei, 'SimSun', Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;
 }
+
 mark {
-	color:red;
+	color: red;
 }
 
 .imageLazy {
 	display: none;
 }
-
-
 
 .blockTitle {
 	margin-top: 10px;

@@ -10,6 +10,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import xie.base.entity.BaseEntity;
 
@@ -195,6 +197,14 @@ public class AnimeInfo extends BaseEntity {
 
 	public String getSummary() {
 		return summary;
+	}
+
+	public String getSummaryCleanHtml() {
+		if (summary == null) {
+			return null;
+		}
+		// OutputSettings outputSettings = new OutputSettings().prettyPrint(false);
+		return Jsoup.clean(summary, Whitelist.none());
 	}
 
 	public void setSummary(String summary) {

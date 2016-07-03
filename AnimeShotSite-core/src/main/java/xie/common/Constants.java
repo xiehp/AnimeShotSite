@@ -46,6 +46,7 @@ public class Constants {
 	 * 默认分页数
 	 */
 	public static final int PAGE_SIZE_DEFAULT = 20;
+	public static final int PAGE_SIZE_24 = 24;
 	public static final int PAGE_SIZE_40 = 20;
 
 	/** 是否标志 */

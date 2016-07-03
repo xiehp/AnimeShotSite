@@ -28,5 +28,9 @@ WHERE
 UPDATE shot_info SET time_stamp = ROUND(time_stamp / 1000, 1) * 1000;
 
 
+-- 更新所有字幕文件名
+update subtitle_info
 
 
+-- 显示时间为空的字段，设置为更新时间
+update `anime_episode`  set SHOW_DATE = UPDATE_DATE where SHOW_DATE is null;

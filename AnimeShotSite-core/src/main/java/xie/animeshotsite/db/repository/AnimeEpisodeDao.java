@@ -14,4 +14,8 @@ public interface AnimeEpisodeDao extends BaseRepository<AnimeEpisode, String> {
 	List<AnimeEpisode> findByAnimeInfoIdOrderBySort(String animeInfoId);
 
 	long countByShowFlgAndDeleteFlag(Integer showFlg, Integer deleteFlag);
+
+	/** 根据唯一标识符获得某一集剧集 */
+	AnimeEpisode findByAnimeInfoIdAndNumber(String animeInfoId, String string);
+
 }

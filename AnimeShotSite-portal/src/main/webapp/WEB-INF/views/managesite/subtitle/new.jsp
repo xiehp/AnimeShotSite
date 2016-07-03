@@ -24,6 +24,12 @@
 			$("#mainForm").submit();
 		}
 	}
+	function doSubmitMutiByEpisode() {
+		if (confirm("是否继续？")) {
+			$("#mainForm").attr("action", "${ctx}${MANAGE_URL_STR}/subtitle/submitMutiByEpisode");
+			$("#mainForm").submit();
+		}
+	}
 
 	function createSubtitleTask(type) {
 		if (confirm("是否继续？")) {
@@ -61,7 +67,7 @@
 			$("input[name=summary]").val(summaryEditor.getData());
 			document.getElementById('summaryCount').innerHTML = summaryEditor.getData().length;
 		});
-		
+
 		// 初始化select
 	});
 </script>
@@ -101,13 +107,14 @@
 			<input class="form-control" name="language" value="${subtitleInfo.language}" />
 			 -->
 			<select class="form-control" name="language" value="${subtitleInfo.language}">
-				<option value="sc">sc:简体中文</option>
-				<option value="jp">jp:日文</option>
-				<option value="3">011 简日</option>
-				<option value="4">100 繁体</option>
-				<option value="5">101 简繁</option>
-				<option value="6">110 日繁</option>
-				<option value="7">111 简日繁</option>
+				<option value="sc">sc:简体</option>
+				<option value="jp">jp:日语</option>
+				<option value="3">0011 简日</option>
+				<option value="4">0100 繁体</option>
+				<option value="5">0101 简繁</option>
+				<option value="6">0110 日繁</option>
+				<option value="7">0111 简日繁</option>
+				<option value="8">1000 英语</option>
 			</select>
 		</div>
 	</div>
@@ -191,7 +198,8 @@
 	<div class="form-group">
 		<input type="submit" value="更新" onclick="doSubmit(false);" />
 		<input type="button" value="新建一个" onclick="doSubmit(true);" />
-		<input type="button" value="新建或更新多个" onclick="doSubmitMuti();" />
+		<input type="button" value="自动新建多个" onclick="doSubmitMutiByEpisode();" />
+		<input type="button" value="新建多个(废弃)" onclick="doSubmitMuti();" />
 	</div>
 
 

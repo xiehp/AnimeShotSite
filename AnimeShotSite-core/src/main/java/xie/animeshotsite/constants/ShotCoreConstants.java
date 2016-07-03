@@ -2,7 +2,7 @@ package xie.animeshotsite.constants;
 
 import xie.common.utils.props.PropsUtil;
 
-public class ShotConstants {
+public class ShotCoreConstants {
 
 	/** 本地根路径 */
 	public static final String LOCAL_ROOT_PATH = PropsUtil.getProperty("local.root.path");

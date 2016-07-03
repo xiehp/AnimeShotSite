@@ -37,6 +37,28 @@ public abstract class BaseRepositoryPlus<T> {
 		return new PageImpl<T>(list, pageRequest, count);
 	}
 
+	@SuppressWarnings("unchecked")
+	public PageImpl<String> geIdResult(String queryHql, String countHql, Map<String, Object> map, PageRequest pageRequest) {
+		Query queryString = getEntityManager().createQuery(queryHql);
+		Query queryCount = getEntityManager().createQuery(countHql);
+
+		Iterator<String> it = map.keySet().iterator();
+		while (it.hasNext()) {
+			String key = it.next();
+			queryString.setParameter(key, map.get(key));
+			queryCount.setParameter(key, map.get(key));
+		}
+
+		int first = pageRequest.getPageNumber() * pageRequest.getPageSize();
+		queryString.setFirstResult(first);
+		queryString.setMaxResults(pageRequest.getPageSize());
+
+		Long count = (Long) queryCount.getSingleResult();
+		List<String> list = queryString.getResultList();
+
+		return new PageImpl<String>(list, pageRequest, count);
+	}
+
 	public PageImpl<T> createEmptyPage(PageRequest pageRequest) {
 		List<T> list = new ArrayList<>();
 		return new PageImpl<T>(list, pageRequest, 0);

@@ -99,6 +99,12 @@ ADD COLUMN `ORIGINAL_TIME` INT(11) NOT NULL COMMENT '原始视频内时间，可
 ALTER TABLE `shot_task` 
 ADD COLUMN `TASK_TYPE` VARCHAR(20) COMMENT '执行类型 SHOT SUBTITLE' AFTER `TARGET_ID`;
 
+ALTER TABLE `anime_episode` 
+ADD COLUMN `SHOW_DATE` TIMESTAMP NULL AFTER `SHOW_FLG`;
+ALTER TABLE `anime_episode` 
+CHANGE COLUMN `SHOW_DATE` `SHOW_DATE` TIMESTAMP NULL DEFAULT NULL COMMENT '显示时间，用于排序' ;
+
+
 
 -----------------------------以上为已更新sql---------------------------------------
 -----------------------------以上为已更新sql---------------------------------------

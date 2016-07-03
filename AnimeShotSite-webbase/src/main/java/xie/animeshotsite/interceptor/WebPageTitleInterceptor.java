@@ -16,7 +16,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import xie.animeshotsite.setup.ShotSiteSetup;
 import xie.common.Constants;
 import xie.common.string.XStringUtils;
-import xie.common.web.util.WebConstants;
+import xie.common.web.util.ShotWebConstants;
 import xie.sys.auth.service.realm.ShiroRDbRealm.ShiroUser;
 
 /**
@@ -52,22 +52,28 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 		logger.debug("X-Forwarded-Host:{1}", request.getHeader("X-Forwarded-Host"));
 
 		if (XStringUtils.isNotBlank(shotSiteSetup.getAnimesiteServerHost())) {
-			String serverName = request.getHeader("X-Forwarded-Host");
-			if (XStringUtils.isBlank(serverName)) {
-				serverName = request.getServerName();
+			String hostName = request.getHeader("X-Forwarded-Host");
+			if (XStringUtils.isBlank(hostName)) {
+				hostName = request.getServerName();
 			}
 
-			if ("127.0.0.1".equals(serverName) || "localhost".equals(serverName)) {
+			if ("127.0.0.1".equals(hostName) || "localhost".equals(hostName)) {
 				// 来自本地，则不做跳转
-			} else if ("XXXXX".equals(serverName)) {
+			} else if ("XXXXX".equals(hostName)) {
 				// 其他不需要跳转的host
 			} else {
-				if (!shotSiteSetup.getAnimesiteServerHost().startsWith(serverName)) {
-					// serverName不符合配置文件设定的值，进行跳转
-					response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-					// response.sendRedirect("http://" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
-					response.setHeader("Location", "http://" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
-					return false;
+				if (!shotSiteSetup.getAnimesiteServerHost().startsWith(hostName)) {
+					if (hostName.contains("acgimage.cn") || hostName.contains("acgimage.com")) {
+						// serverName不符合配置文件设定的值，进行跳转
+						response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+						// response.sendRedirect("http://" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
+						response.setHeader("Location", "http://" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
+						return false;
+					} else {
+						// 除了acgimage.cn，acgimage.com 其他都显示404
+						response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+						return false;
+					}
 				}
 			}
 		}
@@ -114,7 +120,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 			{
 				ShiroUser shiroUser = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 				System.out.println("shiroUser:" + shiroUser);
-				if (shiroUser != null && WebConstants.SITE_MANAGER_ID.equals(shiroUser.getId()) && WebConstants.SITE_MANAGER_LOGIN_ID.equals(shiroUser.getLoginName())) {
+				if (shiroUser != null && ShotWebConstants.SITE_MANAGER_ID.equals(shiroUser.getId()) && ShotWebConstants.SITE_MANAGER_LOGIN_ID.equals(shiroUser.getLoginName())) {
 					request.setAttribute("IS_MASTER", true);
 				} else {
 					request.setAttribute("IS_MASTER", false);
@@ -127,7 +133,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 			// 判断是否需要网站统计和搜索引擎推送
 			{
 				boolean canBaiduRecord = false; // 是否让搜索引擎统计和索引
-				if (requestURL.contains(WebConstants.MANAGE_URL_STR)) {
+				if (requestURL.contains(ShotWebConstants.MANAGE_URL_STR)) {
 					// 后台页面，不统计
 					canBaiduRecord = false;
 				} else {
@@ -150,7 +156,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 			// 系统常量
 			{
 				// 其他
-				request.setAttribute("MANAGE_URL_STR", WebConstants.MANAGE_URL_STR);
+				request.setAttribute("MANAGE_URL_STR", ShotWebConstants.MANAGE_URL_STR);
 
 				// json
 				request.setAttribute("JSON_RESPONSE_KEY_CODE", Constants.JSON_RESPONSE_KEY_CODE);
@@ -166,6 +172,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 
 				// server处理
 				request.setAttribute("requestURI", request.getRequestURI());
+				request.setAttribute("requestURL", request.getRequestURL());
 			}
 		}
 	}

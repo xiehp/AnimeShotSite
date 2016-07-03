@@ -51,14 +51,14 @@
 		<!-- <tomcat-jdbc.version>7.0.57</tomcat-jdbc.version> -->
 
 		<!-- spring.io版本 -->
-		<spring.io.version>2.0.2.RELEASE</spring.io.version>
+		<spring.io.version>2.0.5.RELEASE</spring.io.version>
 
 		<!-- 主要依赖库的版本定义 -->
 		<springside.version>4.3.0-SNAPSHOT</springside.version>
 		<mybatis.version>3.2.7</mybatis.version>
 		<tomcat-jdbc.version>7.0.57</tomcat-jdbc.version>
 		<sitemesh.version>2.4.2</sitemesh.version>
-		<shiro.version>1.2.4</shiro.version>
+		<shiro.version>1.2.5</shiro.version>
 		<cxf.version>2.7.11</cxf.version>
 		<activemq.version>5.7.0</activemq.version>
 		<quartz.version>2.2.1</quartz.version>

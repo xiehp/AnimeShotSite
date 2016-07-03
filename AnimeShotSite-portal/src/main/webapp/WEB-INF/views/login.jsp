@@ -25,7 +25,7 @@
 
 		<!-- BEGIN LOGIN FORM -->
 
-		<form id="login-form" class="form-vertical" >
+		<form id="login-form" class="form-vertical">
 
 			<h3 class="form-title">后台管理</h3>
 
@@ -93,7 +93,7 @@
 		<!-- END LOGIN FORM -->
 
 
-				<button onclick="loginSubmitAjax();" >Login</button>
+		<button onclick="loginSubmitAjax();">Login</button>
 	</div>
 
 	<!-- END LOGIN -->
@@ -147,9 +147,10 @@
 		});
 
 		function loginSubmitAjax() {
+			var password = $.trim($('#password').val());
 			var param = {
 				"loginName" : $.trim($('#username').val()),
-				"password" : $.trim($('#password').val())
+				"password" : password
 			}
 			$.ajax({
 				url : 'webLoginAjax',
@@ -168,8 +169,8 @@
 					console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
 				}
 			});
-
 		}
+		
 	</script>
 
 	<!-- END JAVASCRIPTS -->

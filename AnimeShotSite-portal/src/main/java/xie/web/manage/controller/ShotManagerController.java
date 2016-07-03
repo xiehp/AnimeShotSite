@@ -24,10 +24,10 @@ import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotInfoService;
 import xie.base.controller.BaseManagerController;
 import xie.base.service.BaseService;
-import xie.common.web.util.WebConstants;
+import xie.common.web.util.ShotWebConstants;
 
 @Controller
-@RequestMapping(value = WebConstants.MANAGE_URL_STR + "/shot")
+@RequestMapping(value = ShotWebConstants.MANAGE_URL_STR + "/shot")
 public class ShotManagerController extends BaseManagerController<ShotInfo, String> {
 
 	private @Autowired AnimeInfoService animeInfoService;
@@ -35,7 +35,7 @@ public class ShotManagerController extends BaseManagerController<ShotInfo, Strin
 	private @Autowired AnimeEpisodeService animeEpisodeService;
 
 	private @Autowired ShotInfoService shotInfoService;
-	
+
 	@Override
 	protected BaseService<ShotInfo, String> getBaseService() {
 		return shotInfoService;
@@ -56,7 +56,7 @@ public class ShotManagerController extends BaseManagerController<ShotInfo, Strin
 		AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
 		List<AnimeEpisode> animeEpisodeList = animeEpisodeService.findAll();
 		AnimeInfo animeInfo = animeInfoService.findOne(animeEpisode.getAnimeInfoId());
-		Page<ShotInfo> shotInfoPage = shotInfoService.searchAllShots(searchParams, pageNumber, 50, sortType);
+		Page<ShotInfo> shotInfoPage = shotInfoService.searchPageByParams(searchParams, pageNumber, 50, sortType, ShotInfo.class);
 
 		model.addAttribute("animeInfo", animeInfo);
 		model.addAttribute("animeEpisode", animeEpisode);

@@ -3,6 +3,7 @@ package xie.animeshotsite.timer.a2i.listener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,8 @@ import xie.animeshotsite.db.service.ImageUrlService;
 import xie.animeshotsite.db.service.ShotInfoService;
 import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.utils.FilePathUtils;
+import xie.common.date.DateUtil;
+import xie.common.date.XTimeUtils;
 import xie.common.string.XStringUtils;
 import xie.common.utils.JsonUtil;
 import xie.tietuku.spring.TietukuConfig;
@@ -48,9 +51,9 @@ public class SaveImageListener extends Video2ImageAdapter {
 	private String animeEpisodeId;
 	private AnimeEpisode animeEpisode;
 	private File rootPath;
-	/** 不带number的path */
-	private String detailPath;
-	private String number;
+	/** 不带number的detail path */
+	private File detailPath;
+	private File detailPathWithNumber;
 	private File fullDetailPath;
 
 	private String tietukuToken;
@@ -63,7 +66,42 @@ public class SaveImageListener extends Video2ImageAdapter {
 
 	private PostImage postImage;
 
+	/**
+	 * 
+	 * @param animeInfoId
+	 * @param animeEpisodeId
+	 * @param rootPath
+	 * @param detailPath
+	 * @param number 剧集唯一标识
+	 */
+	@Deprecated
 	public SaveImageListener(String animeInfoId, String animeEpisodeId, String rootPath, String detailPath, String number) {
+		init(animeInfoId, animeEpisodeId, rootPath, detailPath, number);
+	}
+
+	public SaveImageListener(AnimeEpisode animeEpisode) {
+		shotInfoService = SpringUtil.getBean(ShotInfoService.class);
+		shotInfoDao = SpringUtil.getBean(ShotInfoDao.class);
+		animeEpisodeService = SpringUtil.getBean(AnimeEpisodeService.class);
+		animeInfoService = SpringUtil.getBean(AnimeInfoService.class);
+		imageUrlService = SpringUtil.getBean(ImageUrlService.class);
+		uploadPerHourCouter = SpringUtil.getBean(UploadPerHourCouter.class);
+
+		this.animeEpisode = animeEpisode;
+		this.animeInfoId = animeEpisode.getAnimeInfoId();
+		this.animeEpisodeId = animeEpisode.getId();
+		AnimeInfo animeInfo = animeInfoService.findOne(animeInfoId);
+		this.rootPath = FilePathUtils.getShotRoot(null, animeEpisode, animeInfo);
+		this.detailPath = new File(FilePathUtils.getDetailPath(null, animeEpisode, animeInfo));
+		this.detailPathWithNumber = new File(detailPath, animeEpisode.getNumber());
+		this.fullDetailPath = FilePathUtils.getShotDetailFolder(null, animeEpisode, animeInfo);
+
+		TietukuConfig tietukuConfig = SpringUtil.getBean(TietukuConfig.class);
+		tietukuToken = tietukuConfig.getTietukuToken();
+		postImage = new PostImage();
+	}
+
+	private void init(String animeInfoId, String animeEpisodeId, String rootPath, String detailPath, String number) {
 		shotInfoService = SpringUtil.getBean(ShotInfoService.class);
 		shotInfoDao = SpringUtil.getBean(ShotInfoDao.class);
 		animeEpisodeService = SpringUtil.getBean(AnimeEpisodeService.class);
@@ -79,8 +117,8 @@ public class SaveImageListener extends Video2ImageAdapter {
 		} else {
 			this.rootPath = FilePathUtils.getRootDefault();
 		}
-		this.detailPath = detailPath;
-		this.number = number;
+
+		this.detailPath = new File(detailPath);
 		this.fullDetailPath = FilePathUtils.getShotDetailFolderDefault(detailPath, number);
 
 		TietukuConfig tietukuConfig = SpringUtil.getBean(TietukuConfig.class);
@@ -120,25 +158,26 @@ public class SaveImageListener extends Video2ImageAdapter {
 			fileName = shotInfo.getLocalFileName();
 		} else {
 			logger.info("获取shotInfo数据, null");
-			fileName = animeEpisode.getFullName() + " " + setTime;
-			if (XStringUtils.isBlank(fileName)) {
-				fileName = String.valueOf(setTime);
-			}
+			fileName = animeEpisode.getFullName() + " " + DateUtil.formatTime(setTime, 3);
 		}
+		if (XStringUtils.isBlank(fileName)) {
+			fileName = String.valueOf(setTime);
+		}
+
 		File file = CImage.getFilePath(fileName, fullDetailPath);
 		file = CImage.saveImage(image, file);
 		if (file == null) {
-			// TODO 保存失败
 			logger.error("保存失败，路径：{}，时间： {}", fullDetailPath, setTime);
+			throw new RuntimeException("保存失败");
 		}
 
 		// 保存到数据库
-		shotInfo = shotInfoService.createShotInfo(animeInfoId, animeEpisodeId, setTime, originalTime, rootPath.getAbsolutePath(), detailPath, file.getName(), forceUpdate);
+		shotInfo = shotInfoService.createShotInfo(animeInfoId, animeEpisodeId, setTime, originalTime, null, null, file.getName(), forceUpdate);
 		logger.info("保存到数据库, " + "id:" + shotInfo.getId() + ", timeStamp:" + shotInfo.getTimeStamp() + ", version:" + shotInfo.getVersion());
 
 		if (forceUpload || XStringUtils.isBlank(shotInfo.getTietukuUrlId())) {
 			// 增加次数，同时判断当前是否刷新上传次数，以及暂停操作
-			uploadPerHourCouter.addCount();
+			// uploadPerHourCouter.addCount(); 直接根据返回值判断，这里就不用自己判断了
 
 			// 保存截图到贴图库网站
 			String responseStr = null;
@@ -155,34 +194,40 @@ public class SaveImageListener extends Video2ImageAdapter {
 				responseUpload = JsonUtil.fromJsonString(responseStr, TietukuUploadResponse.class);
 				tietukuUrl = responseUpload.getLinkurl();
 			}
+			logger.info("tietukuUrl:" + tietukuUrl);
 			if (tietukuUrl == null) {
 				if (responseUpload != null) {
 					logger.error("贴图库上传失败，返回值：{},{}", responseUpload.getCode(), responseUpload.getInfo());
-				}
-				try {
-					if ("483".equals(responseUpload.getCode())) {
-						Thread.sleep(3600 * 1000);
-					}
-
-					logger.error("贴图库上传失败，再次上传");
 					try {
-						responseStr = postImage.doUpload(file, tietukuToken);
-					} catch (Exception e) {
-						logger.error("贴图库再次上传失败，", e);
-					}
-					logger.info("responseStr:" + responseStr);
-					if (responseStr != null) {
-						responseUpload = JsonUtil.fromJsonString(responseStr, TietukuUploadResponse.class);
-						tietukuUrl = responseUpload.getLinkurl();
-					}
-					if (tietukuUrl == null) {
-						if (responseUpload != null) {
-							logger.error("贴图库上传失败，返回值：{},{}", responseUpload.getCode(), responseUpload.getInfo());
-							throw new RuntimeException("贴图库上传失败，返回值：" + responseUpload.getCode() + "," + responseUpload.getInfo());
+						if ("4019".equals(responseUpload.getCode())) {
+							long sleepTime = XTimeUtils.getNeedTimeNextHour();
+							sleepTime += 300 * 1000;
+							logger.error("暂停" + (sleepTime / 1000) + "秒");
+							Thread.sleep(sleepTime);
+							logger.error("暂停结束");
 						}
+					} catch (InterruptedException e) {
+						logger.error("InterruptedException，", e);
 					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				}
+
+				logger.error("贴图库上传失败，等待1分钟再次上传");
+				try {
+					Thread.sleep(60 * 1000);
+					responseStr = postImage.doUpload(file, tietukuToken);
+				} catch (Exception e) {
+					logger.error("贴图库再次上传失败，", e);
+				}
+				logger.info("responseStr:" + responseStr);
+				if (responseStr != null) {
+					responseUpload = JsonUtil.fromJsonString(responseStr, TietukuUploadResponse.class);
+					tietukuUrl = responseUpload.getLinkurl();
+				}
+				if (tietukuUrl == null) {
+					if (responseUpload != null) {
+						logger.error("贴图库上传失败，返回值：{},{}", responseUpload.getCode(), responseUpload.getInfo());
+						throw new RuntimeException("贴图库上传失败，返回值：" + responseUpload.getCode() + "," + responseUpload.getInfo());
+					}
 				}
 			}
 
@@ -203,12 +248,12 @@ public class SaveImageListener extends Video2ImageAdapter {
 
 				// 剧集
 				if (animeEpisode != null && XStringUtils.isBlank(animeEpisode.getTitleUrlId())) {
-					animeEpisodeService.saveTitleUrl(animeEpisode, FilePathUtils.getAnimeRoot(null, animeEpisode).getAbsolutePath(), new File(detailPath, number).getPath(), file.getName(), shotInfo.getTietukuUrlId(), shotInfo.getTietukuUrlPrefix());
+					animeEpisodeService.saveTitleUrl(animeEpisode, rootPath.getAbsolutePath(), detailPathWithNumber.getPath(), file.getName(), shotInfo.getTietukuUrlId(), shotInfo.getTietukuUrlPrefix());
 				}
 
 				// 动画
 				if (animeinfo != null && XStringUtils.isBlank(animeinfo.getTitleUrlId())) {
-					animeInfoService.saveTitleUrl(animeinfo, rootPath.getAbsolutePath(), new File(detailPath, number).getPath(), file.getName(), shotInfo.getTietukuUrlId(), shotInfo.getTietukuUrlPrefix());
+					animeInfoService.saveTitleUrl(animeinfo, rootPath.getAbsolutePath(), detailPathWithNumber.getPath(), file.getName(), shotInfo.getTietukuUrlId(), shotInfo.getTietukuUrlPrefix());
 				}
 
 				hasSaveEpisodeImageFlg = true;

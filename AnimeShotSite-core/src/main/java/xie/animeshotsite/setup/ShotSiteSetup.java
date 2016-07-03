@@ -5,14 +5,14 @@ import java.util.Properties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import xie.animeshotsite.constants.ShotConstants;
+import xie.animeshotsite.constants.ShotCoreConstants;
 import xie.common.XSpringConstants;
 
 @Component
 public class ShotSiteSetup {
 
 	/** 网站图片URL获取方式 腾讯 */
-	public static String IMAGE_URL_GET_MODE = ShotConstants.IMAGE_URL_GET_MODE_TIETUKU;
+	public static String IMAGE_URL_GET_MODE = ShotCoreConstants.IMAGE_URL_GET_MODE_TIETUKU;
 
 	@Value("#{" + XSpringConstants.SPRING_PROPERTIES_ID + "}")
 	Properties properties;

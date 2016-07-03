@@ -6,6 +6,54 @@
 		placeholder : global.ctx + "/static/img/imageLoading_mini.jpg",
 		effect : "fadeIn"
 	});
+
+	function subWidth(width, subWidth) {
+		if (subWidth == null) {
+			return width;
+		}
+
+		return width - parseFloat(subWidth);
+	}
+
+	function resizeImg(imageLazyImg) {
+		if (imageLazyImg != null && imageLazyImg.length > 0) {
+			divParent = imageLazyImg.parents("div.thumbnail");
+			if (divParent != null & divParent.length > 0) {
+				var divWidth = divParent.css("width");
+				if (divWidth != null) {
+					divWidth = parseFloat(divWidth);
+					if (divWidth > 0) {
+						// var marginleft = divParent.css("margin-left");
+						// var marginright = divParent.css("margin-right");
+						var borderwidth = divParent.css("border-width");
+						var paddingleft = divParent.css("padding-left");
+						var paddingright = divParent.css("padding-right");
+
+						// divWidth = subWidth(divWidth, marginleft);
+						// divWidth = subWidth(divWidth, marginright);
+						divWidth = subWidth(divWidth, borderwidth);
+						divWidth = subWidth(divWidth, paddingleft);
+						divWidth = subWidth(divWidth, paddingright);
+						var maxHeight = divWidth * 9 / 16;
+
+						// if (divWidth >= 300) {
+						// // 300为缩略图宽度
+						// divWidth = 300;
+						// maxHeight = 168;
+						// }
+
+						// imageLazyImg.css("max-height", maxHeight);
+						imageLazyImg.css("height", maxHeight);
+					}
+				}
+			}
+		}
+	}
+
+	resizeImg(imageLazyImg);
+	$(window).resize(function() {
+		resizeImg(imageLazyImg);
+	});
 })();
 
 $(function() {
@@ -61,10 +109,12 @@ if (canBaiduRecord) {
 	}
 
 	// 腾讯分析
+	/*
 	(function() {
-		var src = '<script type="text/javascript" src="http://tajs.qq.com/stats?sId=56001858" charset="UTF-8"></script>';
-		document.write(src);
+		//var src = '<script type="text/javascript" src="http://tajs.qq.com/stats?sId=56001858" charset="UTF-8"></script>';
+		//document.write(src);
 	})();
+	*/
 
 	// 站长统计
 	(function() {

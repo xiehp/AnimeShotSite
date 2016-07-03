@@ -7,26 +7,25 @@
 
 <head>
 <title>动画截图网</title>
-<meta name="keywords" content="动画截图网,动画截图,动漫截图,acg截图,动画图片,动漫图片,acg图片,新番截图,截图字幕,截图台词,字幕截图,截图时间,截图,截屏,图片,anime shot,anime image" />
-<meta name="description" content="本站提供动画截图,动漫截图以及每张截图对应的字幕台词。截图一般以5秒为间隔，字幕尽量以外挂的形式显示。" />
+<meta name="keywords" content="动画截图网,动画截图,动漫截图,动漫图片,动画图片,acg截图,acg图片,新番截图,截图字幕,截图台词,字幕截图,画像,截屏,スクリーンショット,anime shot,anime image" />
+<meta name="description" content="本站提供动画完整的动漫图片 动画图片以及字幕台词。截图图片一般以5秒为间隔，字幕尽量以外挂的形式显示。" />
 <meta name='yandex-verification' content='64ecf3910c1154ef' />
+<meta name="google-site-verification" content="xgQXjnyjdOEL3cepdnkjkgfsegefTyyOGKuSSSanTjI" />
 </head>
 
 <div class="container-fluid">
 	<div class="row-fluid">
-		<div align="left"><h1 style="font-size: 14px;">本站提供动画截图,动漫截图以及每张截图对应的字幕台词。截图一般以5秒为间隔，字幕尽量以外挂的形式显示。</h1></div>
-
-		<div>
+		<div id="最新动画剧集一览">
 			<div class="blockTitle">
-				<span>最新动画剧集一览</span> <span class="count"><a href="${ctx}/anime/list">当前总剧集数：${animeEpisodeCount}</a></span>
+				<span>最新动画剧集一览</span> <span class="count"><a href="${ctx}/anime/list">当前剧集总数：${animeEpisodeCount}</a></span>
 			</div>
 			<div>
 				<div class="row">
-					<c:forEach items="${ animeEpisodeList }" var="animeEpisode">
+					<c:forEach items="${ animeEpisodeList }" var="animeEpisode" end="29">
 						<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4 thumbnail">
-							<a href="${ctx}/shot/list/${animeEpisode.id}">
-								<img data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy" alt="<c:out value="${animeEpisode.animeInfo.fullName}" />">
-								<div class="wordKeepLine" title="<c:out value='${animeEpisode.animeInfo.fullName}' />">
+							<a href="${ctx}/shot/list/${animeEpisode.id}" title="<c:out value='${animeEpisode.fullName}' />">
+								<img data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy" alt="<c:out value='${animeEpisode.fullName}' />">
+								<div class="wordKeepLine">
 									<c:out value="${animeEpisode.animeInfo.fullName}" />
 								</div>
 								<div>
@@ -39,67 +38,70 @@
 			</div>
 		</div>
 
-		<div id="站长推荐图片">
+		<div id="推荐动漫图片">
 			<div class="blockTitle">
-				<span>站长推荐图片</span>
+				<span>推荐动漫图片</span>
 			</div>
 			<div class="row">
-				<c:forEach items="${ masterRecommandShotList }" var="shot" varStatus="status" end="41">
+				<c:forEach items="${ masterRecommandShotList }" var="shot" varStatus="status" end="29">
 					<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
-						<a href="${ctx}/shot/view/${shot.id}">
+						<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> ${shot.formatedTimeChina}">
 							<img data-original="${shot.urlS}" class="img-responsive imagelazy">
-							<div class="wordKeepLine" title="<c:out value='${shot.animeInfo.fullName}' />">
+							<div class="wordKeepLine">
 								<c:out value="${shot.animeInfo.fullName}" />
 							</div>
 							<c:out value="${shot.animeEpisode.divisionName}" />
-							<br>
-							<div style="margin-top: 5px;">${shot.formatedMinSec}</div>
+							${shot.formatedTimeChina}
 						</a>
 					</div>
 				</c:forEach>
 			</div>
 		</div>
 
-		<div id="点击热度图片">
+		<c:if test="${false}">
+			<div id="点击热度图片">
+				<div class="blockTitle">
+					<span>点击热度图片</span>
+				</div>
+				<div class="row">
+					<c:forEach items="${ publicLikeShotList }" var="shot" varStatus="status" end="23">
+						<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
+							<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> ${shot.formatedTimeChina}">
+								<img data-original="${shot.urlS}" class="img-responsive imagelazy">
+								<div class="wordKeepLine">
+									<c:out value="${shot.animeInfo.fullName}" />
+								</div>
+								<c:out value="${shot.animeEpisode.divisionName}" />
+								${shot.formatedTimeChina}
+							</a>
+						</div>
+					</c:forEach>
+				</div>
+			</div>
+		</c:if>
+
+		<div id="最新截图展示">
 			<div class="blockTitle">
-				<span>点击热度图片</span>
+				<span>最新截图展示</span> <span class="count">当前截图总数：${shotCount}</span>
 			</div>
 			<div class="row">
-				<c:forEach items="${ publicLikeShotList }" var="shot" varStatus="status" end="41">
+				<c:forEach items="${ newestShotList }" var="shot" varStatus="status" end="11">
 					<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
-						<a href="${ctx}/shot/view/${shot.id}">
+						<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> ${shot.formatedTimeChina}">
 							<img data-original="${shot.urlS}" class="img-responsive imagelazy">
-							<div class="wordKeepLine" title="<c:out value='${shot.animeInfo.fullName}' />">
+							<div class="wordKeepLine">
 								<c:out value="${shot.animeInfo.fullName}" />
 							</div>
 							<c:out value="${shot.animeEpisode.divisionName}" />
-							<br>
-							<div style="margin-top: 5px;">${shot.formatedMinSec}</div>
+							${shot.formatedTimeChina}
 						</a>
 					</div>
 				</c:forEach>
 			</div>
 		</div>
 
-		<div id="最新图片展示">
-			<div class="blockTitle">
-				<span>最新图片展示</span> <span class="count">当前总截图数：${shotCount}</span>
-			</div>
-			<div class="row">
-				<c:forEach items="${ newestShotList }" var="shot" varStatus="status" end="41">
-					<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
-						<a href="${ctx}/shot/view/${shot.id}">
-							<img data-original="${shot.urlS}" class="img-responsive imagelazy">
-							<div class="wordKeepLine" title="<c:out value='${shot.animeInfo.fullName}' />">
-								<c:out value="${shot.animeInfo.fullName}" />
-							</div>
-							<c:out value="${shot.animeEpisode.divisionName}" />
-							<br>
-							<div style="margin-top: 5px;">${shot.formatedMinSec}</div>
-						</a>
-					</div>
-				</c:forEach>
-			</div>
+		<div align="left">
+			<h1 style="font-size: 14px;">本站提供动画完整的动漫图片 动画图片以及字幕台词。截图图片一般以5秒为间隔，字幕尽量以外挂的形式显示。</h1>
 		</div>
 	</div>
 </div>

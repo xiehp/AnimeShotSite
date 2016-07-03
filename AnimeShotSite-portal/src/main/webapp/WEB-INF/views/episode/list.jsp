@@ -2,31 +2,42 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <title><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> - 动画截图网</title>
+<head>
+<meta name="keywords" content="<c:out value='${animeInfo.fullName}' />,<c:out value='${animeInfo.secondName}' />,动画截图网,动画截图,动漫截图,动漫图片,动画图片,截图字幕" />
+<meta name="description" content="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> 的动画截图,动漫截图,动漫图片,动画图片,截图字幕。<c:out value='${fn:substring(animeInfo.summaryCleanHtml,0,100)}' />" />
 
+<style>
+.AnimeSummary li>p {
+	margin-bottom: 0px;
+}
+</style>
+</head>
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="row">
 			<!-- 图片 -->
 			<div class="col-sm-4 col-xs-12">
-				<img src="${animeInfo.titleUrl.urlS}" width="100%" />
+				<img src="${animeInfo.titleUrl.urlL}" width="100%" />
 			</div>
+
 			<!-- 信息 -->
 			<div class="col-sm-8 col-xs-12">
 				<!-- 名称 -->
 				<div class="blockTitle" style="margin-left: 0px;">
-					<span><c:out value='${animeInfo.fullName}' /></span> <span><c:out value='${animeInfo.secondName}' /></span>
+					<h1 style="font-size: 28px;"><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /></h1>
 				</div>
 
 				<!-- 动画简介 -->
-				<div style="text-align: left;">
-					<div style="font-weight: 700;">动画简介</div>
-					<div>
-						${animeInfo.summary}
+				<c:if test="${!empty animeInfo.summary}">
+					<div class="AnimeSummary" style="text-align: left;">
+						<div style="font-weight: 700;">动画简介</div>
+						<div>${animeInfo.summary}</div>
 					</div>
-				</div>
+				</c:if>
 			</div>
 		</div>
 
@@ -34,7 +45,7 @@
 		<div class="row" style="margin-top: 10px;">
 			<c:forEach items="${ animeEpisodePage.content }" var="animeEpisode">
 				<div class="col-lg-2 col-md-2 col-sm-3 col-xs-4 thumbnail">
-					<a href="${ctx}/shot/list/${animeEpisode.id}">
+					<a href="${ctx}/shot/list/${animeEpisode.id}" title="<c:out value='${animeEpisode.fullName}' />">
 						<img data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy">
 						<div style="margin-top: 5px;">
 							<c:out value='${animeEpisode.divisionName}' />
@@ -47,7 +58,7 @@
 </div>
 
 <div>
-	<tags:pagination page="${animeEpisodePage}" paginationSize="10" />
+	<tags:pagination page="${animeEpisodePage}" paginationSize="9" />
 </div>
 
 <div>

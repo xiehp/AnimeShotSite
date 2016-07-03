@@ -78,7 +78,8 @@ public class ShotSpecifyTask extends XBaseTask {
 				throw new FileNotFoundException("文件不存在：" + animeEpisodeFile.getAbsolutePath());
 			}
 
-			SaveImageListener saveImageListener = new SaveImageListener(animeEpisode.getAnimeInfoId(), animeEpisode.getId(), animeEpisode.getLocalRootPath(), animeEpisode.getLocalDetailPath(), animeEpisode.getNumber());
+//			SaveImageListener saveImageListener = new SaveImageListener(animeEpisode.getAnimeInfoId(), animeEpisode.getId(), animeEpisode.getLocalRootPath(), animeEpisode.getLocalDetailPath(), animeEpisode.getNumber());
+			SaveImageListener saveImageListener = new SaveImageListener(animeEpisode);
 			File fileMrl = animeEpisodeFile;
 			if (forceUpload != null) {
 				saveImageListener.setForceUpload(forceUpload);

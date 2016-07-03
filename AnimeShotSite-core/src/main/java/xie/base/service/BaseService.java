@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springside.modules.mapper.BeanMapper;
 
+import xie.animeshotsite.db.entity.cache.EntityCache;
+import xie.base.entity.IdEntity;
 import xie.base.page.PageRequestUtil;
 import xie.base.repository.BaseRepository;
 import xie.base.repository.BaseSearchFilter;
@@ -22,9 +25,12 @@ import xie.base.repository.BaseSpecifications;
 import xie.common.Constants;
 import xie.common.string.XStringUtils;
 
-public abstract class BaseService<M, ID extends Serializable> {
+public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 
 	protected Logger logging = LoggerFactory.getLogger(this.getClass());
+
+	@Autowired
+	protected EntityCache entityCache;
 
 	public abstract BaseRepository<M, ID> getBaseRepository();
 
@@ -45,6 +51,10 @@ public abstract class BaseService<M, ID extends Serializable> {
 	}
 
 	public M findOne(ID id) {
+		return getBaseRepository().findOne(id);
+	}
+
+	public M findOne(ID id, boolean useCache) {
 		return getBaseRepository().findOne(id);
 	}
 

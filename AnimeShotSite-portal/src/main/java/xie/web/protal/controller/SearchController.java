@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,6 +91,8 @@ public class SearchController extends BaseFunctionController<ShotInfo, String> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		//Order order1 = PageRequestUtil.createOrder(SubtitleLine, Direction.ASC);
+
 		PageRequest pageRequest = PageRequestUtil.buildPageRequest(pageNumber, 10, sortType, direction);
 		// Page<SubtitleLine> subtitleLinePage = subtitleLineService.searchPageByParams(searchParams, pageRequest, SubtitleLine.class);
 		Page<SubtitleLine> subtitleLinePage = subtitleLineService.searchSubtitleLineByText(name, keyword, pageRequest);

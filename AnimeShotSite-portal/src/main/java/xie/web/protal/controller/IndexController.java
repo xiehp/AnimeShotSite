@@ -88,7 +88,7 @@ public class IndexController extends BaseController {
 		{
 			List<AnimeEpisode> animeEpisodeList = entityCache.get("animeEpisodeList" + "Index");
 			if (animeEpisodeList == null) {
-				animeEpisodeList = animeEpisodeService.getNewestAnimeEpisodeList(20);
+				animeEpisodeList = animeEpisodeService.getNewestAnimeEpisodeList(30);
 				entityCache.put("animeEpisodeList" + "Index", animeEpisodeList);
 			}
 			request.setAttribute("animeEpisodeList", animeEpisodeList);
@@ -110,7 +110,7 @@ public class IndexController extends BaseController {
 		{
 			List<ShotInfo> newestShotList = entityCache.get("newestShotList" + "Index");
 			if (newestShotList == null) {
-				newestShotList = shotInfoService.getNewestShotList(20);
+				newestShotList = shotInfoService.getNewestShotList(30);
 				entityCache.put("newestShotList" + "Index", newestShotList);
 			}
 			request.setAttribute("newestShotList", newestShotList);
@@ -130,7 +130,13 @@ public class IndexController extends BaseController {
 		{
 			List<ShotInfo> masterRecommandShotList = entityCache.get("masterRecommandShotList" + "Index");
 			if (masterRecommandShotList == null) {
-				masterRecommandShotList = shotInfoService.getMasterRecommandShotList(7, 20);
+				masterRecommandShotList = shotInfoService.getMasterRecommandShotList(7, 30);
+				if (masterRecommandShotList.size() == 0) {
+					masterRecommandShotList = shotInfoService.getMasterRecommandShotList(365, 30);
+				}
+				if (masterRecommandShotList.size() == 0) {
+					masterRecommandShotList = shotInfoService.getMasterRecommandShotList(3650, 30);
+				}
 				entityCache.put("masterRecommandShotList" + "Index", masterRecommandShotList);
 			}
 			request.setAttribute("masterRecommandShotList", masterRecommandShotList);
@@ -140,7 +146,7 @@ public class IndexController extends BaseController {
 		{
 			List<ShotInfo> publicLikeShotList = entityCache.get("publicLikeShotList" + "Index");
 			if (publicLikeShotList == null) {
-				publicLikeShotList = shotInfoService.getPublicLikeShotList(20);
+				publicLikeShotList = shotInfoService.getPublicLikeShotList(30);
 				entityCache.put("publicLikeShotList" + "Index", publicLikeShotList);
 			}
 			request.setAttribute("publicLikeShotList", publicLikeShotList);

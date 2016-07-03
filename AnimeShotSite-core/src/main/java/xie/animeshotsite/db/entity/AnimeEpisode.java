@@ -1,5 +1,7 @@
 package xie.animeshotsite.db.entity;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -11,6 +13,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import xie.base.entity.BaseEntity;
 
@@ -76,7 +80,7 @@ public class AnimeEpisode extends BaseEntity {
 	private String shotLocalRootPath;
 	/** 截图的本地相对路径 null时和上面相同 */
 	private String shotLocalDetailPath;
-	/** 编号 在本地相对路径基础上追加的一层path，用于区分每个剧集，唯一性 */
+	/** 编号，唯一标识符 在本地相对路径基础上追加的一层path，用于区分每个剧集，唯一性, 同时生成字幕信息时，也用该字段作是否曾经创建过的判断依据 */
 	private String number;
 
 	/** 分辨率 宽度 */
@@ -102,6 +106,9 @@ public class AnimeEpisode extends BaseEntity {
 
 	/** 是否显示 */
 	private Integer showFlg;
+
+	/** 显示时间，用于排序 */
+	private Date showDate;
 
 	private Integer status;
 
@@ -262,6 +269,14 @@ public class AnimeEpisode extends BaseEntity {
 		return summary;
 	}
 
+	public String getSummaryCleanHtml() {
+		if (summary == null) {
+			return null;
+		}
+		// OutputSettings outputSettings = new OutputSettings().prettyPrint(false);
+		return Jsoup.clean(summary, Whitelist.none());
+	}
+
 	public void setSummary(String summary) {
 		this.summary = summary;
 	}
@@ -282,6 +297,14 @@ public class AnimeEpisode extends BaseEntity {
 		this.showFlg = showFlg;
 	}
 
+	public Date getShowDate() {
+		return showDate;
+	}
+
+	public void setShowDate(Date showDate) {
+		this.showDate = showDate;
+	}
+
 	public Integer getStatus() {
 		return status;
 	}
@@ -289,5 +312,4 @@ public class AnimeEpisode extends BaseEntity {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
 }

@@ -49,6 +49,7 @@
 <c:set var="bootstrapVersion" value="3.3.6" />
 <c:set var="jqueryLazyloadVersion" value="jquery_lazyload/1.9.7" />
 <c:set var="jqueryCookieVersion" value="1.4.1" />
+<c:set var="zeroClipboardVersion" value="2.2.0" />
 
 <c:set var="useCdnStatic" value="bootcss" />
 <c:if test="${ useCdnStatic eq 'baidu' }">
@@ -61,11 +62,12 @@
 	<c:set var="staticResourceUrl" value="http://cdn.bootcss.com/" />
 </c:if>
 
-<link href="${ staticResourceUrl }bootstrap/${bootstrapVersion}/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="${ staticResourceUrl }bootstrap/${bootstrapVersion}/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="${ ctx }/static/css/style.css" rel="stylesheet" type="text/css" />
 
-<script src="${ staticResourceUrl }jquery/${jqueryVersion}/jquery.js" type="text/javascript"></script>
-<script src="${ staticResourceUrl }jquery-cookie/${jqueryCookieVersion}/jquery.cookie.js" type="text/javascript"></script>
+<!-- jquery -->
+<script src="${ staticResourceUrl }jquery/${jqueryVersion}/jquery.min.js" type="text/javascript"></script>
+<script src="${ staticResourceUrl }jquery-cookie/${jqueryCookieVersion}/jquery.cookie.min.js" type="text/javascript"></script>
 
 <script src="${ ctx }/static/js/homeBase.js" type="text/javascript"></script>
 </head>
@@ -86,9 +88,11 @@
 	<%@ include file="/WEB-INF/layouts/footer.jsp"%>
 
 	<!-- jquery -->
-	<script src="${ staticResourceUrl }${jqueryLazyloadVersion}/jquery.lazyload.js" type="text/javascript"></script>
+	<script src="${ staticResourceUrl }${jqueryLazyloadVersion}/jquery.lazyload.min.js" type="text/javascript"></script>
 	<!-- bootstrap -->
-	<script src="${ staticResourceUrl }bootstrap/${bootstrapVersion}/js/bootstrap.js" type="text/javascript"></script>
+	<script src="${ staticResourceUrl }bootstrap/${bootstrapVersion}/js/bootstrap.min.js" type="text/javascript"></script>
+	<!-- other -->
+	<script src="${ staticResourceUrl }zeroclipboard/${zeroClipboardVersion}/ZeroClipboard.min.js" type="text/javascript"></script>
 	<!-- local js -->
 	<script src="${ ctx }/static/js/template/jsrender.min.js" type="text/javascript"></script>
 	<!-- self js -->
