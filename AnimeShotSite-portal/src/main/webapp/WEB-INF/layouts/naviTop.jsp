@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
-<div>
+<div id="nav">
 	<nav class="navbar navbar-inverse" role="navigation">
-
 		<div class="navbar-header">
 			<a class="navbar-brand" href="${ctx}/">动画截图网</a>
 		</div>
@@ -13,15 +12,12 @@
 				<li class="active">
 					<a href="${ctx}/">首页</a>
 				</li>
-
 				<li>
 					<a href="${ctx}/anime/list">动画列表</a>
 				</li>
-
 				<li>
 					<a href="${ctx}/search">字幕搜索</a>
 				</li>
-
 				<li>
 					<a href="${ctx}/shot/random">随便看</a>
 				</li>

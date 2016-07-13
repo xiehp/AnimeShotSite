@@ -34,3 +34,14 @@ update subtitle_info
 
 -- 显示时间为空的字段，设置为更新时间
 update `anime_episode`  set SHOW_DATE = UPDATE_DATE where SHOW_DATE is null;
+
+-- 针对诸神字幕组中日合并字幕，中文字幕读取时去除日文字幕
+update subtitle_info set FILTER_REMOVE = 'Style#jp'
+where 1=1 
+and ANIME_INFO_ID in ('f39c57f455b0c65c0155c814c555014f','f39c57f455b0c65c0155bde6d2fe00df','f39c57f455b0c65c0155bdd7e74100de', 'f39c57f45580ccaf0155afc8a6ae001c', '4028e381545d157b01545d5b9fd80000')
+-- and language = '4'
+-- and language = 'jp'
+-- and language = 'sc'
+-- and language = '1000'
+and (language = '4' or language = 'sc')
+;

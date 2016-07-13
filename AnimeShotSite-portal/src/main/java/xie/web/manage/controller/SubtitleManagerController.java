@@ -100,6 +100,8 @@ public class SubtitleManagerController extends BaseManagerController<SubtitleInf
 			subtitleInfo.setShowFlg(1);
 			subtitleInfo.setFileLocation("1");
 			subtitleInfo.setDeleteFlag(0);
+			subtitleInfo.setLanguage("sc");
+			subtitleInfo.setFileLocation("1");
 
 			if (XStringUtils.isNotBlank(animeInfoId)) {
 				AnimeInfo animeInfo = animeInfoService.findOne(animeInfoId);

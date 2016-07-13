@@ -23,13 +23,15 @@
 				<div class="row">
 					<c:forEach items="${ animeEpisodeList }" var="animeEpisode" end="29">
 						<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4 thumbnail">
-							<a href="${ctx}/shot/list/${animeEpisode.id}" title="<c:out value='${animeEpisode.fullName}' />">
+							<a href="${ctx}/shot/list/${animeEpisode.id}" title="<c:out value='${animeEpisode.animeInfo.fullName}' /> <c:out value='${animeEpisode.animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' />">
 								<img data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy" alt="<c:out value='${animeEpisode.fullName}' />">
 								<div class="wordKeepLine">
-									<c:out value="${animeEpisode.animeInfo.fullName}" />
+									<c:out value='${animeEpisode.animeInfo.fullName}' />
+									<c:out value='${animeEpisode.animeInfo.secondName}' />
 								</div>
-								<div>
-									<c:out value="${animeEpisode.divisionName}" />
+								<div class="wordKeepLine">
+									<c:out value='${animeEpisode.divisionName}' />
+									<c:out value='${animeEpisode.title}' />
 								</div>
 							</a>
 						</div>
@@ -45,10 +47,11 @@
 			<div class="row">
 				<c:forEach items="${ masterRecommandShotList }" var="shot" varStatus="status" end="29">
 					<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
-						<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> ${shot.formatedTimeChina}">
+						<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
 							<img data-original="${shot.urlS}" class="img-responsive imagelazy">
 							<div class="wordKeepLine">
 								<c:out value="${shot.animeInfo.fullName}" />
+								<c:out value='${shot.animeInfo.secondName}' />
 							</div>
 							<c:out value="${shot.animeEpisode.divisionName}" />
 							${shot.formatedTimeChina}
@@ -66,10 +69,11 @@
 				<div class="row">
 					<c:forEach items="${ publicLikeShotList }" var="shot" varStatus="status" end="23">
 						<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
-							<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> ${shot.formatedTimeChina}">
+							<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
 								<img data-original="${shot.urlS}" class="img-responsive imagelazy">
 								<div class="wordKeepLine">
 									<c:out value="${shot.animeInfo.fullName}" />
+									<c:out value='${shot.animeInfo.secondName}' />
 								</div>
 								<c:out value="${shot.animeEpisode.divisionName}" />
 								${shot.formatedTimeChina}
@@ -87,10 +91,11 @@
 			<div class="row">
 				<c:forEach items="${ newestShotList }" var="shot" varStatus="status" end="11">
 					<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
-						<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> ${shot.formatedTimeChina}">
+						<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
 							<img data-original="${shot.urlS}" class="img-responsive imagelazy">
 							<div class="wordKeepLine">
 								<c:out value="${shot.animeInfo.fullName}" />
+								<c:out value='${shot.animeInfo.secondName}' />
 							</div>
 							<c:out value="${shot.animeEpisode.divisionName}" />
 							${shot.formatedTimeChina}

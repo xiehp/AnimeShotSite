@@ -153,7 +153,7 @@
 						$(this).val(value);
 					}
 				} else if (tagName == 'SELECT') {
-					obj.val(value);
+					$(this).val(value);
 				} else if (tagName == 'LABEL') {
 					$(this).text(value);
 				} else if (tagName == 'SPAN') {

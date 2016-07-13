@@ -106,15 +106,16 @@
 			<!-- 
 			<input class="form-control" name="language" value="${subtitleInfo.language}" />
 			 -->
-			<select class="form-control" name="language" value="${subtitleInfo.language}">
-				<option value="sc">sc:简体</option>
-				<option value="jp">jp:日语</option>
-				<option value="3">0011 简日</option>
-				<option value="4">0100 繁体</option>
-				<option value="5">0101 简繁</option>
-				<option value="6">0110 日繁</option>
-				<option value="7">0111 简日繁</option>
-				<option value="8">1000 英语</option>
+			<select class="form-control" name="language" value="${subitleInfo.language}">
+				<option value=""></option>
+				<option ${subtitleInfo.language == 'sc' ? 'selected=\"selected\"' : ''} value="sc">sc:简体</option>
+				<option ${subtitleInfo.language == 'jp' ? 'selected=\"selected\"' : ''} value="jp">jp:日语</option>
+				<option ${subtitleInfo.language == '3' ? 'selected=\"selected\"' : ''} value="3">3:简日</option>
+				<option ${subtitleInfo.language == '4' ? 'selected=\"selected\"' : ''} value="4">4:繁体</option>
+				<option ${subtitleInfo.language == '5' ? 'selected=\"selected\"' : ''} value="5">5:简繁</option>
+				<option ${subtitleInfo.language == '6' ? 'selected=\"selected\"' : ''} value="6">6:日繁</option>
+				<option ${subtitleInfo.language == '7' ? 'selected=\"selected\"' : ''} value="7">7:简日繁</option>
+				<option ${subtitleInfo.language == '8' ? 'selected=\"selected\"' : ''} value="8">8:英语</option>
 			</select>
 		</div>
 	</div>
@@ -130,9 +131,10 @@
 			<!-- 
 			<input  class="form-control" name="fileLocation" value="${subtitleInfo.fileLocation}" />
 			 -->
-			<select class="form-control" name="fileLocation" value="${subtitleInfo.fileLocation}">
-				<option value="1">1:外部字幕</option>
-				<option value="2">2:内部字幕</option>
+			<select class="form-control" name="fileLocation">
+				<option value=""></option>
+				<option ${subtitleInfo.fileLocation == '1' ? 'selected=\"selected\"' : ''} value="1">1:外部字幕</option>
+				<option ${subtitleInfo.fileLocation == '2' ? 'selected=\"selected\"' : ''} value="2">2:内部字幕</option>
 			</select>
 		</div>
 	</div>
@@ -164,6 +166,21 @@
 		<label class="col-sm-2 control-label">deleteFlag</label>
 		<div class="col-sm-5">
 			<input class="form-control" name="deleteFlag" value="${subtitleInfo.deleteFlag}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-7 control-label">规则, "#":包含, "=":相等, ",":区分，判断不区分大小写，格式为name1=value1,name2#value2 </label>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">包含某种属性文字filterInclude(Style#jp)</label>
+		<div class="col-sm-5">
+			<input class="form-control" name="filterInclude" value="${subtitleInfo.filterInclude}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">排除某种属性文字filterRemove</label>
+		<div class="col-sm-5">
+			<input class="form-control" name="filterRemove" value="${subtitleInfo.filterRemove}" />
 		</div>
 	</div>
 

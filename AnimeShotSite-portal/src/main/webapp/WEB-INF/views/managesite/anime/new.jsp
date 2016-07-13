@@ -208,7 +208,7 @@
 						<a href="${ctx}${MANAGE_URL_STR}/animeEpisode/view/${animeEpisode.id}">
 							<img data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy">
 							<div style="margin-top: 5px;">
-								<c:out value="${animeEpisode.divisionName}" />
+								<c:out value='${animeEpisode.divisionName}' />
 							</div>
 						</a>
 					</div>

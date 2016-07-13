@@ -54,6 +54,12 @@ public class SubtitleInfo extends BaseEntity {
 	/** 本地所在文件名 */
 	private String localFileName;
 
+	/** 包含某种属性文字 */
+	private String filterInclude;
+
+	/** 排除某种属性文字 */
+	private String filterRemove;
+
 	public String getAnimeInfoId() {
 		return animeInfoId;
 	}
@@ -140,6 +146,22 @@ public class SubtitleInfo extends BaseEntity {
 
 	public void setLocalFileName(String localFileName) {
 		this.localFileName = localFileName;
+	}
+
+	public String getFilterInclude() {
+		return filterInclude;
+	}
+
+	public void setFilterInclude(String filterInclude) {
+		this.filterInclude = filterInclude;
+	}
+
+	public String getFilterRemove() {
+		return filterRemove;
+	}
+
+	public void setFilterRemove(String filterRemove) {
+		this.filterRemove = filterRemove;
 	}
 
 }

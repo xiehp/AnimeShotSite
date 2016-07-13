@@ -34,6 +34,9 @@
 			<!-- 连接Idle10分钟后超时，每1分钟检查一次 -->
 			<property name="timeBetweenEvictionRunsMillis" value="60000" />
 			<property name="minEvictableIdleTimeMillis" value="600000" />
+			<property name="validationQuery" value="SELECT 1" />
+			<property name="initialSize" value="2" />
+			<property name="testWhileIdle" value="true" />
 		</bean>
 	</beans>
 	
@@ -53,6 +56,9 @@
 			<property name="maxIdle" value="${jdbc.pool.maxIdle}" />
 			<property name="minIdle" value="0" />
 			<property name="defaultAutoCommit" value="false" />
+			<property name="validationQuery" value="SELECT 1" />
+			<property name="initialSize" value="2" />
+			<property name="testWhileIdle" value="true" />
 		</bean>
 	</beans>
 	
@@ -72,6 +78,9 @@
 			<property name="maxIdle" value="${jdbc.pool.maxIdle}" />
 			<property name="minIdle" value="0" />
 			<property name="defaultAutoCommit" value="false" />
+			<property name="validationQuery" value="SELECT 1" />
+			<property name="initialSize" value="2" />
+			<property name="testWhileIdle" value="true" />
 		</bean>
 
 	</beans>

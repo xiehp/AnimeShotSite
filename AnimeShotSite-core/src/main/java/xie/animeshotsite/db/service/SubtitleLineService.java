@@ -65,7 +65,7 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 		try {
 			// 创建字幕数据
 			file = FilePathUtils.getCommonFilePath(subtitleInfo.getLocalRootPath(), subtitleInfo.getLocalDetailPath(), subtitleInfo.getLocalFileName());
-			Subtitle subtitle = SubtitleFactory.createSubtitle(file);
+			Subtitle subtitle = SubtitleFactory.createSubtitle(file, subtitleInfo.getFilterRemove(), subtitleInfo.getFilterInclude());
 			if (subtitle != null) {
 				List<XSubtitleLine> list = subtitle.getSubtitleLineList();
 				if (list != null && list.size() > 0) {

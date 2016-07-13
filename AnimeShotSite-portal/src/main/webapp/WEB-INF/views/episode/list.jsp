@@ -42,13 +42,16 @@
 		</div>
 
 		<!-- 列表 -->
+		<div class="blockTitle">
+			<span>动画剧集一览</span>
+		</div>
 		<div class="row" style="margin-top: 10px;">
 			<c:forEach items="${ animeEpisodePage.content }" var="animeEpisode">
 				<div class="col-lg-2 col-md-2 col-sm-3 col-xs-4 thumbnail">
-					<a href="${ctx}/shot/list/${animeEpisode.id}" title="<c:out value='${animeEpisode.fullName}' />">
+					<a href="${ctx}/shot/list/${animeEpisode.id}" title="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' />">
 						<img data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy">
-						<div style="margin-top: 5px;">
-							<c:out value='${animeEpisode.divisionName}' />
+						<div class="wordKeepLine" style="margin-top: 5px;">
+							<c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' />
 						</div>
 					</a>
 				</div>
@@ -58,7 +61,7 @@
 </div>
 
 <div>
-	<tags:pagination page="${animeEpisodePage}" paginationSize="9" />
+	<tags:paginationRestPage page="${animeEpisodePage}" paginationSize="5" />
 </div>
 
 <div>
