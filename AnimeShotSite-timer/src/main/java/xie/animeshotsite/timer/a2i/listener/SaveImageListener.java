@@ -184,12 +184,12 @@ public class SaveImageListener extends Video2ImageAdapter {
 			TietukuUploadResponse responseUpload = null;
 			String tietukuUrl = null;
 			try {
-				logger.error("贴图库上传");
+				logger.info("贴图库上传, " + "id:" + shotInfo.getId());
 				responseStr = postImage.doUpload(file, tietukuToken);
 			} catch (Exception e) {
 				logger.error("贴图库上传失败，", e);
 			}
-			logger.info("responseStr:" + responseStr);
+			logger.info("贴图库上传responseStr:" + responseStr);
 			if (responseStr != null) {
 				responseUpload = JsonUtil.fromJsonString(responseStr, TietukuUploadResponse.class);
 				tietukuUrl = responseUpload.getLinkurl();
@@ -211,14 +211,14 @@ public class SaveImageListener extends Video2ImageAdapter {
 					}
 				}
 
-				logger.error("贴图库上传失败，等待1分钟再次上传");
+				logger.error("贴图库上传失败，等待2分钟再次上传");
 				try {
-					Thread.sleep(60 * 1000);
+					Thread.sleep(60 * 2000);
 					responseStr = postImage.doUpload(file, tietukuToken);
 				} catch (Exception e) {
 					logger.error("贴图库再次上传失败，", e);
 				}
-				logger.info("responseStr:" + responseStr);
+				logger.info("贴图库再次上传responseStr:" + responseStr);
 				if (responseStr != null) {
 					responseUpload = JsonUtil.fromJsonString(responseStr, TietukuUploadResponse.class);
 					tietukuUrl = responseUpload.getLinkurl();
@@ -227,6 +227,8 @@ public class SaveImageListener extends Video2ImageAdapter {
 					if (responseUpload != null) {
 						logger.error("贴图库上传失败，返回值：{},{}", responseUpload.getCode(), responseUpload.getInfo());
 						throw new RuntimeException("贴图库上传失败，返回值：" + responseUpload.getCode() + "," + responseUpload.getInfo());
+					} else {
+						throw new RuntimeException("贴图库上传失败");
 					}
 				}
 			}

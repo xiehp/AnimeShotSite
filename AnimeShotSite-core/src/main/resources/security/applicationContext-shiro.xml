@@ -33,6 +33,9 @@
 		<property name="unauthorizedUrl" value="/unauthorized" />
 		<property name="filterChainDefinitions">
 			<value>
+			<!-- 
+				/managesite333/login456 = authc
+				/managesite333/** = user -->
 				/login = authc
 				/webLogin = anon
 				/open/** = anon
@@ -44,6 +47,7 @@
 				/pic/** = anon
 				/profile/** = user
 				/myspace/** = user
+				/managesys/** = user
 			</value>
 		</property>
 	</bean>

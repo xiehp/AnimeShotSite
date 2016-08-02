@@ -93,6 +93,7 @@ var checkImgSize = function(imgDomObject, maxCheckCount) {
 		changeShotViewImgWidth()
 
 		// 设置初始滚动条值
+		document.getElementById("scorllTop").value = HomeCookie.getCookie("ShotViewScorllTop");
 		var scorllTop = document.getElementById("scorllTop").value;
 		if (scorllTop != null && scorllTop > 0) {
 			scrollTo(0, scorllTop);
@@ -104,6 +105,7 @@ var checkImgSize = function(imgDomObject, maxCheckCount) {
 			window.onscroll = function() {
 				var nowScrollTop = document.body.scrollTop;
 				document.getElementById("scorllTop").value = nowScrollTop;
+				HomeCookie.setCookie("ShotViewScorllTop", nowScrollTop);
 				$.log("滚动事件:" + nowScrollTop);
 			};
 			$.log("追加滚动事件");

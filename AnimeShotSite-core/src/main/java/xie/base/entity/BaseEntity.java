@@ -25,6 +25,8 @@ public class BaseEntity extends IdEntity implements IBaseEntity {
 	public static final String COLUMN_UPDATE_DATE = "updateDate";
 	public static final String COLUMN_DELETE_FLAG = "deleteFlag";
 	public static final String COLUMN_VERSION = "version";
+	
+	//private String getTableName();
 
 	// @Id
 	// @GeneratedValue(generator = "system-uuid")

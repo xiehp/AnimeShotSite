@@ -68,23 +68,24 @@ body {
 	});
 </script>
 
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
-	<h1 style="font-size: 14px; margin: 0px;"><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> ${shotInfo.formatedTimeChina}</h1>
-</div>
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
-	<div style="width: 400px; white-space: nowrap; word-break: keep-all;">
-		<div class="col-sm-4 col-xs-12">
-			时间戳：${shotInfo.timeStamp}</span>
-		</div>
-		<div class="col-sm-8 col-xs-12">
-			尺寸：<span id="imgWidth">${animeEpisode.width}</span>×<span id="imgHeight">${animeEpisode.height}</span> <span style="font-size: xx-small;">设置图片宽度</span>
-			<input id="ShotViewImgWidth" type="text" value="${ShotViewImgWidth}" style="width: 50px; height: 18px; font-size: xx-small;" onchange="changeShotViewImgWidth();">
-			<input id="ShotImgDivWidth" type="hidden" value="${ShotImgDivWidth}">
+<div>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
+		<h1 style="font-size: 14px; margin: 0px;"><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> ${shotInfo.formatedTimeChina}</h1>
+	</div>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
+		<div style="width: 400px; white-space: nowrap; word-break: keep-all;">
+			<div class="col-sm-4 col-xs-12">
+				时间戳：${shotInfo.timeStamp}</span>
+			</div>
+			<div class="col-sm-8 col-xs-12">
+				尺寸：<span id="imgWidth">${animeEpisode.width}</span>×<span id="imgHeight">${animeEpisode.height}</span> <span style="font-size: xx-small;">设置图片宽度</span>
+				<input id="ShotViewImgWidth" type="text" value="${ShotViewImgWidth}" style="width: 50px; height: 18px; font-size: xx-small;" onchange="changeShotViewImgWidth();">
+				<input id="ShotImgDivWidth" type="hidden" value="${ShotImgDivWidth}">
+			</div>
 		</div>
 	</div>
-</div>
 
-<form action="${ctx}/shot/view/${shotInfo.id}" method="post">
+	<!-- <form action="${ctx}/shot/view/${shotInfo.id}" method="post"> -->
 	<input type="hidden" id="scorllTop" name="scorllTop" value="<c:out value="${scorllTop}" />">
 	<div align="center">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -92,7 +93,8 @@ body {
 				<script>
 					readCookieAndSetWidth(true);
 				</script>
-				<img id="shotImg" src="${shotInfo.tietukuOUrlChangeDomain}" alt="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${shotInfo.formatedTimeChina}' />" title="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${shotInfo.formatedTimeChina}' />" usemap="#planetmap">
+				<img id="shotImg" src="${shotInfo.tietukuOUrlChangeDomain}" alt="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${shotInfo.formatedTimeChina}' />"
+					title="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${shotInfo.formatedTimeChina}' />" usemap="#planetmap">
 			</div>
 			<c:if test="${!empty subtitleLineList}">
 				<table class="shotSubtitle" style="margin-top: 0px; margin-bottom: 10px;">
@@ -108,40 +110,45 @@ body {
 
 		<map id="planetmap" name="planetmap">
 			<c:if test="${!empty previousShotInfo.id}">
-				<area id="areaPrev" class="postByFrom" shape="rect" coords="0,0,200,5000" href="${ctx}/shot/view/${previousShotInfo.id}" title="上一张" alt="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${previousShotInfo.formatedTimeChina}' />" />
-				<img alt="" src="${previousShotInfo.tietukuOUrl}" style="display: none;">
+				<area id="areaPrev" class="postByFromXXX" shape="rect" coords="0,0,200,5000" href="${ctx}/shot/view/${previousShotInfo.id}" title="上一张"
+					alt="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${previousShotInfo.formatedTimeChina}' />" />
+				<img alt="" src="${previousShotInfo.tietukuOUrlChangeDomain}" style="display: none;">
 			</c:if>
 			<c:if test="${!empty nextShotInfo.id}">
-				<area id="areaNext" class="postByFrom" shape="rect" coords="500,0,5000,5000" href="${ctx}/shot/view/${nextShotInfo.id}" title="下一张" alt="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${nextShotInfo.formatedTimeChina}' />" />
-				<img alt="" src="${nextShotInfo.tietukuOUrl}" style="display: none;">
+				<area id="areaNext" class="postByFromXXX" shape="rect" coords="500,0,5000,5000" href="${ctx}/shot/view/${nextShotInfo.id}" title="下一张"
+					alt="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${nextShotInfo.formatedTimeChina}' />" />
+				<img alt="" src="${nextShotInfo.tietukuOUrlChangeDomain}" style="display: none;">
 			</c:if>
 		</map>
 	</div>
+</div>
 
-	<div style="padding: 5px;">
-		<a class="btn btn-primary btn-sm" onclick="home.publicLike('${shotInfo.id}');">
-			<span class="glyphicon glyphicon-star"></span>喜欢
-			<div id="publicLike_${shotInfo.id}" class="badge">${shotInfo.publicLikeCount}</div>
+<div style="padding: 5px;">
+	<a class="btn btn-primary btn-sm" onclick="home.publicLike('${shotInfo.id}');">
+		<span class="glyphicon glyphicon-star"></span>喜欢
+		<div id="publicLike_${shotInfo.id}" class="badge">${shotInfo.publicLikeCount}</div>
+	</a>
+	<c:if test="${IS_MASTER}">
+		<a class="btn btn-primary btn-sm" onclick="home.masterLike('${MANAGE_URL_STR}/shot/masterLike', '${shotInfo.id}');">
+			<span class="glyphicon glyphicon-star"></span>推荐
+			<div id="masterLike_${shotInfo.id}" class="badge">${shotInfo.masterRecommendRank}</div>
 		</a>
-		<c:if test="${IS_MASTER}">
-			<a class="btn btn-primary btn-sm" onclick="home.masterLike('${MANAGE_URL_STR}/shot/masterLike', '${shotInfo.id}');">
-				<span class="glyphicon glyphicon-star"></span>推荐
-				<div id="masterLike_${shotInfo.id}" class="badge">${shotInfo.masterRecommendRank}</div>
-			</a>
-			<a class="btn btn-primary btn-sm" onclick="home.setAnimeTitleImage('/tool/setAnimeTitleImage', '${animeInfo.id}', null, '${shotInfo.id}');"> 动画图片 </a>
-			<a class="btn btn-primary btn-sm" onclick="home.setAnimeTitleImage('/tool/setAnimeTitleImage', null, '${animeEpisode.id}', '${shotInfo.id}');"> 剧集图片 </a>
-		</c:if>
-	</div>
+		<a class="btn btn-primary btn-sm" onclick="home.setAnimeTitleImage('/tool/setAnimeTitleImage', '${animeInfo.id}', null, '${shotInfo.id}');"> 动画图片 </a>
+		<a class="btn btn-primary btn-sm" onclick="home.setAnimeTitleImage('/tool/setAnimeTitleImage', null, '${animeEpisode.id}', '${shotInfo.id}');"> 剧集图片 </a>
+	</c:if>
+</div>
 
-	<div style="padding: 5px;">
-		<c:if test="${!empty previousShotInfo.id}">
-			<a style="margin: 10px;" class="btn btn-primary btn-sm postByFrom" href="${ctx}/shot/view/${previousShotInfo.id}" title="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${previousShotInfo.formatedTimeChina}' />">上一张</a>
-		</c:if>
-		<c:if test="${!empty nextShotInfo.id}">
-			<a style="margin: 10px;" class="btn btn-primary btn-sm postByFrom" href="${ctx}/shot/view/${nextShotInfo.id}" title="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${nextShotInfo.formatedTimeChina}' />">下一张</a>
-		</c:if>
-	</div>
-</form>
+<div style="padding: 5px;">
+	<c:if test="${!empty previousShotInfo.id}">
+		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/shot/view/${previousShotInfo.id}"
+			title="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${previousShotInfo.formatedTimeChina}' />">上一张</a>
+	</c:if>
+	<c:if test="${!empty nextShotInfo.id}">
+		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/shot/view/${nextShotInfo.id}"
+			title="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${nextShotInfo.formatedTimeChina}' />">下一张</a>
+	</c:if>
+</div>
+<!-- </form>  -->
 
 <div>
 	<a class="btn btn-primary btn-sm" href="${ctx}/shot/list/${shotInfo.animeEpisodeId}${pageNumberUrl}" title="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' />">返回截图一览</a>

@@ -275,7 +275,7 @@
 	$.escapeHtml = function(s) {
 		return (s) ? $("<p>").text(s).html() : "";
 	}
-	
+
 	/** 替换正则特殊字符，（加斜杠） */
 	$.replaceExp = function(keywordHidden) {
 		keywordHidden = keywordHidden.replace(/\\/g, "\\\\");
@@ -321,7 +321,7 @@ HomeCookie.setCookie = function(name, value) {
 	return $.cookie(name, value);
 }
 
-HomeCookie.getCookieValue = function(name) {
+HomeCookie.getCookie = function(name) {
 	return $.cookie(name);
 }
 

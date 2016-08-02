@@ -188,8 +188,8 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		// 搜索前后页
 		ShotInfo previousShotInfo = entityCache.findPreviousShotInfo(shotInfo.getAnimeEpisodeId(), shotInfo.getTimeStamp());
 		ShotInfo nextShotInfo = entityCache.findNextShotInfo(shotInfo.getAnimeEpisodeId(), shotInfo.getTimeStamp());
-		model.addAttribute("previousShotInfo", previousShotInfo);
-		model.addAttribute("nextShotInfo", nextShotInfo);
+		model.addAttribute("previousShotInfo", shotInfoService.convertToVO(previousShotInfo));
+		model.addAttribute("nextShotInfo", shotInfoService.convertToVO(nextShotInfo));
 
 		// 搜索字幕
 		Long startTime = shotInfo.getTimeStamp();
@@ -199,6 +199,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 
 		// 前台页面cookie等参数设置
 		model.addAttribute("scorllTop", scorllTop); // 用户提交时滚屏高度
+
 		String ShotViewImgWidth = CookieUtils.getCookieValue(request, "ShotViewImgWidth"); // 用户设定的图片展示宽度
 		if (ShotViewImgWidth != null && !ShotViewImgWidth.matches("[0-9]+")) {
 			ShotViewImgWidth = null;

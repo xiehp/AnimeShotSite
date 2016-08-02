@@ -4,7 +4,7 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<title>动画详情</title>
+<title>动画详情 <c:out value='${animeInfo.fullName}' /></title>
 
 
 <script type="text/javascript">
@@ -208,7 +208,7 @@
 						<a href="${ctx}${MANAGE_URL_STR}/animeEpisode/view/${animeEpisode.id}">
 							<img data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy">
 							<div style="margin-top: 5px;">
-								<c:out value='${animeEpisode.divisionName}' />
+								 <c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' />
 							</div>
 						</a>
 					</div>

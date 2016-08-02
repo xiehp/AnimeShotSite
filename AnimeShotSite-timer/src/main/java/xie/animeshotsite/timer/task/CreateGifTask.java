@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
@@ -16,15 +18,15 @@ import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.spring.SpringUtil;
-import xie.animeshotsite.timer.a2i.listener.SaveImageListener;
 import xie.animeshotsite.timer.base.XBaseTask;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.common.number.XNumberUtils;
-import xie.v2i.app.Video2Image;
 import xie.v2i.config.Video2ImageProperties;
 
+@Configuration
+@ComponentScan("xie")
 @Component
-public class ShotSpecifyTask extends XBaseTask {
+public class CreateGifTask extends XBaseTask {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
@@ -33,6 +35,8 @@ public class ShotSpecifyTask extends XBaseTask {
 	AnimeEpisodeService animeEpisodeService;
 	@Autowired
 	ApplicationContext applicationContext;
+
+	private String giCmdStr = "ffmpeg -ss 25 -t 10 -i E:\\AnimeShotSIte\\anime\\J\\吉卜力\\听到涛声\\Umi.ga.Kikoeru.2015.BluRay.1080p.FLAC.x265-MGRT.mkv -s 384x216 -f gif -r 12 D:\b.gif";
 
 	public static void main(String[] args) throws Exception {
 		args = new String[3];
@@ -46,7 +50,7 @@ public class ShotSpecifyTask extends XBaseTask {
 		paramMap.put(Video2ImageProperties.KEY_specifyTimes, "100000,200000");
 
 		// ShotSpecifyTask shotSpecifyTime = SpringUtil.getBean(ShotSpecifyTask.class);
-		ShotSpecifyTask shotSpecifyTime = SpringUtil.getBean(ShotSpecifyTask.class);
+		CreateGifTask shotSpecifyTime = SpringUtil.getBean(CreateGifTask.class);
 		int aaa = shotSpecifyTime.run(args, paramMap);
 		System.exit(aaa);
 	}
@@ -74,32 +78,36 @@ public class ShotSpecifyTask extends XBaseTask {
 				throw new FileNotFoundException("文件不存在：" + animeEpisodeFile.getAbsolutePath());
 			}
 
-//			SaveImageListener saveImageListener = new SaveImageListener(animeEpisode.getAnimeInfoId(), animeEpisode.getId(), animeEpisode.getLocalRootPath(), animeEpisode.getLocalDetailPath(), animeEpisode.getNumber());
-			SaveImageListener saveImageListener = new SaveImageListener(animeEpisode);
-			File fileMrl = animeEpisodeFile;
-			if (forceUpload != null) {
-				saveImageListener.setForceUpload(forceUpload);
-			}
+			//// SaveImageListener saveImageListener = new SaveImageListener(animeEpisode.getAnimeInfoId(), animeEpisode.getId(), animeEpisode.getLocalRootPath(), animeEpisode.getLocalDetailPath(), animeEpisode.getNumber());
+			// SaveImageListener saveImageListener = new SaveImageListener(animeEpisode);
+			// File fileMrl = animeEpisodeFile;
+			// if (forceUpload != null) {
+			// saveImageListener.setForceUpload(forceUpload);
+			// }
+			//
+			// Video2Image video2Image = new Video2Image(fileMrl.getAbsolutePath(), saveImageListener);
+			// video2Image.setRunMode(Video2ImageProperties.RUN_MODE_SPECIAL);
+			// video2Image.setSpecifyTimes(timeStampArray);
+			// if (animeEpisode.getWidth() != null && animeEpisode.getHeight() != null) {
+			// video2Image.setSize(animeEpisode.getWidth(), animeEpisode.getHeight());
+			// }
+			// video2Image.run();
+			//
+			// while (!video2Image.isClosed()) {
+			// Thread.sleep(5000);
+			// }
 
-			Video2Image video2Image = new Video2Image(fileMrl.getAbsolutePath(), saveImageListener);
-			video2Image.setRunMode(Video2ImageProperties.RUN_MODE_SPECIAL);
-			video2Image.setSpecifyTimes(timeStampArray);
-			if (animeEpisode.getWidth() != null && animeEpisode.getHeight() != null) {
-				video2Image.setSize(animeEpisode.getWidth(), animeEpisode.getHeight());
-			}
-			video2Image.run();
+//			XCommand xCommand = XCommandFactory.createInstance();
+//			Process process = xCommand.runCmd(giCmdStr);
+//
+//			process.
+//			if (video2Image.isProcessSuccess()) {
+//				logger.info("process 成功 : " + animeEpisode.getName());
+//			} else {
+//				logger.error("process 失败");
+//			}
 
-			while (!video2Image.isClosed()) {
-				Thread.sleep(5000);
-			}
-
-			if (video2Image.isProcessSuccess()) {
-				logger.info("process 成功 : " + animeEpisode.getName());
-			} else {
-				logger.error("process 失败");
-			}
-
-			saveImageListener.close();
+			// saveImageListener.close();
 		} catch (Exception e) {
 			logger.error("process 失败", e);
 			throw e;

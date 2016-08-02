@@ -110,11 +110,10 @@ if (canBaiduRecord) {
 
 	// 腾讯分析
 	/*
-	(function() {
-		//var src = '<script type="text/javascript" src="http://tajs.qq.com/stats?sId=56001858" charset="UTF-8"></script>';
-		//document.write(src);
-	})();
-	*/
+	 * (function() { //var src = '<script type="text/javascript"
+	 * src="http://tajs.qq.com/stats?sId=56001858" charset="UTF-8"></script>';
+	 * //document.write(src); })();
+	 */
 
 	// 站长统计
 	(function() {
