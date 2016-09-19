@@ -21,6 +21,11 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>http://www.acgimage.com/maCalc</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>http://www.acgimage.com/shot/list/4028e381534fa25f01534fba63070004</loc>
     <lastmod>2016-04-04</lastmod>
     <changefreq>monthly</changefreq>
@@ -759,6 +764,24 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f454d32ddd0154d387063d000e</loc>
+    <lastmod>2016-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f454d32ddd0154d387064d000f</loc>
+    <lastmod>2016-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f454d32ddd0154d387066c0010</loc>
+    <lastmod>2016-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>http://www.acgimage.com/shot/list/f39c57f454f722c40154f7b865140001</loc>
     <lastmod>2016-05-29</lastmod>
     <changefreq>monthly</changefreq>
@@ -993,6 +1016,24 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f45552dffe01555dfb3f6c000f</loc>
+    <lastmod>2016-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f45552dffe01555dfb3f8b0010</loc>
+    <lastmod>2016-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f45552dffe01555dfb3f9b0011</loc>
+    <lastmod>2016-09-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>http://www.acgimage.com/shot/list/f39c57f45437ff98015438060a8b000a</loc>
     <lastmod>2016-06-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -1071,6 +1112,48 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f45580ccaf0155afcc681c001f</loc>
+    <lastmod>2016-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f45580ccaf0155afcc685b0020</loc>
+    <lastmod>2016-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f45580ccaf0155afcc687a0021</loc>
+    <lastmod>2016-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f45580ccaf0155afcc68990022</loc>
+    <lastmod>2016-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f45580ccaf0155afcc68a90023</loc>
+    <lastmod>2016-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f45580ccaf0155afcc68c80024</loc>
+    <lastmod>2016-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f45580ccaf0155afcc68e80025</loc>
+    <lastmod>2016-09-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>http://www.acgimage.com/shot/list/f39c57f45580ccaf0155aff7bf9f006d</loc>
     <lastmod>2016-07-03</lastmod>
     <changefreq>monthly</changefreq>
@@ -1091,6 +1174,30 @@
   <url>
     <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155b9ac3ded0064</loc>
     <lastmod>2016-07-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155b9ac3e0c0065</loc>
+    <lastmod>2016-08-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155b9ac3e3b0066</loc>
+    <lastmod>2016-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155b9ac3e6a0067</loc>
+    <lastmod>2016-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155b9ac3ec80068</loc>
+    <lastmod>2016-09-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1119,6 +1226,42 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155bdeb8d5400e4</loc>
+    <lastmod>2016-08-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155bdeb8d8300e5</loc>
+    <lastmod>2016-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155bdeb8dc200e6</loc>
+    <lastmod>2016-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155bdeb8dd100e7</loc>
+    <lastmod>2016-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155bdeb8e0000e8</loc>
+    <lastmod>2016-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155bdeb8e2f00e9</loc>
+    <lastmod>2016-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155be86516a0116</loc>
     <lastmod>2016-07-06</lastmod>
     <changefreq>monthly</changefreq>
@@ -1139,6 +1282,42 @@
   <url>
     <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155be8652830119</loc>
     <lastmod>2016-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155be8652a3011a</loc>
+    <lastmod>2016-08-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155be8652c2011b</loc>
+    <lastmod>2016-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155be8652e1011c</loc>
+    <lastmod>2016-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155be865310011d</loc>
+    <lastmod>2016-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155be86532f011e</loc>
+    <lastmod>2016-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155be86534e011f</loc>
+    <lastmod>2016-09-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1167,6 +1346,24 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155c83ab6a90154</loc>
+    <lastmod>2016-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155c83ab6d80155</loc>
+    <lastmod>2016-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455b0c65c0155c83ab7a30156</loc>
+    <lastmod>2016-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>http://www.acgimage.com/shot/list/f39c57f455dde7ed0155de2780f20003</loc>
     <lastmod>2016-07-12</lastmod>
     <changefreq>monthly</changefreq>
@@ -1181,6 +1378,42 @@
   <url>
     <loc>http://www.acgimage.com/shot/list/f39c57f455dde7ed0155de27817e0005</loc>
     <lastmod>2016-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455dde7ed0155de27819e0006</loc>
+    <lastmod>2016-08-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455dde7ed0155de2781bd0007</loc>
+    <lastmod>2016-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455dde7ed0155de2781dc0008</loc>
+    <lastmod>2016-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455dde7ed0155de2781fb0009</loc>
+    <lastmod>2016-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455dde7ed0155de27821b000a</loc>
+    <lastmod>2016-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455dde7ed0155de27822a000b</loc>
+    <lastmod>2016-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1209,6 +1442,36 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f931260155fcb4ac6e0007</loc>
+    <lastmod>2016-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f931260155fcb4ac9d0008</loc>
+    <lastmod>2016-08-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f931260155fcb4acbc0009</loc>
+    <lastmod>2016-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f931260155fcb4acdc000a</loc>
+    <lastmod>2016-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f931260155fcb4acfb000b</loc>
+    <lastmod>2016-09-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>http://www.acgimage.com/shot/list/f39c57f455f931260156119fedb60050</loc>
     <lastmod>2016-07-22</lastmod>
     <changefreq>monthly</changefreq>
@@ -1233,6 +1496,36 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f931260156119ff3a20061</loc>
+    <lastmod>2016-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f931260156119ff3b20062</loc>
+    <lastmod>2016-08-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f931260156119ff3c10063</loc>
+    <lastmod>2016-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f931260156119ff3e00064</loc>
+    <lastmod>2016-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f931260156119ff40f0065</loc>
+    <lastmod>2016-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>http://www.acgimage.com/shot/list/f39c57f455f9312601561d79a92400aa</loc>
     <lastmod>2016-07-25</lastmod>
     <changefreq>monthly</changefreq>
@@ -1247,6 +1540,42 @@
   <url>
     <loc>http://www.acgimage.com/shot/list/f39c57f455f9312601561d79a97200ac</loc>
     <lastmod>2016-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f9312601561d79a9a100ad</loc>
+    <lastmod>2016-08-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f9312601561d79a9cf00ae</loc>
+    <lastmod>2016-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f9312601561d79a9df00af</loc>
+    <lastmod>2016-08-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f9312601561d79aa0e00b0</loc>
+    <lastmod>2016-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f9312601561d79aa4c00b1</loc>
+    <lastmod>2016-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f9312601561d79aa6c00b2</loc>
+    <lastmod>2016-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1271,6 +1600,30 @@
   <url>
     <loc>http://www.acgimage.com/shot/list/f39c57f455f9312601562b14a4ad0107</loc>
     <lastmod>2016-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f455f9312601562b14a4bd0108</loc>
+    <lastmod>2016-08-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f456c04e550156e3549e230012</loc>
+    <lastmod>2016-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f456c04e550156e3549e420013</loc>
+    <lastmod>2016-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/shot/list/f39c57f456c04e550156e3549e710014</loc>
+    <lastmod>2016-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1307,12 +1660,6 @@
   <url>
     <loc>http://www.acgimage.com/episode/list/f39c57f453e1a2f00153e1bb78530000</loc>
     <lastmod>2016-04-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://www.acgimage.com/episode/list/f39c57f453eb7f240153ee8866360001</loc>
-    <lastmod>2016-04-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -1432,19 +1779,25 @@
   </url>
   <url>
     <loc>http://www.acgimage.com/episode/list/f39c57f455f931260156119d567f004f</loc>
-    <lastmod>2016-07-22</lastmod>
+    <lastmod>2016-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>http://www.acgimage.com/episode/list/f39c57f455f9312601561d72686f00a9</loc>
-    <lastmod>2016-07-25</lastmod>
+    <lastmod>2016-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>http://www.acgimage.com/episode/list/f39c57f455f9312601562b127d760103</loc>
     <lastmod>2016-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://www.acgimage.com/episode/list/f39c57f456c04e550156e3449982000e</loc>
+    <lastmod>2016-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

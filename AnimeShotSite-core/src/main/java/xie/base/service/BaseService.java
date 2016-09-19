@@ -17,6 +17,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springside.modules.mapper.BeanMapper;
 
 import xie.animeshotsite.db.entity.cache.EntityCache;
+import xie.base.entity.BaseEntity;
 import xie.base.entity.IdEntity;
 import xie.base.page.PageRequestUtil;
 import xie.base.repository.BaseRepository;
@@ -75,6 +76,10 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 	}
 
 	public Page<M> searchPageByParams(Map<String, Object> searchParams, int pageNumber, int defaultPageSize, String sortType, Class<M> c) {
+		if (searchParams == null) {
+			searchParams = new HashMap<>();
+		}
+
 		// 创建分页对象
 		PageRequest pageRequest = PageRequestUtil.buildPageRequest(pageNumber, defaultPageSize, sortType);
 
@@ -85,7 +90,10 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 
 	public Page<M> searchPageByParams(Map<String, Object> searchParams, PageRequest pageRequest, Class<M> c) {
 
-		searchParams.put("EQ_deleteFlag", Constants.FLAG_INT_NO);
+		if (searchParams == null) {
+			searchParams = new HashMap<>();
+		}
+		searchParams.put("EQ_" + BaseEntity.COLUMN_DELETE_FLAG, Constants.FLAG_INT_NO);
 
 		// Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 		// Specification<ShotInfo> spec = DynamicSpecifications.bySearchFilter(filters.values(), ShotInfo.class);

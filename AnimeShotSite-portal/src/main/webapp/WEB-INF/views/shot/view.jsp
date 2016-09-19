@@ -7,6 +7,9 @@
 
 <head>
 <title><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${shotInfo.formatedTimeChina}' /></title>
+<meta name="keywords" content="<c:out value='${subtitleLineTextStr100}' />" />
+<meta name="description" content="<c:out value='${subtitleLineTextStr200}' />" />
+
 <meta property="og:title" content="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${shotInfo.formatedTimeChina}' />" />
 <meta property="og:type" content="photo" />
 <meta property="og:url" content="${ctx}/shot/view/${shotInfo.id}" />
@@ -101,7 +104,9 @@ body {
 					<c:forEach items="${subtitleLineList}" var="subtitleLine">
 						<tr>
 							<td style="font-size: 10px;" class="noBreak" title="${subtitleLine.startTimeMinSecMicro}-${subtitleLine.endTimeMinSecMicro}">${subtitleLine.startTimeMinSec}-${subtitleLine.endTimeMinSec}</td>
-							<td><c:out value="${subtitleLine.text}" /></td>
+							<td>
+								<c:out value="${subtitleLine.text}" />
+							</td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -162,6 +167,25 @@ body {
 
 
 <div id="链接地址" class="row ShareLinkDiv">
+	<div class="col-sm-12 ShareLinkItem">
+		<div class="col-sm-3 ShareLinkLabel">分享本页：</div>
+		<div style="height: 24px;" align="center" class="col-sm-6">
+			<div style="display: block;width: 200px;">
+				<div style="margin-top: -4px;" class="bdsharebuttonbox">
+					<a href="#" class="bds_mshare" data-cmd="mshare" title="百度一键分享"></a>
+					<a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+					<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+					<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+					<a href="#" class="bds_bdxc" data-cmd="bdxc" title="分享到百度相册"></a>
+					<a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a>
+					<a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+					<a href="#" class="bds_more" data-cmd="more" title="更多"></a>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-3 ShareLinkButton">
+		</div>
+	</div>
 	<div class="col-sm-12 ShareLinkItem">
 		<div class="col-sm-3 ShareLinkLabel">本页链接：</div>
 		<div class="col-sm-6">

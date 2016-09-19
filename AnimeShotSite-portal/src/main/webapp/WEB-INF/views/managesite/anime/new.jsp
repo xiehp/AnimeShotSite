@@ -208,7 +208,11 @@
 						<a href="${ctx}${MANAGE_URL_STR}/animeEpisode/view/${animeEpisode.id}">
 							<img data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy">
 							<div style="margin-top: 5px;">
-								 <c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' />
+								<c:out value='${animeEpisode.divisionName}' />
+								<c:out value='${animeEpisode.title}' />
+							</div>
+							<div style="margin-top: 5px;">
+								<span stype="${animeEpisode.showFlg == "1" ? "" :"color:red;"}"> ${animeEpisode.showFlg == "1" ? "已展示" :"未展示"} </span>
 							</div>
 						</a>
 					</div>
@@ -230,8 +234,8 @@
 				<table>
 					<c:forEach items="${ subtitleInfoList }" var="subtitleInfo">
 						<tr>
-							<td style="font-size: 10px;padding: 3px;"><a href="${ctx}${MANAGE_URL_STR}/subtitle/view/${subtitleInfo.id}">${subtitleInfo.id}</a></td>
-							<td style="font-size: 10px;padding: 3px;">${subtitleInfo.localFileName}</td>
+							<td style="font-size: 10px; padding: 3px;"><a href="${ctx}${MANAGE_URL_STR}/subtitle/view/${subtitleInfo.id}">${subtitleInfo.id}</a></td>
+							<td style="font-size: 10px; padding: 3px;">${subtitleInfo.localFileName}</td>
 						</tr>
 					</c:forEach>
 				</table>

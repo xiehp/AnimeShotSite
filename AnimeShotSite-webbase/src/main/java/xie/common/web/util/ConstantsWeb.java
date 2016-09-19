@@ -1,6 +1,6 @@
 package xie.common.web.util;
 
-public class ShotWebConstants {
+public class ConstantsWeb {
 
 	final public static String MANAGE_URL_STR = "/managesite333";
 
@@ -11,4 +11,10 @@ public class ShotWebConstants {
 
 	/** 截图列表页面中每页展示的图片数量 */
 	public static final int SHOT_LIST_PAGE_NUMBER = 24;
+
+	/** 标识某个人的CookieId的key */
+	public static final String SITE_COOKIE_ID = "SiteCookieId";
+
+	/** 标识某个人的CookieUserName */
+	public static final String SITE_COOKIE_USER_NAME = "SiteCookieUserName";
 }

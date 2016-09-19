@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.ShotTask;
 import xie.animeshotsite.db.entity.SubtitleInfo;
 import xie.animeshotsite.db.repository.ShotTaskDao;
@@ -44,17 +45,40 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 		return list;
 	}
 
-	public ShotTask beginTask(ShotTask shotTask) {
-		shotTask.setTaskResult(ShotTask.TASK_RESULT_PROCESSING);
-		shotTask.setStartTime(DateUtil.getCurrentDate());
-		return shotTaskDao.save(shotTask);
+	public ShotTask beginTask(String shotTaskId) {
+		ShotTask shotTask = shotTaskDao.findById(shotTaskId);
+		shotTask = beginTask(shotTask);
+		return shotTask;
 	}
 
+	/**
+	 * 开始任务，设置开始时间，更新任务状态
+	 */
+	public ShotTask beginTask(ShotTask shotTask) {
+		logging.info("任务开始前状态，当前entity对象:{}, ID:{}, 数据版本:{} ", shotTask, shotTask.getId(), shotTask.getVersion());
+		shotTask.setTaskResult(ShotTask.TASK_RESULT_PROCESSING);
+		shotTask.setStartTime(DateUtil.getCurrentDate());
+		shotTask = shotTaskDao.save(shotTask);
+		logging.info("任务开始后状态，当前entity对象:{}, ID:{}, 数据版本:{} ", shotTask, shotTask.getId(), shotTask.getVersion());
+		return shotTask;
+	}
+
+	public ShotTask endTask(String shotTaskId, boolean successFlg, String taskMessage) {
+		ShotTask shotTask = shotTaskDao.findById(shotTaskId);
+		return endTask(shotTask, successFlg, taskMessage);
+	}
+
+	/**
+	 * 结束任务，设置结束时间，更新任务状态
+	 */
 	public ShotTask endTask(ShotTask shotTask, boolean successFlg, String taskMessage) {
+		logging.info("任务结束前状态，当前entity对象:{}, ID:{}, 数据版本:{} ", shotTask, shotTask.getId(), shotTask.getVersion());
 		shotTask.setTaskResult(successFlg ? ShotTask.TASK_RESULT_SUCCESS : ShotTask.TASK_RESULT_FAIL);
 		shotTask.setEndTime(DateUtil.getCurrentDate());
 		shotTask.setTaskMessage(taskMessage);
-		return shotTaskDao.save(shotTask);
+		shotTask = shotTaskDao.save(shotTask);
+		logging.info("任务结束后状态，当前entity对象:{}, ID:{}, 数据版本:{} ", shotTask, shotTask.getId(), shotTask.getVersion());
+		return shotTask;
 	}
 
 	public ShotTask addRunSpecifyEpisideTimeTask(String id, Date scheduleTime, Boolean forceUpload, String specifyTimes) {
@@ -100,6 +124,9 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 		return createShotTask(scheduleTime, ShotTask.TASK_TYPE_SHOT, "xie.animeshotsite.timer.task.ShotEpisodeTask", jsonStr);
 	}
 
+	/**
+	 * 创建字幕任务
+	 */
 	public ShotTask addCreateSubtitleTask(String subtitleInfoId, String animeInfoId, Date scheduleTime, Boolean forceUpdate, Boolean forceDelete) {
 		if (XStringUtils.isBlank(subtitleInfoId) && XStringUtils.isBlank(animeInfoId)) {
 			return null;
@@ -110,17 +137,44 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 		paramMap.put(SubtitleInfo.COLUMN_animeInfoId, animeInfoId);
 		paramMap.put("forceUpdate", forceUpdate);
 		paramMap.put("forceDelete", forceDelete);
-		
+
 		String jsonStr = JsonUtil.toJsonString(paramMap);
 
 		return createShotTask(scheduleTime, ShotTask.TASK_TYPE_SUBTITLE, "xie.animeshotsite.timer.task.CreateSubtitleTask", jsonStr);
 	}
 
-	public ShotTask createShotTask(Date scheduleTime, String taskType, String taskClass, String jsonStr) {
+	/**
+	 * 创建gif任务
+	 * 
+	 * @param subtitleInfoId
+	 * @param animeInfoId
+	 * @param episodeInfoId
+	 * @param scheduleTime
+	 * @param startTime 开始时间
+	 * @param continueTime 持续时间
+	 * @return
+	 */
+	public ShotTask addCreateGifTask(String subtitleInfoId, String animeInfoId, String episodeInfoId, Date scheduleTime, long startTime, long continueTime) {
+		if (XStringUtils.isBlank(subtitleInfoId) && XStringUtils.isBlank(animeInfoId)) {
+			return null;
+		}
+
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put(AnimeEpisode.COLUMN_ID, episodeInfoId);
+		paramMap.put(AnimeEpisode.COLUMN_ANIME_INFO_ID, episodeInfoId);
+		paramMap.put("startTime", startTime);
+		paramMap.put("continueTime", continueTime);
+
+		String jsonStr = JsonUtil.toJsonString(paramMap);
+
+		return createShotTask(scheduleTime, ShotTask.TASK_TYPE_SUBTITLE, "xie.animeshotsite.timer.task.CreateSubtitleTask", jsonStr);
+	}
+
+	private ShotTask createShotTask(Date scheduleTime, String taskType, String taskClass, String paramJsonStr) {
 		ShotTask shotTask = new ShotTask();
 		shotTask.setTaskType(taskType);
 		shotTask.setTaskClass(taskClass);
-		shotTask.setTaskParam(jsonStr);
+		shotTask.setTaskParam(paramJsonStr);
 		shotTask.setScheduleTime(scheduleTime);
 		shotTask.setCreateTime(DateUtil.getCurrentDate());
 		shotTask.setTaskResult(ShotTask.TASK_RESULT_WAIT);

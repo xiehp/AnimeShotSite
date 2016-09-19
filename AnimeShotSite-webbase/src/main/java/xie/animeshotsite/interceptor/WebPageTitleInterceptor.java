@@ -1,6 +1,8 @@
 package xie.animeshotsite.interceptor;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,18 +12,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import xie.animeshotsite.setup.ShotSiteSetup;
+import xie.animeshotsite.utils.SiteUtils;
 import xie.common.Constants;
+import xie.common.excel.XSSHttpUtil;
 import xie.common.string.XStringUtils;
-import xie.common.web.util.ShotWebConstants;
+import xie.common.utils.SpringUtils;
+import xie.common.utils.XCookieUtils;
+import xie.common.web.util.ConstantsWeb;
 import xie.sys.auth.service.realm.ShiroRDbRealm.ShiroUser;
 
 /**
  * 通用处理
  */
+@Component
 public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 	private final static String CHANGE_PAGE_DATA_FALG_NAME = "CHANGE_PAGE_DATA_FALG_NAME";
 	Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -29,8 +37,10 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 	@Autowired(required = false)
 	private ApplicationContext applicationContext;
 
-	@Autowired
+	@Autowired(required = true)
 	private ShotSiteSetup shotSiteSetup;
+
+	private final Map<String, Integer> excludeIpsCount = new HashMap<>();
 
 	/**
 	 * 
@@ -46,11 +56,20 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response,
 			final Object handler) throws IOException {
 
+		// 检查是否有网站CookieId，没有的话设置当前sessionId为CookieId
+		String siteCookieId = SiteUtils.getSiteCookieId(request);
+		if (XStringUtils.isBlank(siteCookieId)) {
+			XCookieUtils.addCookieValue(response, ConstantsWeb.SITE_COOKIE_ID, request.getSession().getId());
+		}
+
 		// 判断是否是合适的host
 		logger.debug("getHeader Host:{1}", request.getHeader("Host"));
 		logger.debug("getServerName:{1}", request.getServerName());
 		logger.debug("X-Forwarded-Host:{1}", request.getHeader("X-Forwarded-Host"));
-
+		if (shotSiteSetup == null) {
+			shotSiteSetup = SpringUtils.getBean(ShotSiteSetup.class);
+			logger.warn("shotSiteSetup未初始化，从新获取shotSiteSetup：{}", shotSiteSetup);
+		}
 		if (XStringUtils.isNotBlank(shotSiteSetup.getAnimesiteServerHost())) {
 			String hostName = request.getHeader("X-Forwarded-Host");
 			if (XStringUtils.isBlank(hostName)) {
@@ -102,13 +121,18 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 
 		// 是否为静态资源
 		boolean isStaticUrl = false;
-		if (requestURL.endsWith(".css")) {
+		String lowCaseUrl = requestURL.toLowerCase();
+		if (lowCaseUrl.endsWith(".css")) {
 			isStaticUrl = true;
-		} else if (requestURL.endsWith(".js")) {
+		} else if (lowCaseUrl.endsWith(".js")) {
 			isStaticUrl = true;
-		} else if (requestURL.endsWith(".png")) {
+		} else if (lowCaseUrl.endsWith(".png")) {
 			isStaticUrl = true;
-		} else if (requestURL.endsWith(".jpg")) {
+		} else if (lowCaseUrl.endsWith(".jpg")) {
+			isStaticUrl = true;
+		} else if (lowCaseUrl.endsWith(".jpeg")) {
+			isStaticUrl = true;
+		} else if (lowCaseUrl.endsWith(".gif")) {
 			isStaticUrl = true;
 		}
 
@@ -120,7 +144,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 			{
 				ShiroUser shiroUser = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 				System.out.println("shiroUser:" + shiroUser);
-				if (shiroUser != null && ShotWebConstants.SITE_MANAGER_ID.equals(shiroUser.getId()) && ShotWebConstants.SITE_MANAGER_LOGIN_ID.equals(shiroUser.getLoginName())) {
+				if (shiroUser != null && ConstantsWeb.SITE_MANAGER_ID.equals(shiroUser.getId()) && ConstantsWeb.SITE_MANAGER_LOGIN_ID.equals(shiroUser.getLoginName())) {
 					request.setAttribute("IS_MASTER", true);
 				} else {
 					request.setAttribute("IS_MASTER", false);
@@ -133,8 +157,11 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 			// 判断是否需要网站统计和搜索引擎推送
 			{
 				boolean canBaiduRecord = false; // 是否让搜索引擎统计和索引
-				if (requestURL.contains(ShotWebConstants.MANAGE_URL_STR)) {
+				if (requestURL.contains(ConstantsWeb.MANAGE_URL_STR)) {
 					// 后台页面，不统计
+					canBaiduRecord = false;
+				} else if (isExcludeRecordIp(request)) {
+					// 排除的IP地址
 					canBaiduRecord = false;
 				} else {
 					// 其他页面，则判断配置文件是否允许
@@ -142,7 +169,11 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 						canBaiduRecord = true;
 					}
 				}
+
+				// 是否进行网站统计
 				request.setAttribute("canBaiduRecord", canBaiduRecord);
+
+				// 是否让搜索引擎索引
 				if (request.getAttribute("canBaiduIndex") == null) {
 					// 页面没有自行设定是否可以索引，则认为可以索引
 					request.setAttribute("canBaiduIndex", true);
@@ -156,7 +187,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 			// 系统常量
 			{
 				// 其他
-				request.setAttribute("MANAGE_URL_STR", ShotWebConstants.MANAGE_URL_STR);
+				request.setAttribute("MANAGE_URL_STR", ConstantsWeb.MANAGE_URL_STR);
 
 				// json
 				request.setAttribute("JSON_RESPONSE_KEY_CODE", Constants.JSON_RESPONSE_KEY_CODE);
@@ -175,6 +206,50 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 				request.setAttribute("requestURL", request.getRequestURL());
 			}
 		}
+	}
+
+	/**
+	 * 不希望进行网页统计的IP地址
+	 */
+	private boolean isExcludeRecordIp(final HttpServletRequest request) {
+		String ip = XSSHttpUtil.getIpAddrFirst(request);
+		if (ip == null) {
+			logger.warn("无法识别IP地址。{}{}", "当前线程：", Thread.currentThread().getName());
+			return true;
+		}
+
+		// 读取排除文件内容
+		if (shotSiteSetup.getExcludeIpsRuleList() == null) {
+			shotSiteSetup.resetExcludeIpsRuleList(request);
+		}
+
+		// 查询是否排除
+		for (String excludeIpRule : shotSiteSetup.getExcludeIpsRuleList()) {
+			if (XStringUtils.isNotBlank(excludeIpRule) && ip.startsWith(excludeIpRule)) {
+				Integer count = excludeIpsCount.get(ip);
+				Integer countAll = excludeIpsCount.get("ALL");
+				Integer countRule = excludeIpsCount.get(excludeIpRule + "_rule");
+				if (count == null) {
+					count = 0;
+				}
+				if (countAll == null) {
+					countAll = 0;
+				}
+				if (countRule == null) {
+					countRule = 0;
+				}
+				count = count + 1;
+				countAll = countAll + 1;
+				countRule = countRule + 1;
+				excludeIpsCount.put(ip, count);
+				excludeIpsCount.put("ALL", countAll);
+				excludeIpsCount.put(excludeIpRule + "_rule", countRule);
+				logger.warn("当前被排除网页统计的IP地址:{}, 次数:{}, 匹配的规则IP:{}, 次数:{}, 全局已排除次数:{}, 访问的URL:{}", ip, count, excludeIpRule, countRule, countAll, request.getRequestURL());
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	// /**

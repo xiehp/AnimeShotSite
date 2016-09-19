@@ -16,10 +16,16 @@
 					<a href="${ctx}/anime/list">动画列表</a>
 				</li>
 				<li>
+					<a href="${ctx}/shot/recommend">截图推荐</a>
+				</li>
+				<li>
 					<a href="${ctx}/search">字幕搜索</a>
 				</li>
 				<li>
 					<a href="${ctx}/shot/random">随便看</a>
+				</li>
+				<li>
+					<a href="${ctx}/maCalc">Ma伤害计算器</a>
 				</li>
 
 				<c:if test="${IS_MASTER}">

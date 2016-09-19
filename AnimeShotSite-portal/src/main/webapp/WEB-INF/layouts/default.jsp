@@ -34,7 +34,9 @@
 	IS_JS_DEBUG = "${IS_JS_DEBUG}";
 	</c:if>
 
+	// 是否进行网站统计
 	var canBaiduRecord = false;
+	// 是否让搜索引擎索引
 	var canBaiduIndex = false;
 	<c:if test="${canBaiduRecord eq true}">
 	canBaiduRecord = "${canBaiduRecord}";
@@ -46,6 +48,7 @@
 
 <c:set var="staticResourceUrl" value="${ ctx }/static/plugin/" />
 <c:set var="jqueryVersion" value="2.2.1" />
+<c:set var="jqueryFormVersion" value="3.51" />
 <c:set var="bootstrapVersion" value="3.3.6" />
 <c:set var="jqueryLazyloadVersion" value="jquery_lazyload/1.9.7" />
 <c:set var="jqueryCookieVersion" value="1.4.1" />
@@ -67,6 +70,7 @@
 
 <!-- jquery -->
 <script src="${ staticResourceUrl }jquery/${jqueryVersion}/jquery.min.js" type="text/javascript"></script>
+<script src="${ staticResourceUrl }jquery.form/${jqueryFormVersion}/jquery.form.min.js" type="text/javascript"></script>
 <script src="${ staticResourceUrl }jquery-cookie/${jqueryCookieVersion}/jquery.cookie.min.js" type="text/javascript"></script>
 
 <script src="${ ctx }/static/js/homeBase.js" type="text/javascript"></script>

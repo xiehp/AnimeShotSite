@@ -116,12 +116,15 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 	}
 
 	/**
+	 * 
 	 * 获取站长推荐图片
 	 * 
-	 * @param inDay 几天以内推荐的
-	 * @return
+	 * @param pageNumber 页数
+	 * @param inDay 几天以内推荐的 null标识全部
+	 * @param listCount 每页条数
+	 * @param orderByRankFlg 是否根据rank排序
 	 */
-	public List<ShotInfo> getMasterRecommandShotList(Integer inDay, int listCount) {
+	public Page<ShotInfo> getMasterRecommandShotPage(int pageNumber, Integer inDay, int listCount, boolean orderByRankFlg) {
 		Map<String, Object> searchParams = new LinkedHashMap<>();
 		if (inDay != null) {
 			searchParams.put("GT_" + ShotInfo.COLUMN_MASTER_RECOMMEND_DATE, DateUtil.seekDate(DateUtil.getCurrentDate(), -inDay));
@@ -132,13 +135,45 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		List<Order> orders = new ArrayList<>();
 		Order order1 = new Order(Direction.DESC, ShotInfo.COLUMN_MASTER_RECOMMEND_RANK);
 		Order order2 = new Order(Direction.DESC, ShotInfo.COLUMN_MASTER_RECOMMEND_DATE);
-		orders.add(order1);
+		if (orderByRankFlg) {
+			orders.add(order1);
+		}
 		orders.add(order2);
-		PageRequest pageRequest = PageRequestUtil.buildPageRequest(1, listCount, orders);
+		PageRequest pageRequest = PageRequestUtil.buildPageRequest(pageNumber, listCount, orders);
 
 		Page<ShotInfo> page = searchPageByParams(searchParams, pageRequest, ShotInfo.class);
 		List<ShotInfo> list = page.getContent();
 		list = fillParentData(list);
+		return page;
+	}
+
+	/**
+	 * 获取站长推荐图片
+	 * 
+	 * @param inDay 几天以内推荐的
+	 * @return
+	 */
+	public List<ShotInfo> getMasterRecommandShotList(int pageNumber, Integer inDay, int listCount) {
+		// Map<String, Object> searchParams = new LinkedHashMap<>();
+		// if (inDay != null) {
+		// searchParams.put("GT_" + ShotInfo.COLUMN_MASTER_RECOMMEND_DATE, DateUtil.seekDate(DateUtil.getCurrentDate(), -inDay));
+		// }
+		// searchParams.put("GT_" + ShotInfo.COLUMN_MASTER_RECOMMEND_RANK, 0);
+		//
+		// // 排序，分页条件
+		// List<Order> orders = new ArrayList<>();
+		// Order order1 = new Order(Direction.DESC, ShotInfo.COLUMN_MASTER_RECOMMEND_RANK);
+		// Order order2 = new Order(Direction.DESC, ShotInfo.COLUMN_MASTER_RECOMMEND_DATE);
+		// orders.add(order1);
+		// orders.add(order2);
+		// PageRequest pageRequest = PageRequestUtil.buildPageRequest(pageNumber, listCount, orders);
+		//
+		// Page<ShotInfo> page = searchPageByParams(searchParams, pageRequest, ShotInfo.class);
+		// List<ShotInfo> list = page.getContent();
+		// list = fillParentData(list);
+		// return list;
+
+		List<ShotInfo> list = getMasterRecommandShotPage(pageNumber, inDay, listCount, true).getContent();
 		return list;
 	}
 

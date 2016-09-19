@@ -64,6 +64,7 @@ public class CreateSiteMap {
 		addUrl("/anime/list", XSiteMap.CHANGEFREQ_WEEKLY, "0.9", null, "动画列表");
 		addUrl("/search", XSiteMap.CHANGEFREQ_WEEKLY, "0.9", null, "字幕台词搜索");
 		addUrl("/search", XSiteMap.CHANGEFREQ_MONTHLY, "0.9", null, "随便看");
+		addUrl("/maCalc", XSiteMap.CHANGEFREQ_DAILY, "0.9", null, "乖离性百万亚瑟王伤害计算器");
 
 		// 增加所有剧集的截图列表的第一页loc
 		{

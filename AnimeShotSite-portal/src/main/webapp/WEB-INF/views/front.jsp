@@ -21,7 +21,7 @@
 			</div>
 			<div>
 				<div class="row">
-					<c:forEach items="${ animeEpisodeList }" var="animeEpisode" end="29">
+					<c:forEach items="${ animeEpisodeList }" var="animeEpisode" end="35">
 						<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4 thumbnail">
 							<a href="${ctx}/shot/list/${animeEpisode.id}" title="<c:out value='${animeEpisode.animeInfo.fullName}' /> <c:out value='${animeEpisode.animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' />">
 								<img data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy" alt="<c:out value='${animeEpisode.fullName}' />">
@@ -107,6 +107,19 @@
 
 		<div align="left">
 			<h1 style="font-size: 14px;">本站提供动画完整的动漫图片 动画图片以及字幕台词。截图图片一般以5秒为间隔，字幕尽量以外挂的形式显示。</h1>
+		</div>
+
+		<div style="padding-top: 1px;" class="bdsharebuttonbox">
+			<a style="background-position: 0 -32px;padding-left: 0px;padding-right: 10px;" title="分享本站">分享本站</a>
+			<a href="#" class="bds_mshare" data-cmd="mshare" title="百度一键分享"></a>
+			<a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+			<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+			<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+			<a href="#" class="bds_bdxc" data-cmd="bdxc" title="分享到百度相册"></a>
+			<a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a>
+			<a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
+			<a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+			<a href="#" class="bds_more" data-cmd="more" title="更多"></a>
 		</div>
 	</div>
 </div>

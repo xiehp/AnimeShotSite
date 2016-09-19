@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
+import org.codehaus.jackson.annotate.JsonMethod;
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.type.TypeFactory;
@@ -28,15 +31,18 @@ public class FormToEntityHttpMessageConverter extends
 		AbstractHttpMessageConverter<Object> {
 	public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 	
-	private ObjectMapper objectMapper = new ObjectMapper();
+	private ObjectMapper objectMapper = null;
 	
 	private boolean prefixJson = false;
 	
 	private Boolean prettyPrint;
 
 	public FormToEntityHttpMessageConverter(){
-		
 		super(new MediaType("application", "x-www-form-urlencoded", DEFAULT_CHARSET));
+
+		objectMapper = new ObjectMapper();
+		objectMapper.setVisibility(JsonMethod.FIELD, Visibility.ANY);
+		objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
 	
 	/**
@@ -49,6 +55,7 @@ public class FormToEntityHttpMessageConverter extends
 	 * in which case a custom-configured ObjectMapper is unnecessary.
 	 */
 	public void setObjectMapper(ObjectMapper objectMapper) {
+		// ??? 这里根本不会进来
 		Assert.notNull(objectMapper, "ObjectMapper must not be null");
 		this.objectMapper = objectMapper;
 		configurePrettyPrint();

@@ -88,7 +88,7 @@ public class IndexController extends BaseController {
 		{
 			List<AnimeEpisode> animeEpisodeList = entityCache.get("animeEpisodeList" + "Index");
 			if (animeEpisodeList == null) {
-				animeEpisodeList = animeEpisodeService.getNewestAnimeEpisodeList(30);
+				animeEpisodeList = animeEpisodeService.getNewestAnimeEpisodeList(42);
 				entityCache.put("animeEpisodeList" + "Index", animeEpisodeList);
 			}
 			request.setAttribute("animeEpisodeList", animeEpisodeList);
@@ -98,7 +98,7 @@ public class IndexController extends BaseController {
 		{
 			Long animeEpisodeCount = entityCache.get("animeEpisodeCount" + "Index");
 			if (animeEpisodeCount == null) {
-//				animeEpisodeCount = animeEpisodeDao.count();
+				// animeEpisodeCount = animeEpisodeDao.count();
 				animeEpisodeCount = animeEpisodeDao.countByShowFlgAndDeleteFlag(Constants.FLAG_INT_YES, Constants.FLAG_INT_NO);
 
 				entityCache.put("animeEpisodeCount" + "Index", animeEpisodeCount);
@@ -110,7 +110,7 @@ public class IndexController extends BaseController {
 		{
 			List<ShotInfo> newestShotList = entityCache.get("newestShotList" + "Index");
 			if (newestShotList == null) {
-				newestShotList = shotInfoService.getNewestShotList(30);
+				newestShotList = shotInfoService.getNewestShotList(42);
 				entityCache.put("newestShotList" + "Index", newestShotList);
 			}
 			request.setAttribute("newestShotList", newestShotList);
@@ -130,12 +130,12 @@ public class IndexController extends BaseController {
 		{
 			List<ShotInfo> masterRecommandShotList = entityCache.get("masterRecommandShotList" + "Index");
 			if (masterRecommandShotList == null) {
-				masterRecommandShotList = shotInfoService.getMasterRecommandShotList(7, 30);
+				masterRecommandShotList = shotInfoService.getMasterRecommandShotList(1, 7, 42);
 				if (masterRecommandShotList.size() == 0) {
-					masterRecommandShotList = shotInfoService.getMasterRecommandShotList(365, 30);
+					masterRecommandShotList = shotInfoService.getMasterRecommandShotList(1, 365, 42);
 				}
 				if (masterRecommandShotList.size() == 0) {
-					masterRecommandShotList = shotInfoService.getMasterRecommandShotList(3650, 30);
+					masterRecommandShotList = shotInfoService.getMasterRecommandShotList(1, 3650, 42);
 				}
 				entityCache.put("masterRecommandShotList" + "Index", masterRecommandShotList);
 			}
@@ -146,7 +146,7 @@ public class IndexController extends BaseController {
 		{
 			List<ShotInfo> publicLikeShotList = entityCache.get("publicLikeShotList" + "Index");
 			if (publicLikeShotList == null) {
-				publicLikeShotList = shotInfoService.getPublicLikeShotList(30);
+				publicLikeShotList = shotInfoService.getPublicLikeShotList(42);
 				entityCache.put("publicLikeShotList" + "Index", publicLikeShotList);
 			}
 			request.setAttribute("publicLikeShotList", publicLikeShotList);

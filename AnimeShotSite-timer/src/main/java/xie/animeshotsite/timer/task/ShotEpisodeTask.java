@@ -59,23 +59,27 @@ public class ShotEpisodeTask extends XBaseTask {
 
 			Boolean forceUpload = (Boolean) paramMap.get(Video2ImageProperties.KEY_forceUpload);
 
-			AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
-			AnimeInfo animeInfo = animeInfoService.findOne(animeEpisode.getAnimeInfoId());
+			logger.info("开始获取剧集信息");
+			AnimeEpisode animeEpisode = animeEpisodeService.findById(animeEpisodeId);
+			logger.info("获得剧集信息成功,{}", animeEpisode.getFullName());
+			AnimeInfo animeInfo = animeInfoService.findById(animeEpisode.getAnimeInfoId());
 			logger.info("begin process : " + animeInfo.getName() + ", " + animeEpisode.getName());
-			File animeEpisodeFile = FilePathUtils.getAnimeFullFilePath(animeInfo, animeEpisode, animeEpisode.getLocalFileName());
 
+			File animeEpisodeFile = FilePathUtils.getAnimeFullFilePath(animeInfo, animeEpisode, animeEpisode.getLocalFileName());
 			logger.info("begin process : " + animeEpisodeFile.getAbsolutePath());
 			if (!animeEpisodeFile.exists()) {
 				logger.error("文件不存在：" + animeEpisodeFile.getAbsolutePath());
 				throw new FileNotFoundException("文件不存在：" + animeEpisodeFile.getAbsolutePath());
 			}
 
+			logger.info("开始生成截图监听器");
 			// SaveImageListener saveImageListener = new SaveImageListener(animeEpisode.getAnimeInfoId(), animeEpisode.getId(), animeEpisode.getLocalRootPath(), animeEpisode.getLocalDetailPath(), animeEpisode.getNumber());
 			SaveImageListener saveImageListener = new SaveImageListener(animeEpisode);
 			File fileMrl = animeEpisodeFile;
 			if (forceUpload != null) {
 				saveImageListener.setForceUpload(forceUpload);
 			}
+			logger.info("结束生成截图监听器，{}", saveImageListener);
 
 			Video2Image video2Image = new Video2Image(fileMrl.getAbsolutePath(), saveImageListener);
 			video2Image.setRunMode(Video2ImageProperties.RUN_MODE_INTERVAL);

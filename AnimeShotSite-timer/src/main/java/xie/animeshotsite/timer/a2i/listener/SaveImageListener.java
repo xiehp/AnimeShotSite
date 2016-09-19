@@ -240,7 +240,7 @@ public class SaveImageListener extends Video2ImageAdapter {
 			shotInfo = shotInfoService.setTietukuUrl(shotInfo, tietukuImageUrlId, tietukuImageUrlPrefix);
 		}
 
-		shotInfoService.save(shotInfo);
+		shotInfo = shotInfoService.save(shotInfo);
 
 		// 修改剧集图片信息
 		if (!hasSaveEpisodeImageFlg) {

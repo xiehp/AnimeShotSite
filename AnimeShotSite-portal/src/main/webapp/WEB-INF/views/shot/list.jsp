@@ -9,7 +9,7 @@
 <title><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' /> 第${shotInfoPage.number + 1}页 - 动画截图网</title>
 <head>
 <meta name="keywords" content="<c:out value='${animeEpisode.fullName}' />,<c:out value='${animeInfo.secondName}' />,第${shotInfoPage.number + 1}页,动画截图网,动画截图,动漫截图,动漫图片,动画图片,截图字幕" />
-<meta name="description" content="<c:out value='${animeEpisode.fullName}' /> <c:out value='${animeInfo.secondName}' /> 第${shotInfoPage.number + 1}页的动画截图,动漫截图,动漫图片,动画图片,截图字幕,${fn:substring(animeEpisode.summaryCleanHtml,0,100)}" />
+<meta name="description" content="<c:out value='${animeEpisode.fullName}' /> <c:out value='${animeInfo.secondName}' /> 第${shotInfoPage.number + 1}页的动画截图,动漫截图,动漫图片,动画图片,截图字幕,${fn:substring(shotInfoPage.number == 0 ? animeEpisode.summaryCleanHtml : '',0,100)}" />
 
 <style>
 .blockTitle {
@@ -53,7 +53,7 @@ pre {
 	<!-- 标题 -->
 	<div class="blockTitle">
 		<h1 style="font-size: 20px; display: inline;"><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <small><c:out value='${animeEpisode.title}' /></small></h1>
-		<c:if test="${!empty animeEpisode.summary}">
+		<c:if test="${!empty animeEpisode.summary and shotInfoPage.number == 0}">
 			<button type="button" class="btn btn-rimary btn-xs" data-toggle="collapse" data-target="#episodeSmmary">显示剧集简介</button>
 		</c:if>
 	</div>
@@ -61,7 +61,11 @@ pre {
 	<div class="row" style="text-align: left;">
 		<!-- 剧集简介 -->
 		<div class="col-md-12">
-			<div id="episodeSmmary" class="collapse">${animeEpisode.summary}</div>
+			<div id="episodeSmmary" class="collapse">
+				<c:if test="${shotInfoPage.number == 0}">
+					${animeEpisode.summary}
+				</c:if>
+			</div>
 		</div>
 	</div>
 

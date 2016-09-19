@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -33,10 +34,11 @@ import xie.animeshotsite.db.service.ShotInfoService;
 import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.db.service.SubtitleLineService;
 import xie.base.controller.BaseFunctionController;
-import xie.base.http.CookieUtils;
 import xie.common.Constants;
 import xie.common.constant.XConst;
-import xie.common.web.util.ShotWebConstants;
+import xie.common.string.XStringUtils;
+import xie.common.utils.XCookieUtils;
+import xie.common.web.util.ConstantsWeb;
 
 @Controller
 @RequestMapping(value = "/shot")
@@ -84,7 +86,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 			return "redirect:/anime/list";
 		}
 		AnimeInfo animeInfo = animeInfoService.findOne(animeEpisode.getAnimeInfoId());
-		Page<ShotInfo> shotInfoPage = shotInfoService.searchPageByParams(searchParams, pageNumber, ShotWebConstants.SHOT_LIST_PAGE_NUMBER, sortType, ShotInfo.class);
+		Page<ShotInfo> shotInfoPage = shotInfoService.searchPageByParams(searchParams, pageNumber, ConstantsWeb.SHOT_LIST_PAGE_NUMBER, sortType, ShotInfo.class);
 		if (pageNumber > shotInfoPage.getTotalPages() && shotInfoPage.getTotalPages() > 0) {
 			// 页数不对， 并且有数据，直接定位到最后一页
 			String pageUrl = shotInfoPage.getTotalPages() > 1 ? "?page=" + shotInfoPage.getTotalPages() : "";
@@ -177,7 +179,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 			rowNumber = shotInfoDao.getRowNumber(shotInfo.getAnimeEpisodeId(), shotInfo.getTimeStamp(), Constants.FLAG_INT_NO);
 			entityCache.put("shotRowNumber_" + shotInfo.getId(), rowNumber);
 		}
-		int pageSize = ShotWebConstants.SHOT_LIST_PAGE_NUMBER;
+		int pageSize = ConstantsWeb.SHOT_LIST_PAGE_NUMBER;
 		model.addAttribute("rowNumber", rowNumber);
 		int pageNumber = (rowNumber - 1) / pageSize + 1;
 		model.addAttribute("pageNumber", (rowNumber - 1) / pageSize + 1);
@@ -196,11 +198,19 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		Long endTime = nextShotInfo == null ? startTime + 5000 : nextShotInfo.getTimeStamp();
 		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), showLanage, startTime, endTime);
 		model.addAttribute("subtitleLineList", subtitleLineList);
+		StringBuilder subtitleLineTextStrSb = new StringBuilder();
+		for (SubtitleLine subtitleLine : subtitleLineList) {
+			subtitleLineTextStrSb.append(subtitleLine.getText());
+		}
+		String subtitleLineTextStr = subtitleLineTextStrSb.toString();
+		model.addAttribute("subtitleLineTextStr", subtitleLineTextStr);
+		model.addAttribute("subtitleLineTextStr100", StringUtils.substring(subtitleLineTextStr.toString(), 0, 100));
+		model.addAttribute("subtitleLineTextStr200", StringUtils.substring(subtitleLineTextStr.toString(), 0, 200));
 
 		// 前台页面cookie等参数设置
 		model.addAttribute("scorllTop", scorllTop); // 用户提交时滚屏高度
 
-		String ShotViewImgWidth = CookieUtils.getCookieValue(request, "ShotViewImgWidth"); // 用户设定的图片展示宽度
+		String ShotViewImgWidth = XCookieUtils.getCookieValue(request, "ShotViewImgWidth"); // 用户设定的图片展示宽度
 		if (ShotViewImgWidth != null && !ShotViewImgWidth.matches("[0-9]+")) {
 			ShotViewImgWidth = null;
 		}
@@ -209,7 +219,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		if (ShotViewImgWidth != null) {
 			ShotImgDivWidth = ShotViewImgWidth;
 		} else {
-			ShotImgDivWidth = CookieUtils.getCookieValue(request, "ShotImgDivWidth"); // 用户提交前获得的图片div宽度
+			ShotImgDivWidth = XCookieUtils.getCookieValue(request, "ShotImgDivWidth"); // 用户提交前获得的图片div宽度
 			if (ShotImgDivWidth != null && !ShotImgDivWidth.matches("[0-9]+")) {
 				ShotImgDivWidth = null;
 			}
@@ -245,5 +255,25 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		model.addAttribute("shotInfoList", shotInfoList);
 
 		return getJspFilePath("random");
+	}
+
+	@RequestMapping(value = "/recommend")
+	public String recommend(
+			Model model,
+			@RequestParam(value = "time", required = false) Integer time,
+			@RequestParam(value = "page", defaultValue = "1") int pageNumber) throws Exception {
+
+		String cacheKey = "masterRecommandShotPage" + "_" + time + "_" + pageNumber;
+
+		// 获得站长推荐
+		Page<ShotInfo> masterRecommandShotPage = entityCache.get(cacheKey);
+		if (masterRecommandShotPage == null) {
+			masterRecommandShotPage = shotInfoService.getMasterRecommandShotPage(pageNumber, time, 48, false);
+			entityCache.put(cacheKey, masterRecommandShotPage, XConst.SECOND_10_MIN * 1000);
+		}
+
+		model.addAttribute("shotInfoPage", masterRecommandShotPage);
+
+		return getJspFilePath("recommend");
 	}
 }

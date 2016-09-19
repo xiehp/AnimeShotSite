@@ -40,40 +40,15 @@ public class EntityCache {
 
 	public int clear() {
 		int size = cacheMap.size();
-		logger.info("当前缓存个数：" + size);
+		logger.info("准备清除所有缓存，当前缓存个数：" + size);
 		cacheMap.clear();
 		timeoutMap.clear();
 		return size;
 	}
 
-	public void put(String cacheId, Object value) {
-		put(cacheId, value, 60000);
-	}
-
-	public void put(String cacheId, Object value, long timeoutMili) {
-		remove(cacheId);
-		cacheMap.put(cacheId, value);
-		timeoutMap.put(cacheId, new XWaitTime(timeoutMili));
-
-		if (processExpireTime.isTimeout()) {
-			processExpireObject();
-
-			if (processExpireTime.isTimeout()) {
-				processExpireTime.resetNowtime();
-			}
-		}
-	}
-
-	public Object remove(String cacheId) {
+	private int clearExpire() {
 		synchronized (processExpireTime) {
-			timeoutMap.remove(cacheId);
-			return cacheMap.remove(cacheId);
-		}
-	}
-
-	private int processExpireObject() {
-		synchronized (processExpireTime) {
-			logger.info("当前缓存个数：" + cacheMap.size());
+			logger.info("准备清除过期缓存，当前缓存个数：{}", cacheMap.size());
 
 			// 处理过期对象
 			int count = 0;
@@ -91,9 +66,35 @@ public class EntityCache {
 			}
 			processExpireTime.resetNowtime();
 
-			logger.info("清除缓存个数：" + count + "， 剩余缓存个数：" + cacheMap.size());
+			logger.info("清除缓存个数:{}, 剩余缓存个数:{}", count, cacheMap.size());
 
 			return count;
+		}
+	}
+
+	public void put(String cacheId, Object value) {
+		put(cacheId, value, 60000);
+	}
+
+	public void put(String cacheId, Object value, long timeoutMili) {
+		remove(cacheId);
+		cacheMap.put(cacheId, value);
+		timeoutMap.put(cacheId, new XWaitTime(timeoutMili));
+
+		if (processExpireTime.isTimeout()) {
+			clearExpire();
+
+			if (processExpireTime.isTimeout()) {
+				processExpireTime.resetNowtime();
+			}
+		}
+	}
+
+	public Object remove(String cacheId) {
+		synchronized (processExpireTime) {
+			timeoutMap.remove(cacheId);
+			Object object = cacheMap.remove(cacheId);
+			return object;
 		}
 	}
 
@@ -104,10 +105,21 @@ public class EntityCache {
 		}
 
 		if (timeoutMap.get(cacheId).isTimeout()) {
+			remove(cacheId);
 			return null;
 		}
 
 		return (T) cacheMap.get(cacheId);
+
+	}
+
+	public <T> T get(String... cacheIds) {
+		String cacheId = "";
+		for (int i = 0; i < cacheIds.length; i++) {
+			cacheId += cacheIds[i];
+		}
+
+		return get(cacheId);
 
 	}
 

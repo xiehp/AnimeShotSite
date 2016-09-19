@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,40 +21,16 @@ import org.springside.modules.web.Servlets;
 import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.entity.SubtitleLine;
 import xie.animeshotsite.db.entity.cache.EntityCache;
-import xie.animeshotsite.db.repository.AnimeEpisodeDao;
-import xie.animeshotsite.db.repository.AnimeInfoDao;
-import xie.animeshotsite.db.repository.ShotInfoDao;
-import xie.animeshotsite.db.repository.SubtitleLineDao;
-import xie.animeshotsite.db.service.AnimeEpisodeService;
-import xie.animeshotsite.db.service.AnimeInfoService;
-import xie.animeshotsite.db.service.ShotInfoService;
-import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.db.service.SubtitleLineService;
-import xie.base.controller.BaseFunctionController;
+import xie.base.controller.BaseController;
 import xie.base.page.PageRequestUtil;
 import xie.common.string.XStringUtils;
 
 @Controller
-public class SearchController extends BaseFunctionController<ShotInfo, String> {
+public class SearchController extends BaseController {
 
 	@Autowired
-	private AnimeInfoService animeInfoService;
-	@Autowired
-	private AnimeInfoDao animeInfoDao;
-	@Autowired
-	private AnimeEpisodeService animeEpisodeService;
-	@Autowired
-	private AnimeEpisodeDao animeEpisodeDao;
-	@Autowired
-	private ShotInfoService shotInfoService;
-	@Autowired
-	private ShotInfoDao shotInfoDao;
-	@Autowired
-	private SubtitleInfoService subtitleInfoService;
-	@Autowired
 	private SubtitleLineService subtitleLineService;
-	@Autowired
-	private SubtitleLineDao subtitleLineDao;
 	@Autowired
 	private EntityCache entityCache;
 

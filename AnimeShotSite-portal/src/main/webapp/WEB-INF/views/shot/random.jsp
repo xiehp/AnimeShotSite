@@ -32,7 +32,10 @@
 	}
 </script>
 <div>
+	<!-- 标题 -->
 	<div class="blockTitle">帮你随机选出了${ shotInfoList.size() }张图</div>
+
+	<!-- 截图一览 -->
 	<div class="row">
 		<c:forEach items="${ shotInfoList }" var="shotInfo">
 			<div style="min-height: 100px;" class="col-lg-2 col-sm-3 col-xs-4 thumbnail">

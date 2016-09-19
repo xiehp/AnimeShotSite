@@ -1,15 +1,24 @@
 package xie.animeshotsite.setup;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import xie.animeshotsite.constants.ShotCoreConstants;
 import xie.common.XSpringConstants;
+import xie.common.io.XFileWriter;
 
 @Component
 public class ShotSiteSetup {
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/** 网站图片URL获取方式 腾讯 */
 	public static String IMAGE_URL_GET_MODE = ShotCoreConstants.IMAGE_URL_GET_MODE_TIETUKU;
@@ -30,6 +39,8 @@ public class ShotSiteSetup {
 
 	@Value("#{" + XSpringConstants.SPRING_PROPERTIES_ID + "['animesite.js.debug']}")
 	private String animesiteJsDebug;
+
+	private List<String> excludeIpsRuleList;
 
 	public String getProperty(String key) {
 		return properties.getProperty(key);
@@ -53,6 +64,21 @@ public class ShotSiteSetup {
 
 	public String getAnimesiteJsDebug() {
 		return animesiteJsDebug;
+	}
+
+	public List<String> getExcludeIpsRuleList() {
+		return excludeIpsRuleList;
+	}
+
+	public void resetExcludeIpsRuleList(HttpServletRequest httpServletRequest) {
+		excludeIpsRuleList = new ArrayList<>();
+		try {
+			String filePath = httpServletRequest.getServletContext().getRealPath("/WEB-INF/resources/excludeIpsRuleList.txt");
+			excludeIpsRuleList = XFileWriter.readList(filePath);
+			logger.info("读取排除IP文件[{}]成功，当前数量：{}", filePath, excludeIpsRuleList.size());
+		} catch (IOException e) {
+			logger.error("读取排除文件发生异常", e);
+		}
 	}
 
 }

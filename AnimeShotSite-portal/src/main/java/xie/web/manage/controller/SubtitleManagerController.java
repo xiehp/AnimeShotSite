@@ -30,10 +30,10 @@ import xie.base.controller.BaseManagerController;
 import xie.base.service.BaseService;
 import xie.common.string.XStringUtils;
 import xie.common.web.util.RequestUtil;
-import xie.common.web.util.ShotWebConstants;
+import xie.common.web.util.ConstantsWeb;
 
 @Controller
-@RequestMapping(value = ShotWebConstants.MANAGE_URL_STR + "/subtitle")
+@RequestMapping(value = ConstantsWeb.MANAGE_URL_STR + "/subtitle")
 public class SubtitleManagerController extends BaseManagerController<SubtitleInfo, String> {
 
 	@Autowired

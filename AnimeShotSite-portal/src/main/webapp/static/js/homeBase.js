@@ -1,4 +1,32 @@
 (function($) {
+
+	function getDocumentCharset() {
+		return document.characterSet ? document.characterSet : document.charset;
+	}
+
+	/** ajax提交form表单 */
+	$.homeAjaxSubmit = function(formId, callback, otherParam) {
+		var ajaxParam = {};
+		$.extend(ajaxParam, {
+			async : true,
+			contentType : "application/x-www-form-urlencoded; charset=" + getDocumentCharset(),
+			dataType : "json",
+			type : "post",
+			data : otherParam,
+			success : function(data) {
+				if (callback) {
+					callback(data);
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
+				alertErrorMsg(XMLHttpRequest, ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
+			}
+		});
+
+		$('#' + formId).ajaxSubmit(ajaxParam);
+	}
+
 	$.homePost = function(url, param, callback) {
 		$.ajax({
 			url : baseUrl + url,
@@ -7,7 +35,9 @@
 			type : "post",
 			data : param,
 			success : function(data) {
-				callback(data);
+				if (callback) {
+					callback(data);
+				}
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
@@ -23,7 +53,9 @@
 			dataType : "json",
 			type : "get",
 			success : function(data) {
-				callback(data);
+				if (callback) {
+					callback(data);
+				}
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
@@ -31,6 +63,7 @@
 			}
 		});
 	}
+
 	$.homeJsonPost = function(url, param, callback) {
 		$.ajax({
 			url : baseUrl + url,
@@ -39,7 +72,9 @@
 			type : "post",
 			data : JSON.stringify(param),
 			success : function(data) {
-				callback(data);
+				if (callback) {
+					callback(data);
+				}
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
@@ -55,7 +90,9 @@
 			dataType : "json",
 			type : "get",
 			success : function(data) {
-				callback(data);
+				if (callback) {
+					callback(data);
+				}
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
@@ -73,7 +110,9 @@
 			data : JSON.stringify(param),
 			async : false,
 			success : function(data) {
-				callback(data);
+				if (callback) {
+					callback(data);
+				}
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
@@ -90,7 +129,9 @@
 			type : "GET",
 			async : false,
 			success : function(data) {
-				callback(data);
+				if (callback) {
+					callback(data);
+				}
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
@@ -327,4 +368,208 @@ HomeCookie.getCookie = function(name) {
 
 HomeCookie.removeCookie = function(name) {
 	return $.cookie(name, null);
+}
+
+/**
+ * url:/SimpleDataxWeb/renderSndData param:{"userName":form.userName.value,"password":form.password.value}
+ */
+function getDataByAjax(url, jsonParam, isByGet, isOpenMask, options) {
+	var result = null;
+
+	var byGet;
+	if (isNull(isByGet)) {
+		byGet = is_ajax_getmethod_by_get;
+	} else {
+		byGet = isByGet;
+	}
+
+	var ajaxParam = {};
+	if (!isNull(isOpenMask)) {
+		$.extend(ajaxParam, {
+			openMask : isOpenMask
+		});
+	}
+
+	$.extend(ajaxParam, {
+		type : byGet ? "GET" : "POST",
+		async : false,
+		url : url,
+		dataType : "json",
+		data : jsonParam,
+		contentType : "application/x-www-form-urlencoded; charset=" + getDocumentCharset(),
+		success : function(d, textStatus, jqXHR) {
+			result = d;
+		},
+		dataFilter : function(response, dataType) {
+			if (response == "") {
+				return "null";
+			} else {
+				return response;
+			}
+		}
+	});
+
+	if (!isNull(options)) {
+		$.extend(ajaxParam, options);
+	}
+
+	$.ajax(ajaxParam);
+
+	return result;
+}
+
+function asynGetDataByAjax(url, jsonParam, isByGet, successFunc, isOpenMask, options) {
+	var byGet;
+	if (isNull(isByGet)) {
+		byGet = is_ajax_getmethod_by_get;
+	} else {
+		byGet = isByGet;
+	}
+
+	var ajaxParam = {};
+	if (!isNull(isOpenMask)) {
+		$.extend(ajaxParam, {
+			openMask : isOpenMask
+		});
+	}
+
+	var needJsonp = isCrossVisit(url);
+	var gourl;
+	var dataType;
+	if (needJsonp) {
+		gourl = urlAddParam(url, "Accept-Error-DataType=jsonp&Accept-DataType=jsonp&Client-Type=jquery");
+		dataType = "jsonp";
+		var jsonpCallback = "jsonpCallback" + (new Date().getTime()) + parseInt(1000 * Math.random());
+		$.extend(ajaxParam, {
+			jsonpCallback : jsonpCallback,
+			dataFilter : function(response, dataType) {
+				if (response == "") {
+					return jsonpCallback + "(null);";
+				} else {
+					return response;
+				}
+			}
+		});
+	} else {
+		gourl = url;
+		dataType = "json";
+		$.extend(ajaxParam, {
+			dataFilter : function(response, dataType) {
+				if (response == "") {
+					return "null";
+				} else {
+					return response;
+				}
+			}
+		});
+	}
+
+	if (!isNull(options)) {
+		var optionsSuccess = options.success;
+		delete options.success;
+	}
+
+	$.extend(ajaxParam, {
+		type : byGet ? "GET" : "POST",
+		async : true,
+		url : gourl,
+		dataType : dataType,
+		data : jsonParam,
+		contentType : "application/x-www-form-urlencoded; charset=" + getDocumentCharset(),
+		success : function(d, textStatus, jqXHR) {
+			successFunc(d);
+
+			if (!isNull(optionsSuccess)) {
+				optionsSuccess(d, textStatus, jqXHR);
+			}
+		}
+	});
+
+	if (!isNull(options)) {
+		$.extend(ajaxParam, options);
+	}
+
+	$.ajax(ajaxParam);
+
+}
+
+function getHtmlByAjax(url, jsonParam, isByGet, isOpenMask, options) {
+	var result = null;
+
+	var byGet;
+	if (isNull(isByGet)) {
+		byGet = is_ajax_getmethod_by_get;
+	} else {
+		byGet = isByGet;
+	}
+
+	var ajaxParam = {};
+	if (!isNull(isOpenMask)) {
+		$.extend(ajaxParam, {
+			openMask : isOpenMask
+		});
+	}
+
+	$.extend(ajaxParam, {
+		type : byGet ? "GET" : "POST",
+		async : false,
+		url : url,
+		dataType : "html",
+		data : jsonParam,
+		contentType : "application/x-www-form-urlencoded; charset=" + getDocumentCharset(),
+		success : function(d, textStatus, jqXHR) {
+			result = d;
+		}
+	});
+
+	if (!isNull(options)) {
+		$.extend(ajaxParam, options);
+	}
+
+	$.ajax(ajaxParam);
+
+	return result;
+}
+
+function asynGetHtmlByAjax(url, jsonParam, isByGet, successFunc, isOpenMask, options) {
+	var byGet;
+	if (isNull(isByGet)) {
+		byGet = is_ajax_getmethod_by_get;
+	} else {
+		byGet = isByGet;
+	}
+
+	var ajaxParam = {};
+	if (!isNull(isOpenMask)) {
+		$.extend(ajaxParam, {
+			openMask : isOpenMask
+		});
+	}
+
+	if (!isNull(options)) {
+		var optionsSuccess = options.success;
+		delete options.success;
+	}
+
+	$.extend(ajaxParam, {
+		type : byGet ? "GET" : "POST",
+		async : true,
+		url : url,
+		dataType : "html",
+		data : jsonParam,
+		contentType : "application/x-www-form-urlencoded; charset=" + getDocumentCharset(),
+		success : function(d, textStatus, jqXHR) {
+			successFunc(d);
+
+			if (!isNull(optionsSuccess)) {
+				optionsSuccess(d, textStatus, jqXHR);
+			}
+		}
+	});
+
+	if (!isNull(options)) {
+		$.extend(ajaxParam, options);
+	}
+
+	$.ajax(ajaxParam);
 }

@@ -17,8 +17,8 @@ import xie.animeshotsite.db.repository.ShotTaskDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotTaskService;
-import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.timer.base.XTask;
+import xie.common.constant.XConst;
 import xie.common.string.XStringUtils;
 import xie.common.utils.JsonUtil;
 
@@ -40,13 +40,26 @@ public class ShotTaskTimer extends TimerTask {
 	ApplicationContext applicationContext;
 
 	String taskType;
-	
+
 	public void setTaskType(String taskType) {
 		this.taskType = taskType;
 	}
 
 	@Override
 	public void run() {
+		try {
+			taskTimer();
+		} catch (Exception e) {
+			logger.error("执行发生异常，暂停10分钟。");
+			try {
+				Thread.sleep(XConst.SECOND_10_MIN * 1000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+
+	private void taskTimer() {
 		shotTaskDao.count();
 		List<ShotTask> list = shotTaskService.findNeedRunTask(taskType);
 		if (list.size() > 0) {
@@ -56,7 +69,7 @@ public class ShotTaskTimer extends TimerTask {
 		}
 
 		if (list.size() > 0) {
-			ShotTask shotTask  = list.get(0);
+			ShotTask shotTask = list.get(0);
 			try {
 				String taskClass = shotTask.getTaskClass();
 				String paramStr = shotTask.getTaskParam();
@@ -65,23 +78,22 @@ public class ShotTaskTimer extends TimerTask {
 					param = JsonUtil.fromJsonString(paramStr);
 				}
 
+				logger.info("任务类：{}, 任务参数:{}", taskClass, param);
 				XTask task = (XTask) Class.forName(taskClass).newInstance();
-//				task = (XTask) SpringUtil.getBean(Class.forName(taskClass));
+				// task = (XTask) SpringUtil.getBean(Class.forName(taskClass));
 				task = (XTask) applicationContext.getBean(Class.forName(taskClass));
-				
+
 				// 更改标志
-				shotTask = shotTaskService.beginTask(shotTask);
+				shotTask = shotTaskService.beginTask(shotTask.getId());
 
 				task.runTask(param);
 
-				shotTask = shotTaskService.endTask(shotTask, true, null);
+				shotTask = shotTaskService.endTask(shotTask.getId(), true, null);
 				logger.info("process 结束 : " + shotTask.getId());
-
 			} catch (Exception e) {
-				shotTask = shotTaskService.endTask(shotTask, false, e.getMessage());
 				logger.error("process 失败", e);
+				shotTask = shotTaskService.endTask(shotTask.getId(), false, e.getMessage());
 			}
 		}
 	}
-
 }

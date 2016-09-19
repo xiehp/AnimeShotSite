@@ -22,11 +22,11 @@ import xie.base.controller.BaseController;
 import xie.common.Constants;
 import xie.common.exception.NoPermissionException;
 import xie.common.utils.props.PropsKeys;
-import xie.common.web.util.ShotWebConstants;
+import xie.common.web.util.ConstantsWeb;
 import xie.sys.auth.entity.User;
 
 @Controller
-@RequestMapping(value = ShotWebConstants.MANAGE_URL_STR)
+@RequestMapping(value = ConstantsWeb.MANAGE_URL_STR)
 public class LoginController extends BaseController {
 
 	@Autowired

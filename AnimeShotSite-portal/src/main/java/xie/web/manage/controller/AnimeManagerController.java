@@ -22,10 +22,10 @@ import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseManagerController;
 import xie.base.service.BaseService;
-import xie.common.web.util.ShotWebConstants;
+import xie.common.web.util.ConstantsWeb;
 
 @Controller
-@RequestMapping(value = ShotWebConstants.MANAGE_URL_STR + "/anime")
+@RequestMapping(value = ConstantsWeb.MANAGE_URL_STR + "/anime")
 public class AnimeManagerController extends BaseManagerController<AnimeInfo, String> {
 
 	@Autowired

@@ -60,14 +60,22 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 		subtitleLineDao.deleteBySubtitleInfoId(subtitleInfoId);
 	}
 
+	/**
+	 * 创建字幕数据
+	 * 
+	 * @param subtitleInfo
+	 * @param forceDelete
+	 */
 	public void saveSubtitleLine(SubtitleInfo subtitleInfo, Boolean forceDelete) {
 		File file = null;
 		try {
 			// 创建字幕数据
 			file = FilePathUtils.getCommonFilePath(subtitleInfo.getLocalRootPath(), subtitleInfo.getLocalDetailPath(), subtitleInfo.getLocalFileName());
+			logging.info("开始创建字幕数据, {}, forceDelete:{}", file, forceDelete);
 			Subtitle subtitle = SubtitleFactory.createSubtitle(file, subtitleInfo.getFilterRemove(), subtitleInfo.getFilterInclude());
-			if (subtitle != null) {
+			if (subtitle != null && subtitle.getSubtitleLineList() != null) {
 				List<XSubtitleLine> list = subtitle.getSubtitleLineList();
+				logging.info("读取字幕文件成功，开始写入数据库。 字幕行数：{}", list.size());
 				if (list != null && list.size() > 0) {
 					// 删除老的数据
 					if (forceDelete) {
@@ -88,7 +96,7 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 						listSubtitleLine = getBaseRepository().save(listSubtitleLine);
 					}
 
-					logging.info("创建字幕数据成功，文件：{}，耗时：{}", file.getAbsolutePath(),  DateUtil.formatTime(new Date().getTime() - startDate.getTime(), 3));
+					logging.info("创建字幕数据成功，文件：{}，耗时：{}", file.getAbsolutePath(), DateUtil.formatTime(new Date().getTime() - startDate.getTime(), 3));
 				}
 			}
 		} catch (IOException e) {

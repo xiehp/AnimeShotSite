@@ -27,10 +27,10 @@ import xie.common.date.DateUtil;
 import xie.common.string.XStringUtils;
 import xie.common.utils.SpringUtils;
 import xie.common.web.util.RequestUtil;
-import xie.common.web.util.ShotWebConstants;
+import xie.common.web.util.ConstantsWeb;
 
 @Controller
-@RequestMapping(value = ShotWebConstants.MANAGE_URL_STR + "/animeEpisode")
+@RequestMapping(value = ConstantsWeb.MANAGE_URL_STR + "/animeEpisode")
 public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEpisode, String> {
 
 	@Autowired

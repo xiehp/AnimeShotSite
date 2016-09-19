@@ -3,6 +3,7 @@ package xie.web.protal.controller;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,7 +38,7 @@ public class AnimeEpisodeController extends BaseFunctionController<AnimeEpisode,
 	public String shotList(@PathVariable String animeInfoId,
 			@RequestParam(value = "sortType", defaultValue = "sort") String sortType,
 			@RequestParam(value = "page", defaultValue = "1") int pageNumber,
-			Model model, ServletRequest request)
+			Model model, ServletRequest request, HttpServletResponse response)
 					throws Exception {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		// 增加删除过滤
@@ -46,6 +47,12 @@ public class AnimeEpisodeController extends BaseFunctionController<AnimeEpisode,
 		searchParams.put("EQ_showFlg", Constants.FLAG_STR_YES);
 
 		AnimeInfo animeInfo = animeInfoService.findOne(animeInfoId);
+		if (animeInfo == null) {
+			// TODO 404跳转
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			request.setAttribute("canBaiduIndex", false);// 不要索引
+			return getUrlRedirectPath("404");
+		}
 		Page<AnimeEpisode> animeEpisodePage = animeEpisodeService.searchPageByParams(searchParams, pageNumber, Constants.PAGE_SIZE_40, sortType, AnimeEpisode.class);
 
 		model.addAttribute("animeInfo", animeInfo);

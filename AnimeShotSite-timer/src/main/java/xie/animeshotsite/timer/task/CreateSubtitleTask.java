@@ -48,14 +48,14 @@ public class CreateSubtitleTask extends XBaseTask {
 	@Override
 	public void runTask(Map<String, Object> paramMap) throws Exception {
 		try {
-			logger.info("begin process animeEpisodeId: ");
-			XStringUtils.println(paramMap);
+			logger.info("开始处理字幕文件，参数：{}", paramMap);
+			// XStringUtils.println(paramMap);
 			run(paramMap);
 		} catch (Exception e) {
 			logger.error("process 失败", e);
 			throw e;
 		} finally {
-			logger.error("process 结束");
+			logger.info("process 结束");
 		}
 	}
 
@@ -76,18 +76,20 @@ public class CreateSubtitleTask extends XBaseTask {
 			if (forceUpdate || subtitleLineDao.countBySubtitleInfoId(subtitleInfo.getId()) == 0) {
 				subtitleLineService.saveSubtitleLine(subtitleInfo, forceDelete);
 			} else {
-				logger.info("subtitleInfoId: {}, 已存在字幕，跳过执行", subtitleInfoId);
+				logger.info("subtitleInfoId: {1}, 已存在字幕，跳过执行", subtitleInfoId);
 			}
 		} else if (XStringUtils.isNotBlank(animeInfoId)) {
 			List<SubtitleInfo> list = subtitleInfoDao.findByAnimeInfoIdOrderByLocalFileName(animeInfoId);
 			for (SubtitleInfo subtitleInfo : list) {
 				if (!forceUpdate && subtitleLineDao.countBySubtitleInfoId(subtitleInfo.getId()) > 0) {
-					logger.info("subtitleInfoId: {}, 已存在字幕，跳过执行", subtitleInfoId);
+					logger.info("subtitleInfoId: {1}, 已存在字幕，跳过执行", subtitleInfoId);
 					continue;
 				}
 
 				subtitleLineService.saveSubtitleLine(subtitleInfo, forceDelete);
 			}
+		} else {
+			logger.error("字幕处理参数错误，无法执行。");
 		}
 
 		return 0;

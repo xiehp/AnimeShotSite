@@ -30,8 +30,9 @@ public class MainTimer {
 		System.setProperty("spring.profiles.default", "development");
 		// System.setProperty("spring.profiles.default", "production");
 
-		createTimer(ShotTaskTimer.class, 10000, ShotTask.TASK_TYPE_SHOT);
-		createTimer(ShotTaskTimer.class, 10000, ShotTask.TASK_TYPE_SUBTITLE);
+		createTimer(ShotTaskTimer.class, 20000, ShotTask.TASK_TYPE_SHOT);
+		createTimer(ShotTaskTimer.class, 20000, ShotTask.TASK_TYPE_SUBTITLE);
+		createTimer(ShotTaskTimer.class, 20000, ShotTask.TASK_TYPE_GIF);
 
 		printProfile();
 
@@ -64,6 +65,8 @@ public class MainTimer {
 		// TietukuPropertiesConfiger tietukuPropertiesConfiger = SpringUtil.getBean(TietukuPropertiesConfiger.class);
 		// logger.info(tietukuPropertiesConfiger);
 		// logger.info(tietukuPropertiesConfiger.getNowProfile());
+
+		logger.info("主程序执行结束。");
 	}
 
 	/***
@@ -77,6 +80,7 @@ public class MainTimer {
 
 		Timer timer = new Timer();
 		timer.schedule(shotTaskTimer, 1000, period);
+		logger.info("创建定时器成功：{} {} {}", period, taskType, classTimerTask);
 	}
 
 	private static void printProfile() {

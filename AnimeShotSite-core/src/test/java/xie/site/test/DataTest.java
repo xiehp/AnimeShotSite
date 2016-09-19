@@ -9,7 +9,7 @@ import xie.animeshotsite.spring.SpringUtil;
 public class DataTest {
 	public static void main(String[] args) {
 		ShotInfoService shotInfoService = SpringUtil.getBean(ShotInfoService.class);
-		List<ShotInfo> list = shotInfoService.getMasterRecommandShotList(7, 44);
+		List<ShotInfo> list = shotInfoService.getMasterRecommandShotList(1, 7, 44);
 
 		System.out.println(list);
 	}

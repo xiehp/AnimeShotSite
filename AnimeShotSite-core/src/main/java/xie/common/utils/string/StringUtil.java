@@ -1000,6 +1000,20 @@ public class StringUtil {
 		return sb.toString();
 	}
 
+	public static String removeNull(String s) {
+		if (s == null) {
+			return "";
+		}
+		return s;
+	}
+
+	public static String removeNullTrim(String s) {
+		if (s == null) {
+			return "";
+		}
+		return trim(s, null);
+	}
+
 	public static String trim(String s) {
 		return trim(s, null);
 	}

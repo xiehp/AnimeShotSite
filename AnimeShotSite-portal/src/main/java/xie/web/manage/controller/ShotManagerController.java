@@ -24,10 +24,10 @@ import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotInfoService;
 import xie.base.controller.BaseManagerController;
 import xie.base.service.BaseService;
-import xie.common.web.util.ShotWebConstants;
+import xie.common.web.util.ConstantsWeb;
 
 @Controller
-@RequestMapping(value = ShotWebConstants.MANAGE_URL_STR + "/shot")
+@RequestMapping(value = ConstantsWeb.MANAGE_URL_STR + "/shot")
 public class ShotManagerController extends BaseManagerController<ShotInfo, String> {
 
 	private @Autowired AnimeInfoService animeInfoService;
