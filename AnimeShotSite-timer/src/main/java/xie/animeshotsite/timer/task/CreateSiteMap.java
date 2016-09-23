@@ -58,6 +58,13 @@ public class CreateSiteMap {
 
 	public void runTask(Map<String, Object> paramMap) {
 		xSiteMap = new XSiteMap();
+		{
+			logger.info("开始获取剧集信息");
+			AnimeEpisode animeEpisode = animeEpisodeService.findById("f39c57f4575200f2015752ad56250001");
+			logger.info("获得剧集信息成功,{}", animeEpisode.getFullName());
+			AnimeInfo animeInfo = animeInfoDao.findById(animeEpisode.getAnimeInfoId());
+			logger.info("获得动画信息成功,{}", animeInfo);
+		}
 
 		// 增加首页loc
 		addUrl("/", XSiteMap.CHANGEFREQ_DAILY, "1.0", null, "首页");

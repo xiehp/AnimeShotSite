@@ -76,6 +76,12 @@ public class EntityCache {
 		put(cacheId, value, 60000);
 	}
 
+	/**
+	 * 
+	 * @param cacheId
+	 * @param value
+	 * @param timeoutMili 微妙
+	 */
 	public void put(String cacheId, Object value, long timeoutMili) {
 		remove(cacheId);
 		cacheMap.put(cacheId, value);
@@ -129,7 +135,7 @@ public class EntityCache {
 
 	public <T> T findOne(BaseRepository<T, String> dao, String id) {
 		String cacheId = dao.getClass().getSimpleName() + id;
-		System.out.println(cacheId + " nowSize:" + cacheMap.size());
+		// System.out.println(cacheId + " nowSize:" + cacheMap.size());
 		T value = get(cacheId);
 		if (value != null) {
 			return value;
@@ -141,10 +147,11 @@ public class EntityCache {
 	}
 
 	public ShotInfo findPreviousShotInfo(String animeEpisodeId, long timeStamp) {
-		ShotInfo shotInfo = get(CACHE_ID_Previous_ShotInfo + animeEpisodeId + "_" + timeStamp);
+		String id = CACHE_ID_Previous_ShotInfo + animeEpisodeId + "_" + timeStamp;
+		ShotInfo shotInfo = get(id);
 		if (shotInfo == null) {
 			shotInfo = shotInfoDao.findPrevious(animeEpisodeId, timeStamp);
-			put(CACHE_ID_Previous_ShotInfo + animeEpisodeId + "_" + timeStamp, shotInfo);
+			put(id, shotInfo);
 		}
 
 		return shotInfo;

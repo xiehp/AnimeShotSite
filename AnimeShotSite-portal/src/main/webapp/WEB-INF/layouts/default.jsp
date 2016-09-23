@@ -62,7 +62,7 @@
 	<c:set var="jqueryLazyloadVersion" value="jquery-lazyload/1.9.5" />
 </c:if>
 <c:if test="${ useCdnStatic eq 'bootcss' }">
-	<c:set var="staticResourceUrl" value="http://cdn.bootcss.com/" />
+	<c:set var="staticResourceUrl" value="//cdn.bootcss.com/" />
 </c:if>
 
 <link href="${ staticResourceUrl }bootstrap/${bootstrapVersion}/css/bootstrap.min.css" rel="stylesheet" type="text/css" />

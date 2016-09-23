@@ -29,8 +29,8 @@ import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseManagerController;
 import xie.base.service.BaseService;
 import xie.common.string.XStringUtils;
-import xie.common.web.util.RequestUtil;
 import xie.common.web.util.ConstantsWeb;
+import xie.common.web.util.RequestUtil;
 
 @Controller
 @RequestMapping(value = ConstantsWeb.MANAGE_URL_STR + "/subtitle")
@@ -77,6 +77,10 @@ public class SubtitleManagerController extends BaseManagerController<SubtitleInf
 
 		SubtitleInfo subtitleInfo = getBaseService().findOne(subtitleInfoId);
 		request.setAttribute("subtitleInfo", subtitleInfo);
+		AnimeInfo animeInfo = animeInfoService.findOne(subtitleInfo.getAnimeInfoId());
+		request.setAttribute("animeInfo", animeInfo);
+		AnimeEpisode animeEpisode = animeEpisodeService.findOne(subtitleInfo.getAnimeEpisodeId());
+		request.setAttribute("animeEpisode", animeEpisode);
 
 		List<SubtitleLine> subtitleLineList = subtitleLineService.findBySubtitleInfoId(subtitleInfoId);
 		request.setAttribute("subtitleLineList", subtitleLineList);

@@ -79,11 +79,11 @@ pre {
 						${shotInfo.formatedMinSec}<span style="color: lightgray;${shotInfo.formatedMicroSec > 0 ? '' : ' display: none;'}">:${shotInfo.formatedMicroSec}</span>
 					</div>
 				</a>
-				<div class="btn btn-primary btn-xs" onclick="home.publicLike('${shotInfo.id}');">
-					<span class="glyphicon glyphicon-star"></span>喜欢
-					<div id="publicLike_${shotInfo.id}" class="badge">${shotInfo.publicLikeCount}</div>
-				</div>
 				<c:if test="${IS_MASTER}">
+					<div class="btn btn-primary btn-xs" onclick="home.publicLike('${shotInfo.id}');">
+						<span class="glyphicon glyphicon-star"></span>喜欢
+						<div id="publicLike_${shotInfo.id}" class="badge">${shotInfo.publicLikeCount}</div>
+					</div>
 					<div class="btn btn-primary btn-xs" onclick="home.masterLike('${MANAGE_URL_STR}/shot/masterLike', '${shotInfo.id}');">
 						<span class="glyphicon glyphicon-star"></span>推荐
 						<div id="masterLike_${shotInfo.id}" class="badge">${shotInfo.masterRecommendRank}</div>

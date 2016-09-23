@@ -23,6 +23,7 @@ import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.db.service.SubtitleLineService;
 import xie.base.controller.BaseController;
 import xie.common.Constants;
+import xie.common.constant.XConst;
 import xie.common.utils.XWaitTime;
 
 @Controller
@@ -89,7 +90,7 @@ public class IndexController extends BaseController {
 			List<AnimeEpisode> animeEpisodeList = entityCache.get("animeEpisodeList" + "Index");
 			if (animeEpisodeList == null) {
 				animeEpisodeList = animeEpisodeService.getNewestAnimeEpisodeList(42);
-				entityCache.put("animeEpisodeList" + "Index", animeEpisodeList);
+				entityCache.put("animeEpisodeList" + "Index", animeEpisodeList, XConst.SECOND_05_HOUR * 1000);
 			}
 			request.setAttribute("animeEpisodeList", animeEpisodeList);
 		}
@@ -101,7 +102,7 @@ public class IndexController extends BaseController {
 				// animeEpisodeCount = animeEpisodeDao.count();
 				animeEpisodeCount = animeEpisodeDao.countByShowFlgAndDeleteFlag(Constants.FLAG_INT_YES, Constants.FLAG_INT_NO);
 
-				entityCache.put("animeEpisodeCount" + "Index", animeEpisodeCount);
+				entityCache.put("animeEpisodeCount" + "Index", animeEpisodeCount, XConst.SECOND_05_HOUR * 1000);
 			}
 			request.setAttribute("animeEpisodeCount", animeEpisodeCount);
 		}
@@ -111,7 +112,7 @@ public class IndexController extends BaseController {
 			List<ShotInfo> newestShotList = entityCache.get("newestShotList" + "Index");
 			if (newestShotList == null) {
 				newestShotList = shotInfoService.getNewestShotList(42);
-				entityCache.put("newestShotList" + "Index", newestShotList);
+				entityCache.put("newestShotList" + "Index", newestShotList, XConst.SECOND_01_HOUR * 1000);
 			}
 			request.setAttribute("newestShotList", newestShotList);
 		}
@@ -121,7 +122,7 @@ public class IndexController extends BaseController {
 			Long shotCount = entityCache.get("shotCount" + "Index");
 			if (shotCount == null) {
 				shotCount = shotInfoDao.count();
-				entityCache.put("shotCount" + "Index", shotCount);
+				entityCache.put("shotCount" + "Index", shotCount, XConst.SECOND_01_HOUR * 1000);
 			}
 			request.setAttribute("shotCount", shotCount);
 		}
@@ -130,26 +131,29 @@ public class IndexController extends BaseController {
 		{
 			List<ShotInfo> masterRecommandShotList = entityCache.get("masterRecommandShotList" + "Index");
 			if (masterRecommandShotList == null) {
+				// 一周之内的
 				masterRecommandShotList = shotInfoService.getMasterRecommandShotList(1, 7, 42);
+				// 一年之内的
 				if (masterRecommandShotList.size() == 0) {
 					masterRecommandShotList = shotInfoService.getMasterRecommandShotList(1, 365, 42);
 				}
+				// 十年之内的
 				if (masterRecommandShotList.size() == 0) {
 					masterRecommandShotList = shotInfoService.getMasterRecommandShotList(1, 3650, 42);
 				}
-				entityCache.put("masterRecommandShotList" + "Index", masterRecommandShotList);
+				entityCache.put("masterRecommandShotList" + "Index", masterRecommandShotList, XConst.SECOND_02_HOUR * 1000);
 			}
 			request.setAttribute("masterRecommandShotList", masterRecommandShotList);
 		}
 
 		// 获得公众推荐
 		{
-			List<ShotInfo> publicLikeShotList = entityCache.get("publicLikeShotList" + "Index");
-			if (publicLikeShotList == null) {
-				publicLikeShotList = shotInfoService.getPublicLikeShotList(42);
-				entityCache.put("publicLikeShotList" + "Index", publicLikeShotList);
-			}
-			request.setAttribute("publicLikeShotList", publicLikeShotList);
+			// List<ShotInfo> publicLikeShotList = entityCache.get("publicLikeShotList" + "Index");
+			// if (publicLikeShotList == null) {
+			// publicLikeShotList = shotInfoService.getPublicLikeShotList(42);
+			// entityCache.put("publicLikeShotList" + "Index", publicLikeShotList, XConst.SECOND_20_MIN * 1000);
+			// }
+			// request.setAttribute("publicLikeShotList", publicLikeShotList);
 		}
 
 		return "front";

@@ -95,9 +95,21 @@
 		</div>
 	</div>
 	<div class="form-group">
+		<label class="col-sm-2 control-label">动画名</label>
+		<div class="col-sm-5">
+			<c:out value="${animeInfo.fullName}" />
+		</div>
+	</div>
+	<div class="form-group">
 		<label class="col-sm-2 control-label">animeEpisodeId</label>
 		<div class="col-sm-5">
 			<input class="form-control" name="animeEpisodeId" value="${subtitleInfo.animeEpisodeId}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">剧集名</label>
+		<div class="col-sm-5">
+			<c:out value="${animeEpisode.fullName}" />
 		</div>
 	</div>
 	<div class="form-group">

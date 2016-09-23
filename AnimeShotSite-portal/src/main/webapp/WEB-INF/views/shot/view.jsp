@@ -167,7 +167,7 @@ body {
 
 
 <div id="链接地址" class="row ShareLinkDiv">
-	<div class="col-sm-12 ShareLinkItem">
+	<div class="col-sm-12 ShareLinkItem quickShareDivClass">
 		<div class="col-sm-3 ShareLinkLabel">分享本页：</div>
 		<div style="height: 24px;" align="center" class="col-sm-6">
 			<div style="display: block;width: 200px;">

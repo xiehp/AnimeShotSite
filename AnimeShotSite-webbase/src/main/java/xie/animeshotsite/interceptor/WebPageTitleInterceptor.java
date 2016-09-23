@@ -85,8 +85,8 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 					if (hostName.contains("acgimage.cn") || hostName.contains("acgimage.com")) {
 						// serverName不符合配置文件设定的值，进行跳转
 						response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-						// response.sendRedirect("http://" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
-						response.setHeader("Location", "http://" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
+						// response.sendRedirect("//" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
+						response.setHeader("Location", "//" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
 						return false;
 					} else {
 						// 除了acgimage.cn，acgimage.com 其他都显示404
@@ -182,7 +182,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 			}
 
 			// 百度静态资源链接
-			request.setAttribute("BAIDU_STATIC_URL", "http://apps.bdimg.com/libs/");
+			request.setAttribute("BAIDU_STATIC_URL", "//apps.bdimg.com/libs/");
 
 			// 系统常量
 			{

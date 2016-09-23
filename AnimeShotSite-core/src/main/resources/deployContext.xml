@@ -11,7 +11,7 @@
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd"
 	default-lazy-init="true">
 
-	<description>发布配置</description>
+	<description>根据环境不同产生的不同配置</description>
 	
 
 	<!-- production环境 -->

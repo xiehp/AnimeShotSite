@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
+import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.spring.SpringUtil;
@@ -28,6 +29,9 @@ public class ShotEpisodeTask extends XBaseTask {
 
 	@Autowired
 	AnimeInfoService animeInfoService;
+	@Autowired
+	AnimeInfoDao animeInfoDao;
+
 	@Autowired
 	AnimeEpisodeService animeEpisodeService;
 
@@ -51,8 +55,9 @@ public class ShotEpisodeTask extends XBaseTask {
 
 	private int run(Map<String, Object> paramMap) throws Exception {
 		try {
-			logger.info("begin process animeEpisodeId: " + paramMap);
+			logger.info("begin process param: " + paramMap);
 			String animeEpisodeId = (String) paramMap.get(Video2ImageProperties.KEY_id);
+			logger.info("begin process animeEpisodeId: {}", animeEpisodeId);
 			Long startTime = XNumberUtils.getLongValue(paramMap.get(Video2ImageProperties.KEY_startTime));
 			Long endTime = XNumberUtils.getLongValue(paramMap.get(Video2ImageProperties.KEY_endTime));
 			Long interval = XNumberUtils.getLongValue(paramMap.get(Video2ImageProperties.KEY_timeInterval));
@@ -60,10 +65,16 @@ public class ShotEpisodeTask extends XBaseTask {
 			Boolean forceUpload = (Boolean) paramMap.get(Video2ImageProperties.KEY_forceUpload);
 
 			logger.info("开始获取剧集信息");
-			AnimeEpisode animeEpisode = animeEpisodeService.findById(animeEpisodeId);
-			logger.info("获得剧集信息成功,{}", animeEpisode.getFullName());
-			AnimeInfo animeInfo = animeInfoService.findById(animeEpisode.getAnimeInfoId());
-			logger.info("begin process : " + animeInfo.getName() + ", " + animeEpisode.getName());
+			AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
+			String aninmeInfoId = animeEpisode.getAnimeInfoId();
+			logger.info("获得剧集信息成功, 动画信息ID:{}, 剧集名称:{}.", aninmeInfoId, animeEpisode.getFullName());
+			AnimeInfo animeInfo = animeInfoService.findOne(aninmeInfoId);
+			if (animeInfo != null) {
+				logger.info("获得动画信息成功,animeInfo:{}.", animeInfo);
+				logger.info("begin process : 动画ID:{}, 动画名:{}.", animeInfo.getId(), animeInfo.getName());
+			} else {
+				logger.info("获得动画信息失败.");
+			}
 
 			File animeEpisodeFile = FilePathUtils.getAnimeFullFilePath(animeInfo, animeEpisode, animeEpisode.getLocalFileName());
 			logger.info("begin process : " + animeEpisodeFile.getAbsolutePath());

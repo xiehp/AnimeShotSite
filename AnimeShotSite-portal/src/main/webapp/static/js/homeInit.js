@@ -129,8 +129,9 @@ $(function() {
 
 // 百度分享代码
 $(function() {
+	var sslFlag = document.location.protocol == "https:" ? true : false; // 当前分享代码不支持https
 	var bdsharebuttonbox = $(".bdsharebuttonbox");
-	if (bdsharebuttonbox.length > 0) {
+	if (!sslFlag && bdsharebuttonbox.length > 0) {
 		window._bd_share_config = {
 			"common" : {
 				"bdSnsKey" : {},
@@ -158,9 +159,13 @@ $(function() {
 				}*/
 		};
 
-		var srcStr = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5);
+		var srcStr = '//bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5);
 		with (document)
 			0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = srcStr];
+
+		$(".quickShareDivClass").show();
+	} else {
+		$(".quickShareDivClass").hide();
 	}
 });
 
@@ -191,9 +196,9 @@ if (canBaiduRecord) {
 			var bp = document.createElement('script');
 			var curProtocol = window.location.protocol.split(':')[0];
 			if (curProtocol === 'https') {
-				bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+				bp.src = '//zz.bdstatic.com/linksubmit/push.js';
 			} else {
-				bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+				bp.src = '//push.zhanzhang.baidu.com/push.js';
 			}
 			var s = document.getElementsByTagName("script")[0];
 			s.parentNode.insertBefore(bp, s);
@@ -219,7 +224,7 @@ if (canBaiduRecord) {
 
 	// 腾讯分析
 	/*
-	 * (function() { //var src = '<script type="text/javascript" src="http://tajs.qq.com/stats?sId=56001858" charset="UTF-8"></script>'; //document.write(src); })();
+	 * (function() { //var src = '<script type="text/javascript" src="//tajs.qq.com/stats?sId=56001858" charset="UTF-8"></script>'; //document.write(src); })();
 	 */
 
 	// 站长统计

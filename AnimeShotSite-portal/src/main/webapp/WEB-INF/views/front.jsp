@@ -109,7 +109,7 @@
 			<h1 style="font-size: 14px;">本站提供动画完整的动漫图片 动画图片以及字幕台词。截图图片一般以5秒为间隔，字幕尽量以外挂的形式显示。</h1>
 		</div>
 
-		<div style="padding-top: 1px;" class="bdsharebuttonbox">
+		<div style="padding-top: 1px;" class="bdsharebuttonbox quickShareDivClass">
 			<a style="background-position: 0 -32px;padding-left: 0px;padding-right: 10px;" title="分享本站">分享本站</a>
 			<a href="#" class="bds_mshare" data-cmd="mshare" title="百度一键分享"></a>
 			<a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>

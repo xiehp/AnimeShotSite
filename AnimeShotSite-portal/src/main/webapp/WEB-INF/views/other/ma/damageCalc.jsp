@@ -240,7 +240,7 @@ body {
 				</c:if>
 			</div>
 			<div align="left" class="col-sm-5">
-				<div style="padding-top: 1px;" class="bdsharebuttonbox">
+				<div style="padding-top: 1px;" class="bdsharebuttonbox quickShareDivClass">
 					<a style="background-position: 0 -32px; padding-left: 0px; padding-right: 10px;" title="分享计算结果">分享计算结果</a>
 					<a href="#" class="bds_mshare" data-cmd="mshare" title="百度一键分享"></a>
 					<a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
