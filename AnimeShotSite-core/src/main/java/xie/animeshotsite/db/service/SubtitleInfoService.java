@@ -110,4 +110,14 @@ public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 
 		return firstEntity;
 	}
+
+	@Override
+	public SubtitleInfo fillParentData(SubtitleInfo subtitleInfo) {
+		if (subtitleInfo == null) {
+			return subtitleInfo;
+		}
+		subtitleInfo.setAnimeInfo(animeInfoDao.findOne(subtitleInfo.getAnimeInfoId()));
+		subtitleInfo.setAnimeEpisode(animeEpisodeDao.findOne(subtitleInfo.getAnimeEpisodeId()));
+		return subtitleInfo;
+	}
 }

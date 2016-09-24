@@ -256,16 +256,7 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 	/**
 	 * 填入动画信息和剧集信息
 	 */
-	public void fillParentData(List<SubtitleLine> subtitleLineList) {
-		for (SubtitleLine subtitleLine : subtitleLineList) {
-			fillParentData(subtitleLine);
-		}
-	}
-
-	/**
-	 * 填入动画信息和剧集信息
-	 */
-	public void fillParentData(SubtitleLine subtitleLine) {
+	public SubtitleLine fillParentData(SubtitleLine subtitleLine) {
 		if (subtitleLine != null) {
 			AnimeInfo animeInfo = entityCache.findOne(animeInfoDao, subtitleLine.getAnimeInfoId());
 			subtitleLine.setAnimeInfo(animeInfo);
@@ -273,6 +264,8 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 			AnimeEpisode animeEpisode = entityCache.findOne(animeEpisodeDao, subtitleLine.getAnimeEpisodeId());
 			subtitleLine.setAnimeEpisode(animeEpisode);
 		}
+		
+		return subtitleLine;
 	}
 
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException {

@@ -235,6 +235,7 @@
 					<c:forEach items="${ subtitleInfoList }" var="subtitleInfo">
 						<tr>
 							<td style="font-size: 10px; padding: 3px;"><a href="${ctx}${MANAGE_URL_STR}/subtitle/view/${subtitleInfo.id}">${subtitleInfo.id}</a></td>
+							<td style="font-size: 10px; padding: 3px;">${animeEpisode.divisionName}</td>
 							<td style="font-size: 10px; padding: 3px;">${subtitleInfo.localFileName}</td>
 						</tr>
 					</c:forEach>

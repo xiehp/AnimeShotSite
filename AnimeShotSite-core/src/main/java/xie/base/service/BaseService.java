@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springside.modules.mapper.BeanMapper;
 
+import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.base.entity.BaseEntity;
 import xie.base.entity.IdEntity;
@@ -143,5 +144,25 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 		}
 
 		return firstEntity;
+	}
+
+	/**
+	 * 填充Entity的扩展数据
+	 */
+	public List<M> fillParentData(List<M> list) {
+		if (list == null || list.size() == 0) {
+			return list;
+		}
+		for (M shotInfo : list) {
+			fillParentData(shotInfo);
+		}
+		return list;
+	}
+
+	/**
+	 * 填充Entity的扩展数据
+	 */
+	public M fillParentData(M shotInfo) {
+		return shotInfo;
 	}
 }

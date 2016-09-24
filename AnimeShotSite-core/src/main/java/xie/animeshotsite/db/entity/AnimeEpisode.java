@@ -48,6 +48,7 @@ public class AnimeEpisode extends BaseEntity {
 	private AnimeInfo animeInfo;
 
 	/** 剧集名称 */
+	@Deprecated
 	private String name;
 
 	/** 第几集名称 */
@@ -129,10 +130,12 @@ public class AnimeEpisode extends BaseEntity {
 		this.animeInfo = animeInfo;
 	}
 
+	@Deprecated
 	public String getName() {
 		return name;
 	}
 
+	@Deprecated
 	public void setName(String name) {
 		this.name = name;
 	}

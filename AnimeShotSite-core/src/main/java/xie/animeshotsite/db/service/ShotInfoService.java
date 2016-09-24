@@ -215,16 +215,7 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		return page.getContent();
 	}
 
-	public List<ShotInfo> fillParentData(List<ShotInfo> list) {
-		if (list == null || list.size() == 0) {
-			return list;
-		}
-		for (ShotInfo shotInfo : list) {
-			fillParentData(shotInfo);
-		}
-		return list;
-	}
-
+	@Override
 	public ShotInfo fillParentData(ShotInfo shotInfo) {
 		if (shotInfo == null) {
 			return shotInfo;

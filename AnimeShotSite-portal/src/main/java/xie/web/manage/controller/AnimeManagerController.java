@@ -73,6 +73,7 @@ public class AnimeManagerController extends BaseManagerController<AnimeInfo, Str
 
 		// 获得字幕 列表
 		List<SubtitleInfo> subtitleInfoList = subtitleInfoService.findByAnimeInfoId(animeInfoId);
+		subtitleInfoList = subtitleInfoService.fillParentData(subtitleInfoList);
 		request.setAttribute("subtitleInfoList", subtitleInfoList);
 
 		return getJspFilePath("new");
