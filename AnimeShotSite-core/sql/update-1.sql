@@ -115,6 +115,7 @@ ALTER TABLE `ma_damage` ADD COLUMN `default_Def` INT(11) NULL DEFAULT NULL COMME
 ALTER TABLE `ma_damage` CHANGE COLUMN `card_element_attribute_percent` `card_element_attribute_percent` INT(11) NULL DEFAULT NULL COMMENT '克制属性增益百分比 默认为200%' ;
 ALTER TABLE `ma_damage` ADD COLUMN `targeting_Percent` INT(11) NULL DEFAULT NULL COMMENT '锁定加伤百分比' AFTER `special_Def_an`;
 
+ALTER TABLE `subtitle_info` ADD COLUMN `OFFSET_TIME` INT(12) NULL COMMENT '当前字幕文件需要偏移的时间，单位毫秒' AFTER `LOCAL_FILE_NAME`;
 
 
 

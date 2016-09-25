@@ -53,7 +53,8 @@
 	}
 
 	$(function() {
-		$("#mainForm").find("input[name]").each(function() {
+		// 初始化input,select的更新按钮
+		$("#mainForm").find("select,input[name]").each(function() {
 			var params = {};
 			params.name = $(this).attr("name");
 			var buttonHtml = $("#updateOneColumnButtonTemplate").render(params);
@@ -67,8 +68,6 @@
 			$("input[name=summary]").val(summaryEditor.getData());
 			document.getElementById('summaryCount').innerHTML = summaryEditor.getData().length;
 		});
-
-		// 初始化select
 	});
 </script>
 
@@ -172,6 +171,12 @@
 		<label class="col-sm-2 control-label">本地所在文件名</label>
 		<div class="col-sm-5">
 			<input class="form-control" name="localFileName" value="${subtitleInfo.localFileName}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">当前字幕文件需要偏移的时间，单位毫秒</label>
+		<div class="col-sm-5">
+			<input class="form-control" name="offsetTime" value="${subtitleInfo.offsetTime}" />
 		</div>
 	</div>
 	<div class="form-group">

@@ -68,7 +68,7 @@ public class ShotEpisodeTask extends XBaseTask {
 			AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
 			String aninmeInfoId = animeEpisode.getAnimeInfoId();
 			logger.info("获得剧集信息成功, 动画信息ID:{}, 剧集名称:{}.", aninmeInfoId, animeEpisode.getFullName());
-			AnimeInfo animeInfo = animeInfoService.findOne(aninmeInfoId);
+			AnimeInfo animeInfo = animeInfoDao.findById(aninmeInfoId);
 			if (animeInfo != null) {
 				logger.info("获得动画信息成功,animeInfo:{}.", animeInfo);
 				logger.info("begin process : 动画ID:{}, 动画名:{}.", animeInfo.getId(), animeInfo.getName());

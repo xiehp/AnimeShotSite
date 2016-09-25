@@ -123,8 +123,13 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 			subtitleLine.setLayer(0);
 			e.printStackTrace();
 		}
-		subtitleLine.setStartTime(xSubtitleLine.getStartTime());
-		subtitleLine.setEndTime(xSubtitleLine.getEndTime());
+		if (subtitleInfo.getOffsetTime() == null) {
+			subtitleLine.setStartTime(xSubtitleLine.getStartTime());
+			subtitleLine.setEndTime(xSubtitleLine.getEndTime());
+		} else {
+			subtitleLine.setStartTime(xSubtitleLine.getStartTime() + subtitleInfo.getOffsetTime());
+			subtitleLine.setEndTime(xSubtitleLine.getEndTime() + subtitleInfo.getOffsetTime());
+		}
 		subtitleLine.setText(xSubtitleLine.getText());
 		subtitleLine.setStyle(xSubtitleLine.getStyle());
 		subtitleLine.setName(xSubtitleLine.getName());
@@ -264,7 +269,7 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 			AnimeEpisode animeEpisode = entityCache.findOne(animeEpisodeDao, subtitleLine.getAnimeEpisodeId());
 			subtitleLine.setAnimeEpisode(animeEpisode);
 		}
-		
+
 		return subtitleLine;
 	}
 

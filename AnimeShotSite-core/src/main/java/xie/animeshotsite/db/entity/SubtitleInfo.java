@@ -54,6 +54,9 @@ public class SubtitleInfo extends BaseEntity {
 	/** 本地所在文件名 */
 	private String localFileName;
 
+	/** 当前字幕文件需要偏移的时间，单位毫秒 */
+	private Long offsetTime;
+
 	/** 包含某种属性文字 */
 	private String filterInclude;
 
@@ -162,6 +165,14 @@ public class SubtitleInfo extends BaseEntity {
 
 	public void setFilterRemove(String filterRemove) {
 		this.filterRemove = filterRemove;
+	}
+
+	public Long getOffsetTime() {
+		return offsetTime;
+	}
+
+	public void setOffsetTime(Long offsetTime) {
+		this.offsetTime = offsetTime;
 	}
 
 }
