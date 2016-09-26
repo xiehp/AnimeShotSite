@@ -23,18 +23,38 @@ public abstract class CommonRecordDetail extends BaseEntity {
 	@Transient
 	private CommonRecord CommonRecord;
 
+	/**
+	 * 获取 通用记录ID.
+	 *
+	 * @return 通用记录ID
+	 */
 	public String getCommonRecordId() {
 		return commonRecordId;
 	}
 
+	/**
+	 * 设置 通用记录ID.
+	 *
+	 * @param commonRecordId 通用记录ID
+	 */
 	public void setCommonRecordId(String commonRecordId) {
 		this.commonRecordId = commonRecordId;
 	}
 
+	/**
+	 * 获得common record.
+	 *
+	 * @return common record
+	 */
 	public CommonRecord getCommonRecord() {
 		return CommonRecord;
 	}
 
+	/**
+	 * 设置common record.
+	 *
+	 * @param commonRecord common record
+	 */
 	public void setCommonRecord(CommonRecord commonRecord) {
 		CommonRecord = commonRecord;
 	}

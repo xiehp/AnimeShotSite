@@ -38,42 +38,92 @@ public class CommonRecord extends BaseEntity {
 	/** 记录名称 */
 	private String name;
 
+	/**
+	 * 获取 评论人ID 空则匿名.
+	 *
+	 * @return 评论人ID 空则匿名
+	 */
 	public String getUserId() {
 		return userId;
 	}
 
+	/**
+	 * 设置 评论人ID 空则匿名.
+	 *
+	 * @param userId 评论人ID 空则匿名
+	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
+	/**
+	 * 获取 评论人名字 空则匿名.
+	 *
+	 * @return 评论人名字 空则匿名
+	 */
 	public String getUserName() {
 		return userName;
 	}
 
+	/**
+	 * 设置 评论人名字 空则匿名.
+	 *
+	 * @param userName 评论人名字 空则匿名
+	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
+	/**
+	 * 获取 没有用户ID则记录cookieId.
+	 *
+	 * @return 没有用户ID则记录cookieId
+	 */
 	public String getCookieId() {
 		return cookieId;
 	}
 
+	/**
+	 * 设置 没有用户ID则记录cookieId.
+	 *
+	 * @param cookieId 没有用户ID则记录cookieId
+	 */
 	public void setCookieId(String cookieId) {
 		this.cookieId = cookieId;
 	}
 
+	/**
+	 * 获取 记录类型.
+	 *
+	 * @return 记录类型
+	 */
 	public String getType() {
 		return type;
 	}
 
+	/**
+	 * 设置 记录类型.
+	 *
+	 * @param type 记录类型
+	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 
+	/**
+	 * 获取 记录名称.
+	 *
+	 * @return 记录名称
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * 设置 记录名称.
+	 *
+	 * @param name 记录名称
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}

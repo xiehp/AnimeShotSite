@@ -32,36 +32,73 @@ public abstract class BaseTietukuUrl extends BaseEntity {
 	public BaseTietukuUrl(AnimeInfo animeInfo, AnimeEpisode animeEpisode, ShotInfo shotInfo) {
 	}
 
+	/**
+	 * 获取 贴图库所在url的ID.
+	 *
+	 * @return 贴图库所在url的ID
+	 */
 	public String getTietukuUrlId() {
 		return tietukuUrlId;
 	}
 
+	/**
+	 * 设置 贴图库所在url的ID.
+	 *
+	 * @param tietukuUrlId 贴图库所在url的ID
+	 */
 	public void setTietukuUrlId(String tietukuUrlId) {
 		this.tietukuUrlId = tietukuUrlId;
 	}
 
+	/**
+	 * 获取 贴图库所在url的前缀 如http://www.
+	 *
+	 * @return 贴图库所在url的前缀 如http://www
+	 */
 	public String getTietukuUrlPrefix() {
 		return tietukuUrlPrefix;
 	}
 
+	/**
+	 * 设置 贴图库所在url的前缀 如http://www.
+	 *
+	 * @param tietukuUrlPrefix 贴图库所在url的前缀 如http://www
+	 */
 	public void setTietukuUrlPrefix(String tietukuUrlPrefix) {
 		this.tietukuUrlPrefix = tietukuUrlPrefix;
 	}
 
+	/**
+	 * 获得tietuku O url.
+	 *
+	 * @return tietuku O url
+	 */
 	public String getTietukuOUrl() {
 		return TietukuUtils.getImageOriginalUrl(getTietukuUrlPrefix(), getTietukuUrlId());
 	}
 
+	/**
+	 * 获得tietuku S url.
+	 *
+	 * @return tietuku S url
+	 */
 	public String getTietukuSUrl() {
 		return TietukuUtils.getImageShowUrl(getTietukuUrlPrefix(), getTietukuUrlId());
 	}
 
+	/**
+	 * 获得tietuku T url.
+	 *
+	 * @return tietuku T url
+	 */
 	public String getTietukuTUrl() {
 		return TietukuUtils.getImageThumbnailUrl(getTietukuUrlPrefix(), getTietukuUrlId());
 	}
 
 	/**
-	 * 获得小图URL
+	 * 获得小图URL.
+	 *
+	 * @return url S
 	 */
 	public String getUrlS() {
 		if (ShotCoreConstants.IMAGE_URL_GET_MODE_TIETUKU.equals(ShotSiteSetup.IMAGE_URL_GET_MODE)) {
@@ -72,7 +109,9 @@ public abstract class BaseTietukuUrl extends BaseEntity {
 	}
 
 	/**
-	 * 获得中图URL
+	 * 获得中图URL.
+	 *
+	 * @return url M
 	 */
 	public String getUrlM() {
 		if (ShotCoreConstants.IMAGE_URL_GET_MODE_TIETUKU.equals(ShotSiteSetup.IMAGE_URL_GET_MODE)) {
@@ -83,7 +122,9 @@ public abstract class BaseTietukuUrl extends BaseEntity {
 	}
 
 	/**
-	 * 获得大图URL
+	 * 获得大图URL.
+	 *
+	 * @return url L
 	 */
 	public String getUrlL() {
 		if (ShotCoreConstants.IMAGE_URL_GET_MODE_TIETUKU.equals(ShotSiteSetup.IMAGE_URL_GET_MODE)) {
