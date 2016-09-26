@@ -244,6 +244,17 @@ public class MaDamageCalcController extends BaseController {
 	}
 
 	/**
+	 * 计算面板伤害
+	 */
+	private long calcPanelDamage(MaDamage requestMaDamage, boolean 是否计算暴击) {
+		Long panelDamage = requestMaDamage.getCardBaseValue();
+		if (panelDamage == null || panelDamage == 0) {
+			return 0;
+		}
+		return 0;
+	}
+
+	/**
 	 * 计算数据
 	 * 
 	 * @param requestMaDamage
@@ -253,19 +264,19 @@ public class MaDamageCalcController extends BaseController {
 	private long calcDamage(MaDamage requestMaDamage, boolean 是否计算暴击) {
 		if (requestMaDamage != null) {
 			// 开始计算
-			int 真实面板 = getInt(requestMaDamage.getPanelValue(), 1);
-			int chainNumber = getInt(requestMaDamage.getChainNumber(), 1);
+			long 真实面板 = getLong(requestMaDamage.getPanelValue(), 1);
+			long chainNumber = getLong(requestMaDamage.getChainNumber(), 1);
 			double chainPerValue = Constants.FLAG_STR_YES.equals(requestMaDamage.getCardChainUpFlag()) ? 0.3 : 0.2;
-			double 卡牌穿防百分比 = getInt(requestMaDamage.getCardPenetratePercent(), 0);
+			double 卡牌穿防百分比 = getLong(requestMaDamage.getCardPenetratePercent(), 0);
 			double 叠chain倍率 = 1 + (chainNumber - 1) * chainPerValue;
 			double 暴击倍率 = 是否计算暴击 ? 1.5 : 1;
-			double 属性吸收率 = (double) getInt(requestMaDamage.getCardElementAttributePercent(), 200) / 100;
-			double 锁定百分比 = (double) getInt(requestMaDamage.getTargetingPercent(), 0) / 100;
+			double 属性吸收率 = (double) getLong(requestMaDamage.getCardElementAttributePercent(), 200) / 100;
+			double 锁定百分比 = (double) getLong(requestMaDamage.getTargetingPercent(), 0) / 100;
 
-			int 真实默认防御 = getInt(requestMaDamage.getDefaultDef());
-			int 真实物理防御 = getInt(requestMaDamage.getPhysicalDef());
-			int 真实魔法防御 = getInt(requestMaDamage.getMagicDef());
-			int 真实防御 = 0;
+			long 真实默认防御 = getLong(requestMaDamage.getDefaultDef());
+			long 真实物理防御 = getLong(requestMaDamage.getPhysicalDef());
+			long 真实魔法防御 = getLong(requestMaDamage.getMagicDef());
+			long 真实防御 = 0;
 			if (XStringUtils.isBlank(requestMaDamage.getCardType())) {
 				真实防御 = 真实默认防御;
 			} else {
@@ -275,15 +286,15 @@ public class MaDamageCalcController extends BaseController {
 					真实防御 = 真实魔法防御;
 				}
 			}
-			int 真实耐性 = getInt(requestMaDamage.getSpecialDef());
-			int 真实耐性火 = getInt(requestMaDamage.getSpecialDefHuo());
-			int 真实耐性水 = getInt(requestMaDamage.getSpecialDefShui());
-			int 真实耐性风 = getInt(requestMaDamage.getSpecialDefFeng());
-			int 真实耐性光 = getInt(requestMaDamage.getSpecialDefGuang());
-			int 真实耐性暗 = getInt(requestMaDamage.getSpecialDefAn());
-			double ex默认补正 = getInt(requestMaDamage.getExDefaultPercent());
-			double ex总物理补正 = getInt(requestMaDamage.getExPhysicalPercent());
-			double ex总魔法补正 = getInt(requestMaDamage.getExMagicPercent());
+			long 真实耐性 = getLong(requestMaDamage.getSpecialDef());
+			long 真实耐性火 = getLong(requestMaDamage.getSpecialDefHuo());
+			long 真实耐性水 = getLong(requestMaDamage.getSpecialDefShui());
+			long 真实耐性风 = getLong(requestMaDamage.getSpecialDefFeng());
+			long 真实耐性光 = getLong(requestMaDamage.getSpecialDefGuang());
+			long 真实耐性暗 = getLong(requestMaDamage.getSpecialDefAn());
+			double ex默认补正 = getLong(requestMaDamage.getExDefaultPercent());
+			double ex总物理补正 = getLong(requestMaDamage.getExPhysicalPercent());
+			double ex总魔法补正 = getLong(requestMaDamage.getExMagicPercent());
 			double ex补正 = 0;
 			if (XStringUtils.isBlank(requestMaDamage.getCardType())) {
 				ex补正 = ex默认补正;
@@ -410,14 +421,14 @@ public class MaDamageCalcController extends BaseController {
 		return XStringUtils.parseToBoolean(value);
 	}
 
-	private int getInt(Integer value) {
+	private long getLong(Long value) {
 		return value == null ? 0 : value;
 	}
 
-	private int getInt(Integer value, int defaultValue) {
+	private long getLong(Long value, long defaultValue) {
 		if (value == null) {
 			return defaultValue;
 		}
-		return getInt(value);
+		return getLong(value);
 	}
 }

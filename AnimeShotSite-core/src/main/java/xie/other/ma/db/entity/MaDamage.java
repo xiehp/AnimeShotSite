@@ -21,104 +21,104 @@ public class MaDamage extends CommonRecordDetail {
 	private String advancedSettingFlag;
 
 	/** 最终面板数值 */
-	private Integer panelValue;
+	private Long panelValue;
 
 	/** 防御数值 */
-	private Integer defaultDef;
+	private Long defaultDef;
 
 	/** 物理防御数值 */
-	private Integer physicalDef;
+	private Long physicalDef;
 
 	/** 魔法防御数值 */
-	private Integer magicDef;
+	private Long magicDef;
 
 	/** 耐性防御数值 */
-	private Integer specialDef;
+	private Long specialDef;
 
 	/** 耐性防御数值 */
-	private Integer specialDefHuo;
+	private Long specialDefHuo;
 
 	/** 耐性防御数值 */
-	private Integer specialDefFeng;
+	private Long specialDefFeng;
 
 	/** 耐性防御数值 */
-	private Integer specialDefShui;
+	private Long specialDefShui;
 
 	/** 耐性防御数值 */
-	private Integer specialDefGuang;
+	private Long specialDefGuang;
 
 	/** 耐性防御数值 */
-	private Integer specialDefAn;
+	private Long specialDefAn;
 
 	/** 锁定加伤百分比 */
-	private Integer targetingPercent;
+	private Long targetingPercent;
 
 	/** chain数量 */
-	private Integer chainNumber;
+	private Long chainNumber;
 
 	/** 卡牌Cost */
-	private Integer cardCost;
+	private Long cardCost;
 
 	/** 克制属性增益百分比 默认为200% */
-	private Integer cardElementAttributePercent;
+	private Long cardElementAttributePercent;
 
 	/** 卡牌吃物理数值百分比 */
-	private Integer cardPhysicalPercent;
+	private Long cardPhysicalPercent;
 
 	/** 卡牌吃魔法数值百分比 */
-	private Integer cardMagicPercent;
+	private Long cardMagicPercent;
 
 	/** 卡牌吃血量数值百分比 */
-	private Integer cardLifePercent;
+	private Long cardLifePercent;
 
 	/** 卡牌特定条件伤害提升百分比 */
-	private Integer cardValuePercent;
+	private Long cardValuePercent;
 
 	/** 卡牌穿防百分比 */
-	private Integer cardPenetratePercent;
+	private Long cardPenetratePercent;
 
 	/** 卡牌是否有chainUp */
 	private String cardChainUpFlag;
 
 	/** 卡牌攻击次数 */
-	private Integer cardAttackTimes;
+	private Long cardAttackTimes;
 
 	/** ex补正百分比 */
-	private Integer exDefaultPercent;
+	private Long exDefaultPercent;
 
 	/** ex物理补正百分比 */
-	private Integer exPhysicalPercent;
+	private Long exPhysicalPercent;
 
 	/** ex魔法补正百分比 */
-	private Integer exMagicPercent;
+	private Long exMagicPercent;
 
 	// 以下为高级属性
 	/** 人物基础血量数值 */
-	private Integer peopleLifeValue;
+	private Long peopleLifeValue;
 
 	/** 人物基础物理数值 */
-	private Integer peoplePhysicalValue;
+	private Long peoplePhysicalValue;
 
 	/** 人物基础魔法数值 */
-	private Integer peopleMagicValue;
+	private Long peopleMagicValue;
 
 	/** 人物基础回复数值 */
-	private Integer peopleRecoveryValue;
+	private Long peopleRecoveryValue;
 
 	/** 增益基础血量数值 */
-	private Integer buffLifeValue;
+	private Long buffLifeValue;
 
 	/** 增益物理数值 */
-	private Integer buffPhysicalValue;
+	private Long buffPhysicalValue;
 
 	/** 增益魔法数值 */
-	private Integer buffMagicValue;
+	private Long buffMagicValue;
 
 	/** 增益回复数值 */
-	private Integer buffRecoveryValue;
+	private Long buffRecoveryValue;
 
 	/** 最大增益数值 */
-	private Integer maxBuffValue;
+	private Long maxBuffValue;
 
 	/** 卡牌类型 1:物理 2:魔法 */
 	private String cardType;
@@ -127,7 +127,7 @@ public class MaDamage extends CommonRecordDetail {
 	private String cardColor;
 
 	/** 卡牌基础伤害数值 */
-	private Integer cardBaseValue;
+	private Long cardBaseValue;
 
 	/**
 	 * 获取 是否使用高级设置.
@@ -152,7 +152,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 最终面板数值
 	 */
-	public Integer getPanelValue() {
+	public Long getPanelValue() {
 		return panelValue;
 	}
 
@@ -161,7 +161,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param panelValue 最终面板数值
 	 */
-	public void setPanelValue(Integer panelValue) {
+	public void setPanelValue(Long panelValue) {
 		this.panelValue = panelValue;
 	}
 
@@ -170,7 +170,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 物理防御数值
 	 */
-	public Integer getPhysicalDef() {
+	public Long getPhysicalDef() {
 		return physicalDef;
 	}
 
@@ -179,7 +179,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param physicalDef 物理防御数值
 	 */
-	public void setPhysicalDef(Integer physicalDef) {
+	public void setPhysicalDef(Long physicalDef) {
 		this.physicalDef = physicalDef;
 	}
 
@@ -188,7 +188,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 魔法防御数值
 	 */
-	public Integer getMagicDef() {
+	public Long getMagicDef() {
 		return magicDef;
 	}
 
@@ -197,7 +197,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param magicDef 魔法防御数值
 	 */
-	public void setMagicDef(Integer magicDef) {
+	public void setMagicDef(Long magicDef) {
 		this.magicDef = magicDef;
 	}
 
@@ -206,7 +206,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 耐性防御数值
 	 */
-	public Integer getSpecialDef() {
+	public Long getSpecialDef() {
 		return specialDef;
 	}
 
@@ -215,7 +215,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param specialDef 耐性防御数值
 	 */
-	public void setSpecialDef(Integer specialDef) {
+	public void setSpecialDef(Long specialDef) {
 		this.specialDef = specialDef;
 	}
 
@@ -224,7 +224,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 耐性防御数值
 	 */
-	public Integer getSpecialDefHuo() {
+	public Long getSpecialDefHuo() {
 		return specialDefHuo;
 	}
 
@@ -233,7 +233,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param specialDefHuo 耐性防御数值
 	 */
-	public void setSpecialDefHuo(Integer specialDefHuo) {
+	public void setSpecialDefHuo(Long specialDefHuo) {
 		this.specialDefHuo = specialDefHuo;
 	}
 
@@ -242,7 +242,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 耐性防御数值
 	 */
-	public Integer getSpecialDefFeng() {
+	public Long getSpecialDefFeng() {
 		return specialDefFeng;
 	}
 
@@ -251,7 +251,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param specialDefFeng 耐性防御数值
 	 */
-	public void setSpecialDefFeng(Integer specialDefFeng) {
+	public void setSpecialDefFeng(Long specialDefFeng) {
 		this.specialDefFeng = specialDefFeng;
 	}
 
@@ -260,7 +260,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 耐性防御数值
 	 */
-	public Integer getSpecialDefShui() {
+	public Long getSpecialDefShui() {
 		return specialDefShui;
 	}
 
@@ -269,7 +269,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param specialDefShui 耐性防御数值
 	 */
-	public void setSpecialDefShui(Integer specialDefShui) {
+	public void setSpecialDefShui(Long specialDefShui) {
 		this.specialDefShui = specialDefShui;
 	}
 
@@ -278,7 +278,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 耐性防御数值
 	 */
-	public Integer getSpecialDefGuang() {
+	public Long getSpecialDefGuang() {
 		return specialDefGuang;
 	}
 
@@ -287,7 +287,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param specialDefGuang 耐性防御数值
 	 */
-	public void setSpecialDefGuang(Integer specialDefGuang) {
+	public void setSpecialDefGuang(Long specialDefGuang) {
 		this.specialDefGuang = specialDefGuang;
 	}
 
@@ -296,7 +296,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 耐性防御数值
 	 */
-	public Integer getSpecialDefAn() {
+	public Long getSpecialDefAn() {
 		return specialDefAn;
 	}
 
@@ -305,7 +305,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param specialDefAn 耐性防御数值
 	 */
-	public void setSpecialDefAn(Integer specialDefAn) {
+	public void setSpecialDefAn(Long specialDefAn) {
 		this.specialDefAn = specialDefAn;
 	}
 
@@ -314,7 +314,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return chain数量
 	 */
-	public Integer getChainNumber() {
+	public Long getChainNumber() {
 		return chainNumber;
 	}
 
@@ -323,7 +323,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param chainNumber chain数量
 	 */
-	public void setChainNumber(Integer chainNumber) {
+	public void setChainNumber(Long chainNumber) {
 		this.chainNumber = chainNumber;
 	}
 
@@ -332,7 +332,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 卡牌Cost
 	 */
-	public Integer getCardCost() {
+	public Long getCardCost() {
 		return cardCost;
 	}
 
@@ -341,7 +341,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param cardCost 卡牌Cost
 	 */
-	public void setCardCost(Integer cardCost) {
+	public void setCardCost(Long cardCost) {
 		this.cardCost = cardCost;
 	}
 
@@ -350,7 +350,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 克制属性增益百分比 默认为200%
 	 */
-	public Integer getCardElementAttributePercent() {
+	public Long getCardElementAttributePercent() {
 		return cardElementAttributePercent;
 	}
 
@@ -359,7 +359,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param cardElementAttributePercent 克制属性增益百分比 默认为200%
 	 */
-	public void setCardElementAttributePercent(Integer cardElementAttributePercent) {
+	public void setCardElementAttributePercent(Long cardElementAttributePercent) {
 		this.cardElementAttributePercent = cardElementAttributePercent;
 	}
 
@@ -368,7 +368,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 卡牌吃物理数值百分比
 	 */
-	public Integer getCardPhysicalPercent() {
+	public Long getCardPhysicalPercent() {
 		return cardPhysicalPercent;
 	}
 
@@ -377,7 +377,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param cardPhysicalPercent 卡牌吃物理数值百分比
 	 */
-	public void setCardPhysicalPercent(Integer cardPhysicalPercent) {
+	public void setCardPhysicalPercent(Long cardPhysicalPercent) {
 		this.cardPhysicalPercent = cardPhysicalPercent;
 	}
 
@@ -386,7 +386,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 卡牌吃魔法数值百分比
 	 */
-	public Integer getCardMagicPercent() {
+	public Long getCardMagicPercent() {
 		return cardMagicPercent;
 	}
 
@@ -395,7 +395,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param cardMagicPercent 卡牌吃魔法数值百分比
 	 */
-	public void setCardMagicPercent(Integer cardMagicPercent) {
+	public void setCardMagicPercent(Long cardMagicPercent) {
 		this.cardMagicPercent = cardMagicPercent;
 	}
 
@@ -404,7 +404,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 卡牌吃血量数值百分比
 	 */
-	public Integer getCardLifePercent() {
+	public Long getCardLifePercent() {
 		return cardLifePercent;
 	}
 
@@ -413,7 +413,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param cardLifePercent 卡牌吃血量数值百分比
 	 */
-	public void setCardLifePercent(Integer cardLifePercent) {
+	public void setCardLifePercent(Long cardLifePercent) {
 		this.cardLifePercent = cardLifePercent;
 	}
 
@@ -422,7 +422,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 卡牌特定条件伤害提升百分比
 	 */
-	public Integer getCardValuePercent() {
+	public Long getCardValuePercent() {
 		return cardValuePercent;
 	}
 
@@ -431,7 +431,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param cardValuePercent 卡牌特定条件伤害提升百分比
 	 */
-	public void setCardValuePercent(Integer cardValuePercent) {
+	public void setCardValuePercent(Long cardValuePercent) {
 		this.cardValuePercent = cardValuePercent;
 	}
 
@@ -440,7 +440,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 卡牌穿防百分比
 	 */
-	public Integer getCardPenetratePercent() {
+	public Long getCardPenetratePercent() {
 		return cardPenetratePercent;
 	}
 
@@ -449,7 +449,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param cardPenetratePercent 卡牌穿防百分比
 	 */
-	public void setCardPenetratePercent(Integer cardPenetratePercent) {
+	public void setCardPenetratePercent(Long cardPenetratePercent) {
 		this.cardPenetratePercent = cardPenetratePercent;
 	}
 
@@ -476,7 +476,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 卡牌攻击次数
 	 */
-	public Integer getCardAttackTimes() {
+	public Long getCardAttackTimes() {
 		return cardAttackTimes;
 	}
 
@@ -485,7 +485,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param cardAttackTimes 卡牌攻击次数
 	 */
-	public void setCardAttackTimes(Integer cardAttackTimes) {
+	public void setCardAttackTimes(Long cardAttackTimes) {
 		this.cardAttackTimes = cardAttackTimes;
 	}
 
@@ -494,7 +494,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return ex物理补正百分比
 	 */
-	public Integer getExPhysicalPercent() {
+	public Long getExPhysicalPercent() {
 		return exPhysicalPercent;
 	}
 
@@ -503,7 +503,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param exPhysicalPercent ex物理补正百分比
 	 */
-	public void setExPhysicalPercent(Integer exPhysicalPercent) {
+	public void setExPhysicalPercent(Long exPhysicalPercent) {
 		this.exPhysicalPercent = exPhysicalPercent;
 	}
 
@@ -512,7 +512,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return ex魔法补正百分比
 	 */
-	public Integer getExMagicPercent() {
+	public Long getExMagicPercent() {
 		return exMagicPercent;
 	}
 
@@ -521,7 +521,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param exMagicPercent ex魔法补正百分比
 	 */
-	public void setExMagicPercent(Integer exMagicPercent) {
+	public void setExMagicPercent(Long exMagicPercent) {
 		this.exMagicPercent = exMagicPercent;
 	}
 
@@ -530,7 +530,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 人物基础血量数值
 	 */
-	public Integer getPeopleLifeValue() {
+	public Long getPeopleLifeValue() {
 		return peopleLifeValue;
 	}
 
@@ -539,7 +539,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param peopleLifeValue 人物基础血量数值
 	 */
-	public void setPeopleLifeValue(Integer peopleLifeValue) {
+	public void setPeopleLifeValue(Long peopleLifeValue) {
 		this.peopleLifeValue = peopleLifeValue;
 	}
 
@@ -548,7 +548,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 人物基础物理数值
 	 */
-	public Integer getPeoplePhysicalValue() {
+	public Long getPeoplePhysicalValue() {
 		return peoplePhysicalValue;
 	}
 
@@ -557,7 +557,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param peoplePhysicalValue 人物基础物理数值
 	 */
-	public void setPeoplePhysicalValue(Integer peoplePhysicalValue) {
+	public void setPeoplePhysicalValue(Long peoplePhysicalValue) {
 		this.peoplePhysicalValue = peoplePhysicalValue;
 	}
 
@@ -566,7 +566,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 人物基础魔法数值
 	 */
-	public Integer getPeopleMagicValue() {
+	public Long getPeopleMagicValue() {
 		return peopleMagicValue;
 	}
 
@@ -575,7 +575,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param peopleMagicValue 人物基础魔法数值
 	 */
-	public void setPeopleMagicValue(Integer peopleMagicValue) {
+	public void setPeopleMagicValue(Long peopleMagicValue) {
 		this.peopleMagicValue = peopleMagicValue;
 	}
 
@@ -584,7 +584,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 人物基础回复数值
 	 */
-	public Integer getPeopleRecoveryValue() {
+	public Long getPeopleRecoveryValue() {
 		return peopleRecoveryValue;
 	}
 
@@ -593,7 +593,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param peopleRecoveryValue 人物基础回复数值
 	 */
-	public void setPeopleRecoveryValue(Integer peopleRecoveryValue) {
+	public void setPeopleRecoveryValue(Long peopleRecoveryValue) {
 		this.peopleRecoveryValue = peopleRecoveryValue;
 	}
 
@@ -602,7 +602,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 增益基础血量数值
 	 */
-	public Integer getBuffLifeValue() {
+	public Long getBuffLifeValue() {
 		return buffLifeValue;
 	}
 
@@ -611,7 +611,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param buffLifeValue 增益基础血量数值
 	 */
-	public void setBuffLifeValue(Integer buffLifeValue) {
+	public void setBuffLifeValue(Long buffLifeValue) {
 		this.buffLifeValue = buffLifeValue;
 	}
 
@@ -620,7 +620,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 增益物理数值
 	 */
-	public Integer getBuffPhysicalValue() {
+	public Long getBuffPhysicalValue() {
 		return buffPhysicalValue;
 	}
 
@@ -629,7 +629,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param buffPhysicalValue 增益物理数值
 	 */
-	public void setBuffPhysicalValue(Integer buffPhysicalValue) {
+	public void setBuffPhysicalValue(Long buffPhysicalValue) {
 		this.buffPhysicalValue = buffPhysicalValue;
 	}
 
@@ -638,7 +638,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 增益魔法数值
 	 */
-	public Integer getBuffMagicValue() {
+	public Long getBuffMagicValue() {
 		return buffMagicValue;
 	}
 
@@ -647,7 +647,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param buffMagicValue 增益魔法数值
 	 */
-	public void setBuffMagicValue(Integer buffMagicValue) {
+	public void setBuffMagicValue(Long buffMagicValue) {
 		this.buffMagicValue = buffMagicValue;
 	}
 
@@ -656,7 +656,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 增益回复数值
 	 */
-	public Integer getBuffRecoveryValue() {
+	public Long getBuffRecoveryValue() {
 		return buffRecoveryValue;
 	}
 
@@ -665,7 +665,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param buffRecoveryValue 增益回复数值
 	 */
-	public void setBuffRecoveryValue(Integer buffRecoveryValue) {
+	public void setBuffRecoveryValue(Long buffRecoveryValue) {
 		this.buffRecoveryValue = buffRecoveryValue;
 	}
 
@@ -674,7 +674,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 最大增益数值
 	 */
-	public Integer getMaxBuffValue() {
+	public Long getMaxBuffValue() {
 		return maxBuffValue;
 	}
 
@@ -683,7 +683,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param maxBuffValue 最大增益数值
 	 */
-	public void setMaxBuffValue(Integer maxBuffValue) {
+	public void setMaxBuffValue(Long maxBuffValue) {
 		this.maxBuffValue = maxBuffValue;
 	}
 
@@ -728,7 +728,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 卡牌基础伤害数值
 	 */
-	public Integer getCardBaseValue() {
+	public Long getCardBaseValue() {
 		return cardBaseValue;
 	}
 
@@ -737,7 +737,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param cardBaseValue 卡牌基础伤害数值
 	 */
-	public void setCardBaseValue(Integer cardBaseValue) {
+	public void setCardBaseValue(Long cardBaseValue) {
 		this.cardBaseValue = cardBaseValue;
 	}
 
@@ -746,7 +746,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 防御数值
 	 */
-	public Integer getDefaultDef() {
+	public Long getDefaultDef() {
 		return defaultDef;
 	}
 
@@ -755,7 +755,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param defaultDef 防御数值
 	 */
-	public void setDefaultDef(Integer defaultDef) {
+	public void setDefaultDef(Long defaultDef) {
 		this.defaultDef = defaultDef;
 	}
 
@@ -764,7 +764,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return ex补正百分比
 	 */
-	public Integer getExDefaultPercent() {
+	public Long getExDefaultPercent() {
 		return exDefaultPercent;
 	}
 
@@ -773,7 +773,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param exDefaultPercent ex补正百分比
 	 */
-	public void setExDefaultPercent(Integer exDefaultPercent) {
+	public void setExDefaultPercent(Long exDefaultPercent) {
 		this.exDefaultPercent = exDefaultPercent;
 	}
 
@@ -782,7 +782,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @return 锁定加伤百分比
 	 */
-	public Integer getTargetingPercent() {
+	public Long getTargetingPercent() {
 		return targetingPercent;
 	}
 
@@ -791,7 +791,7 @@ public class MaDamage extends CommonRecordDetail {
 	 *
 	 * @param targetingPercent 锁定加伤百分比
 	 */
-	public void setTargetingPercent(Integer targetingPercent) {
+	public void setTargetingPercent(Long targetingPercent) {
 		this.targetingPercent = targetingPercent;
 	}
 
