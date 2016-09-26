@@ -25,7 +25,7 @@
 
 		<!-- BEGIN LOGIN FORM -->
 
-		<form id="login-form" class="form-vertical">
+		<form id="login-form" class="form-vertical" method="post">
 
 			<h3 class="form-title">后台管理</h3>
 
@@ -47,7 +47,7 @@
 
 						<i class="icon-user"></i>
 
-						<input class="m-wrap placeholder-no-fix" type="text" placeholder="Username" id="username" name="username" value="${ username }" />
+						<input class="m-wrap placeholder-no-fix" type="text" placeholder="Username" id="username" name="username" />
 
 					</div>
 
@@ -65,7 +65,7 @@
 
 						<i class="icon-lock"></i>
 
-						<input class="m-wrap placeholder-no-fix" type="password" placeholder="Password" id="password" name="password" value="" />
+						<input class="m-wrap placeholder-no-fix" type="password" placeholder="Password" id="password" name="password" />
 
 					</div>
 
@@ -88,12 +88,13 @@
 
 			<div class="create-account"></div>
 
+			<input type="submit" value="form登录">
 		</form>
 
 		<!-- END LOGIN FORM -->
 
+		<button onclick="loginSubmitAjax();">ajax登录</button>
 
-		<button onclick="loginSubmitAjax();">Login</button>
 	</div>
 
 	<!-- END LOGIN -->
@@ -170,7 +171,6 @@
 				}
 			});
 		}
-		
 	</script>
 
 	<!-- END JAVASCRIPTS -->
