@@ -76,19 +76,47 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 		return getBaseRepository().findAll(pageable);
 	}
 
+	/**
+	 * 分页检索，根据检索条件，搜索数据库，返回对应分页数据
+	 * 
+	 * @param searchParams 检索条件, EQ_Param1=value1,GT_Param2=value2的特殊格式
+	 * @param pageNumber 页数从1开始
+	 * @param defaultPageSize 每页显示条数
+	 * @param sortType 排序条件，用于单条件排序
+	 * @param c 返回的数据类型
+	 * @return 分页数据
+	 */
 	public Page<M> searchPageByParams(Map<String, Object> searchParams, int pageNumber, int defaultPageSize, String sortType, Class<M> c) {
 		if (searchParams == null) {
 			searchParams = new HashMap<>();
 		}
 
+		if (pageNumber < 1) {
+			pageNumber = 1;
+		}
+
 		// 创建分页对象
 		PageRequest pageRequest = PageRequestUtil.buildPageRequest(pageNumber, defaultPageSize, sortType);
 
-		Page<M> userPage = searchPageByParams(searchParams, pageRequest, c);
+		// 检索
+		Page<M> page = searchPageByParams(searchParams, pageRequest, c);
 
-		return userPage;
+		// 页数不对， 并且有数据，直接定位到最后一页
+		if (pageNumber > page.getTotalPages() && page.getTotalPages() > 0) {
+			return searchPageByParams(searchParams, page.getTotalPages(), defaultPageSize, sortType, c);
+		}
+
+		return page;
 	}
 
+	/**
+	 * 分页检索，根据检索条件，搜索数据库，返回对应分页数据
+	 * 
+	 * @param searchParams 检索条件, EQ_Param1=value1,GT_Param2=value2的特殊格式
+	 * @param pageRequest 含有页数，每页条数，排序方式的数据
+	 * @param c 返回的数据类型
+	 * @return 分页数据
+	 */
 	public Page<M> searchPageByParams(Map<String, Object> searchParams, PageRequest pageRequest, Class<M> c) {
 
 		if (searchParams == null) {
@@ -105,6 +133,19 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 		return userPage;
 	}
 
+	/**
+	 * 根据特定的格式同时保存多条数据
+	 * 
+	 * @param param 其他参数填充值，顺序必须固定
+	 * @param start 数字填充值开始值
+	 * @param end 数字填充值结束值
+	 * @param extention 数字填充值扩展的位数
+	 * @param requestMap 前台提交的数据，其中如果需要进行填充，使用[[0-N]]作为标记，[[0]]表示使用数字填充值进行填充， [[1-N]]为使用其他参数填充值
+	 * @param entityClass 生成的实体类
+	 * @return 首个生成的实体数据
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
 	public M saveMuti(String param, Integer start, Integer end, Integer extention,
 			Map<String, Object> requestMap, Class<M> entityClass) throws InstantiationException, IllegalAccessException {
 		String[] paramArray = new String[0];
@@ -126,15 +167,20 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 		M firstEntity = null;
 		for (int i = start; i < end + 1; i++) {
 			M entity = entityClass.newInstance();
+
+			// 根据原始参数生成本条数据的特定参数
 			String[] formatedParamArray = new String[paramArray.length + 1];
-			formatedParamArray[0] = decimalFormat.format(i);
+			formatedParamArray[0] = decimalFormat.format(i); // 第一个参数为固定参数，为start到end的数字
 			for (int k = 1; k < formatedParamArray.length; k++) {
 				formatedParamArray[k] = paramArray[k - 1];
 			}
 
+			// 使用特定参数格式化每个字段
 			Map<String, Object> paramMap = new HashMap<>();
 			paramMap.putAll(requestMap);
 			XStringUtils.formatStr(paramMap, formatedParamArray);
+
+			// 将生成好的参数拷贝到entity中，保存到数据库
 			BeanMapper.copy(paramMap, entity);
 			M newEntity = save(entity);
 

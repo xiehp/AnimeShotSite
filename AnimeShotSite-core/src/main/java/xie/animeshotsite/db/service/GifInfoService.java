@@ -210,16 +210,6 @@ public class GifInfoService extends BaseService<GifInfo, String> {
 		return page.getContent();
 	}
 
-	public List<GifInfo> fillParentData(List<GifInfo> list) {
-		if (list == null || list.size() == 0) {
-			return list;
-		}
-		for (GifInfo gifInfo : list) {
-			fillParentData(gifInfo);
-		}
-		return list;
-	}
-
 	public GifInfo fillParentData(GifInfo gifInfo) {
 		if (gifInfo == null) {
 			return gifInfo;
