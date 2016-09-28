@@ -233,7 +233,7 @@ public class SaveImageListener extends Video2ImageAdapter {
 				}
 			}
 
-			String tietukuImageUrlPrefix = TietukuUtils.getImageUrlPrefix(tietukuUrl);
+			String tietukuImageUrlPrefix = TietukuUtils.getImageUrlPrefix(tietukuUrl, true);
 			String tietukuImageUrlId = TietukuUtils.getImageUrlID(tietukuUrl);
 
 			// 更新贴图库数据库
