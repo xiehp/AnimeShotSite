@@ -2,7 +2,7 @@ package xie.common.web.util;
 
 public class ConstantsWeb {
 
-	final public static String MANAGE_URL_STR = "/managesite333";
+	final public static String MANAGE_URL_PREFIX_STR = "/managesite333";
 
 	/** 默认网站所有人的ID */
 	final public static String SITE_MANAGER_ID = "1";

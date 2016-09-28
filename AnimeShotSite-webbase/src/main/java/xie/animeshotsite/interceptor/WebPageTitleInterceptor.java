@@ -157,7 +157,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 			// 判断是否需要网站统计和搜索引擎推送
 			{
 				boolean canBaiduRecord = false; // 是否让搜索引擎统计和索引
-				if (requestURL.contains(ConstantsWeb.MANAGE_URL_STR)) {
+				if (requestURL.contains(ConstantsWeb.MANAGE_URL_PREFIX_STR)) {
 					// 后台页面，不统计
 					canBaiduRecord = false;
 				} else if (isExcludeRecordIp(request)) {
@@ -187,7 +187,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 			// 系统常量
 			{
 				// 其他
-				request.setAttribute("MANAGE_URL_STR", ConstantsWeb.MANAGE_URL_STR);
+				request.setAttribute("MANAGE_URL_STR", ConstantsWeb.MANAGE_URL_PREFIX_STR);
 
 				// json
 				request.setAttribute("JSON_RESPONSE_KEY_CODE", Constants.JSON_RESPONSE_KEY_CODE);

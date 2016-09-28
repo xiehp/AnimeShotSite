@@ -27,7 +27,7 @@ import xie.base.service.BaseService;
 import xie.common.web.util.ConstantsWeb;
 
 @Controller
-@RequestMapping(value = ConstantsWeb.MANAGE_URL_STR + "/shot")
+@RequestMapping(value = ConstantsWeb.MANAGE_URL_PREFIX_STR + "/shot")
 public class ShotManagerController extends BaseManagerController<ShotInfo, String> {
 
 	private @Autowired AnimeInfoService animeInfoService;
@@ -47,8 +47,11 @@ public class ShotManagerController extends BaseManagerController<ShotInfo, Strin
 
 	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/list/{animeEpisodeId}")
-	public String shotList(@PathVariable String animeEpisodeId, @RequestParam(value = "sortType", defaultValue = "timeStamp") String sortType, @RequestParam(value = "page", defaultValue = "1") int pageNumber, Model model, ServletRequest request)
-			throws Exception {
+	public String shotList(@PathVariable String animeEpisodeId,
+			@RequestParam(value = "sortType", defaultValue = "timeStamp") String sortType,
+			@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+			Model model, ServletRequest request)
+					throws Exception {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		// 增加删除过滤
 		searchParams.put("EQ_animeEpisodeId", animeEpisodeId);

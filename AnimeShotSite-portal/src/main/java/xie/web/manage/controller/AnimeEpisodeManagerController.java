@@ -30,7 +30,7 @@ import xie.common.web.util.RequestUtil;
 import xie.common.web.util.ConstantsWeb;
 
 @Controller
-@RequestMapping(value = ConstantsWeb.MANAGE_URL_STR + "/animeEpisode")
+@RequestMapping(value = ConstantsWeb.MANAGE_URL_PREFIX_STR + "/animeEpisode")
 public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEpisode, String> {
 
 	@Autowired
@@ -179,6 +179,7 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 		} else if ("2".equals(taskType)) {
 			if (specifyTimes == null) {
 				map = getFailCode("type为2时，specifyTimes不能为空");
+				return getUrlRedirectPath("view/" + id);
 			}
 			shotTaskService.addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes);
 		}

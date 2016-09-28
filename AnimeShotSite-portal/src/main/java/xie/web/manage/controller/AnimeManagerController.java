@@ -25,7 +25,7 @@ import xie.base.service.BaseService;
 import xie.common.web.util.ConstantsWeb;
 
 @Controller
-@RequestMapping(value = ConstantsWeb.MANAGE_URL_STR + "/anime")
+@RequestMapping(value = ConstantsWeb.MANAGE_URL_PREFIX_STR + "/anime")
 public class AnimeManagerController extends BaseManagerController<AnimeInfo, String> {
 
 	@Autowired

@@ -26,7 +26,7 @@ import xie.common.web.util.ConstantsWeb;
 import xie.sys.auth.entity.User;
 
 @Controller
-@RequestMapping(value = ConstantsWeb.MANAGE_URL_STR)
+@RequestMapping(value = ConstantsWeb.MANAGE_URL_PREFIX_STR)
 public class LoginController extends BaseController {
 
 	@Autowired
