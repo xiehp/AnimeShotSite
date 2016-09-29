@@ -15,8 +15,8 @@ import xie.animeshotsite.db.repository.ShotTaskDao;
 import xie.base.repository.BaseRepository;
 import xie.base.service.BaseService;
 import xie.common.date.DateUtil;
+import xie.common.json.XJsonUtil;
 import xie.common.string.XStringUtils;
-import xie.common.utils.JsonUtil;
 import xie.v2i.config.Video2ImageProperties;
 
 @Service
@@ -81,6 +81,9 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 		return shotTask;
 	}
 
+	/**
+	 * 增加指定时间截图任务
+	 */
 	public ShotTask addRunSpecifyEpisideTimeTask(String id, Date scheduleTime, Boolean forceUpload, String specifyTimes) {
 		if (XStringUtils.isBlank(id)) {
 			return null;
@@ -95,11 +98,14 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 		if (forceUpload != null) {
 			paramMap.put(Video2ImageProperties.KEY_forceUpload, forceUpload);
 		}
-		String jsonStr = JsonUtil.toJsonString(paramMap);
+		String jsonStr = XJsonUtil.toJsonString(paramMap);
 
 		return createShotTask(scheduleTime, ShotTask.TASK_TYPE_SHOT, "xie.animeshotsite.timer.task.ShotSpecifyTask", jsonStr);
 	}
 
+	/**
+	 * 增加指定时间间隔截图任务
+	 */
 	public ShotTask addRunNormalEpisideTimeTask(String id, Date scheduleTime, Boolean forceUpload, Long startTime, Long endTime, Long timeInterval) {
 		if (XStringUtils.isBlank(id)) {
 			return null;
@@ -119,7 +125,7 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 		if (forceUpload != null) {
 			paramMap.put(Video2ImageProperties.KEY_forceUpload, forceUpload);
 		}
-		String jsonStr = JsonUtil.toJsonString(paramMap);
+		String jsonStr = XJsonUtil.toJsonString(paramMap);
 
 		return createShotTask(scheduleTime, ShotTask.TASK_TYPE_SHOT, "xie.animeshotsite.timer.task.ShotEpisodeTask", jsonStr);
 	}
@@ -138,7 +144,7 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 		paramMap.put("forceUpdate", forceUpdate);
 		paramMap.put("forceDelete", forceDelete);
 
-		String jsonStr = JsonUtil.toJsonString(paramMap);
+		String jsonStr = XJsonUtil.toJsonString(paramMap);
 
 		return createShotTask(scheduleTime, ShotTask.TASK_TYPE_SUBTITLE, "xie.animeshotsite.timer.task.CreateSubtitleTask", jsonStr);
 	}
@@ -154,20 +160,20 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 	 * @param continueTime 持续时间
 	 * @return
 	 */
-	public ShotTask addCreateGifTask(String subtitleInfoId, String animeInfoId, String episodeInfoId, Date scheduleTime, long startTime, long continueTime) {
-		if (XStringUtils.isBlank(subtitleInfoId) && XStringUtils.isBlank(animeInfoId)) {
+	public ShotTask addCreateGifTask(String animeInfoId, String episodeInfoId, Date scheduleTime, long startTime, long continueTime) {
+		if (XStringUtils.isBlank(animeInfoId) && XStringUtils.isBlank(episodeInfoId)) {
 			return null;
 		}
 
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put(AnimeEpisode.COLUMN_ID, episodeInfoId);
-		paramMap.put(AnimeEpisode.COLUMN_ANIME_INFO_ID, episodeInfoId);
+		paramMap.put(AnimeEpisode.COLUMN_ANIME_INFO_ID, animeInfoId);
 		paramMap.put("startTime", startTime);
 		paramMap.put("continueTime", continueTime);
 
-		String jsonStr = JsonUtil.toJsonString(paramMap);
+		String jsonStr = XJsonUtil.toJsonString(paramMap);
 
-		return createShotTask(scheduleTime, ShotTask.TASK_TYPE_SUBTITLE, "xie.animeshotsite.timer.task.CreateSubtitleTask", jsonStr);
+		return createShotTask(scheduleTime, ShotTask.TASK_TYPE_GIF, "CreateGifTask", jsonStr);
 	}
 
 	private ShotTask createShotTask(Date scheduleTime, String taskType, String taskClass, String paramJsonStr) {
@@ -175,7 +181,7 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 		shotTask.setTaskType(taskType);
 		shotTask.setTaskClass(taskClass);
 		shotTask.setTaskParam(paramJsonStr);
-		shotTask.setScheduleTime(scheduleTime);
+		shotTask.setScheduleTime(scheduleTime == null ? new Date() : scheduleTime);
 		shotTask.setCreateTime(DateUtil.getCurrentDate());
 		shotTask.setTaskResult(ShotTask.TASK_RESULT_WAIT);
 

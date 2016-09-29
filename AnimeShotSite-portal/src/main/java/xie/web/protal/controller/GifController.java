@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -21,29 +20,28 @@ import org.springside.modules.web.Servlets;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
-import xie.animeshotsite.db.entity.ShotInfo;
-import xie.animeshotsite.db.entity.SubtitleInfo;
+import xie.animeshotsite.db.entity.GifInfo;
+import xie.animeshotsite.db.entity.ShotTask;
 import xie.animeshotsite.db.entity.SubtitleLine;
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
-import xie.animeshotsite.db.repository.ShotInfoDao;
+import xie.animeshotsite.db.repository.GifInfoDao;
 import xie.animeshotsite.db.repository.SubtitleLineDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
-import xie.animeshotsite.db.service.ShotInfoService;
+import xie.animeshotsite.db.service.GifInfoService;
 import xie.animeshotsite.db.service.ShotTaskService;
 import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.db.service.SubtitleLineService;
 import xie.base.controller.BaseFunctionController;
 import xie.common.Constants;
-import xie.common.constant.XConst;
 import xie.common.utils.XCookieUtils;
 import xie.common.web.util.ConstantsWeb;
 
 @Controller
 @RequestMapping(value = "/gif")
-public class GifController extends BaseFunctionController<ShotInfo, String> {
+public class GifController extends BaseFunctionController<GifInfo, String> {
 
 	@Autowired
 	private AnimeInfoService animeInfoService;
@@ -54,9 +52,9 @@ public class GifController extends BaseFunctionController<ShotInfo, String> {
 	@Autowired
 	private AnimeEpisodeDao animeEpisodeDao;
 	@Autowired
-	private ShotInfoService shotInfoService;
+	private GifInfoService gifInfoService;
 	@Autowired
-	private ShotInfoDao shotInfoDao;
+	private GifInfoDao gifInfoDao;
 	@Autowired
 	private SubtitleInfoService subtitleInfoService;
 	@Autowired
@@ -72,8 +70,29 @@ public class GifController extends BaseFunctionController<ShotInfo, String> {
 		return "/gif/";
 	};
 
+	@RequestMapping(value = "/list")
+	public String list(
+			@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+			@RequestParam(value = "sortType", defaultValue = "timeStamp") String sortType,
+			Model model, HttpServletRequest request) throws Exception {
+
+		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+		// 增加删除过滤
+		searchParams.put("EQ_" + GifInfo.COLUMN_DELETE_FLAG, Constants.FLAG_INT_NO);
+		sortType = "auto";
+
+		Page<GifInfo> gifInfoPage = gifInfoService.searchPageByParams(searchParams, pageNumber, ConstantsWeb.SHOT_LIST_PAGE_NUMBER, sortType, GifInfo.class);
+		gifInfoService.fillParentData(gifInfoPage.getContent());
+		model.addAttribute("gifInfoPage", gifInfoPage);
+
+		// 将搜索条件编码成字符串，用于排序，分页的URL
+		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
+
+		return getJspFilePath("list");
+	}
+
 	@RequestMapping(value = "/list/{animeEpisodeId}")
-	public String shotList(
+	public String listAnimeId(
 			@PathVariable String animeEpisodeId,
 			@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "sortType", defaultValue = "timeStamp") String sortType,
@@ -84,51 +103,13 @@ public class GifController extends BaseFunctionController<ShotInfo, String> {
 		searchParams.put("EQ_animeEpisodeId", animeEpisodeId);
 
 		AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
-		if (animeEpisode == null) {
-			// 剧集不存在，重定向到动画列表
-			return "redirect:/anime/list";
-		}
+
 		AnimeInfo animeInfo = animeInfoService.findOne(animeEpisode.getAnimeInfoId());
-		Page<ShotInfo> shotInfoPage = shotInfoService.searchPageByParams(searchParams, pageNumber, ConstantsWeb.SHOT_LIST_PAGE_NUMBER, sortType, ShotInfo.class);
-		if (pageNumber > shotInfoPage.getTotalPages() && shotInfoPage.getTotalPages() > 0) {
-			// 页数不对， 并且有数据，直接定位到最后一页
-			String pageUrl = shotInfoPage.getTotalPages() > 1 ? "?page=" + shotInfoPage.getTotalPages() : "";
-			return getUrlRedirectPath("list/" + animeEpisode.getId() + pageUrl);
-		}
+		Page<GifInfo> gifInfoPage = gifInfoService.searchPageByParams(searchParams, pageNumber, ConstantsWeb.SHOT_LIST_PAGE_NUMBER, sortType, GifInfo.class);
 
 		model.addAttribute("animeInfo", animeInfo);
 		model.addAttribute("animeEpisode", animeEpisode);
-		model.addAttribute("shotInfoPage", shotInfoPage);
-
-		if (pageNumber == 1) {
-			// 字幕
-			List<SubtitleLine> subtitleLineList = entityCache.get("subtitleLineList" + animeEpisodeId);
-			if (subtitleLineList == null) {
-				List<SubtitleInfo> subtitleInfoList = entityCache.get("subtitleInfoList" + animeEpisodeId);
-				if (subtitleInfoList == null) {
-					subtitleInfoList = subtitleInfoService.findByAnimeEpisodeId(animeEpisodeId);
-					entityCache.put("subtitleInfoList" + animeEpisodeId, subtitleInfoList, XConst.SECOND_10_MIN * 1000);
-				}
-				if (subtitleInfoList.size() > 0) {
-					List<String> searchSubtitleInfoIdList = new ArrayList<String>();
-					for (SubtitleInfo subtitleInfo : subtitleInfoList) {
-						if (!Constants.FLAG_INT_YES.equals(subtitleInfo.getShowFlg())) {
-							continue;
-						}
-
-						if (Constants.FLAG_INT_YES.equals(subtitleInfo.getDeleteFlag())) {
-							continue;
-						}
-
-						searchSubtitleInfoIdList.add(subtitleInfo.getId());
-					}
-
-					subtitleLineList = subtitleLineDao.findBySubtitleInfoId(searchSubtitleInfoIdList);
-					entityCache.put("subtitleLineList" + animeEpisodeId, subtitleLineList, XConst.SECOND_10_MIN * 1000);
-				}
-			}
-			model.addAttribute("subtitleLineList", subtitleLineList);
-		}
+		model.addAttribute("gifInfoPage", gifInfoPage);
 
 		// 将搜索条件编码成字符串，用于排序，分页的URL
 		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
@@ -167,20 +148,20 @@ public class GifController extends BaseFunctionController<ShotInfo, String> {
 			showLanage = this.defaultShowLanage;
 		}
 
-		ShotInfo shotInfo = shotInfoDao.findOne(id);
-		shotInfo = shotInfoService.convertToVO(shotInfo);
-		AnimeInfo animeInfo = entityCache.findOne(animeInfoDao, shotInfo.getAnimeInfoId());
-		AnimeEpisode animeEpisode = entityCache.findOne(animeEpisodeDao, shotInfo.getAnimeEpisodeId());
+		GifInfo gifInfo = gifInfoDao.findOne(id);
+		gifInfo = gifInfoService.convertToVO(gifInfo);
+		AnimeInfo animeInfo = entityCache.findOne(animeInfoDao, gifInfo.getAnimeInfoId());
+		AnimeEpisode animeEpisode = entityCache.findOne(animeEpisodeDao, gifInfo.getAnimeEpisodeId());
 
-		model.addAttribute("shotInfo", shotInfo);
+		model.addAttribute("gifInfo", gifInfo);
 		model.addAttribute("animeInfo", animeInfo);
 		model.addAttribute("animeEpisode", animeEpisode);
 
 		// 算出当前数据在列表中的页数
-		Integer rowNumber = entityCache.get("shotRowNumber_" + shotInfo.getId());
+		Integer rowNumber = entityCache.get("shotRowNumber_" + gifInfo.getId());
 		if (rowNumber == null) {
-			rowNumber = shotInfoDao.getRowNumber(shotInfo.getAnimeEpisodeId(), shotInfo.getTimeStamp(), Constants.FLAG_INT_NO);
-			entityCache.put("shotRowNumber_" + shotInfo.getId(), rowNumber);
+			rowNumber = gifInfoDao.getRowNumber(gifInfo.getAnimeEpisodeId(), gifInfo.getTimeStamp(), Constants.FLAG_INT_NO);
+			entityCache.put("shotRowNumber_" + gifInfo.getId(), rowNumber);
 		}
 		int pageSize = ConstantsWeb.SHOT_LIST_PAGE_NUMBER;
 		model.addAttribute("rowNumber", rowNumber);
@@ -191,14 +172,14 @@ public class GifController extends BaseFunctionController<ShotInfo, String> {
 		}
 
 		// 搜索前后页
-		ShotInfo previousShotInfo = entityCache.findPreviousShotInfo(shotInfo.getAnimeEpisodeId(), shotInfo.getTimeStamp());
-		ShotInfo nextShotInfo = entityCache.findNextShotInfo(shotInfo.getAnimeEpisodeId(), shotInfo.getTimeStamp());
-		model.addAttribute("previousShotInfo", shotInfoService.convertToVO(previousShotInfo));
-		model.addAttribute("nextShotInfo", shotInfoService.convertToVO(nextShotInfo));
+		GifInfo previousGifInfo = entityCache.findPreviousGifInfo(gifInfo.getCreateDate());
+		GifInfo nextGifInfo = entityCache.findNextGifInfo(gifInfo.getCreateDate());
+		model.addAttribute("previousGifInfo", gifInfoService.convertToVO(previousGifInfo));
+		model.addAttribute("nextGifInfo", gifInfoService.convertToVO(nextGifInfo));
 
 		// 搜索字幕
-		Long startTime = shotInfo.getTimeStamp();
-		Long endTime = nextShotInfo == null ? startTime + 5000 : nextShotInfo.getTimeStamp();
+		Long startTime = gifInfo.getTimeStamp();
+		Long endTime = nextGifInfo == null ? startTime + 5000 : nextGifInfo.getTimeStamp();
 		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), showLanage, startTime, endTime);
 		model.addAttribute("subtitleLineList", subtitleLineList);
 
@@ -228,10 +209,10 @@ public class GifController extends BaseFunctionController<ShotInfo, String> {
 	@ResponseBody
 	public Map<String, Object> publicLike(@RequestParam String id) {
 		Map<String, Object> map = null;
-		ShotInfo shotInfo = shotInfoService.publicLikeAdd(id);
-		if (shotInfo != null) {
+		GifInfo gifInfo = gifInfoService.publicLikeAdd(id);
+		if (gifInfo != null) {
 			map = getSuccessCode();
-			map.put("newCount", shotInfo.getPublicLikeCount());
+			map.put("newCount", gifInfo.getPublicLikeCount());
 		} else {
 			map = getFailCode("截图不存在");
 		}
@@ -241,44 +222,51 @@ public class GifController extends BaseFunctionController<ShotInfo, String> {
 
 	@RequestMapping(value = "/random")
 	public String random(Model model) throws Exception {
-		List<ShotInfo> shotInfoList = new ArrayList<ShotInfo>();
-		int count = (int) shotInfoDao.count();
+		List<GifInfo> gifInfoList = new ArrayList<GifInfo>();
+		int count = (int) gifInfoDao.count();
 		for (int i = 0; i < 10; i++) {
-			List<ShotInfo> list = shotInfoService.findRandom(count - 2, 2);
-			shotInfoList.addAll(list);
+			List<GifInfo> list = gifInfoService.findRandom(count - 2, 2);
+			gifInfoList.addAll(list);
 		}
-		model.addAttribute("shotInfoList", shotInfoList);
+		model.addAttribute("gifInfoList", gifInfoList);
 
 		return getJspFilePath("random");
 	}
 
-	@RequiresPermissions(value = "userList:add")
+	@RequestMapping(value = "/task")
+	public String task(
+			@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType,
+			Model model, HttpServletRequest request) throws Exception {
+		sortType = "auto";
+		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+		// 增加删除过滤
+		searchParams.put("EQ_" + ShotTask.COLUMN_TASK_TYPE, ShotTask.TASK_TYPE_GIF);
+
+		Page<ShotTask> shotTaskPage = shotTaskService.searchPageByParams(searchParams, pageNumber, ConstantsWeb.SHOT_LIST_PAGE_NUMBER, sortType, ShotTask.class);
+		shotTaskService.fillParentData(shotTaskPage.getContent());
+		model.addAttribute("shotTaskPage", shotTaskPage);
+
+		// 将搜索条件编码成字符串，用于排序，分页的URL
+		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
+
+		return getJspFilePath("task");
+	}
+
 	@RequestMapping(value = "/addGifTask")
-	public String addShotTask(
-			@RequestParam String id,
-			@RequestParam String taskType,
-			@RequestParam(required = false) Date scheduleTime,
-			@RequestParam(required = false) Long startTime,
-			@RequestParam(required = false) Long endTime,
-			@RequestParam(required = false) Long timeInterval,
-			@RequestParam(required = false) String specifyTimes,
-			@RequestParam(required = false) Boolean forceUpload) {
+	public String addGifTask(
+			@RequestParam String episodeInfoId,
+			@RequestParam long startTime,
+			@RequestParam long continueTime,
+			@RequestParam(required = false) String animeInfoId,
+			@RequestParam(required = false) Date scheduleTime) {
 
-		Map<String, Object> map = null;
-
-		System.out.println(animeEpisodeService);
-
-		if ("1".equals(taskType)) {
-			shotTaskService.addRunNormalEpisideTimeTask(id, scheduleTime, forceUpload, startTime, endTime, timeInterval);
-		} else if ("2".equals(taskType)) {
-			if (specifyTimes == null) {
-				map = getFailCode("type为2时，specifyTimes不能为空");
-			}
-			shotTaskService.addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes);
+		if (continueTime > 60) {
+			continueTime = 60L;
 		}
 
-		map = getSuccessCode();
+		shotTaskService.addCreateGifTask(animeInfoId, episodeInfoId, scheduleTime, startTime, continueTime);
 
-		return getUrlRedirectPath("view/" + id);
+		return getUrlRedirectPath("task");
 	}
 }

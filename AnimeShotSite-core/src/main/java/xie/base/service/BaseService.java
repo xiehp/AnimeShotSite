@@ -16,7 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springside.modules.mapper.BeanMapper;
 
-import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.base.entity.BaseEntity;
 import xie.base.entity.IdEntity;

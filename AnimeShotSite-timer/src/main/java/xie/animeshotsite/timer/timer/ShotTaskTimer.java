@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,11 @@ import xie.animeshotsite.db.repository.ShotTaskDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotTaskService;
+import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.timer.base.XTask;
 import xie.common.constant.XConst;
+import xie.common.json.XJsonUtil;
 import xie.common.string.XStringUtils;
-import xie.common.utils.JsonUtil;
 
 @Component
 @Scope("prototype")
@@ -75,13 +77,17 @@ public class ShotTaskTimer extends TimerTask {
 				String paramStr = shotTask.getTaskParam();
 				Map<String, Object> param = new HashMap<>();
 				if (XStringUtils.isNotBlank(paramStr)) {
-					param = JsonUtil.fromJsonString(paramStr);
+					param = XJsonUtil.fromJsonString(paramStr);
 				}
 
 				logger.info("任务类：{}, 任务参数:{}", taskClass, param);
-				XTask task = (XTask) Class.forName(taskClass).newInstance();
-				// task = (XTask) SpringUtil.getBean(Class.forName(taskClass));
-				task = (XTask) applicationContext.getBean(Class.forName(taskClass));
+
+				XTask task = null;
+				try {
+					task = (XTask) Class.forName(taskClass).newInstance();
+				} catch (Exception e) {
+					task = (XTask)applicationContext.getBean(taskClass);
+				}
 
 				// 更改标志
 				shotTask = shotTaskService.beginTask(shotTask.getId());
@@ -92,7 +98,7 @@ public class ShotTaskTimer extends TimerTask {
 				logger.info("process 结束 : " + shotTask.getId());
 			} catch (Exception e) {
 				logger.error("process 失败", e);
-				shotTask = shotTaskService.endTask(shotTask.getId(), false, e.getMessage());
+				shotTask = shotTaskService.endTask(shotTask.getId(), false, "处理失败， "+StringUtils.substring(e.getMessage(), 0, 512/3) );
 			}
 		}
 	}

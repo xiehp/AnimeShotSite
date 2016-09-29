@@ -9,6 +9,8 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.tietuku.entity.util.TietukuUtils;
+
 import xie.common.date.DateUtil;
 
 @Entity
@@ -25,9 +27,6 @@ public class GifInfo extends BaseTietukuUrl {
 
 	public static final String TABLE_NAME = "gif_info";
 
-	/** 持续时间 */
-	private Long timeStampDuration;
-
 	/** 动画信息的id */
 	private String animeInfoId;
 
@@ -40,11 +39,11 @@ public class GifInfo extends BaseTietukuUrl {
 	@Transient
 	private AnimeEpisode animeEpisode;
 
-	/** 原始视频时间戳 */
-	private Long originalTime;
-
 	/** 预计获取的时间戳 */
 	private Long timeStamp;
+
+	/** 持续时间 */
+	private Long continueTime;
 
 	/** 时间偏移，新生成的图片可能和第一次片源不一样 */
 	private Long timeOffset;
@@ -54,6 +53,12 @@ public class GifInfo extends BaseTietukuUrl {
 
 	/** 名称 */
 	private String name;
+
+	/** 宽 */
+	private Integer width;
+
+	/** 高 */
+	private Integer height;
 
 	/** 站长推荐等级 */
 	private Long masterRecommendRank;
@@ -108,12 +113,14 @@ public class GifInfo extends BaseTietukuUrl {
 		this.animeEpisode = animeEpisode;
 	}
 
-	public Long getOriginalTime() {
-		return originalTime;
+
+
+	public Long getContinueTime() {
+		return continueTime;
 	}
 
-	public void setOriginalTime(Long originalTime) {
-		this.originalTime = originalTime;
+	public void setContinueTime(Long continueTime) {
+		this.continueTime = continueTime;
 	}
 
 	public Long getTimeStamp() {
@@ -176,6 +183,22 @@ public class GifInfo extends BaseTietukuUrl {
 		this.name = name;
 	}
 
+	public Integer getWidth() {
+		return width;
+	}
+
+	public void setWidth(Integer width) {
+		this.width = width;
+	}
+
+	public Integer getHeight() {
+		return height;
+	}
+
+	public void setHeight(Integer height) {
+		this.height = height;
+	}
+
 	public Long getMasterRecommendRank() {
 		return masterRecommendRank;
 	}
@@ -232,4 +255,13 @@ public class GifInfo extends BaseTietukuUrl {
 		this.localFileName = localFileName;
 	}
 
+
+	/**
+	 * 获得tietuku O url.
+	 *
+	 * @return tietuku O url
+	 */
+	public String getTietukuOUrl() {
+		return TietukuUtils.getImageOriginalUrl(getTietukuUrlPrefix(), getTietukuUrlId(), ".gif");
+	}
 }

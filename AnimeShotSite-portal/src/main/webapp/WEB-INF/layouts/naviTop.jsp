@@ -19,6 +19,9 @@
 					<a href="${ctx}/shot/recommend">截图推荐</a>
 				</li>
 				<li>
+					<a href="${ctx}/gif/list">动态图片gif</a>
+				</li>
+				<li>
 					<a href="${ctx}/search">字幕搜索</a>
 				</li>
 				<li>

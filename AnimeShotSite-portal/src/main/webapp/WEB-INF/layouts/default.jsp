@@ -53,6 +53,7 @@
 <c:set var="jqueryLazyloadVersion" value="jquery_lazyload/1.9.7" />
 <c:set var="jqueryCookieVersion" value="1.4.1" />
 <c:set var="zeroClipboardVersion" value="2.2.0" />
+<c:set var="jqueryUiVersion" value="1.12.1" />
 
 <c:set var="useCdnStatic" value="bootcss" />
 <c:if test="${ useCdnStatic eq 'baidu' }">
@@ -66,12 +67,14 @@
 </c:if>
 
 <link href="${ staticResourceUrl }bootstrap/${bootstrapVersion}/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="${ staticResourceUrl }jqueryui/${jqueryUiVersion}/jquery-ui.min.css" rel="stylesheet" type="text/css" />
 <link href="${ ctx }/static/css/style.css" rel="stylesheet" type="text/css" />
 
 <!-- jquery -->
 <script src="${ staticResourceUrl }jquery/${jqueryVersion}/jquery.min.js" type="text/javascript"></script>
 <script src="${ staticResourceUrl }jquery.form/${jqueryFormVersion}/jquery.form.min.js" type="text/javascript"></script>
 <script src="${ staticResourceUrl }jquery-cookie/${jqueryCookieVersion}/jquery.cookie.min.js" type="text/javascript"></script>
+<script src="${ staticResourceUrl }jqueryui/${jqueryUiVersion}/jquery-ui.min.js" type="text/javascript"></script>
 
 <script src="${ ctx }/static/js/homeBase.js" type="text/javascript"></script>
 </head>

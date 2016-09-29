@@ -150,7 +150,7 @@
 			<dependency>
 				<groupId>xie</groupId>
 				<artifactId>tietuku-api</artifactId>
-				<version>0.0.1</version>
+				<version>${xie.AnimeShotSite.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>xie</groupId>

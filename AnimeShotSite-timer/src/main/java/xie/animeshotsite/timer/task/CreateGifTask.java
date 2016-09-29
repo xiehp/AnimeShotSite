@@ -7,36 +7,51 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
+import com.tietuku.entity.main.PostImage;
+import com.tietuku.entity.util.TietukuUtils;
+import com.tietuku.entity.vo.TietukuUploadResponse;
+
+import xie.animeshotsite.constants.ShotCoreConstants;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
+import xie.animeshotsite.db.entity.GifInfo;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
+import xie.animeshotsite.db.service.GifInfoService;
 import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.timer.base.XBaseTask;
 import xie.animeshotsite.utils.FilePathUtils;
+import xie.common.date.DateUtil;
 import xie.common.number.XNumberUtils;
+import xie.common.utils.XWaitTime;
+import xie.module.command.XCommandFactory;
+import xie.module.command.impl.XWindowsCommand;
+import xie.tietuku.spring.TietukuConfig;
 import xie.v2i.config.Video2ImageProperties;
 
-@Configuration
-@ComponentScan("xie")
-@Component
+@Component(value = "CreateGifTask")
 public class CreateGifTask extends XBaseTask {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	AnimeInfoService animeInfoService;
+	private AnimeInfoService animeInfoService;
 	@Autowired
-	AnimeEpisodeService animeEpisodeService;
+	private AnimeEpisodeService animeEpisodeService;
 	@Autowired
-	ApplicationContext applicationContext;
+	private GifInfoService gifInfoService;
+	@Autowired
+	private ApplicationContext applicationContext;
+	@Autowired
+	TietukuConfig tietukuConfig;
 
-	private String giCmdStr = "ffmpeg -ss 25 -t 10 -i E:\\AnimeShotSIte\\anime\\J\\吉卜力\\听到涛声\\Umi.ga.Kikoeru.2015.BluRay.1080p.FLAC.x265-MGRT.mkv -s 384x216 -f gif -r 12 D:\b.gif";
+	// private String gifCmdStr = "ffmpeg -ss 25 -t 10 -i E:\\AnimeShotSIte\\anime\\J\\吉卜力\\听到涛声\\Umi.ga.Kikoeru.2015.BluRay.1080p.FLAC.x265-MGRT.mkv -s 384x216 -f gif -r 12 D:\b.gif";
+	/** 参数1:开始时间 参数2:持续时间 参数3:视频文件路径4:gif存放路径 */
+	private String gifCmdStr = "ffmpeg -ss {} -t {} -i \"{}\" -s 384x216 -f gif -r 1 \"{}\"";
 
 	public static void main(String[] args) throws Exception {
 		args = new String[3];
@@ -63,13 +78,16 @@ public class CreateGifTask extends XBaseTask {
 	public int run(String[] args, Map<String, Object> paramMap) throws Exception {
 		try {
 			logger.info("begin process animeEpisodeId: " + paramMap);
-			String animeEpisodeId = (String) paramMap.get(Video2ImageProperties.KEY_id);
-			long[] timeStampArray = XNumberUtils.split((String) paramMap.get(Video2ImageProperties.KEY_specifyTimes));
-			Boolean forceUpload = (Boolean) paramMap.get(Video2ImageProperties.KEY_forceUpload);
+
+			String animeEpisodeId = (String) paramMap.get(AnimeEpisode.COLUMN_ID);
+			//String animeInfoId = (String) paramMap.get(AnimeEpisode.COLUMN_ANIME_INFO_ID);
+			long startTime = XNumberUtils.getLongValue(paramMap.get("startTime"));
+			long continueTime = XNumberUtils.getLongValue(paramMap.get("continueTime"));
 
 			AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
 			AnimeInfo animeInfo = animeInfoService.findOne(animeEpisode.getAnimeInfoId());
-			logger.info("begin process : " + animeInfo.getName() + ", " + animeEpisode.getName());
+			String animeInfoId = animeInfo.getId();
+			logger.info("begin process : " + animeEpisode.getFullName());
 			File animeEpisodeFile = FilePathUtils.getAnimeFullFilePath(animeInfo, animeEpisode, animeEpisode.getLocalFileName());
 
 			logger.info("begin process : " + animeEpisodeFile.getAbsolutePath());
@@ -78,36 +96,52 @@ public class CreateGifTask extends XBaseTask {
 				throw new FileNotFoundException("文件不存在：" + animeEpisodeFile.getAbsolutePath());
 			}
 
-			//// SaveImageListener saveImageListener = new SaveImageListener(animeEpisode.getAnimeInfoId(), animeEpisode.getId(), animeEpisode.getLocalRootPath(), animeEpisode.getLocalDetailPath(), animeEpisode.getNumber());
-			// SaveImageListener saveImageListener = new SaveImageListener(animeEpisode);
-			// File fileMrl = animeEpisodeFile;
-			// if (forceUpload != null) {
-			// saveImageListener.setForceUpload(forceUpload);
-			// }
-			//
-			// Video2Image video2Image = new Video2Image(fileMrl.getAbsolutePath(), saveImageListener);
-			// video2Image.setRunMode(Video2ImageProperties.RUN_MODE_SPECIAL);
-			// video2Image.setSpecifyTimes(timeStampArray);
-			// if (animeEpisode.getWidth() != null && animeEpisode.getHeight() != null) {
-			// video2Image.setSize(animeEpisode.getWidth(), animeEpisode.getHeight());
-			// }
-			// video2Image.run();
-			//
-			// while (!video2Image.isClosed()) {
-			// Thread.sleep(5000);
-			// }
+			// 生成gif存放路径
+			String detailPath = FilePathUtils.getDetailPath(null, animeEpisode, animeInfo);
+			detailPath = detailPath.replaceFirst(ShotCoreConstants.LOCAL_ROOT_SHOT_PATH, ShotCoreConstants.LOCAL_ROOT_GIF_PATH);
+			File detailPathWithNumber = new File(detailPath, animeEpisode.getNumber());
+			File fullDetailPath = FilePathUtils.getShotDetailFolder(null, animeEpisode, animeInfo);
+			fullDetailPath = new File(fullDetailPath.getAbsolutePath().replaceFirst("\\" + ShotCoreConstants.LOCAL_ROOT_SHOT_PATH, "\\" + ShotCoreConstants.LOCAL_ROOT_GIF_PATH));
+			if (!fullDetailPath.exists()) {
+				fullDetailPath.mkdirs();
+			}
+			String gifFileName = animeEpisode.getFullName() + " " + DateUtil.formatTime(startTime * 1000, 3) + "_" + continueTime + "秒.gif";
+			gifFileName = gifFileName.replace("?", "？");
+			gifFileName = gifFileName.replace("  ", " ").replace("  ", " ").replace("  ", " ");
+			File gifFilePath = new File(fullDetailPath, gifFileName);
+			logger.info("文件路径：" + gifFilePath);
 
-//			XCommand xCommand = XCommandFactory.createInstance();
-//			Process process = xCommand.runCmd(giCmdStr);
-//
-//			process.
-//			if (video2Image.isProcessSuccess()) {
-//				logger.info("process 成功 : " + animeEpisode.getName());
-//			} else {
-//				logger.error("process 失败");
-//			}
+			XWindowsCommand xWindowsCommand = (XWindowsCommand) XCommandFactory.createInstance();
+			Object[] cmdParams = new Object[] { startTime, continueTime, animeEpisodeFile.getAbsolutePath(), gifFilePath };
+			gifCmdStr = "ffmpeg -ss {} -t {} -i \"{}\" -s 394x216 -f gif -r 10 \"{}\"";
 
-			// saveImageListener.close();
+			String cmd = MessageFormatter.arrayFormat(gifCmdStr, cmdParams).getMessage();
+
+			XWaitTime xWaitTime = new XWaitTime(9999999);
+			xWindowsCommand.runCmd(cmd);
+			logger.info("命令执行时间：{}毫秒" + xWaitTime.getPastTime());
+
+			// 将gif结果存到数据库中
+			GifInfo shotInfo = gifInfoService.createGifInfo(animeInfoId, animeEpisodeId, startTime * 1000, continueTime * 1000, null, null, gifFilePath.getName());
+			logger.info("保存到数据库, " + "id:" + shotInfo.getId() + ", timeStamp:" + shotInfo.getTimeStamp() + ", version:" + shotInfo.getVersion());
+			// 设置尺寸
+			shotInfo.setWidth(394);
+			shotInfo.setHeight(216);
+
+			// 向贴图库传文件
+			PostImage postImage = new PostImage();
+			TietukuUploadResponse tietukuUploadResponse = postImage.uploadToTietuku(gifFilePath, tietukuConfig.getTietukuTokenGif());
+
+			// 贴图库内容保存到数据库中
+			String tietukuUrl = tietukuUploadResponse.getLinkurl();
+			String tietukuImageUrlPrefix = TietukuUtils.getImageUrlPrefix(tietukuUrl, true);
+			String tietukuImageUrlId = TietukuUtils.getImageUrlID(tietukuUrl);
+
+			// 更新贴图库数据库
+			shotInfo = gifInfoService.setTietukuUrl(shotInfo, tietukuImageUrlId, tietukuImageUrlPrefix);
+			shotInfo = gifInfoService.save(shotInfo);
+
+			logger.info("process 成功 : {}, 时间{}, 持续时间", gifFilePath, startTime, continueTime);
 		} catch (Exception e) {
 			logger.error("process 失败", e);
 			throw e;

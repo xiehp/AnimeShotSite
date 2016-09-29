@@ -46,6 +46,13 @@ public class FilePathUtils {
 	}
 
 	/**
+	 * 获取默认的root路径
+	 */
+	public static File getRootDefault(String typePath) {
+		return new File(ShotCoreConstants.LOCAL_ROOT_PATH, typePath);
+	}
+
+	/**
 	 * 获取默认的带动画文件夹的root路径
 	 */
 	public static File getAnimeRootDefault() {

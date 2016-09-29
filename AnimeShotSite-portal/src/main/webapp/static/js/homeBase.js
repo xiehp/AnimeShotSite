@@ -573,3 +573,181 @@ function asynGetHtmlByAjax(url, jsonParam, isByGet, successFunc, isOpenMask, opt
 
 	$.ajax(ajaxParam);
 }
+
+function isNull(obj) {
+	if ((obj == null) || (typeof (obj) == "undefined")) {
+		return true;
+	} else {
+		return false;
+	}
+
+}
+
+// trim str.
+function trim(str) {
+	if (isNull(str) || (str == "")) {
+		return "";
+	} else {
+		// trim str.
+		return str.replace(/(^\s*)|(\s*$)/g, "");
+	}
+}
+
+function getURLTimeStamp() {
+	var dt = new Date();
+	return "ts=" + dt.getTime();
+}
+
+function urlAddRandom(url) {
+	if (url.indexOf('?') >= 0) {
+		return url + "&" + getURLTimeStamp();
+	} else {
+		return url + "?" + getURLTimeStamp();
+	}
+}
+
+function urlAddParam(url, paramStr) {
+	if (url.indexOf('?') >= 0) {
+		return url + "&" + paramStr;
+	} else {
+		return url + "?" + paramStr;
+	}
+}
+
+/*
+ * 设置 autocomplete 配置参数 ：
+ * {
+ *  isAutoCleanSourceObj:是否自动清除输入值 :true 自动清除，false 不自动清除 (默认true)
+	minLength: 最少输入几个字，才去服务器获取选择项的数据，默认为1
+	maxItemCount:下拉选择项的最大条数.默认15条(global_autocomplete_max_item_count)	
+	isClickShowMenu:是否点击就提供下拉选择框，true/false,默认false
+ * }
+ */
+var defaultAutoCompleteParams = {};
+function configAutoComplete(conf) {
+	$.extend(defaultAutoCompleteParams, conf);
+}
+
+/*
+fillObjId: 绑定autocomplete事件的input对象的ID
+sourceUrl:选择项的URL (返回元素为item的json集合,每个item,必须有code,label属性)
+setparams:JSON类型的参数，包含：
+	fillRelation:
+           	页面元素ID 与 返回的Item值 的匹配关系, 如 ["name":"name","address":"userAddress"] 
+	selectFunc: 选着后的回调函数，参数为  item 对象
+	cleanFunc: 不选择的回调函数，无参数
+	isAutoCleanSourceObj:是否自动清除输入值 :true 自动清除，false 不自动清除 (默认true)
+	minLength: 最少输入几个字，才去服务器获取选择项的数据，默认为1
+	maxItemCount:下拉选择项的最大条数.默认15条(global_autocomplete_max_item_count)	
+	isClickShowMenu:是否点击就提供下拉选择框，true/false,默认false
+*/
+function jqueryAutoComplete(sourceObjId, sourceUrl, setparams) {
+	var params = {};
+	params = $.extend(params, defaultAutoCompleteParams);
+	params = $.extend(params, setparams);
+
+	var fillRelation = params.fillRelation;
+	var selectFunc = params.selectFunc;
+	var cleanFunc = params.cleanFunc;
+	var isAutoCleanSourceObj = params.isAutoCleanSourceObj;
+	var minLength = params.minLength;
+	var fillRelation = params.fillRelation;
+	var maxItemCount = params.maxItemCount;
+	var isClickShowMenu = params.isClickShowMenu;
+
+	var isClean = true;
+
+	if (isNull(fillRelation)) {
+		fillRelation = {};
+	}
+	if (isNull(fillRelation[sourceObjId])) {
+		fillRelation[sourceObjId] = "label";
+	}
+
+	if (isNull(isClickShowMenu)) {
+		isClickShowMenu = false;
+	}
+
+	if (isNull(isAutoCleanSourceObj)) {
+		isAutoCleanSourceObj = true;
+	}
+
+	if (isNull(minLength)) {
+		minLength = 1;
+	}
+
+	if (isNull(maxItemCount)) {
+		maxItemCount = 20;
+	}
+
+	$("#" + sourceObjId).keydown(function(e) {
+		isClean = true;
+	});
+
+	$("#" + sourceObjId).autocomplete({
+		minLength : minLength
+	});
+
+	$("#" + sourceObjId).autocomplete({
+		/*source : function(request, response) {
+			response($.map(getDataByAjax(sourceUrl,request), function(item) {
+				return item;
+			})); 
+		},*/
+		source : urlAddRandom(sourceUrl) + "&count=" + maxItemCount,
+		change : function(e, ui) {
+			if (isClean) {
+				for ( var objid in fillRelation) {
+					if (!(objid == sourceObjId && !isAutoCleanSourceObj)) {
+						$("#" + objid).val("");
+						if (objid == sourceObjId) {
+							if ($("#" + objid).data("uiAutocomplete") != null) {
+								$("#" + objid).data("uiAutocomplete").term = "";
+							}
+						}
+					}
+				}
+				if (!isNull(cleanFunc)) {
+					cleanFunc();
+				}
+			}
+
+			$("#" + sourceObjId).trigger("focus");
+			return false;
+
+			// return true;
+		},
+		select : function(e, ui) {
+			isClean = false;
+
+			for ( var objid in fillRelation) {
+				var objvalue = "";
+
+				var itemid = fillRelation[objid];
+				if (!isNull(itemid)) {
+					objvalue = eval("ui.item." + itemid);
+					if (isNull(objvalue)) {
+						objvalue = ""
+					}
+				}
+
+				$("#" + objid).val(objvalue);
+			}
+
+			if (!isNull(selectFunc)) {
+				selectFunc(ui.item);
+			}
+
+			return false;
+		}
+	});
+
+	if (isClickShowMenu) {
+		$("#" + sourceObjId).unbind("click");
+		$("#" + sourceObjId).bind("click", function() {
+			if ($("#" + sourceObjId).val().length >= minLength) {
+				$("#" + sourceObjId).autocomplete("search", $("#" + sourceObjId).val());
+			}
+		});
+	}
+}

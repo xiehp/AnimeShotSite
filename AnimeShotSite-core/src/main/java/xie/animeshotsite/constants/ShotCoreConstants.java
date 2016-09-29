@@ -12,8 +12,11 @@ public class ShotCoreConstants {
 
 	/** 本地截图文件夹 */
 	public static final String LOCAL_ROOT_SHOT_PATH = PropsUtil.getProperty("local.root.shot.folder");
-	
 
+	/** 本地gif存放文件夹 */
+	public static final String LOCAL_ROOT_GIF_PATH = "\\gif";
+	
+	
 
 	/** 网站图片URL获取方式 本地 */
 	public static final String IMAGE_URL_GET_MODE_LOCAL = "local";
@@ -22,15 +25,14 @@ public class ShotCoreConstants {
 	/** 网站图片URL获取方式 腾讯 */
 	public static final String IMAGE_URL_GET_MODE_TENXUN = "tengxun";
 
-
-	/** 图片类型  动画 */
+	/** 图片类型 动画 */
 	public static final String IMAGE_URL_TYPE_ANIME = "anime";
-	/** 图片类型  剧集 */
+	/** 图片类型 剧集 */
 	public static final String IMAGE_URL_TYPE_EPISODE = "episode";
-	/** 图片类型  截图 */
+	/** 图片类型 截图 */
 	public static final String IMAGE_URL_TYPE_SHOT = "shot";
-	/** 图片类型  图片 */
+	/** 图片类型 图片 */
 	public static final String IMAGE_URL_TYPE_IMAGE = "image";
-	/** 图片类型  无图 */
+	/** 图片类型 无图 */
 	public static final String IMAGE_URL_TYPE_NO_IMAGE = "noimage";
 }

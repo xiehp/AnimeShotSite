@@ -106,7 +106,7 @@
 		</div>
 
 		<div align="left">
-			<h1 style="font-size: 14px;">本站提供动画完整的动漫图片 动画图片以及字幕台词。截图图片一般以5秒为间隔，字幕尽量以外挂的形式显示。</h1>
+			<h1 style="font-size: 14px;">本站提供动画完整的动漫图片 动画图片以及字幕台词。截图图片一般以5秒为间隔，图片尽量为1080P，不包含字幕台词，字幕台词尽量以外挂的形式显示。</h1>
 		</div>
 
 		<div style="padding-top: 1px;" class="bdsharebuttonbox quickShareDivClass">

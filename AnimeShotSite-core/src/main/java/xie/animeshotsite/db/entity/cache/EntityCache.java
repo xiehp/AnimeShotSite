@@ -1,5 +1,6 @@
 package xie.animeshotsite.db.entity.cache;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -11,7 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import xie.animeshotsite.db.entity.GifInfo;
 import xie.animeshotsite.db.entity.ShotInfo;
+import xie.animeshotsite.db.repository.GifInfoDao;
 import xie.animeshotsite.db.repository.ShotInfoDao;
 import xie.base.entity.IdEntity;
 import xie.base.repository.BaseRepository;
@@ -26,8 +29,13 @@ public class EntityCache {
 	public static final String CACHE_ID_Previous_ShotInfo = "Previous_ShotInfo_";
 	public static final String CACHE_ID_Next_ShotInfo = "Next_ShotInfo_";
 
+	public static final String CACHE_ID_Previous_GifInfo = "Previous_GifInfo_";
+	public static final String CACHE_ID_Next_GifInfo = "Next_GifInfo_";
+
 	@Autowired
 	private ShotInfoDao shotInfoDao;
+	@Autowired
+	private GifInfoDao gifInfoDao;
 
 	private Map<String, Object> cacheMap = new HashMap<String, Object>();
 	private Map<String, XWaitTime> timeoutMap = new LinkedHashMap<String, XWaitTime>();
@@ -165,5 +173,27 @@ public class EntityCache {
 		}
 
 		return shotInfo;
+	}
+
+	public GifInfo findPreviousGifInfo(Date createDate) {
+		String id = CACHE_ID_Previous_GifInfo + createDate.getTime();
+		GifInfo gifInfo = get(id);
+		if (gifInfo == null) {
+			gifInfo = gifInfoDao.findPrevious(createDate);
+			put(id, gifInfo);
+		}
+
+		return gifInfo;
+	}
+
+	public GifInfo findNextGifInfo(Date createDate) {
+		String id = CACHE_ID_Next_GifInfo + createDate.getTime();
+		GifInfo gifInfo = get(id);
+		if (gifInfo == null) {
+			gifInfo = gifInfoDao.findNext(createDate);
+			put(id, gifInfo);
+		}
+
+		return gifInfo;
 	}
 }

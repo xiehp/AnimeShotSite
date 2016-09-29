@@ -1,6 +1,7 @@
 package xie.animeshotsite.db.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -68,12 +69,12 @@ public class GifInfoService extends BaseService<GifInfo, String> {
 		return gifInfoDao;
 	}
 
-	public GifInfo findPrevious(String animeEpisodeId, long timeStamp) {
-		return gifInfoDao.findPrevious(animeEpisodeId, timeStamp);
+	public GifInfo findPrevious(Date createDate) {
+		return gifInfoDao.findPrevious(createDate);
 	}
 
-	public GifInfo findNext(String animeEpisodeId, long timeStamp) {
-		return gifInfoDao.findNext(animeEpisodeId, timeStamp);
+	public GifInfo findNext(Date createDate) {
+		return gifInfoDao.findNext(createDate);
 	}
 
 	/**
@@ -81,25 +82,20 @@ public class GifInfoService extends BaseService<GifInfo, String> {
 	 * @param animeInfoId
 	 * @param animeEpisodeId
 	 * @param timeStamp
-	 * @param originalTime
+	 * @param continueTime
 	 * @param rootPath 不需要
 	 * @param localDetailPath 不需要
 	 * @param fileName
 	 * @param forceUpdateFlg 如果已经存在，是否进行更新
 	 * @return
 	 */
-	public GifInfo createGifInfo(String animeInfoId, String animeEpisodeId, long timeStamp, long originalTime, String rootPath, String localDetailPath, String fileName, boolean forceUpdateFlg) {
-		GifInfo gifInfo = gifInfoDao.findByAnimeEpisodeIdAndTimeStamp(animeEpisodeId, timeStamp);
-		if (gifInfo == null) {
-			gifInfo = new GifInfo();
-		} else {
-			if (!forceUpdateFlg) {
-				return gifInfo;
-			}
-		}
+	public GifInfo createGifInfo(String animeInfoId, String animeEpisodeId, long timeStamp, long continueTime, @Deprecated String rootPath, @Deprecated String localDetailPath, String fileName) {
+
+		GifInfo gifInfo = new GifInfo();
+
 		gifInfo.setAnimeInfoId(animeInfoId);
 		gifInfo.setAnimeEpisodeId(animeEpisodeId);
-		gifInfo.setOriginalTime(originalTime);
+		gifInfo.setContinueTime(continueTime);
 		gifInfo.setTimeStamp(timeStamp);
 		// gifInfo.setLocalRootPath(rootPath);
 		// gifInfo.setLocalDetailPath(localDetailPath);
@@ -149,24 +145,24 @@ public class GifInfoService extends BaseService<GifInfo, String> {
 	 * @return
 	 */
 	public List<GifInfo> getMasterRecommandShotList(int pageNumber, Integer inDay, int listCount) {
-//		Map<String, Object> searchParams = new LinkedHashMap<>();
-//		if (inDay != null) {
-//			searchParams.put("GT_" + GifInfo.COLUMN_MASTER_RECOMMEND_DATE, DateUtil.seekDate(DateUtil.getCurrentDate(), -inDay));
-//		}
-//		searchParams.put("GT_" + GifInfo.COLUMN_MASTER_RECOMMEND_RANK, 0);
-//
-//		// 排序，分页条件
-//		List<Order> orders = new ArrayList<>();
-//		Order order1 = new Order(Direction.DESC, GifInfo.COLUMN_MASTER_RECOMMEND_RANK);
-//		Order order2 = new Order(Direction.DESC, GifInfo.COLUMN_MASTER_RECOMMEND_DATE);
-//		orders.add(order1);
-//		orders.add(order2);
-//		PageRequest pageRequest = PageRequestUtil.buildPageRequest(pageNumber, listCount, orders);
-//
-//		Page<GifInfo> page = searchPageByParams(searchParams, pageRequest, GifInfo.class);
-//		List<GifInfo> list = page.getContent();
-//		list = fillParentData(list);
-//		return list;
+		// Map<String, Object> searchParams = new LinkedHashMap<>();
+		// if (inDay != null) {
+		// searchParams.put("GT_" + GifInfo.COLUMN_MASTER_RECOMMEND_DATE, DateUtil.seekDate(DateUtil.getCurrentDate(), -inDay));
+		// }
+		// searchParams.put("GT_" + GifInfo.COLUMN_MASTER_RECOMMEND_RANK, 0);
+		//
+		// // 排序，分页条件
+		// List<Order> orders = new ArrayList<>();
+		// Order order1 = new Order(Direction.DESC, GifInfo.COLUMN_MASTER_RECOMMEND_RANK);
+		// Order order2 = new Order(Direction.DESC, GifInfo.COLUMN_MASTER_RECOMMEND_DATE);
+		// orders.add(order1);
+		// orders.add(order2);
+		// PageRequest pageRequest = PageRequestUtil.buildPageRequest(pageNumber, listCount, orders);
+		//
+		// Page<GifInfo> page = searchPageByParams(searchParams, pageRequest, GifInfo.class);
+		// List<GifInfo> list = page.getContent();
+		// list = fillParentData(list);
+		// return list;
 
 		List<GifInfo> list = getMasterRecommandShotPage(pageNumber, inDay, listCount).getContent();
 		return list;

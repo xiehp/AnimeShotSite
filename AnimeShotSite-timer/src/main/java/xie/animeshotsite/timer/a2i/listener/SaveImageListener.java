@@ -3,7 +3,6 @@ package xie.animeshotsite.timer.a2i.listener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +24,8 @@ import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.common.date.DateUtil;
 import xie.common.date.XTimeUtils;
+import xie.common.json.XJsonUtil;
 import xie.common.string.XStringUtils;
-import xie.common.utils.JsonUtil;
 import xie.tietuku.spring.TietukuConfig;
 import xie.v2i.listener.Video2ImageAdapter;
 import xie.v2i.utils.CImage;
@@ -180,58 +179,9 @@ public class SaveImageListener extends Video2ImageAdapter {
 			// uploadPerHourCouter.addCount(); 直接根据返回值判断，这里就不用自己判断了
 
 			// 保存截图到贴图库网站
-			String responseStr = null;
-			TietukuUploadResponse responseUpload = null;
-			String tietukuUrl = null;
-			try {
-				logger.info("贴图库上传, " + "id:" + shotInfo.getId());
-				responseStr = postImage.doUpload(file, tietukuToken);
-			} catch (Exception e) {
-				logger.error("贴图库上传失败，", e);
-			}
-			logger.info("贴图库上传responseStr:" + responseStr);
-			if (responseStr != null) {
-				responseUpload = JsonUtil.fromJsonString(responseStr, TietukuUploadResponse.class);
-				tietukuUrl = responseUpload.getLinkurl();
-			}
-			logger.info("tietukuUrl:" + tietukuUrl);
-			if (tietukuUrl == null) {
-				if (responseUpload != null) {
-					logger.error("贴图库上传失败，返回值：{},{}", responseUpload.getCode(), responseUpload.getInfo());
-					try {
-						if ("4019".equals(responseUpload.getCode())) {
-							long sleepTime = XTimeUtils.getNeedTimeNextHour();
-							sleepTime += 300 * 1000;
-							logger.error("暂停" + (sleepTime / 1000) + "秒");
-							Thread.sleep(sleepTime);
-							logger.error("暂停结束");
-						}
-					} catch (InterruptedException e) {
-						logger.error("InterruptedException，", e);
-					}
-				}
-
-				logger.error("贴图库上传失败，等待2分钟再次上传");
-				try {
-					Thread.sleep(60 * 2000);
-					responseStr = postImage.doUpload(file, tietukuToken);
-				} catch (Exception e) {
-					logger.error("贴图库再次上传失败，", e);
-				}
-				logger.info("贴图库再次上传responseStr:" + responseStr);
-				if (responseStr != null) {
-					responseUpload = JsonUtil.fromJsonString(responseStr, TietukuUploadResponse.class);
-					tietukuUrl = responseUpload.getLinkurl();
-				}
-				if (tietukuUrl == null) {
-					if (responseUpload != null) {
-						logger.error("贴图库上传失败，返回值：{},{}", responseUpload.getCode(), responseUpload.getInfo());
-						throw new RuntimeException("贴图库上传失败，返回值：" + responseUpload.getCode() + "," + responseUpload.getInfo());
-					} else {
-						throw new RuntimeException("贴图库上传失败");
-					}
-				}
-			}
+			logger.info("贴图库上传, " + "shotInfoId:" + shotInfo.getId());
+			TietukuUploadResponse tietukuUploadResponse =  postImage.uploadToTietuku(file, tietukuToken);
+			String tietukuUrl =tietukuUploadResponse.getLinkurl();
 
 			String tietukuImageUrlPrefix = TietukuUtils.getImageUrlPrefix(tietukuUrl, true);
 			String tietukuImageUrlId = TietukuUtils.getImageUrlID(tietukuUrl);

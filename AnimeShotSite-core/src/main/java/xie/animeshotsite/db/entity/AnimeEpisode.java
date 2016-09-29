@@ -25,7 +25,8 @@ public class AnimeEpisode extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String COLUMN_SHOW_FLG = "SHOW_FLG";
+	public static final String COLUMN_FULL_NAME = "fullName";
+	public static final String COLUMN_SHOW_FLG = "showFlg";
 	public static final String COLUMN_ANIME_INFO_ID = "animeInfoId";
 
 	/** 截图状态 0：未截图 */

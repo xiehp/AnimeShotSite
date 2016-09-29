@@ -20,6 +20,8 @@ public class ShotTask extends BaseEntity {
 	public static final String TABLE_NAME = "shot_task";
 	public static final String ENTITY_NAME = ShotTask.class.getSimpleName();
 
+	public static final String COLUMN_TASK_TYPE = "taskType";
+
 	/** 任务类型 截图 */
 	public static final String TASK_TYPE_SHOT = "SHOT";
 	/** 任务类型 字幕 */
