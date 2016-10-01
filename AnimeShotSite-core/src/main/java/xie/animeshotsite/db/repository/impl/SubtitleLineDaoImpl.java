@@ -22,7 +22,7 @@ import xie.common.Constants;
 import xie.common.string.XStringUtils;
 
 @Repository
-public class SubtitleInfoDaoImpl extends BaseRepositoryPlus<SubtitleLine> {
+public class SubtitleLineDaoImpl extends BaseRepositoryPlus<SubtitleLine> {
 
 	@PersistenceContext
 	private EntityManager entityManager;

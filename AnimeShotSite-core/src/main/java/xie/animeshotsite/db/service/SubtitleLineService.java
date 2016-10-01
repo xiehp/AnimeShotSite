@@ -22,7 +22,7 @@ import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.repository.SubtitleInfoDao;
 import xie.animeshotsite.db.repository.SubtitleLineDao;
-import xie.animeshotsite.db.repository.impl.SubtitleInfoDaoImpl;
+import xie.animeshotsite.db.repository.impl.SubtitleLineDaoImpl;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.repository.BaseRepository;
 import xie.base.service.BaseService;
@@ -45,7 +45,7 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 	@Autowired
 	private EntityCache entityCache;
 	@Autowired
-	private SubtitleInfoDaoImpl subtitleInfoDaoImpl;
+	private SubtitleLineDaoImpl subtitleInfoDaoImpl;
 
 	@Override
 	public BaseRepository<SubtitleLine, String> getBaseRepository() {
