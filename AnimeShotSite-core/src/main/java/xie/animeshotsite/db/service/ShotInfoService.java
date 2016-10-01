@@ -57,6 +57,9 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 			if (lowerUrl.contains("i1.") || lowerUrl.contains("i2.") || lowerUrl.contains("i3.") || lowerUrl.contains("i4.")) {
 				url = url.replaceAll("\\.[a-z0-9]+\\.[a-z]+", "." + siteDomain);
 			}
+			if (lowerUrl.contains("p1.") || lowerUrl.contains("p2.") || lowerUrl.contains("p3.") || lowerUrl.contains("p4.")) {
+				url = url.replaceAll("\\.[a-z0-9]+\\.[a-z]+", "." + siteDomain);
+			}
 			shotInfoVO.setTietukuOUrlChangeDomain(url);
 		}
 
