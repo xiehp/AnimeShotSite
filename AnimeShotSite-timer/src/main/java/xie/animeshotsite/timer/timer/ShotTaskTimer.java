@@ -84,9 +84,9 @@ public class ShotTaskTimer extends TimerTask {
 
 				XTask task = null;
 				try {
-					task = (XTask) Class.forName(taskClass).newInstance();
-				} catch (Exception e) {
 					task = (XTask)applicationContext.getBean(taskClass);
+				} catch (Exception e) {
+					task = (XTask) applicationContext.getBean(Class.forName(taskClass));
 				}
 
 				// 更改标志
