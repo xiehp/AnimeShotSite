@@ -23,8 +23,6 @@ import xie.animeshotsite.db.service.ShotInfoService;
 import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.common.date.DateUtil;
-import xie.common.date.XTimeUtils;
-import xie.common.json.XJsonUtil;
 import xie.common.string.XStringUtils;
 import xie.tietuku.spring.TietukuConfig;
 import xie.v2i.listener.Video2ImageAdapter;
@@ -183,7 +181,7 @@ public class SaveImageListener extends Video2ImageAdapter {
 			TietukuUploadResponse tietukuUploadResponse =  postImage.uploadToTietuku(file, tietukuToken);
 			String tietukuUrl =tietukuUploadResponse.getLinkurl();
 
-			String tietukuImageUrlPrefix = TietukuUtils.getImageUrlPrefix(tietukuUrl, true);
+			String tietukuImageUrlPrefix = TietukuUtils.getImageUrlPrefixWithoutHttp(tietukuUrl);
 			String tietukuImageUrlId = TietukuUtils.getImageUrlID(tietukuUrl);
 
 			// 更新贴图库数据库
