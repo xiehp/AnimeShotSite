@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import xie.animeshotsite.constants.SysConstants;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.ShotTask;
 import xie.animeshotsite.db.entity.SubtitleInfo;
@@ -161,8 +164,16 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 	 * @return
 	 */
 	public ShotTask addCreateGifTask(String animeInfoId, String episodeInfoId, Date scheduleTime, long startTime, long continueTime) {
+
 		if (XStringUtils.isBlank(animeInfoId) && XStringUtils.isBlank(episodeInfoId)) {
 			return null;
+		}
+
+		if (startTime < 0) {
+			startTime = 0;
+		}
+		if (continueTime < 1) {
+			continueTime = 1;
 		}
 
 		Map<String, Object> paramMap = new HashMap<String, Object>();

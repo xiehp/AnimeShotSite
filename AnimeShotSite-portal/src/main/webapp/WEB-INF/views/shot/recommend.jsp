@@ -55,12 +55,12 @@
 					</div>
 				</a>
 				<div class="btn btn-primary btn-xs" onclick="home.publicLike('${shotInfo.id}');">
-					<span class="glyphicon glyphicon-star"></span><span style="font-size: 10px;">喜欢</span>
+					<span class="glyphicon glyphicon-star"></span>喜欢
 					<div id="publicLike_${shotInfo.id}" class="badge" style="padding-top: 0px;">${shotInfo.publicLikeCount}</div>
 				</div>
 				<c:if test="${IS_MASTER}">
 					<div class="btn btn-primary btn-xs" onclick="home.masterLike('${MANAGE_URL_STR}/shot/masterLike', '${shotInfo.id}');">
-						<span class="glyphicon glyphicon-star"></span><span style="font-size: 10px;">推荐</span>
+						<span class="glyphicon glyphicon-star"></span>推荐
 						<div id="masterLike_${shotInfo.id}" class="badge" style="padding-top: 0px;">${shotInfo.masterRecommendRank}</div>
 					</div>
 				</c:if>

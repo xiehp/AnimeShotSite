@@ -2,12 +2,15 @@ package xie.web.protal.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springside.modules.web.Servlets;
 
+import xie.animeshotsite.constants.SysConstants;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.entity.GifInfo;
@@ -36,6 +40,9 @@ import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.db.service.SubtitleLineService;
 import xie.base.controller.BaseFunctionController;
 import xie.common.Constants;
+import xie.common.date.DateUtil;
+import xie.common.date.XTimeUtils;
+import xie.common.json.XJsonUtil;
 import xie.common.utils.XCookieUtils;
 import xie.common.web.util.ConstantsWeb;
 
@@ -156,6 +163,8 @@ public class GifController extends BaseFunctionController<GifInfo, String> {
 		model.addAttribute("gifInfo", gifInfo);
 		model.addAttribute("animeInfo", animeInfo);
 		model.addAttribute("animeEpisode", animeEpisode);
+		model.addAttribute("TimeStamp", DateUtil.formatTime(gifInfo.getTimeStamp(), 3));
+		model.addAttribute("ContinueTime", DateUtil.formatTime(gifInfo.getContinueTime(), 3));
 
 		// 算出当前数据在列表中的页数
 		Integer rowNumber = entityCache.get("shotRowNumber_" + gifInfo.getId());
@@ -247,6 +256,19 @@ public class GifController extends BaseFunctionController<GifInfo, String> {
 		shotTaskService.fillParentData(shotTaskPage.getContent());
 		model.addAttribute("shotTaskPage", shotTaskPage);
 
+		// 生成任务相关信息
+		Map<String, Map<String, Object>> taskValueMap = new HashMap<String, Map<String, Object>>();
+		for (ShotTask task : shotTaskPage.getContent()) {
+			Map<String, Object> map = new HashMap<>();
+
+			Map<String, Object> paramMap = XJsonUtil.fromJsonString(task.getTaskParam());
+			String animeEpisodeId = (String) paramMap.get(AnimeEpisode.COLUMN_ID);
+			AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
+			paramMap.put("animeEpisode", animeEpisode);
+
+			taskValueMap.put(task.getId(), paramMap);
+		}
+
 		// 将搜索条件编码成字符串，用于排序，分页的URL
 		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
 
@@ -256,15 +278,26 @@ public class GifController extends BaseFunctionController<GifInfo, String> {
 	@RequestMapping(value = "/addGifTask")
 	public String addGifTask(
 			@RequestParam String episodeInfoId,
-			@RequestParam long startTime,
+			@RequestParam(required = false, defaultValue = "0") long startTimeMinute,
+			@RequestParam long startTimeSecond,
+			@RequestParam(required = false, defaultValue = "0") long startTimeMiSe,
 			@RequestParam long continueTime,
 			@RequestParam(required = false) String animeInfoId,
 			@RequestParam(required = false) Date scheduleTime) {
 
-		if (continueTime > 60) {
-			continueTime = 60L;
-		}
+		long startTime = startTimeMinute * 60 + startTimeSecond;
+		try {
+			Subject subject = SecurityUtils.getSubject();
+			subject.checkRole(SysConstants.ROLE_ADMIN);
 
+			if (continueTime > 120) {
+				continueTime = 120L;
+			}
+		} catch (Exception e) {
+			if (continueTime > 10) {
+				continueTime = 10L;
+			}
+		}
 		shotTaskService.addCreateGifTask(animeInfoId, episodeInfoId, scheduleTime, startTime, continueTime);
 
 		return getUrlRedirectPath("task");

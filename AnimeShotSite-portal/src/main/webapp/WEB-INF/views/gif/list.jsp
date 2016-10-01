@@ -48,7 +48,6 @@
 					<div class="wordKeepLine">
 						<c:out value="${gifInfo.animeInfo.fullName}" />
 						<c:out value='${gifInfo.animeInfo.secondName}' />
-						<c:out value='1' />
 					</div>
 					<div>
 						<c:out value="${gifInfo.animeEpisode.divisionName}" />
@@ -57,11 +56,11 @@
 				</a>
 				<c:if test="${IS_MASTER}">
 					<div class="btn btn-primary btn-xs" onclick="home.publicLike('${gifInfo.id}');">
-						<span class="glyphicon glyphicon-star"></span><span style="font-size: 10px;">喜欢</span>
+						<span class="glyphicon glyphicon-star"></span>喜欢
 						<div id="publicLike_${gifInfo.id}" class="badge" style="padding-top: 0px;">${gifInfo.publicLikeCount}</div>
 					</div>
 					<div class="btn btn-primary btn-xs" onclick="home.masterLike('${MANAGE_URL_STR}/gif/masterLike', '${gifInfo.id}');">
-						<span class="glyphicon glyphicon-star"></span><span style="font-size: 10px;">推荐</span>
+						<span class="glyphicon glyphicon-star"></span>推荐
 						<div id="masterLike_${gifInfo.id}" class="badge" style="padding-top: 0px;">${gifInfo.masterRecommendRank}</div>
 					</div>
 				</c:if>

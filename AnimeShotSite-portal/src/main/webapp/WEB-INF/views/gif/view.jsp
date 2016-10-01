@@ -5,14 +5,15 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <c:set var="EpisodeFullName" value="${animeInfo.fullName} ${animeInfo.secondName} ${animeEpisode.divisionName}" />
+<c:set var="EpisodeFullNameWithTime" value="${EpisodeFullName} ${shotInfo.formatedTimeChina}" />
 
 <head>
 
-<title><c:out value='${EpisodeFullName}' /> <c:out value='${gifInfo.formatedTimeChina}' /> 动态图片gif</title>
+<title><c:out value='${EpisodeFullNameWithTime}' /> 动态图片gif</title>
 <meta name="keywords" content="动态图片gif,<c:out value='${subtitleLineTextStr100}' />" />
 <meta name="description" content="<c:out value='${subtitleLineTextStr200}' />" />
 
-<meta property="og:title" content="<c:out value='${EpisodeFullName}' /> <c:out value='${gifInfo.formatedTimeChina}' /> 动态图片gif" />
+<meta property="og:title" content="<c:out value='${EpisodeFullNameWithTime}' /> 动态图片gif" />
 <meta property="og:type" content="photo" />
 <meta property="og:url" content="${ctx}/gif/view/${gifInfo.id}" />
 <meta property="og:image" content="${gifInfo.tietukuOUrlChangeDomain}" />
@@ -73,17 +74,17 @@ body {
 	});
 </script>
 
-<div>
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
-		<h1 style="font-size: 14px; margin: 0px;"><c:out value='${EpisodeFullName}' /> ${gifInfo.formatedTimeChina}</h1>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	<div style="margin-bottom: 3px;">
+		<h1 style="font-size: 14px; margin: 0px;"><c:out value='${EpisodeFullNameWithTime}' /></h1>>
 	</div>
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
+	<div style="margin-bottom: 3px;">
 		<div style="width: 500px; white-space: nowrap; word-break: keep-all;">
 			<div class="col-sm-4 col-xs-12">
-				开始时间戳：${gifInfo.timeStamp}</span>
+				开始时间：${TimeStamp}</span>
 			</div>
 			<div class="col-sm-4 col-xs-12">
-				时长：${gifInfo.continueTime}</span>
+				时长：${ContinueTime}</span>
 			</div>
 			<div class="col-sm-8 col-xs-12">
 				尺寸：<span id="imgWidth">${gifInfo.width}</span>×<span id="imgHeight">${gifInfo.height}</span>
@@ -104,7 +105,7 @@ body {
 				<script>
 					readCookieAndSetWidth(true);
 				</script>
-				<img id="shotImg" src="${gifInfo.tietukuOUrlChangeDomain}" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${gifInfo.formatedTimeChina}' />" title="<c:out value='${EpisodeFullName}' /> <c:out value='${gifInfo.formatedTimeChina}' />" usemap="#planetmap">
+				<img id="shotImg" src="${gifInfo.tietukuOUrlChangeDomain}" alt="<c:out value='${EpisodeFullNameWithTime}' />" title="<c:out value='${EpisodeFullNameWithTime}' />" usemap="#planetmap">
 			</div>
 			<c:if test="${!empty subtitleLineList}">
 				<table class="shotSubtitle" style="margin-top: 0px; margin-bottom: 10px;">
@@ -133,7 +134,7 @@ body {
 	</div>
 </div>
 
-<div style="padding: 5px;">
+<div style="padding: 5px;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	<a class="btn btn-primary btn-sm" onclick="home.publicLike('${gifInfo.id}');">
 		<span class="glyphicon glyphicon-star"></span>喜欢
 		<div id="publicLike_${gifInfo.id}" class="badge">${gifInfo.publicLikeCount}</div>

@@ -93,13 +93,25 @@
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
 					<div class="col-sm-3">开始时间</div>
 					<div class="col-sm-6">
-						<input name="startTime" id="startTime" class="form-control input-sm" placeholder="请输入开始时间" />
+						<input name="startTime" id="startTime" class="form-control input-sm" placeholder="请输入开始时间，单位秒" />
+					</div>
+				</div>
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
+					<div class="col-sm-3">开始时间（分）</div>
+					<div class="col-sm-6">
+						<input name="startTimeMinute" id="startTimeMinute" class="form-control input-sm" placeholder="请输入开始时间，单位分" />
+					</div>
+				</div>
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
+					<div class="col-sm-3">开始时间（秒）</div>
+					<div class="col-sm-6">
+						<input name="startTimeSecond" id="startTimeSecond" class="form-control input-sm" placeholder="请输入开始时间，单位秒" />
 					</div>
 				</div>
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
 					<div class="col-sm-3">持续时间</div>
 					<div class="col-sm-6">
-						<input name="continueTime" id="continueTime" class="form-control input-sm" placeholder="最长60秒" />
+						<input name="continueTime" id="continueTime" class="form-control input-sm" placeholder="最长10秒" />
 					</div>
 				</div>
 
@@ -151,6 +163,15 @@
 				<thead style="display: block; width: 100%;">
 					<tr style="width: 100%;">
 						<td style="width: 40%;">
+							<nobr>动画名</nobr>
+						</td>
+						<td style="width: 40%;">
+							<nobr>开始时间</nobr>
+						</td>
+						<td style="width: 40%;">
+							<nobr>持续时间</nobr>
+						</td>
+						<td style="width: 40%;">
 							<nobr>任务开始时间</nobr>
 						</td>
 						<td style="width: 20%;">
@@ -178,40 +199,7 @@
 				</tbody>
 			</table>
 		</div>
-		<!-- 	
-		<c:forEach items="${ shotTaskPageXXXX.content }" var="shotInfo">
-				
-			<div style="min-height: 100px; font-size: 10px;" class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
-				<a href="${ctx}/shot/view/${shotInfo.id}" title="<c:out value='${shotInfo.animeEpisode.fullName}' /> <c:out value='${shotInfo.formatedTimeChina}' />">
-					<img data-original="${shotInfo.urlS}" class="img-responsive imagelazy">
-					<div class="wordKeepLine">
-						<c:out value="${shotInfo.animeInfo.fullName}" />
-						<c:out value='${shotInfo.animeInfo.secondName}' />
-					</div>
-					<div>
-						<c:out value="${shotInfo.animeEpisode.divisionName}" />
-						${shotInfo.formatedMinSec}<span style="color: lightgray;${shotInfo.formatedMicroSec > 0 ? '' : ' display: none;'}">:${shotInfo.formatedMicroSec}</span>
-					</div>
-				</a>
-				<div class="btn btn-primary btn-xs" onclick="home.publicLike('${shotInfo.id}');">
-					<span class="glyphicon glyphicon-star"></span><span style="font-size: 10px;">喜欢</span>
-					<div id="publicLike_${shotInfo.id}" class="badge" style="padding-top: 0px;">${shotInfo.publicLikeCount}</div>
-				</div>
-				<c:if test="${IS_MASTER}">
-					<div class="btn btn-primary btn-xs" onclick="home.masterLike('${MANAGE_URL_STR}/shot/masterLike', '${shotInfo.id}');">
-						<span class="glyphicon glyphicon-star"></span><span style="font-size: 10px;">推荐</span>
-						<div id="masterLike_${shotInfo.id}" class="badge" style="padding-top: 0px;">${shotInfo.masterRecommendRank}</div>
-					</div>
-				</c:if>
-			</div>
-				 
-		</c:forEach>
-		-->
 	</div>
-</div>
-
-<div>
-	<tags:paginationRestPage page="${shotTaskPage}" paginationSize="5" />
 </div>
 
 <div>

@@ -126,10 +126,10 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 	 */
 	public Page<ShotInfo> getMasterRecommandShotPage(int pageNumber, Integer inDay, int listCount, boolean orderByRankFlg) {
 		Map<String, Object> searchParams = new LinkedHashMap<>();
+		searchParams.put("GT_" + ShotInfo.COLUMN_MASTER_RECOMMEND_RANK, 0);
 		if (inDay != null) {
 			searchParams.put("GT_" + ShotInfo.COLUMN_MASTER_RECOMMEND_DATE, DateUtil.seekDate(DateUtil.getCurrentDate(), -inDay));
 		}
-		searchParams.put("GT_" + ShotInfo.COLUMN_MASTER_RECOMMEND_RANK, 0);
 
 		// 排序，分页条件
 		List<Order> orders = new ArrayList<>();
