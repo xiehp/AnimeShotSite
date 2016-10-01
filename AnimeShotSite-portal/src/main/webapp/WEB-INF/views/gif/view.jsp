@@ -6,18 +6,32 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <c:set var="EpisodeFullName" value="${animeInfo.fullName} ${animeInfo.secondName} ${animeEpisode.divisionName}" />
 <c:set var="EpisodeFullNameWithTime" value="${EpisodeFullName} ${shotInfo.formatedTimeChina}" />
+<c:set var="FullImageUrl" value="${gifInfo.tietukuOUrlChangeDomain}" />
 
 <head>
 
 <title><c:out value='${EpisodeFullNameWithTime}' /> 动态图片gif</title>
-<meta name="keywords" content="动态图片gif,<c:out value='${subtitleLineTextStr100}' />" />
+<meta name="keywords" content="<c:out value='${EpisodeFullNameWithTime}' />,动态图片gif,<c:out value='${subtitleLineTextStr100}' />" />
 <meta name="description" content="<c:out value='${subtitleLineTextStr200}' />" />
 
 <meta property="og:title" content="<c:out value='${EpisodeFullNameWithTime}' /> 动态图片gif" />
 <meta property="og:type" content="photo" />
 <meta property="og:url" content="${ctx}/gif/view/${gifInfo.id}" />
-<meta property="og:image" content="${gifInfo.tietukuOUrlChangeDomain}" />
+<meta property="og:image" content="${FullImageUrl}" />
 <meta property="og:image:type" content="image/jpeg" />
+
+<!-- schema.org -->
+<script type="application/ld+json">
+{
+	"@content":"http://schema.org",
+	"@type":"ImageObject",
+	"author":"acgimage.com",
+	"contentUrl":"${FullImageUrl}",
+	"datePublished":"<fmt:formatDate value="${gifInfo.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>",
+	"name":"<c:out value='${EpisodeFullNameWithTime}' />",
+	"description":"<c:out value='${subtitleLineTextStr100}' />",
+}
+</script>
 
 <style>
 body {
@@ -76,17 +90,12 @@ body {
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	<div style="margin-bottom: 3px;">
-		<h1 style="font-size: 14px; margin: 0px;"><c:out value='${EpisodeFullNameWithTime}' /></h1>>
+		<h1 style="font-size: 14px; margin: 0px;"><c:out value='${EpisodeFullNameWithTime}' /></h1>
 	</div>
 	<div style="margin-bottom: 3px;">
-		<div style="width: 500px; white-space: nowrap; word-break: keep-all;">
-			<div class="col-sm-4 col-xs-12">
-				开始时间：${TimeStamp}</span>
-			</div>
-			<div class="col-sm-4 col-xs-12">
-				时长：${ContinueTime}</span>
-			</div>
-			<div class="col-sm-8 col-xs-12">
+		<div style="white-space: nowrap; word-break: keep-all;">
+			<div>开始时间：${TimeStamp}&nbsp;&nbsp;&nbsp; 时长：${ContinueTime}</div>
+			<div>
 				尺寸：<span id="imgWidth">${gifInfo.width}</span>×<span id="imgHeight">${gifInfo.height}</span>
 
 				<!-- <span style="font-size: xx-small;">设置图片宽度</span>
@@ -105,7 +114,7 @@ body {
 				<script>
 					readCookieAndSetWidth(true);
 				</script>
-				<img id="shotImg" src="${gifInfo.tietukuOUrlChangeDomain}" alt="<c:out value='${EpisodeFullNameWithTime}' />" title="<c:out value='${EpisodeFullNameWithTime}' />" usemap="#planetmap">
+				<img id="shotImg" src="${FullImageUrl}" alt="<c:out value='${EpisodeFullNameWithTime}' />" title="<c:out value='${EpisodeFullNameWithTime}' />" usemap="#planetmap">
 			</div>
 			<c:if test="${!empty subtitleLineList}">
 				<table class="shotSubtitle" style="margin-top: 0px; margin-bottom: 10px;">
@@ -201,10 +210,10 @@ body {
 	<div class="col-sm-12 ShareLinkItem">
 		<div class="col-sm-3 ShareLinkLabel">动漫图片链接：</div>
 		<div class="col-sm-6">
-			<input id="imageLink" readonly="readonly" class="form-control input-sm" style="cursor: text;" value="${gifInfo.tietukuOUrlChangeDomain}">
+			<input id="imageLink" readonly="readonly" class="form-control input-sm" style="cursor: text;" value="${FullImageUrl}">
 		</div>
 		<div class="col-sm-3 ShareLinkButton">
-			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-text="${gifInfo.tietukuOUrlChangeDomain}" value="复制" />
+			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-text="${FullImageUrl}" value="复制" />
 		</div>
 	</div>
 </div>

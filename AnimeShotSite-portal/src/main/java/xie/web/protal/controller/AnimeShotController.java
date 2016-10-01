@@ -36,7 +36,6 @@ import xie.animeshotsite.db.service.SubtitleLineService;
 import xie.base.controller.BaseFunctionController;
 import xie.common.Constants;
 import xie.common.constant.XConst;
-import xie.common.string.XStringUtils;
 import xie.common.utils.XCookieUtils;
 import xie.common.web.util.ConstantsWeb;
 
@@ -206,6 +205,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		model.addAttribute("subtitleLineTextStr", subtitleLineTextStr);
 		model.addAttribute("subtitleLineTextStr100", StringUtils.substring(subtitleLineTextStr.toString(), 0, 100));
 		model.addAttribute("subtitleLineTextStr200", StringUtils.substring(subtitleLineTextStr.toString(), 0, 200));
+		model.addAttribute("subtitleLineTextStr500", StringUtils.substring(subtitleLineTextStr.toString(), 0, 500));
 
 		// 前台页面cookie等参数设置
 		model.addAttribute("scorllTop", scorllTop); // 用户提交时滚屏高度

@@ -6,17 +6,33 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <c:set var="EpisodeFullName" value="${animeInfo.fullName} ${animeInfo.secondName} ${animeEpisode.divisionName}" />
 <c:set var="EpisodeFullNameWithTime" value="${EpisodeFullName} ${shotInfo.formatedTimeChina}" />
+<c:set var="FullImageUrl" value="${shotInfo.tietukuOUrlChangeDomain}" />
+<c:set var="PreFullImageUrl" value="${previousShotInfo.tietukuOUrlChangeDomain}" />
+<c:set var="NextFullImageUrl" value="${nextShotInfo.tietukuOUrlChangeDomain}" />
 
 <head>
 <title><c:out value='${EpisodeFullNameWithTime}' /></title>
-<meta name="keywords" content="<c:out value='${subtitleLineTextStr100}' />" />
+<meta name="keywords" content="<c:out value='${EpisodeFullNameWithTime}' /> <c:out value='${subtitleLineTextStr100}' />" />
 <meta name="description" content="<c:out value='${subtitleLineTextStr200}' />" />
 
 <meta property="og:title" content="<c:out value='${EpisodeFullNameWithTime}' />" />
 <meta property="og:type" content="photo" />
 <meta property="og:url" content="${ctx}/shot/view/${shotInfo.id}" />
-<meta property="og:image" content="${shotInfo.tietukuOUrlChangeDomain}" />
+<meta property="og:image" content="${FullImageUrl}" />
 <meta property="og:image:type" content="image/jpeg" />
+
+<!-- schema.org -->
+<script type="application/ld+json">
+{
+	"@content":"http://schema.org",
+	"@type":"ImageObject",
+	"author":"acgimage.com",
+	"contentUrl":"${FullImageUrl}",
+	"datePublished":"<fmt:formatDate value="${shotInfo.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>",
+	"name":"<c:out value='${EpisodeFullNameWithTime}' />",
+	"description":"<c:out value='${subtitleLineTextStr100}' />",
+}
+</script>
 
 <style>
 body {
@@ -98,8 +114,7 @@ body {
 				<script>
 					readCookieAndSetWidth(true);
 				</script>
-				<img id="shotImg" src="${shotInfo.tietukuOUrlChangeDomain}" alt="<c:out value='${EpisodeFullNameWithTime}' />"
-					title="<c:out value='${EpisodeFullNameWithTime}' />" usemap="#planetmap">
+				<img id="shotImg" src="${FullImageUrl}" alt="<c:out value='${EpisodeFullNameWithTime}' />" title="<c:out value='${EpisodeFullNameWithTime}' />" usemap="#planetmap">
 			</div>
 			<c:if test="${!empty subtitleLineList}">
 				<table class="shotSubtitle" style="margin-top: 0px; margin-bottom: 10px;">
@@ -117,14 +132,12 @@ body {
 
 		<map id="planetmap" name="planetmap">
 			<c:if test="${!empty previousShotInfo.id}">
-				<area id="areaPrev" class="postByFromXXX" shape="rect" coords="0,0,200,5000" href="${ctx}/shot/view/${previousShotInfo.id}" title="上一张"
-					alt="<c:out value='EpisodeFullName' /> <c:out value='${previousShotInfo.formatedTimeChina}' />" />
-				<img alt="" src="${previousShotInfo.tietukuOUrlChangeDomain}" style="display: none;">
+				<area id="areaPrev" class="postByFromXXX" shape="rect" coords="0,0,200,5000" href="${ctx}/shot/view/${previousShotInfo.id}" title="上一张" alt="<c:out value='EpisodeFullName' /> <c:out value='${previousShotInfo.formatedTimeChina}' />" />
+				<img alt="" src="${PreFullImageUrl}" style="display: none;">
 			</c:if>
 			<c:if test="${!empty nextShotInfo.id}">
-				<area id="areaNext" class="postByFromXXX" shape="rect" coords="500,0,5000,5000" href="${ctx}/shot/view/${nextShotInfo.id}" title="下一张"
-					alt="<c:out value='EpisodeFullName' /> <c:out value='${nextShotInfo.formatedTimeChina}' />" />
-				<img alt="" src="${nextShotInfo.tietukuOUrlChangeDomain}" style="display: none;">
+				<area id="areaNext" class="postByFromXXX" shape="rect" coords="500,0,5000,5000" href="${ctx}/shot/view/${nextShotInfo.id}" title="下一张" alt="<c:out value='EpisodeFullName' /> <c:out value='${nextShotInfo.formatedTimeChina}' />" />
+				<img alt="" src="${NextFullImageUrl}" style="display: none;">
 			</c:if>
 		</map>
 	</div>
@@ -147,12 +160,10 @@ body {
 
 <div style="padding: 5px;">
 	<c:if test="${!empty previousShotInfo.id}">
-		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/shot/view/${previousShotInfo.id}"
-			title="<c:out value='EpisodeFullName' /> <c:out value='${previousShotInfo.formatedTimeChina}' />">上一张</a>
+		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/shot/view/${previousShotInfo.id}" title="<c:out value='EpisodeFullName' /> <c:out value='${previousShotInfo.formatedTimeChina}' />">上一张</a>
 	</c:if>
 	<c:if test="${!empty nextShotInfo.id}">
-		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/shot/view/${nextShotInfo.id}"
-			title="<c:out value='EpisodeFullName' /> <c:out value='${nextShotInfo.formatedTimeChina}' />">下一张</a>
+		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/shot/view/${nextShotInfo.id}" title="<c:out value='EpisodeFullName' /> <c:out value='${nextShotInfo.formatedTimeChina}' />">下一张</a>
 	</c:if>
 </div>
 <!-- </form>  -->
@@ -172,7 +183,7 @@ body {
 	<div class="col-sm-12 ShareLinkItem quickShareDivClass">
 		<div class="col-sm-3 ShareLinkLabel">分享本页：</div>
 		<div style="height: 24px;" align="center" class="col-sm-6">
-			<div style="display: block;width: 200px;">
+			<div style="display: block; width: 200px;">
 				<div style="margin-top: -4px;" class="bdsharebuttonbox">
 					<a href="#" class="bds_mshare" data-cmd="mshare" title="百度一键分享"></a>
 					<a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
@@ -185,8 +196,7 @@ body {
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-3 ShareLinkButton">
-		</div>
+		<div class="col-sm-3 ShareLinkButton"></div>
 	</div>
 	<div class="col-sm-12 ShareLinkItem">
 		<div class="col-sm-3 ShareLinkLabel">本页链接：</div>
@@ -200,10 +210,10 @@ body {
 	<div class="col-sm-12 ShareLinkItem">
 		<div class="col-sm-3 ShareLinkLabel">动漫图片链接：</div>
 		<div class="col-sm-6">
-			<input id="imageLink" readonly="readonly" class="form-control input-sm" style="cursor: text;" value="${shotInfo.tietukuOUrlChangeDomain}">
+			<input id="imageLink" readonly="readonly" class="form-control input-sm" style="cursor: text;" value="${FullImageUrl}">
 		</div>
 		<div class="col-sm-3 ShareLinkButton">
-			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-text="${shotInfo.tietukuOUrlChangeDomain}" value="复制" />
+			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-text="${FullImageUrl}" value="复制" />
 		</div>
 	</div>
 </div>
