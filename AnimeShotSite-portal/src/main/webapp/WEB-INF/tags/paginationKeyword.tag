@@ -1,6 +1,9 @@
+<%@tag import="freemarker.template.utility.HtmlEscape"%>
+<%@tag import="org.springframework.boot.autoconfigure.condition.SearchStrategy"%>
 <%@ tag pageEncoding="UTF-8"%>
 <%@ attribute name="page" type="org.springframework.data.domain.Page" required="true"%>
 <%@ attribute name="paginationSize" type="java.lang.Integer"%>
+<%@ attribute name="searchKey1" type="java.lang.String"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%
@@ -19,6 +22,17 @@
 	//String requestURI = request.getRequestURI();
 	//request.setAttribute("paramStr", paramStr);
 	//request.setAttribute("paramStr", paramStr);
+
+	String searchName = request.getParameter("name");
+	String searchKeyword = request.getParameter("keyword");
+	String searchKey1Value = request.getParameter(searchKey1);
+
+	StringBuilder searchStr = new StringBuilder(200);
+	searchStr.append("?");
+	searchStr.append("name=" + searchName);
+	searchStr.append("&keyword=" + searchKeyword);
+	searchStr.append("&" + searchKey1 + "=" + searchKey1Value);
+	request.setAttribute("searchStr", searchStr.toString());
 %>
 
 <div align="center">
@@ -27,14 +41,14 @@
 			if (page.hasPrevious()) {
 		%>
 		<li>
-			<a href="?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />">&lt;&lt;</a>
+			<a href="<c:out value='${searchStr}' />">&lt;&lt;</a>
 		</li>
 		<li>
 			<c:if test="${current - 1 eq 1}">
-				<a href="?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />">&lt;</a>
+				<a href="<c:out value='${searchStr}' />">&lt;</a>
 			</c:if>
 			<c:if test="${current - 1 ne 1}">
-				<a href="?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />&page=${current - 1}">&lt;</a>
+				<a href="<c:out value='${searchStr}' />&page=${current - 1}">&lt;</a>
 			</c:if>
 		</li>
 		<%
@@ -60,10 +74,10 @@
 				<c:otherwise>
 					<li>
 						<c:if test="${i eq 1}">
-							<a href="?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />">${i}</a>
+							<a href="<c:out value='${searchStr}' />">${i}</a>
 						</c:if>
 						<c:if test="${i ne 1}">
-							<a href="?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />&page=${i}">${i}</a>
+							<a href="<c:out value='${searchStr}' />&page=${i}">${i}</a>
 						</c:if>
 					</li>
 				</c:otherwise>
@@ -74,10 +88,10 @@
 			if (page.hasNext()) {
 		%>
 		<li>
-			<a href="?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />&page=${current+1}">&gt;</a>
+			<a href="<c:out value='${searchStr}' />&page=${current+1}">&gt;</a>
 		</li>
 		<li>
-			<a href="?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />&page=${page.totalPages}">&gt;&gt;</a>
+			<a href="<c:out value='${searchStr}' />&page=${page.totalPages}">&gt;&gt;</a>
 		</li>
 		<%
 			} else {
@@ -119,9 +133,9 @@
 
 					// 跳转
 					if (goPageNumber == 1) {
-						document.location.href = "?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />";
+						document.location.href = "<c:out value='${searchStr}' />";
 					} else {
-						document.location.href = "?name=<c:out value='${name}' />&keyword=<c:out value='${keyword}' />" + "&page=" + goPageNumber;
+						document.location.href = "<c:out value='${searchStr}' />" + "&page=" + goPageNumber;
 					}
 				}
 			</script>
