@@ -3,6 +3,7 @@ package xie.base.service;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -119,7 +120,7 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 	public Page<M> searchPageByParams(Map<String, Object> searchParams, PageRequest pageRequest, Class<M> c) {
 
 		if (searchParams == null) {
-			searchParams = new HashMap<>();
+			searchParams = new LinkedHashMap<>();
 		}
 		searchParams.put("EQ_" + BaseEntity.COLUMN_DELETE_FLAG, Constants.FLAG_INT_NO);
 

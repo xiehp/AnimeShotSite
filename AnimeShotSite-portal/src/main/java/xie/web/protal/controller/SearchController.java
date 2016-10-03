@@ -1,7 +1,6 @@
 package xie.web.protal.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,9 +42,17 @@ public class SearchController extends BaseController {
 			@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "sortType", defaultValue = "createDate") String sortType,
 			@RequestParam(value = "sort", defaultValue = "DESC") String sort,
+			@RequestParam(value = "searchMode", required = false) Boolean searchMode,
 			@RequestParam(value = "keyword", required = false) String keyword,
 			@RequestParam(value = "name", required = false) String name,
 			Model model, ServletRequest request) throws Exception {
+
+		if (keyword == null && name == null) {
+			// 没有进行检索操作标志
+			model.addAttribute("isSearchFlag", false);
+		} else {
+			model.addAttribute("isSearchFlag", true);
+		}
 
 		if (name == null) {
 			name = "";
@@ -66,11 +73,11 @@ public class SearchController extends BaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//Order order1 = PageRequestUtil.createOrder(SubtitleLine, Direction.ASC);
+		// Order order1 = PageRequestUtil.createOrder(SubtitleLine, Direction.ASC);
 
 		PageRequest pageRequest = PageRequestUtil.buildPageRequest(pageNumber, 10, sortType, direction);
 		// Page<SubtitleLine> subtitleLinePage = subtitleLineService.searchPageByParams(searchParams, pageRequest, SubtitleLine.class);
-		Page<SubtitleLine> subtitleLinePage = subtitleLineService.searchSubtitleLineByText(name, keyword, pageRequest);
+		Page<SubtitleLine> subtitleLinePage = subtitleLineService.searchSubtitleLineByText(searchMode, name, keyword, pageRequest);
 
 		// Map<String, AnimeEpisode> animeEpisodeMap = new HashMap<>();
 		// Map<String, AnimeInfo> animeInfoMap = new HashMap<>();
@@ -127,17 +134,12 @@ public class SearchController extends BaseController {
 		// model.addAttribute("subtitleLineMap", subtitleLineMap);
 		model.addAttribute("searchResultMap", searchResultMap);
 
-		Map<String, Object> fff = new HashMap<>();
-		fff.put("aaa", "aaaValue");
-		fff.put("bbb", "bbbValue");
-
-		model.addAttribute("fff", fff);
-
 		// 将搜索条件编码成字符串，用于排序，分页的URL
 		searchParams.remove("LIKE_text");
 		searchParams.remove("EQ_id");
 		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
 
+		request.setAttribute("searchMode", searchMode);
 		request.setAttribute("name", name);
 		request.setAttribute("keyword", keyword);
 

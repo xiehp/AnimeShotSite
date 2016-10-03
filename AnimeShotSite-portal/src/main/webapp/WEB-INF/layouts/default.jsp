@@ -54,6 +54,7 @@
 <c:set var="jqueryCookieVersion" value="1.4.1" />
 <c:set var="zeroClipboardVersion" value="2.2.0" />
 <c:set var="jqueryUiVersion" value="1.12.1" />
+<c:set var="bootstrapSwitch" value="3.3.2" />
 
 <c:set var="useCdnStatic" value="bootcss" />
 <c:if test="${ useCdnStatic eq 'baidu' }">
@@ -75,6 +76,11 @@
 <script src="${ staticResourceUrl }jquery.form/${jqueryFormVersion}/jquery.form.min.js" type="text/javascript"></script>
 <script src="${ staticResourceUrl }jquery-cookie/${jqueryCookieVersion}/jquery.cookie.min.js" type="text/javascript"></script>
 <script src="${ staticResourceUrl }jqueryui/${jqueryUiVersion}/jquery-ui.min.js" type="text/javascript"></script>
+
+<!-- other -->
+<link href="${ staticResourceUrl }bootstrap-switch/${bootstrapSwitch}//css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+<script src="${ staticResourceUrl }bootstrap-switch/${bootstrapSwitch}/js//bootstrap-switch.min.js" type="text/javascript"></script>
+
 
 <script src="${ ctx }/static/js/homeBase.js" type="text/javascript"></script>
 </head>

@@ -31,7 +31,9 @@
 	searchStr.append("?");
 	searchStr.append("name=" + searchName);
 	searchStr.append("&keyword=" + searchKeyword);
-	searchStr.append("&" + searchKey1 + "=" + searchKey1Value);
+	if (searchKey1Value != null) {
+		searchStr.append("&" + searchKey1 + "=" + searchKey1Value);
+	}
 	request.setAttribute("searchStr", searchStr.toString());
 %>
 
@@ -108,6 +110,7 @@
 	</ul>
 
 	<div style="margin-top: -20px; margin-bottom: 20px; font-size: 8px;">
+		<input id="paginationPage_goPageSearchStr" type="hidden" value="<c:out value='${searchStr}' />">
 		<span> ${page.number + 1}/${page.totalPages}页 共${page.totalElements}条</span>
 		<c:if test="${page.totalPages > 1}">
 			跳转到 <input id="goPageNumber" type="text" style="width: 40px;"> 页 <input type="button" value="跳转" onclick="goPage()">
@@ -132,10 +135,13 @@
 					}
 
 					// 跳转
+					var searchStr = document.getElementById("paginationPage_goPageSearchStr").value;
 					if (goPageNumber == 1) {
-						document.location.href = "<c:out value='${searchStr}' />";
+						document.location.href = searchStr;
 					} else {
-						document.location.href = "<c:out value='${searchStr}' />" + "&page=" + goPageNumber;
+						var symbol = searchStr.indexOf("?") > -1 ? "&" : "?";
+						var url = searchStr + symbol + "page=" + goPageNumber;
+						document.location.href = url;
 					}
 				}
 			</script>

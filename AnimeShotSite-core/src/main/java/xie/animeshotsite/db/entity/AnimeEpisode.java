@@ -19,11 +19,13 @@ import org.jsoup.safety.Whitelist;
 import xie.base.entity.BaseEntity;
 
 @Entity
-@Table(name = "anime_episode")
+@Table(name = AnimeEpisode.TABLE_NAME)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AnimeEpisode extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
+
+	public static final String TABLE_NAME = "anime_episode";
 
 	public static final String COLUMN_FULL_NAME = "fullName";
 	public static final String COLUMN_SHOW_FLG = "showFlg";

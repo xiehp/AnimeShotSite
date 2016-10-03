@@ -46,7 +46,7 @@
 				"animeInfoId" : "code",
 				"animeNameSearch" : "label"
 			},
-			isAutoCleanSourceObj : false,
+			isAutoCleanSourceObj : true,
 			minLength : 0
 		});
 
@@ -55,7 +55,7 @@
 				"episodeInfoId" : "code",
 				"episodeNameSearch" : "label"
 			},
-			isAutoCleanSourceObj : false,
+			isAutoCleanSourceObj : true,
 			minLength : 0
 		});
 	});

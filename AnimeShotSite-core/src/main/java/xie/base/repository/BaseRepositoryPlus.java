@@ -1,5 +1,6 @@
 package xie.base.repository;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
@@ -16,7 +18,7 @@ public abstract class BaseRepositoryPlus<T> {
 	public abstract EntityManager getEntityManager();
 
 	@SuppressWarnings("unchecked")
-	public PageImpl<T> getResult(String queryHql, String countHql, Map<String, Object> map, PageRequest pageRequest) {
+	public <M> PageImpl<M> getResult(String queryHql, String countHql, Map<String, Object> map, PageRequest pageRequest) {
 		Query queryString = getEntityManager().createQuery(queryHql);
 		Query queryCount = getEntityManager().createQuery(countHql);
 
@@ -27,18 +29,65 @@ public abstract class BaseRepositoryPlus<T> {
 			queryCount.setParameter(key, map.get(key));
 		}
 
-		int first = pageRequest.getPageNumber() * pageRequest.getPageSize();
-		queryString.setFirstResult(first);
-		queryString.setMaxResults(pageRequest.getPageSize());
+		Long count = null;
+		if (pageRequest != null) {
+			int first = pageRequest.getPageNumber() * pageRequest.getPageSize();
+			queryString.setFirstResult(first);
+			queryString.setMaxResults(pageRequest.getPageSize());
+			count = (Long) queryCount.getSingleResult();
+		}
 
-		Long count = (Long) queryCount.getSingleResult();
-		List<T> list = queryString.getResultList();
+		List<M> list = null;
+		if (count != null && count == 0) {
+			list = new ArrayList<>();
+		} else {
+			list = queryString.getResultList();
+		}
 
-		return new PageImpl<T>(list, pageRequest, count);
+		if (pageRequest != null) {
+			return new PageImpl<M>(list, pageRequest, count);
+		} else {
+			return new PageImpl<M>(list);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public PageImpl<String> geIdResult(String queryHql, String countHql, Map<String, Object> map, PageRequest pageRequest) {
+	public <M> PageImpl<M> getResultNativeSql(String queryHql, String countHql, Map<String, Object> map, PageRequest pageRequest) {
+		Query queryString = getEntityManager().createNativeQuery(queryHql);
+		Query queryCount = getEntityManager().createNativeQuery(countHql);
+
+		Iterator<String> it = map.keySet().iterator();
+		while (it.hasNext()) {
+			String key = it.next();
+			queryString.setParameter(key, map.get(key));
+			queryCount.setParameter(key, map.get(key));
+		}
+
+		BigInteger count = null;
+		if (pageRequest != null) {
+			int first = pageRequest.getPageNumber() * pageRequest.getPageSize();
+			queryString.setFirstResult(first);
+			queryString.setMaxResults(pageRequest.getPageSize());
+			count = (BigInteger) queryCount.getSingleResult();
+		}
+
+		List<M> list = null;
+		if (count != null && count.equals(0)) {
+			list = new ArrayList<>();
+		} else {
+			list = queryString.getResultList();
+		}
+
+		if (pageRequest != null) {
+			return new PageImpl<M>(list, pageRequest, count.longValueExact());
+		} else {
+			return new PageImpl<M>(list);
+		}
+	}
+
+	@Deprecated
+	@SuppressWarnings("unchecked")
+	public Page<String> geIdResult(String queryHql, String countHql, Map<String, Object> map, PageRequest pageRequest) {
 		Query queryString = getEntityManager().createQuery(queryHql);
 		Query queryCount = getEntityManager().createQuery(countHql);
 
@@ -59,8 +108,12 @@ public abstract class BaseRepositoryPlus<T> {
 		return new PageImpl<String>(list, pageRequest, count);
 	}
 
-	public PageImpl<T> createEmptyPage(PageRequest pageRequest) {
-		List<T> list = new ArrayList<>();
-		return new PageImpl<T>(list, pageRequest, 0);
+	public <M> Page<M> createEmptyPage(PageRequest pageRequest) {
+		List<M> list = new ArrayList<>();
+		if (pageRequest == null) {
+			return new PageImpl<M>(list);
+		} else {
+			return new PageImpl<M>(list, pageRequest, 0);
+		}
 	}
 }

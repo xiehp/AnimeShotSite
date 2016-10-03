@@ -25,10 +25,6 @@ mark {
 	font-size: 12px;
 }
 
-.badge {
-	
-}
-
 .wordKeepLine {
 	width: 90%;
 	white-space: nowrap;
@@ -46,10 +42,15 @@ mark {
 	max-width: 1280px;
 }
 
-/*对bootrap样式调整 */
+/*对bootrap样式调整 开始 */
 .badge {
 	padding-bottom: 2px;
 }
+
+label {
+	font-weight: normal;
+}
+/*对bootrap样式调整 结束 */
 
 /* 截图下方的字幕式样 */
 .shotSubtitle td {

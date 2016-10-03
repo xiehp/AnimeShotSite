@@ -252,9 +252,11 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 	/**
 	 * 检索字幕文本<br>
 	 * 当检索文本中包含空格，则做分割，作为and条件合并<br>
+	 * 
+	 * @param searchMode true:精确检索, null或false:全文检索
 	 */
-	public Page<SubtitleLine> searchSubtitleLineByText(String animeName, String keyword, PageRequest pageRequest) {
-		Page<SubtitleLine> page = subtitleInfoDaoImpl.searchSubtitleLineByText(animeName, keyword, pageRequest);
+	public Page<SubtitleLine> searchSubtitleLineByText(Boolean searchMode, String animeName, String keyword, PageRequest pageRequest) {
+		Page<SubtitleLine> page = subtitleInfoDaoImpl.searchSubtitleLineByText(searchMode, animeName, keyword, pageRequest);
 		return page;
 	}
 
