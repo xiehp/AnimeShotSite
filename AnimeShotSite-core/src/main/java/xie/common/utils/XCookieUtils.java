@@ -13,6 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import xie.common.constant.XConst;
 import xie.common.string.XStringUtils;
 
+/**
+ * Cookie操作<br>
+ * PS:可以使用spring的cookie操作类{@link org.springframework.web.util.CookieGenerator}<br>
+ * 或者WebUtils.getCookie<br>
+ */
 public class XCookieUtils {
 	public static Map<String, String> getCookieMap(HttpServletRequest request, String name) throws UnsupportedEncodingException {
 		Map<String, String> map = new HashMap<String, String>();
