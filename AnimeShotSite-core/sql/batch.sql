@@ -45,3 +45,9 @@ and ANIME_INFO_ID in ('f39c57f455b0c65c0155c814c555014f','f39c57f455b0c65c0155bd
 -- and language = '1000'
 and (language = '4' or language = 'sc')
 ;
+
+
+-- 删除乖离页面的垃圾数据
+update comment_record set delete_flag = 1 where user_name = 'angelina' or content = 'angelina';
+update common_record set delete_flag = 1 where user_name = 'angelina' or name = '李明';
+
