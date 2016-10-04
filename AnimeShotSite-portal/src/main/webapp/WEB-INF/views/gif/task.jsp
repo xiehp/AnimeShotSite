@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <title>动态图片生成任务一览 第${shotTaskPage.number + 1}页 - 动画截图网</title>
@@ -63,7 +64,9 @@
 
 <div>
 	<!-- 标题 -->
-	<div class="blockTitle">动态图片生成任务一览</div>
+	<div class="blockTitle">
+		<spring:message code='动态图片生成任务一览' />
+	</div>
 
 	<!-- 截图一览 -->
 	<div class="row">
@@ -74,44 +77,48 @@
 				<input type="hidden" name="calcFlag" value="1">
 				<input type="hidden" name="saveFlag" value="1">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
-					<div class="col-sm-3">添加新任务</div>
+					<div class="col-sm-3">
+						<spring:message code='添加新任务' />
+					</div>
 				</div>
 				<!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
-					<div class="col-sm-3">动画名</div>
+					<div class="col-sm-3"><spring:message code='动画名' /></div>
 					<div class="col-sm-6">
 						<input name="animeInfoId" id="animeInfoId" type="hidden" />
-						<input name="animeNameSearch" id="animeNameSearch" class="form-control input-sm" placeholder="请输入动画名称" />
+						<input name="animeNameSearch" id="animeNameSearch" class="form-control input-sm" placeholder="<spring:message code='请输入' /><spring:message code='动画名' />" />
 					</div>
 				</div> -->
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
-					<div class="col-sm-3">剧集名</div>
+					<div class="col-sm-3">
+						<spring:message code='剧集名' />
+					</div>
 					<div class="col-sm-6">
 						<input name="episodeInfoId" id="episodeInfoId" type="hidden" />
-						<input name="episodeNameSearch" id="episodeNameSearch" class="form-control input-sm" placeholder="请输入剧集名称" />
+						<input name="episodeNameSearch" id="episodeNameSearch" class="form-control input-sm" placeholder="<spring:message code='请输入' /><spring:message code='剧集名' />" />
 					</div>
 				</div>
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
-					<div class="col-sm-3">开始时间</div>
+					<div class="col-sm-3">
+						<spring:message code='开始时间（分）' />
+					</div>
 					<div class="col-sm-6">
-						<input name="startTime" id="startTime" class="form-control input-sm" placeholder="请输入开始时间，单位秒" />
+						<input name="startTimeMinute" id="startTimeMinute" class="form-control input-sm" placeholder="<spring:message code='请输入' /><spring:message code='开始时间（分）' />" />
 					</div>
 				</div>
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
-					<div class="col-sm-3">开始时间（分）</div>
+					<div class="col-sm-3">
+						<spring:message code='开始时间（秒）' />
+					</div>
 					<div class="col-sm-6">
-						<input name="startTimeMinute" id="startTimeMinute" class="form-control input-sm" placeholder="请输入开始时间，单位分" />
+						<input name="startTimeSecond" id="startTimeSecond" class="form-control input-sm" placeholder="<spring:message code='请输入' /><spring:message code='开始时间（秒）' />" />
 					</div>
 				</div>
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
-					<div class="col-sm-3">开始时间（秒）</div>
-					<div class="col-sm-6">
-						<input name="startTimeSecond" id="startTimeSecond" class="form-control input-sm" placeholder="请输入开始时间，单位秒" />
+					<div class="col-sm-3">
+						<spring:message code='持续时间' />
 					</div>
-				</div>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
-					<div class="col-sm-3">持续时间</div>
 					<div class="col-sm-6">
-						<input name="continueTime" id="continueTime" class="form-control input-sm" placeholder="最长10秒" />
+						<input name="continueTime" id="continueTime" class="form-control input-sm" placeholder="<spring:message code='最长10秒' />" />
 					</div>
 				</div>
 
@@ -119,28 +126,30 @@
 				<div style="margin-top: 5px;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="col-sm-3"></div>
 					<div align="left" class="col-sm-9">
-						您的昵称
-						<input name="userName" value="<c:out value='${cookieUserName}' />" class="input-sm" placeholder="请输入您的昵称">
+						<spring:message code='您的昵称' />
+						<input name="userName" value="<c:out value='${cookieUserName}' />" class="input-sm">
 					</div>
 				</div>
 				<div style="margin-top: 5px;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="col-sm-3"></div>
 					<div align="left" class="col-sm-9">
-						数据名称
-						<input name="name" value="<c:out value='${name}' />" class="input-sm" placeholder="请给你的计算数据起个名字">
+						<spring:message code='数据名称' />
+						<input name="name" value="<c:out value='${name}' />" class="input-sm" placeholder="<spring:message code='请给你的计算数据起个名字' />">
 					</div>
 				</div>
 				<div style="margin-top: 10px;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="col-sm-3"></div>
 					<div align="left" class="col-sm-2">
-						<input type="button" class="btn btn-sm btn-primary" onclick="doGifTask();" value="获取gif动态图片" />
+						<input type="button" class="btn btn-sm btn-primary" onclick="doGifTask();" value="<spring:message code='获取gif动态图片' />" />
 					</div>
 				</div>
 				<div style="margin-top: 5px;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="col-sm-3"></div>
 					<div align="left" class="col-sm-9">
 						<div style="padding-top: 1px;" class="bdsharebuttonbox quickShareDivClass">
-							<a style="background-position: 0 -32px; padding-left: 0px; padding-right: 10px;" title="分享">分享</a>
+							<a style="background-position: 0 -32px; padding-left: 0px; padding-right: 10px;" title="<spring:message code='分享' />">
+								<spring:message code='分享' />
+							</a>
 							<a href="#" class="bds_mshare" data-cmd="mshare" title="百度一键分享"></a>
 							<a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
 							<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
@@ -159,26 +168,34 @@
 		<!-- 任务一览 -->
 		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 			<table class="table table-bordered table-hover table-condensed table-body-scroll">
-				<caption>任务一览</caption>
+				<caption>
+					<spring:message code='任务一览' />
+				</caption>
 				<thead style="display: block; width: 100%;">
 					<tr style="width: 100%;">
-						<td style="width: 40%;">
-							<nobr>动画名</nobr>
+						<!-- <td style="width: 40%;">
+							<nobr><spring:message code='动画名' /></nobr>
 						</td>
 						<td style="width: 40%;">
-							<nobr>开始时间</nobr>
+							<nobr><spring:message code='开始时间' /></nobr>
 						</td>
 						<td style="width: 40%;">
-							<nobr>持续时间</nobr>
-						</td>
+							<nobr><spring:message code='持续时间' /></nobr>
+						</td> -->
 						<td style="width: 40%;">
-							<nobr>任务开始时间</nobr>
+							<nobr>
+								<spring:message code='任务开始时间' />
+							</nobr>
 						</td>
 						<td style="width: 20%;">
-							<nobr>任务状态</nobr>
+							<nobr>
+								<spring:message code='任务状态' />
+							</nobr>
 						</td>
 						<td style="width: 40%;">
-							<nobr>任务结束时间</nobr>
+							<nobr>
+								<spring:message code='任务结束时间' />
+							</nobr>
 						</td>
 					</tr>
 				</thead>
@@ -203,6 +220,8 @@
 </div>
 
 <div>
-	<a class="btn btn-primary" href="${ctx}/">返回首页</a>
+	<a class="btn btn-primary" href="${ctx}/">
+		<spring:message code='返回首页' />
+	</a>
 </div>
 

@@ -5,6 +5,7 @@
 <%@ attribute name="paginationSize" type="java.lang.Integer"%>
 <%@ attribute name="searchKey1" type="java.lang.String"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <%
 	if (paginationSize == null) {
@@ -111,26 +112,29 @@
 
 	<div style="margin-top: -20px; margin-bottom: 20px; font-size: 8px;">
 		<input id="paginationPage_goPageSearchStr" type="hidden" value="<c:out value='${searchStr}' />">
-		<span> ${page.number + 1}/${page.totalPages}页 共${page.totalElements}条</span>
+		<span> ${page.number + 1}/${page.totalPages}<spring:message code='页' /> <spring:message code='共' />${page.totalElements}<spring:message code='条' /></span>
 		<c:if test="${page.totalPages > 1}">
-			跳转到 <input id="goPageNumber" type="text" style="width: 40px;"> 页 <input type="button" value="跳转" onclick="goPage()">
+			<spring:message code='跳转到' />
+			<input id="goPageNumber" type="text" style="width: 40px;">
+			<spring:message code='页' />
+			<input type="button" value="<spring:message code='跳转' />" onclick="goPage()">
 			<script type="text/javascript">
 				function goPage() {
 					var goPageNumber = document.getElementById("goPageNumber").value;
 					if (goPageNumber == null) {
-						$.showMessageModal("页数为空");
+						$.showMessageModal("<spring:message code='页数为空' />");
 						return;
 					}
 					if (isNaN(goPageNumber)) {
-						$.showMessageModal("页数必须数字");
+						$.showMessageModal("<spring:message code='页数必须数字' />");
 						return;
 					}
 					if (goPageNumber > parseInt("${page.totalPages}")) {
-						$.showMessageModal("没有该页-_-");
+						$.showMessageModal("<spring:message code='没有该页' />");
 						return;
 					}
 					if (goPageNumber < 1) {
-						$.showMessageModal("页数过小");
+						$.showMessageModal("<spring:message code='页数过小' />");
 						return;
 					}
 

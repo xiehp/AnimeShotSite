@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <c:set var="EpisodeFullName" value="${animeInfo.fullName} ${animeInfo.secondName} ${animeEpisode.divisionName}" />
 <c:set var="EpisodeFullNameWithTime" value="${EpisodeFullName} ${shotInfo.formatedTimeChina}" />
@@ -94,9 +95,11 @@ body {
 	</div>
 	<div style="margin-bottom: 3px;">
 		<div style="white-space: nowrap; word-break: keep-all;">
-			<div>开始时间：${TimeStamp}&nbsp;&nbsp;&nbsp; 时长：${ContinueTime}</div>
 			<div>
-				尺寸：<span id="imgWidth">${gifInfo.width}</span>×<span id="imgHeight">${gifInfo.height}</span>
+				<span><spring:message code='开始时间' />：${TimeStamp}&nbsp;&nbsp;&nbsp; <spring:message code='时长' />：${ContinueTime}</span>
+			</div>
+			<div>
+				<label><spring:message code='尺寸' />：</label><span id="imgWidth">${gifInfo.width}</span>×<span id="imgHeight">${gifInfo.height}</span>
 
 				<!-- <span style="font-size: xx-small;">设置图片宽度</span>
 				<input id="ShotViewImgWidth" type="text" value="${ShotViewImgWidth}" style="width: 50px; height: 18px; font-size: xx-small;" onchange="changeShotViewImgWidth();">
@@ -132,12 +135,10 @@ body {
 
 		<map id="planetmap" name="planetmap">
 			<c:if test="${!empty previousGifInfo.id}">
-				<area id="areaPrev" class="postByFromXXX" shape="rect" coords="0,0,200,5000" href="${ctx}/gif/view/${previousGifInfo.id}" title="上一张" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${previousGifInfo.formatedTimeChina}' />" />
-				<!-- <img alt="" src="${previousGifInfo.tietukuOUrlChangeDomain}" style="display: none;"> -->
+				<area id="areaPrev" class="postByFromXXX" shape="rect" coords="0,0,200,5000" href="${ctx}/gif/view/${previousGifInfo.id}" title="<spring:message code='上一张' />" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${previousGifInfo.formatedTimeChina}' />" />
 			</c:if>
 			<c:if test="${!empty nextGifInfo.id}">
-				<area id="areaNext" class="postByFromXXX" shape="rect" coords="500,0,5000,5000" href="${ctx}/gif/view/${nextGifInfo.id}" title="下一张" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${nextGifInfo.formatedTimeChina}' />" />
-				<!-- <img alt="" src="${nextGifInfo.tietukuOUrlChangeDomain}" style="display: none;"> -->
+				<area id="areaNext" class="postByFromXXX" shape="rect" coords="500,0,5000,5000" href="${ctx}/gif/view/${nextGifInfo.id}" title="<spring:message code='下一张' />" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${nextGifInfo.formatedTimeChina}' />" />
 			</c:if>
 		</map>
 	</div>
@@ -145,12 +146,14 @@ body {
 
 <div style="padding: 5px;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	<a class="btn btn-primary btn-sm" onclick="home.publicLike('${gifInfo.id}');">
-		<span class="glyphicon glyphicon-star"></span>喜欢
+		<span class="glyphicon glyphicon-star"></span>
+		<spring:message code='喜欢' />
 		<div id="publicLike_${gifInfo.id}" class="badge">${gifInfo.publicLikeCount}</div>
 	</a>
 	<c:if test="${IS_MASTER}">
 		<a class="btn btn-primary btn-sm" onclick="home.masterLike('${MANAGE_URL_STR}/gif/masterLike', '${gifInfo.id}');">
-			<span class="glyphicon glyphicon-star"></span>推荐
+			<span class="glyphicon glyphicon-star"></span>
+			<spring:message code='推荐' />
 			<div id="masterLike_${gifInfo.id}" class="badge">${gifInfo.masterRecommendRank}</div>
 		</a>
 		<a class="btn btn-primary btn-sm" onclick="home.setAnimeTitleImage('/tool/setAnimeTitleImage', '${animeInfo.id}', null, '${gifInfo.id}');"> 动画图片 </a>
@@ -160,28 +163,29 @@ body {
 
 <div style="padding: 5px;">
 	<c:if test="${!empty previousGifInfo.id}">
-		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/gif/view/${previousGifInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${previousGifInfo.formatedTimeChina}' />">上一张</a>
+		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/gif/view/${previousGifInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${previousGifInfo.formatedTimeChina}' />">
+			<spring:message code='上一张' />
+		</a>
 	</c:if>
 	<c:if test="${!empty nextGifInfo.id}">
-		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/gif/view/${nextGifInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${nextGifInfo.formatedTimeChina}' />">下一张</a>
+		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/gif/view/${nextGifInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${nextGifInfo.formatedTimeChina}' />">
+			<spring:message code='下一张' />
+		</a>
 	</c:if>
 </div>
 <!-- </form>  -->
 
 <div>
-	<a class="btn btn-primary btn-sm" href="${ctx}/gif/list" title="动态图片gif一览">返回动态图片一览</a>
+	<a class="btn btn-primary btn-sm" href="${ctx}/gif/list" title="<spring:message code='返回动态图片一览' />">
+		<spring:message code='返回动态图片一览' />
+	</a>
 </div>
-
-<%
-	request.getRequestURL();
-	//request.setAttribute("requestURI", request.getRequestURI());
-	//request.setAttribute("requestURL", request.getRequestURL());
-%>
-
 
 <div id="链接地址" class="row ShareLinkDiv">
 	<div class="col-sm-12 ShareLinkItem quickShareDivClass">
-		<div class="col-sm-3 ShareLinkLabel">分享本页：</div>
+		<div class="col-sm-3 ShareLinkLabel">
+			<label><spring:message code='分享本页' />：</label>
+		</div>
 		<div style="height: 24px;" align="center" class="col-sm-6">
 			<div style="display: block; width: 200px;">
 				<div style="margin-top: -4px;" class="bdsharebuttonbox">
@@ -192,28 +196,32 @@ body {
 					<a href="#" class="bds_bdxc" data-cmd="bdxc" title="分享到百度相册"></a>
 					<a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a>
 					<a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
-					<a href="#" class="bds_more" data-cmd="more" title="更多"></a>
+					<a href="#" class="bds_more" data-cmd="more" title="<spring:message code='更多' />"></a>
 				</div>
 			</div>
 		</div>
 		<div class="col-sm-3 ShareLinkButton"></div>
 	</div>
 	<div class="col-sm-12 ShareLinkItem">
-		<div class="col-sm-3 ShareLinkLabel">本页链接：</div>
+		<div class="col-sm-3 ShareLinkLabel">
+			<label><spring:message code='本页链接' />：</label>
+		</div>
 		<div class="col-sm-6">
 			<input id="pageLink" readonly="readonly" class="form-control input-sm" style="cursor: text;" value="http://www.acgimage.com${requestURI}">
 		</div>
 		<div class="col-sm-3 ShareLinkButton">
-			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-text="http://www.acgimage.com${requestURI}" value="复制" />
+			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-text="http://www.acgimage.com${requestURI}" value="<spring:message code='复制' />" />
 		</div>
 	</div>
 	<div class="col-sm-12 ShareLinkItem">
-		<div class="col-sm-3 ShareLinkLabel">动漫图片链接：</div>
+		<div class="col-sm-3 ShareLinkLabel">
+			<label><spring:message code='动漫图片链接' />：</label>
+		</div>
 		<div class="col-sm-6">
 			<input id="imageLink" readonly="readonly" class="form-control input-sm" style="cursor: text;" value="${FullImageUrl}">
 		</div>
 		<div class="col-sm-3 ShareLinkButton">
-			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-text="${FullImageUrl}" value="复制" />
+			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-text="${FullImageUrl}" value="<spring:message code='复制' />" />
 		</div>
 	</div>
 </div>

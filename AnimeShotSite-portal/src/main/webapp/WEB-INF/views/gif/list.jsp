@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <title>动态图片gif 第${gifInfoPage.number + 1}页 - 动画截图网</title>
@@ -37,7 +38,9 @@
 
 <div>
 	<!-- 标题 -->
-	<div class="blockTitle">动态图片${gifInfoPage.numberOfElements}张 共${gifInfoPage.totalElements}张图片</div>
+	<div class="blockTitle">
+		<spring:message code='动态图片Gif一览' />
+	</div>
 
 	<!-- 截图一览 -->
 	<div class="row">
@@ -56,11 +59,13 @@
 				</a>
 				<c:if test="${IS_MASTER}">
 					<div class="btn btn-primary btn-xs" onclick="home.publicLike('${gifInfo.id}');">
-						<span class="glyphicon glyphicon-star"></span>喜欢
+						<span class="glyphicon glyphicon-star"></span>
+						<spring:message code='喜欢' />
 						<div id="publicLike_${gifInfo.id}" class="badge" style="padding-top: 0px;">${gifInfo.publicLikeCount}</div>
 					</div>
 					<div class="btn btn-primary btn-xs" onclick="home.masterLike('${MANAGE_URL_STR}/gif/masterLike', '${gifInfo.id}');">
-						<span class="glyphicon glyphicon-star"></span>推荐
+						<span class="glyphicon glyphicon-star"></span>
+						<spring:message code='推荐' />
 						<div id="masterLike_${gifInfo.id}" class="badge" style="padding-top: 0px;">${gifInfo.masterRecommendRank}</div>
 					</div>
 				</c:if>
@@ -74,7 +79,11 @@
 </div>
 
 <div>
-	<a class="btn btn-primary" href="${ctx}/">返回首页</a>
-	<a class="btn btn-primary" href="${ctx}/gif/task">制作动态图片</a>
+	<a class="btn btn-primary" href="${ctx}/">
+		<spring:message code='返回首页' />
+	</a>
+	<a class="btn btn-primary" href="${ctx}/gif/task">
+		<spring:message code='制作动态图片' />
+	</a>
 </div>
 

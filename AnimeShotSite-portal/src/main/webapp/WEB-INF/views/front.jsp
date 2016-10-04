@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <head>
@@ -17,7 +18,7 @@
 	<div class="row-fluid">
 		<div id="最新动画剧集一览">
 			<div class="blockTitle">
-				<span>最新动画剧集一览</span> <span class="count"><a href="${ctx}/anime/list">当前剧集总数：${animeEpisodeCount}</a></span>
+				<span><spring:message code="最新动画剧集一览" /></span> <span class="count"><a href="${ctx}/anime/list"><spring:message code="当前剧集总数" />：${animeEpisodeCount}</a></span>
 			</div>
 			<div>
 				<div class="row">
@@ -42,7 +43,7 @@
 
 		<div id="推荐动漫图片">
 			<div class="blockTitle">
-				<span>推荐动漫图片</span>
+				<span><spring:message code="推荐动漫图片" /></span>
 			</div>
 			<div class="row">
 				<c:forEach items="${ masterRecommandShotList }" var="shot" varStatus="status" end="29">
@@ -64,7 +65,7 @@
 		<c:if test="${false}">
 			<div id="点击热度图片">
 				<div class="blockTitle">
-					<span>点击热度图片</span>
+					<span><spring:message code="点击热度图片" /></span>
 				</div>
 				<div class="row">
 					<c:forEach items="${ publicLikeShotList }" var="shot" varStatus="status" end="23">
@@ -86,7 +87,7 @@
 
 		<div id="最新截图展示">
 			<div class="blockTitle">
-				<span>最新截图展示</span> <span class="count">当前截图总数：${shotCount}</span>
+				<span><spring:message code="最新截图展示" /></span> <span class="count"><spring:message code="当前截图总数" />：${shotCount}</span>
 			</div>
 			<div class="row">
 				<c:forEach items="${ newestShotList }" var="shot" varStatus="status" end="11">
@@ -106,11 +107,11 @@
 		</div>
 
 		<div align="left">
-			<h1 style="font-size: 14px;">本站提供动画完整的动漫图片 动画图片以及字幕台词。截图图片一般以5秒为间隔，图片尽量为1080P，不包含字幕台词，字幕台词尽量以外挂的形式显示。</h1>
+			<h1 style="font-size: 14px;"><spring:message code="本站说明" /></h1>
 		</div>
 
 		<div style="padding-top: 1px;" class="bdsharebuttonbox quickShareDivClass">
-			<a style="background-position: 0 -32px;padding-left: 0px;padding-right: 10px;" title="分享本站">分享本站</a>
+			<a style="background-position: 0 -32px;padding-left: 0px;padding-right: 10px;" title="<spring:message code="分享本站" />"><spring:message code="分享本站" /></a>
 			<a href="#" class="bds_mshare" data-cmd="mshare" title="百度一键分享"></a>
 			<a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
 			<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
@@ -119,7 +120,7 @@
 			<a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a>
 			<a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
 			<a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
-			<a href="#" class="bds_more" data-cmd="more" title="更多"></a>
+			<a href="#" class="bds_more" data-cmd="more" title="<spring:message code="更多" />"></a>
 		</div>
 	</div>
 </div>

@@ -3,9 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<title>动画截图网 随便看 帮你随机挑选20张动漫图片</title>
+<title><spring:message code='随便看帮你随机挑选20张动漫图片' /> - 动画截图网</title>
 <style>
 .blockTitle {
 	margin-top: 10px;
@@ -33,7 +34,7 @@
 </script>
 <div>
 	<!-- 标题 -->
-	<div class="blockTitle">帮你随机选出了${ shotInfoList.size() }张图</div>
+	<div class="blockTitle"><spring:message code='帮你随机选出了' />${ shotInfoList.size() }<spring:message code='张图' /></div>
 
 	<!-- 截图一览 -->
 	<div class="row">
@@ -48,7 +49,7 @@
 						${shotInfo.formatedMinSec}<span style="color: lightgray;">:${shotInfo.formatedMicroSec}</span>
 						<div style="margin-bottom: 10px;">
 							<a class="btn btn-primary btn-xs" onclick="publicLike('${shotInfo.id}');">
-								<span class="glyphicon glyphicon-star"></span>喜欢
+								<span class="glyphicon glyphicon-star"></span><spring:message code='喜欢' />
 								<div id="publicLike_${shotInfo.id}" class="badge">${shotInfo.publicLikeCount}</div>
 							</a>
 						</div>

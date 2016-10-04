@@ -1,15 +1,23 @@
 package xie.web.controller;
 
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.LocaleEditor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.db.service.ImageUrlService;
@@ -27,6 +35,8 @@ public class ToolController extends BaseController {
 	ImageUrlService imageUrlService;
 	@Autowired
 	ShotSiteSetup shotSiteSetup;
+	@Autowired
+	protected MessageSource messageSource;
 
 	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/cleanCache")
@@ -77,5 +87,34 @@ public class ToolController extends BaseController {
 		}
 
 		return map;
+	}
+
+	@RequestMapping(value = "/changeLanguage")
+	@ResponseBody
+	public ModelMap changeLanguage(
+			@RequestParam String new_lang,
+			HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> map;
+
+		try {
+			LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+			if (localeResolver == null) {
+				throw new IllegalStateException("No LocaleResolver found: not in a DispatcherServlet request?");
+			}
+
+			if (XStringUtils.isNotBlank(new_lang)) {
+				LocaleEditor localeEditor = new LocaleEditor();
+				localeEditor.setAsText(new_lang);
+				localeResolver.setLocale(request, response, (Locale) localeEditor.getValue());
+				map = getSuccessCode(messageSource.getMessage("切换语言成功", null, localeResolver.resolveLocale(request)));
+			} else {
+				localeResolver.setLocale(request, response, null);
+				map = getSuccessCode(messageSource.getMessage("清除语言成功", null, localeResolver.resolveLocale(request)));
+			}
+
+		} catch (Exception ex) {
+			map = getFailCode("切换语言失败");
+		}
+		return new ModelMap(map);
 	}
 }

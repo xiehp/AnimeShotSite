@@ -61,3 +61,16 @@ function HomeFuction() {
 }
 
 var home = new HomeFuction();
+
+function changeLanguage(language) {
+	param = {};
+	param.new_lang = language;
+	$.homePost("/tool/changeLanguage", param, function(data) {
+		if (data.hashMap.success) {
+			$.showMessageModal(data.hashMap.message);
+			window.location.reload();
+		} else {
+			$.showMessageModal(data.hashMap.message);
+		}
+	});
+}

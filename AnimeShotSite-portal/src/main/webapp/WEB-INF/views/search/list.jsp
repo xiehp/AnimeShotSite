@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <head>
@@ -200,21 +201,21 @@
 	<!-- 搜索框 -->
 	<div class="row">
 		<div class="col-sm-12" style="margin-bottom: 20px;">
-			<span style="font-size: 20px;">请输入要搜索的动画名</span>
+			<span style="font-size: 20px;"><spring:message code='请输入要搜索的动画名' /></span>
 			<input class="input-lg enter-search-event" id="animeName" name="animeName" value="<c:out value='${name}' />">
 			<input type="hidden" id="animeNameHidden" value="<c:out value='${name}' />">
 		</div>
 		<div class="col-sm-12" style="margin-bottom: 20px;">
-			<span style="font-size: 20px;">输入要搜索的字幕台词</span>
+			<span style="font-size: 20px;"><spring:message code='输入要搜索的字幕台词' /></span>
 			<input class="input-lg enter-search-event" id="keyword" name="keyword" value="<c:out value='${keyword}' />">
 			<input type="hidden" id="keywordHidden" value="<c:out value='${keyword}' />">
 		</div>
 		<div class="col-sm-12" style="margin-bottom: 20px;">
 			<div style="width: 110px; display: inline-block;">
-				<input data-on-text="精确搜索" data-off-text="模糊搜索" data-label-width="0" data-handle-width="60" style="display: none;" type="checkbox" id="searchMode" name="searchMode" class="bootstrap-switch-small" ${searchMode ? 'checked' : ''}>
+				<input data-on-text="<spring:message code='精确搜索' />" data-off-text="<spring:message code='模糊搜索' />" data-label-width="0" data-handle-width="60" style="display: none;" type="checkbox" id="searchMode" name="searchMode" class="bootstrap-switch-small" ${searchMode ? 'checked' : ''}>
 			</div>
 			<a herf="javascript:void(0);" class="btn btn-lg btn-primary" onclick="searchKeyword();">
-				<i class="glyphicon glyphicon-search"></i> 搜索
+				<i class="glyphicon glyphicon-search"></i> <spring:message code='搜索' />
 			</a>
 		</div>
 	</div>
@@ -229,15 +230,15 @@
 		<h1 style="font-size: 25px; text-align: center;"><c:if test="${!empty subtitleLinePage and subtitleLinePage.totalElements > 0}">
 				<c:out value='${name}' />
 				<c:out value='${keyword}' />
-				搜索结果
-				<small>第${subtitleLinePage.number + 1}/${subtitleLinePage.totalPages}页</small>
+				<spring:message code='搜索结果' />
+				<small><spring:message code='第' />${subtitleLinePage.number + 1}/${subtitleLinePage.totalPages}<spring:message code='页' /></small>
 			</c:if></h1>
 	</div>
 
 	<!-- 搜索结果 -->
 	<c:if test="${isSearchFlag && subtitleLinePage.totalPages == 0}">
 		<div>
-			<span style="font-size: 20px;">没有搜索到任何结果 -_-||</span>
+			<span style="font-size: 20px;"><spring:message code='没有搜索到任何结果' /></span>
 		</div>
 	</c:if>
 

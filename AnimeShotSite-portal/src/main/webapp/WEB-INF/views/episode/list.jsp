@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <title><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> - 动画截图网</title>
@@ -34,7 +35,7 @@
 				<!-- 动画简介 -->
 				<c:if test="${!empty animeInfo.summary}">
 					<div class="AnimeSummary" style="text-align: left;">
-						<div style="font-weight: 700;">动画简介</div>
+						<div style="font-weight: 700;"><spring:message code='动画简介' /></div>
 						<div>${animeInfo.summary}</div>
 					</div>
 				</c:if>
@@ -43,7 +44,7 @@
 
 		<!-- 列表 -->
 		<div class="blockTitle">
-			<span>动画剧集一览</span>
+			<span><spring:message code='动画剧集一览' /></span>
 		</div>
 		<div class="row" style="margin-top: 10px;">
 			<c:forEach items="${ animeEpisodePage.content }" var="animeEpisode">
@@ -65,6 +66,6 @@
 </div>
 
 <div>
-	<a class="btn btn-primary" href="${ctx}/anime/list/${animeEpisode.animeInfoId}">返回动画列表</a>
+	<a class="btn btn-primary" href="${ctx}/anime/list/${animeEpisode.animeInfoId}"><spring:message code='返回动画列表' /></a>
 </div>
 
