@@ -1,20 +1,25 @@
-// 读取cookie，并且设置图片尺寸
-// isCreateDom:是否正在创建dom的过程中
+var orImgWidth = 16; // 预想中的图片宽度比例，不能直接使用
+var orImgHeight = 9; // 预想中的图片高度比例，不能直接使用
+var divPaddingLen = 4; // bootstrap的thumbnail类中设定的padding宽度
+var divBorderLen = 1; // bootstrap的thumbnail类中设定的border宽度
+
+/**
+ * 读取cookie，并且设置图片尺寸，该尺寸为预想中的尺寸，可能和实际尺寸有出入，真实的尺寸在图片读入成功后再次设定<br>
+ * isCreateDom:是否正在创建dom的过程中<br>
+ */
 function readCookieAndSetWidth(isCreateDom) {
 	var ShotViewImgWidth = $.cookie("ShotViewImgWidth");
 	$.log("读取设置图片尺寸cookie:" + ShotViewImgWidth);
-	var orImgWidth = 16;
-	var orImgHeight = 9;
-	var divPaddingLen = 4;
-	var divBorderLen = 1;
 
 	if (!isNaN(ShotViewImgWidth) && ShotViewImgWidth > 0) {
 		// 有cookie
+		var ShotViewImgDivWidth = ShotViewImgWidth * 1 + divPaddingLen * 2 + divBorderLen * 2;
 		if (isCreateDom) {
-			var setHeight = ShotViewImgWidth * orImgHeight / orImgWidth + divPaddingLen + divBorderLen;
-			$("#shotImgDiv").css("width", ShotViewImgWidth);
-			$("#shotImgDiv").css("height", setHeight);
-			$.log("设置图片div尺寸:" + ShotViewImgWidth + "," + setHeight);
+			var setImgHeight = ShotViewImgWidth * orImgHeight / orImgWidth;
+			var setImgDivHeight = setImgHeight + divPaddingLen * 2 + divBorderLen * 2;
+			$("#shotImgDiv").css("width", ShotViewImgDivWidth);
+			$("#shotImgDiv").css("height", setImgDivHeight);
+			$.log("设置图片div尺寸:" + ShotViewImgDivWidth + "," + setImgDivHeight);
 		} else {
 			$("#ShotViewImgWidth").val(ShotViewImgWidth);
 		}
@@ -25,7 +30,7 @@ function readCookieAndSetWidth(isCreateDom) {
 			divWidth = parseFloat(divWidth);
 			$.log("当前div宽度:" + divWidth);
 			if (!isNaN(divWidth) && divWidth > 0) {
-				var setHeight = divWidth * orImgHeight / orImgWidth + divPaddingLen + divBorderLen;
+				var setHeight = (divWidth - divPaddingLen * 2 - divBorderLen * 2) * orImgHeight / orImgWidth + divPaddingLen * 2 + divBorderLen * 2;
 				$("#shotImgDiv").css("height", setHeight);
 				$.log("设置图片div尺寸:" + divWidth + "," + setHeight);
 			}
@@ -72,7 +77,9 @@ function initZeroClipboard(obj) {
 	});
 }
 
-// 定时执行获取宽高
+/**
+ * 定时执行获取图片的高宽
+ */
 var checkImgSize = function(imgDomObject, maxCheckCount) {
 	if (maxCheckCount <= 0) {
 		return;
@@ -125,7 +132,9 @@ var checkImgSize = function(imgDomObject, maxCheckCount) {
 	}, 200);
 };
 
-// 动态生成左右图片热点链接
+/**
+ * 动态生成左右图片热点链接
+ */
 function reCreateImgHotLink(width, height) {
 	var jqueryShotImg = $("#shotImg");
 	var shotImg = jqueryShotImg[0];
@@ -171,12 +180,12 @@ function changeShotViewImgWidth(saveToCookieFlag) {
 		}
 
 		// 设置图片尺寸
-		var width = ShotViewImgWidth;
-		var height = '';
-		$("#shotImgDiv").css("width", width);
-		$("#shotImgDiv").css("height", height);
+		var divWidth = ShotViewImgWidth * 1 + divPaddingLen * 2 + divBorderLen * 2;
+		var divHeight = '';
+		$("#shotImgDiv").css("width", divWidth);
+		$("#shotImgDiv").css("height", divHeight);
 		// $("#shotImg").css("width", ShotViewImgWidth);
-		$.log("改变图片div尺寸：" + width + ", " + height);
+		$.log("改变图片div尺寸：" + divWidth + ", " + divHeight);
 	}
 
 	reCreateImgHotLink();
