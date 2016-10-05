@@ -71,10 +71,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 			logger.warn("shotSiteSetup未初始化，从新获取shotSiteSetup：{}", shotSiteSetup);
 		}
 		if (XStringUtils.isNotBlank(shotSiteSetup.getAnimesiteServerHost())) {
-			String hostName = request.getHeader("X-Forwarded-Host");
-			if (XStringUtils.isBlank(hostName)) {
-				hostName = request.getServerName();
-			}
+			String hostName = XSSHttpUtil.getRemoteServerName(request);
 
 			if ("127.0.0.1".equals(hostName) || "localhost".equals(hostName)) {
 				// 来自本地，则不做跳转
@@ -85,7 +82,6 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 					if (hostName.contains("acgimage.cn") || hostName.contains("acgimage.com")) {
 						// serverName不符合配置文件设定的值，进行跳转
 						response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-						// response.sendRedirect("//" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
 						response.setHeader("Location", "//" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
 						return false;
 					} else {
@@ -204,6 +200,16 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 				// server处理
 				request.setAttribute("requestURI", request.getRequestURI());
 				request.setAttribute("requestURL", request.getRequestURL());
+
+				// 设置当前http或https
+				String serverName = shotSiteSetup.getAnimesiteServerHost();
+				if (XStringUtils.isBlank(serverName)) {
+					serverName = XSSHttpUtil.getRemoteServerName(request) + ":" + XSSHttpUtil.getRemotePort(request);
+				}
+				String siteBaseUrl = request.getScheme() + "://" + serverName + request.getContextPath();
+				shotSiteSetup.getAnimesiteServerHost();
+				request.setAttribute("httpScheme", request.getScheme());
+				request.setAttribute("siteBaseUrl", siteBaseUrl);
 			}
 		}
 	}

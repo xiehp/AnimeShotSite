@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 
+import xie.common.string.XStringUtils;
 import xie.common.utils.string.StringUtil;
 
 /**
@@ -410,5 +411,23 @@ public class XSSHttpUtil {
 	public static String getIpAddrFirst(final HttpServletRequest request) {
 		String[] ips = getIpAddrArray(request);
 		return ips[0];
+	}
+
+	public static String getRemoteServerName(final HttpServletRequest request) {
+		String hostName = request.getHeader("X-Forwarded-Host");
+		if (XStringUtils.isBlank(hostName)) {
+			hostName = request.getServerName();
+		}
+
+		return hostName;
+	}
+
+	public static String getRemotePort(final HttpServletRequest request) {
+		String port = request.getHeader("X-Forwarded-Port");
+		if (XStringUtils.isBlank(port)) {
+			port = String.valueOf(request.getServerPort());
+		}
+
+		return port;
 	}
 }

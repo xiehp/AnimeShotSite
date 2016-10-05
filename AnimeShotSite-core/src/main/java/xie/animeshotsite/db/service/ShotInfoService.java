@@ -54,11 +54,10 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		String url = shotInfoVO.getTietukuOUrl();
 		if (url != null) {
 			String lowerUrl = url.toLowerCase();
+			// 可以替换的贴图库图片服务器，新加的由于对应域名需要ca证书，并且几个图片服务器之间不能互通，因此不转换直接使用原地址
 			if (XStringUtils.containWith(lowerUrl, shotSiteSetup.getTietukuChangeDoman())) {
 				String siteDomain = shotSiteSetup.getSiteDomain();
-				// 可以替换的贴图库图片服务器，新加的由于需要进行
-				url = url.replaceAll("\\.[a-z0-9]+\\.[a-z]+", "." + siteDomain);
-				if (lowerUrl.contains("p1.") || lowerUrl.contains("p2.") || lowerUrl.contains("p3.") || lowerUrl.contains("p4.")) {
+				if (XStringUtils.isNotBlank(siteDomain)) {
 					url = url.replaceAll("\\.[a-z0-9]+\\.[a-z]+", "." + siteDomain);
 				}
 			}

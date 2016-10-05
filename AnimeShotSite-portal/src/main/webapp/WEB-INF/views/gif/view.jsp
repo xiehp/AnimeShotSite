@@ -8,6 +8,7 @@
 <c:set var="EpisodeFullName" value="${animeInfo.fullName} ${animeInfo.secondName} ${animeEpisode.divisionName}" />
 <c:set var="EpisodeFullNameWithTime" value="${EpisodeFullName} ${shotInfo.formatedTimeChina}" />
 <c:set var="FullImageUrl" value="${gifInfo.tietukuOUrlChangeDomain}" />
+<c:set var="ThisPageUrl" value="${siteBaseUrl}/gif/view/${gifInfo.id}" />
 
 <head>
 
@@ -17,9 +18,9 @@
 
 <meta property="og:title" content="<c:out value='${EpisodeFullNameWithTime}' /> 动态图片gif" />
 <meta property="og:type" content="photo" />
-<meta property="og:url" content="${ctx}/gif/view/${gifInfo.id}" />
+<meta property="og:url" content="${ThisPageUrl}" />
 <meta property="og:image" content="${FullImageUrl}" />
-<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:type" content="image/gif" />
 
 <!-- schema.org -->
 <script type="application/ld+json">
@@ -207,10 +208,10 @@ body {
 			<label><spring:message code='本页链接' />：</label>
 		</div>
 		<div class="col-sm-6">
-			<input id="pageLink" readonly="readonly" class="form-control input-sm" style="cursor: text;" value="http://www.acgimage.com${requestURI}">
+			<input id="pageLink" readonly="readonly" class="form-control input-sm" style="cursor: text;" value="${ThisPageUrl}">
 		</div>
 		<div class="col-sm-3 ShareLinkButton">
-			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-text="http://www.acgimage.com${requestURI}" value="<spring:message code='复制' />" />
+			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-text="${ThisPageUrl}" value="<spring:message code='复制' />" />
 		</div>
 	</div>
 	<div class="col-sm-12 ShareLinkItem">

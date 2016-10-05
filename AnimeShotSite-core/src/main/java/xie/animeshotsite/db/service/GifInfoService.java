@@ -28,6 +28,7 @@ import xie.base.repository.BaseRepository;
 import xie.base.service.BaseService;
 import xie.common.date.DateUtil;
 import xie.common.number.XNumberUtils;
+import xie.common.string.XStringUtils;
 
 @Service
 public class GifInfoService extends BaseService<GifInfo, String> {
@@ -53,16 +54,16 @@ public class GifInfoService extends BaseService<GifInfo, String> {
 
 		String url = gifInfoVO.getTietukuOUrl();
 		if (url != null) {
-			String siteDomain = shotSiteSetup.getSiteDomain();
 			String lowerUrl = url.toLowerCase();
-			if (lowerUrl.contains("i1.") || lowerUrl.contains("i2.") || lowerUrl.contains("i3.") || lowerUrl.contains("i4.")) {
-				url = url.replaceAll("\\.[a-z0-9]+\\.[a-z]+", "." + siteDomain);
+			// 可以替换的贴图库图片服务器，新加的由于对应域名需要ca证书，并且几个图片服务器之间不能互通，因此不转换直接使用原地址
+			if (XStringUtils.containWith(lowerUrl, shotSiteSetup.getTietukuChangeDoman())) {
+				String siteDomain = shotSiteSetup.getSiteDomain();
+				if (XStringUtils.isNotBlank(siteDomain)) {
+					url = url.replaceAll("\\.[a-z0-9]+\\.[a-z]+", "." + siteDomain);
+				}
 			}
-			if (lowerUrl.contains("p1.") || lowerUrl.contains("p2.") || lowerUrl.contains("p3.") || lowerUrl.contains("p4.")) {
-				url = url.replaceAll("\\.[a-z0-9]+\\.[a-z]+", "." + siteDomain);
-			}
-			gifInfoVO.setTietukuOUrlChangeDomain(url);
 		}
+		gifInfoVO.setTietukuOUrlChangeDomain(url);
 
 		return gifInfoVO;
 	}
