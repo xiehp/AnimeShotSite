@@ -40,7 +40,13 @@ public class ShotSiteSetup {
 	@Value("#{" + XSpringConstants.SPRING_PROPERTIES_ID + "['animesite.js.debug']}")
 	private String animesiteJsDebug;
 
+	/** 不需要进行网站访问统计的IP，一般为一些爬虫或漏洞检测IP */
 	private List<String> excludeIpsRuleList;
+
+	/** 指定哪些贴图库网址转成自己的域名 */
+	private String[] tietukuChangeDoman = new String[] {
+			"i1.piimg.com", "i2.piimg.com", "i3.piimg.com", "i4.piimg.com",
+			"i1.buimg.com", "i2.buimg.com", "i3.buimg.com", "i4.buimg.com"};
 
 	public String getProperty(String key) {
 		return properties.getProperty(key);
@@ -79,6 +85,14 @@ public class ShotSiteSetup {
 		} catch (IOException e) {
 			logger.error("读取排除文件发生异常", e);
 		}
+	}
+
+	public String[] getTietukuChangeDoman() {
+		return tietukuChangeDoman;
+	}
+
+	public void setTietukuChangeDoman(String[] tietukuChangeDoman) {
+		this.tietukuChangeDoman = tietukuChangeDoman;
 	}
 
 }
