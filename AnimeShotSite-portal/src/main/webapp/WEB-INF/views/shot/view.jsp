@@ -102,7 +102,7 @@ body {
 			</div>
 			<div class="col-sm-8 col-xs-12">
 				<label><spring:message code='尺寸' />：</label><span id="imgWidth">${animeEpisode.width}</span>×<span id="imgHeight">${animeEpisode.height}</span> <span style="font-size: xx-small;"><spring:message code='设置图片宽度' /></span>
-				<input id="ShotViewImgWidth" type="text" value="${ShotViewImgWidth}" style="width: 50px; height: 18px; font-size: xx-small;" onchange="changeShotViewImgWidth();">
+				<input id="ShotViewImgWidth" type="text" value="${ShotViewImgWidth}" style="width: 50px; height: 18px; font-size: xx-small;" onchange="changeShotViewImgWidth(true);">
 				<input id="ShotImgDivWidth" type="hidden" value="${ShotImgDivWidth}">
 			</div>
 		</div>

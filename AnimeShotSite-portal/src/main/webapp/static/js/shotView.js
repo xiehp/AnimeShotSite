@@ -141,7 +141,7 @@ function reCreateImgHotLink(width, height) {
 	$.log("图片右热点设置：" + $("#areaNext").attr("coords"));
 }
 
-function changeShotViewImgWidth() {
+function changeShotViewImgWidth(saveToCookieFlag) {
 	var ShotViewImgWidth = $("#ShotViewImgWidth").val();
 	if (ShotViewImgWidth != null && isNaN(ShotViewImgWidth)) {
 		$("#ShotViewImgWidth").val("");
@@ -162,9 +162,14 @@ function changeShotViewImgWidth() {
 	} else {
 		if (originalImg != null && originalImg.width > 0 && ShotViewImgWidth > originalImg.width) {
 			ShotViewImgWidth = originalImg.width;
-			$("#ShotViewImgWidth").val(ShotViewImgWidth);
+			if (saveToCookieFlag) {
+				$("#ShotViewImgWidth").val(ShotViewImgWidth);
+			}
 		}
-		HomeCookie.setCookie("ShotViewImgWidth", ShotViewImgWidth);
+		if (saveToCookieFlag) {
+			HomeCookie.setCookie("ShotViewImgWidth", ShotViewImgWidth);
+		}
+
 		// 设置图片尺寸
 		var width = ShotViewImgWidth;
 		var height = '';
