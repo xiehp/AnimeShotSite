@@ -7,9 +7,9 @@
 
 <head>
 <c:if test="${not isSinglePage}">
-	<title><c:out value='乖离性百万亚瑟王 伤害计算器 乖离性MA 计算公式' /></title>
-	<meta name="keywords" content="乖离性百万亚瑟王 伤害计算器 乖离性MA 计算公式" />
-	<meta name="description" content="乖离性百万亚瑟王 伤害计算器 乖离性MA 计算公式" />
+	<title><c:out value='乖离性百万亚瑟王 伤害计算器 乖离性MA 计算公式 乖離性ミリオンアーサー ダメージ電卓' /></title>
+	<meta name="keywords" content="乖离性百万亚瑟王 伤害计算器 乖离性MA 计算公式 乖離性ミリオンアーサー ダメージ電卓" />
+	<meta name="description" content="乖离性百万亚瑟王 伤害计算器 乖离性MA 计算公式 乖離性ミリオンアーサー ダメージ電卓" />
 </c:if>
 <c:if test="${isSinglePage}">
 	<title><c:out value='${commonRecord.name}' /> - <c:out value='${commonRecord.userName}' /> - 乖离性MA 伤害计算器</title>
