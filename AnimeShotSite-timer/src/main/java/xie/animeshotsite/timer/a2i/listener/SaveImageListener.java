@@ -181,7 +181,7 @@ public class SaveImageListener extends Video2ImageAdapter {
 			TietukuUploadResponse tietukuUploadResponse =  postImage.uploadToTietuku(file, tietukuToken);
 			String tietukuUrl =tietukuUploadResponse.getLinkurl();
 
-			String tietukuImageUrlPrefix = TietukuUtils.getImageUrlPrefixWithoutHttp(tietukuUrl);
+			String tietukuImageUrlPrefix = TietukuUtils.getImageUrlPrefix(tietukuUrl, true);
 			String tietukuImageUrlId = TietukuUtils.getImageUrlID(tietukuUrl);
 
 			// 更新贴图库数据库
