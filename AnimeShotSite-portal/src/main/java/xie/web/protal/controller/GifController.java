@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springside.modules.web.Servlets;
 
 import xie.animeshotsite.constants.SysConstants;
@@ -42,6 +43,7 @@ import xie.base.controller.BaseFunctionController;
 import xie.common.Constants;
 import xie.common.date.DateUtil;
 import xie.common.json.XJsonUtil;
+import xie.common.string.XStringUtils;
 import xie.common.utils.XCookieUtils;
 import xie.common.web.util.ConstantsWeb;
 
@@ -65,8 +67,6 @@ public class GifController extends BaseFunctionController<GifInfo, String> {
 	private SubtitleInfoService subtitleInfoService;
 	@Autowired
 	private SubtitleLineService subtitleLineService;
-	@Autowired
-	private SubtitleLineDao subtitleLineDao;
 	@Autowired
 	private EntityCache entityCache;
 	@Autowired
@@ -134,25 +134,12 @@ public class GifController extends BaseFunctionController<GifInfo, String> {
 		return getUrlRedirectPath("list/" + animeEpisodeId + "?page=" + pageNumber);
 	}
 
-	private List<String> defaultShowLanage = new ArrayList<String>();
-
-	{
-		defaultShowLanage = new ArrayList<String>();
-		defaultShowLanage.add("jp");
-		defaultShowLanage.add("sc");
-		defaultShowLanage.add("1000");
-	}
-
 	@RequestMapping(value = "/view/{id}")
 	public String shotView(
 			@PathVariable String id,
 			@RequestParam(required = false) String scorllTop,
 			@RequestParam(required = false) List<String> showLanage,
 			Model model, HttpServletRequest request) throws Exception {
-
-		if (showLanage == null || showLanage.size() == 0) {
-			showLanage = this.defaultShowLanage;
-		}
 
 		GifInfo gifInfo = gifInfoDao.findOne(id);
 		gifInfo = gifInfoService.convertToVO(gifInfo);
@@ -186,6 +173,15 @@ public class GifController extends BaseFunctionController<GifInfo, String> {
 		model.addAttribute("nextGifInfo", gifInfoService.convertToVO(nextGifInfo));
 
 		// 搜索字幕
+		if (showLanage == null || showLanage.size() == 0) {
+			String localeLanguage = "";
+			if (RequestContextUtils.getLocale(request) != null) {
+				String language = RequestContextUtils.getLocale(request).getLanguage();
+				String country = RequestContextUtils.getLocale(request).getCountry();
+				localeLanguage = language + (XStringUtils.isBlank(country) ? "" : "_" + country);
+			}
+			showLanage = subtitleInfoService.findDefaultShowLanguage(animeEpisode.getId(), localeLanguage);
+		}
 		Long startTime = gifInfo.getTimeStamp();
 		Long endTime = gifInfo.getContinueTime() == null ? startTime + 10000 : startTime + gifInfo.getContinueTime();
 		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), showLanage, startTime, endTime);

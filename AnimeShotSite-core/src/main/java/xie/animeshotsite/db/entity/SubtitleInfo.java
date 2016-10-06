@@ -21,6 +21,15 @@ public class SubtitleInfo extends BaseEntity {
 
 	public static final String TABLE_NAME = "subtitle_info";
 
+	/** 简体 */
+	public static final String LANGUAGE_CHS = "sc";
+	/** 繁体 */
+	public static final String LANGUAGE_CHT = "4";
+	/** 日语 */
+	public static final String LANGUAGE_JAPAN = "jp";
+	/** 英语 */
+	public static final String LANGUAGE_ENGLIST = "8";
+
 	/** 动画信息的id */
 	private String animeInfoId;
 
@@ -156,7 +165,7 @@ public class SubtitleInfo extends BaseEntity {
 	/**
 	 * 获取 字幕文件类型 ASS STR .
 	 *
-	 * @return 字幕文件类型 ASS STR 
+	 * @return 字幕文件类型 ASS STR
 	 */
 	public String getFileType() {
 		return fileType;
@@ -165,7 +174,7 @@ public class SubtitleInfo extends BaseEntity {
 	/**
 	 * 设置 字幕文件类型 ASS STR .
 	 *
-	 * @param fileType 字幕文件类型 ASS STR 
+	 * @param fileType 字幕文件类型 ASS STR
 	 */
 	public void setFileType(String fileType) {
 		this.fileType = fileType;

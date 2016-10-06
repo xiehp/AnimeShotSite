@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springside.modules.web.Servlets;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
@@ -36,6 +37,7 @@ import xie.animeshotsite.db.service.SubtitleLineService;
 import xie.base.controller.BaseFunctionController;
 import xie.common.Constants;
 import xie.common.constant.XConst;
+import xie.common.string.XStringUtils;
 import xie.common.utils.XCookieUtils;
 import xie.common.web.util.ConstantsWeb;
 
@@ -143,25 +145,12 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		return getUrlRedirectPath("list/" + animeEpisodeId + "?page=" + pageNumber);
 	}
 
-	private List<String> defaultShowLanage = new ArrayList<String>();
-
-	{
-		defaultShowLanage = new ArrayList<String>();
-		defaultShowLanage.add("jp");
-		defaultShowLanage.add("sc");
-		defaultShowLanage.add("1000");
-	}
-
 	@RequestMapping(value = "/view/{id}")
 	public String shotView(
 			@PathVariable String id,
 			@RequestParam(required = false) String scorllTop,
 			@RequestParam(required = false) List<String> showLanage,
 			Model model, HttpServletRequest request) throws Exception {
-
-		if (showLanage == null || showLanage.size() == 0) {
-			showLanage = this.defaultShowLanage;
-		}
 
 		ShotInfo shotInfo = shotInfoDao.findOne(id);
 		shotInfo = shotInfoService.convertToVO(shotInfo);
@@ -193,6 +182,15 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		model.addAttribute("nextShotInfo", shotInfoService.convertToVO(nextShotInfo));
 
 		// 搜索字幕
+		if (showLanage == null || showLanage.size() == 0) {
+			String localeLanguage = "";
+			if (RequestContextUtils.getLocale(request) != null) {
+				String language = RequestContextUtils.getLocale(request).getLanguage();
+				String country = RequestContextUtils.getLocale(request).getCountry();
+				localeLanguage = language + (XStringUtils.isBlank(country) ? "" : "_" + country);
+			}
+			showLanage = subtitleInfoService.findDefaultShowLanguage(animeEpisode.getId(), localeLanguage);
+		}
 		Long startTime = shotInfo.getTimeStamp();
 		Long endTime = nextShotInfo == null ? startTime + 5000 : nextShotInfo.getTimeStamp();
 		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), showLanage, startTime, endTime);

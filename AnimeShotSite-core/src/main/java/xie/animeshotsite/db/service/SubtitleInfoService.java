@@ -1,6 +1,7 @@
 package xie.animeshotsite.db.service;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,12 +12,14 @@ import org.springside.modules.mapper.BeanMapper;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.SubtitleInfo;
+import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.repository.SubtitleInfoDao;
-import xie.animeshotsite.db.repository.SubtitleLineDao;
 import xie.base.repository.BaseRepository;
 import xie.base.service.BaseService;
+import xie.common.Constants;
+import xie.common.constant.XConst;
 import xie.common.string.XStringUtils;
 
 @Service
@@ -25,11 +28,11 @@ public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 	@Autowired
 	private SubtitleInfoDao subtitleInfoDao;
 	@Autowired
-	private SubtitleLineDao subtitleLineDao;
-	@Autowired
 	private AnimeInfoDao animeInfoDao;
 	@Autowired
 	private AnimeEpisodeDao animeEpisodeDao;
+	@Autowired
+	private EntityCache entityCache;
 
 	@Override
 	public BaseRepository<SubtitleInfo, String> getBaseRepository() {
@@ -109,6 +112,58 @@ public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 		}
 
 		return firstEntity;
+	}
+
+	/**
+	 * 决定使用哪些默认字幕<br>
+	 * 默认为中文或繁体+日语+英文<br>
+	 */
+	public List<String> findDefaultShowLanguage(String animeEpisodeId, String siteLocaleLanguage) {
+		String key = "DefaultShowLanguage_" + animeEpisodeId + "_" + siteLocaleLanguage;
+		List<String> list = entityCache.get(key);
+		if (list != null) {
+			return list;
+		}
+
+		// 生成所有语言的list
+		List<String> defaultLanguageList = new ArrayList<>();
+		List<SubtitleInfo> listSubtitleInfo = subtitleInfoDao.findByAnimeEpisodeIdOrderByLocalFileName(animeEpisodeId);
+		for (SubtitleInfo subtitleInfo : listSubtitleInfo) {
+			String language = subtitleInfo.getLanguage();
+
+			if (SubtitleInfo.LANGUAGE_CHS.equalsIgnoreCase(language)) {
+				defaultLanguageList.add(language);
+			}
+
+			if (SubtitleInfo.LANGUAGE_CHT.equalsIgnoreCase(language)) {
+				if (!defaultLanguageList.contains(SubtitleInfo.LANGUAGE_CHT)) {
+					defaultLanguageList.add(language);
+				}
+			}
+
+			if (SubtitleInfo.LANGUAGE_JAPAN.equalsIgnoreCase(language)) {
+				defaultLanguageList.add(language);
+			}
+
+			if (SubtitleInfo.LANGUAGE_ENGLIST.equalsIgnoreCase(language)) {
+				defaultLanguageList.add(language);
+			}
+		}
+
+		// 如果设定的简体，则删除繁体，如果设定繁体，则删除简体，默认留下简体
+		if (Constants.LANGUAGE_ZH_TW.equalsIgnoreCase(siteLocaleLanguage)) {
+			if (XStringUtils.existIgnoreCase(defaultLanguageList, SubtitleInfo.LANGUAGE_CHT)) {
+				defaultLanguageList.remove(SubtitleInfo.LANGUAGE_CHS);
+			}
+		} else {
+			if (XStringUtils.existIgnoreCase(defaultLanguageList, SubtitleInfo.LANGUAGE_CHS)) {
+				defaultLanguageList.remove(SubtitleInfo.LANGUAGE_CHT);
+			}
+		}
+
+		entityCache.put(key, defaultLanguageList, XConst.SECOND_05_HOUR * 1000);
+		return defaultLanguageList;
+
 	}
 
 	@Override
