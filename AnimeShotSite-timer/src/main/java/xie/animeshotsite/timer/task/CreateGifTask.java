@@ -113,7 +113,7 @@ public class CreateGifTask extends XBaseTask {
 
 			XWindowsCommand xWindowsCommand = (XWindowsCommand) XCommandFactory.createInstance();
 			Object[] cmdParams = new Object[] { startTime, continueTime, animeEpisodeFile.getAbsolutePath(), gifFilePath };
-			gifCmdStr = "ffmpeg -ss {} -t {} -i \"{}\" -s 394x216 -f gif -r 8 \"{}\"";
+			gifCmdStr = "ffmpeg -ss {} -t {} -i \"{}\" -s 384x216 -f gif -r 8 \"{}\"";
 
 			String cmd = MessageFormatter.arrayFormat(gifCmdStr, cmdParams).getMessage();
 			logger.info("生成命令：" + cmd);
