@@ -187,7 +187,7 @@ public class GifController extends BaseFunctionController<GifInfo, String> {
 
 		// 搜索字幕
 		Long startTime = gifInfo.getTimeStamp();
-		Long endTime = nextGifInfo == null ? startTime + 5000 : nextGifInfo.getTimeStamp();
+		Long endTime = gifInfo.getContinueTime() == null ? startTime + 10000 : startTime + gifInfo.getContinueTime();
 		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), showLanage, startTime, endTime);
 		model.addAttribute("subtitleLineList", subtitleLineList);
 
