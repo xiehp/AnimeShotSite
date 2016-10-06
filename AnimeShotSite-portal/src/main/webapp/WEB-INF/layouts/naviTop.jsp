@@ -47,14 +47,14 @@
 				</li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						language <b class="caret"></b>
+						Language <b class="caret"></b>
 					</a>
 					<ul class="dropdown-menu">
 						<li>
-							<a href="javascript:void(0);" onclick="changeLanguage('zh_cn');">简体中文</a>
+							<a href="javascript:void(0);" onclick="changeLanguage('zh_CN');">简体中文</a>
 						</li>
 						<li>
-							<a href="javascript:void(0);" onclick="changeLanguage('zh_tw');">繁體中文</a>
+							<a href="javascript:void(0);" onclick="changeLanguage('zh_TW');">繁體中文</a>
 						</li>
 						<li>
 							<a href="javascript:void(0);" onclick="changeLanguage('ja');">日本語</a>
