@@ -182,18 +182,17 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		model.addAttribute("nextShotInfo", shotInfoService.convertToVO(nextShotInfo));
 
 		// 搜索字幕
-		if (showLanage == null || showLanage.size() == 0) {
-			String localeLanguage = "";
-			if (RequestContextUtils.getLocale(request) != null) {
-				String language = RequestContextUtils.getLocale(request).getLanguage();
-				String country = RequestContextUtils.getLocale(request).getCountry();
-				localeLanguage = language + (XStringUtils.isBlank(country) ? "" : "_" + country);
-			}
-			showLanage = subtitleInfoService.findDefaultShowLanguage(animeEpisode.getId(), localeLanguage);
+		String localeLanguage = "";
+		if (RequestContextUtils.getLocale(request) != null) {
+			String language = RequestContextUtils.getLocale(request).getLanguage();
+			String country = RequestContextUtils.getLocale(request).getCountry();
+			localeLanguage = language + (XStringUtils.isBlank(country) ? "" : "_" + country);
 		}
+		List<String> actualShowLanage = subtitleInfoService.findActualShowLanguage(animeEpisode.getId(), localeLanguage, showLanage);
 		Long startTime = shotInfo.getTimeStamp();
 		Long endTime = nextShotInfo == null ? startTime + 5000 : nextShotInfo.getTimeStamp();
-		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), showLanage, startTime, endTime);
+		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), actualShowLanage, startTime, endTime);
+		subtitleLineList = subtitleLineService.convertChinese(subtitleLineList, actualShowLanage, localeLanguage);
 		model.addAttribute("subtitleLineList", subtitleLineList);
 		StringBuilder subtitleLineTextStrSb = new StringBuilder();
 		for (SubtitleLine subtitleLine : subtitleLineList) {

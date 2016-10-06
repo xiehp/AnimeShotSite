@@ -32,7 +32,6 @@ import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.repository.GifInfoDao;
-import xie.animeshotsite.db.repository.SubtitleLineDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.GifInfoService;
@@ -173,18 +172,17 @@ public class GifController extends BaseFunctionController<GifInfo, String> {
 		model.addAttribute("nextGifInfo", gifInfoService.convertToVO(nextGifInfo));
 
 		// 搜索字幕
-		if (showLanage == null || showLanage.size() == 0) {
-			String localeLanguage = "";
-			if (RequestContextUtils.getLocale(request) != null) {
-				String language = RequestContextUtils.getLocale(request).getLanguage();
-				String country = RequestContextUtils.getLocale(request).getCountry();
-				localeLanguage = language + (XStringUtils.isBlank(country) ? "" : "_" + country);
-			}
-			showLanage = subtitleInfoService.findDefaultShowLanguage(animeEpisode.getId(), localeLanguage);
+		String localeLanguage = "";
+		if (RequestContextUtils.getLocale(request) != null) {
+			String language = RequestContextUtils.getLocale(request).getLanguage();
+			String country = RequestContextUtils.getLocale(request).getCountry();
+			localeLanguage = language + (XStringUtils.isBlank(country) ? "" : "_" + country);
 		}
+		List<String> actualShowLanage = subtitleInfoService.findActualShowLanguage(animeEpisode.getId(), localeLanguage, showLanage);
 		Long startTime = gifInfo.getTimeStamp();
 		Long endTime = gifInfo.getContinueTime() == null ? startTime + 10000 : startTime + gifInfo.getContinueTime();
-		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), showLanage, startTime, endTime);
+		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), actualShowLanage, startTime, endTime);
+		subtitleLineList = subtitleLineService.convertChinese(subtitleLineList, actualShowLanage, localeLanguage);
 		model.addAttribute("subtitleLineList", subtitleLineList);
 
 		// 前台页面cookie等参数设置

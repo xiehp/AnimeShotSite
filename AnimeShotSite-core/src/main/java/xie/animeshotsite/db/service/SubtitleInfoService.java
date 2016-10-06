@@ -115,11 +115,12 @@ public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 	}
 
 	/**
-	 * 决定使用哪些默认字幕<br>
-	 * 默认为中文或繁体+日语+英文<br>
+	 * 决定使用哪些语言文本<br>
+	 * 如果showLanguage为空，默认为中文或繁体+日语+英文<br>
+	 * 如果showLanguage不为空，则获取数据库语言和设定语言的交集<br>
 	 */
-	public List<String> findDefaultShowLanguage(String animeEpisodeId, String siteLocaleLanguage) {
-		String key = "DefaultShowLanguage_" + animeEpisodeId + "_" + siteLocaleLanguage;
+	public List<String> findActualShowLanguage(String animeEpisodeId, String siteLocaleLanguage, List<String> showLanguage) {
+		String key = "DefaultShowLanguage_" + animeEpisodeId + "_" + siteLocaleLanguage + "_" + showLanguage;
 		List<String> list = entityCache.get(key);
 		if (list != null) {
 			return list;
@@ -136,9 +137,7 @@ public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 			}
 
 			if (SubtitleInfo.LANGUAGE_CHT.equalsIgnoreCase(language)) {
-				if (!defaultLanguageList.contains(SubtitleInfo.LANGUAGE_CHT)) {
-					defaultLanguageList.add(language);
-				}
+				defaultLanguageList.add(language);
 			}
 
 			if (SubtitleInfo.LANGUAGE_JAPAN.equalsIgnoreCase(language)) {
@@ -150,14 +149,22 @@ public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 			}
 		}
 
-		// 如果设定的简体，则删除繁体，如果设定繁体，则删除简体，默认留下简体
-		if (Constants.LANGUAGE_ZH_TW.equalsIgnoreCase(siteLocaleLanguage)) {
-			if (XStringUtils.existIgnoreCase(defaultLanguageList, SubtitleInfo.LANGUAGE_CHT)) {
-				defaultLanguageList.remove(SubtitleInfo.LANGUAGE_CHS);
+		if (showLanguage == null || showLanguage.size() == 0) {
+			// 如果设定的简体，则删除繁体，如果设定繁体，则删除简体，默认留下简体
+			if (Constants.LANGUAGE_ZH_TW.equalsIgnoreCase(siteLocaleLanguage)) {
+				if (XStringUtils.existIgnoreCase(defaultLanguageList, SubtitleInfo.LANGUAGE_CHT)) {
+					defaultLanguageList.remove(SubtitleInfo.LANGUAGE_CHS);
+				}
+			} else {
+				if (XStringUtils.existIgnoreCase(defaultLanguageList, SubtitleInfo.LANGUAGE_CHS)) {
+					defaultLanguageList.remove(SubtitleInfo.LANGUAGE_CHT);
+				}
 			}
 		} else {
-			if (XStringUtils.existIgnoreCase(defaultLanguageList, SubtitleInfo.LANGUAGE_CHS)) {
-				defaultLanguageList.remove(SubtitleInfo.LANGUAGE_CHT);
+			for (String lan : defaultLanguageList) {
+				if (!XStringUtils.existIgnoreCase(showLanguage, lan)) {
+					defaultLanguageList.remove(lan);
+				}
 			}
 		}
 

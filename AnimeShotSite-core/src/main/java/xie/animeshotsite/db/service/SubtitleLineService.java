@@ -26,7 +26,10 @@ import xie.animeshotsite.db.repository.impl.SubtitleLineDaoImpl;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.repository.BaseRepository;
 import xie.base.service.BaseService;
+import xie.common.Constants;
 import xie.common.date.DateUtil;
+import xie.common.string.XStringUtils;
+import xie.module.language.XLanguageUtils;
 import xie.subtitle.Subtitle;
 import xie.subtitle.SubtitleFactory;
 import xie.subtitle.line.XSubtitleLine;
@@ -151,7 +154,7 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 	 * 同时将总体时间少于时间段一半的字幕去除掉<br>
 	 * 
 	 * @param animeEpisodeId
-	 * @param defaultShowLanage
+	 * @param showLanage
 	 * @param startTime
 	 * @param endTime
 	 * @return
@@ -181,7 +184,8 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 			}
 
 			// 去除时间和文本同时一样的字幕
-			if (duplicateRemoveSet.contains(subtitleStartTime + subtitleText + subtitleEndTime)) {
+			String duplicateKey = subtitleStartTime + subtitleText + subtitleEndTime + subtitleInfo.getLanguage();
+			if (duplicateRemoveSet.contains(duplicateKey)) {
 				continue;
 			}
 
@@ -191,7 +195,7 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 			}
 
 			newList.add(subtitleLine);
-			duplicateRemoveSet.add(subtitleStartTime + subtitleText + subtitleEndTime);
+			duplicateRemoveSet.add(duplicateKey);
 		}
 
 		return newList;
@@ -273,6 +277,63 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 		}
 
 		return subtitleLine;
+	}
+
+	/**
+	 * 根据客户端显示语言和当前剧集
+	 * @param list
+	 * @param actualShowLanage
+	 * @param localeLanguage
+	 * @return
+	 */
+	public List<SubtitleLine> convertChinese(List<SubtitleLine> list, List<String> actualShowLanage, String localeLanguage) {
+		boolean cs2ctFlg = false;
+		boolean ct2csFlg = false;
+		if (Constants.LANGUAGE_ZH_CN.equals(localeLanguage) && !XStringUtils.existIgnoreCase(actualShowLanage, SubtitleInfo.LANGUAGE_CHS)) {
+			ct2csFlg = true;
+		}
+		if (Constants.LANGUAGE_ZH_TW.equals(localeLanguage) && !XStringUtils.existIgnoreCase(actualShowLanage, SubtitleInfo.LANGUAGE_CHT)) {
+			cs2ctFlg = true;
+		}
+
+		return convertChinese(list, cs2ctFlg, ct2csFlg);
+	}
+
+	/**
+	 * 简繁互转
+	 * 
+	 * @param list
+	 * @param cs2ctFlg 是否简体转成繁体
+	 * @param ct2csFlg 是否繁体转成简体
+	 * @return
+	 */
+	public List<SubtitleLine> convertChinese(List<SubtitleLine> list, boolean cs2ctFlg, boolean ct2csFlg) {
+		if (list == null) {
+			return null;
+		}
+
+		String language = null;
+		String text = null;
+		for (SubtitleLine line : list) {
+			if (line == null) {
+				continue;
+			}
+
+			language = line.getLanguage();
+			text = line.getText();
+			if (language == null || text == null) {
+				continue;
+			}
+
+			if (cs2ctFlg && SubtitleInfo.LANGUAGE_CHS.equals(language)) {
+				line.setText(XLanguageUtils.convertToTC(text));
+			}
+			if (ct2csFlg && SubtitleInfo.LANGUAGE_CHT.equals(language)) {
+				line.setText(XLanguageUtils.convertToSC(text));
+			}
+		}
+
+		return list;
 	}
 
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException {
