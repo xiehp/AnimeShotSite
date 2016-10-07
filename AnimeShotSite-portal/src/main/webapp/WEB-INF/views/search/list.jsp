@@ -214,12 +214,12 @@
 		<div class="col-sm-12" style="margin-bottom: 20px;">
 			<span style="font-size: 20px;"><spring:message code='请输入要搜索的动画名' /></span>
 			<input class="input-lg enter-search-event" id="animeName" name="animeName" value="<c:out value='${name}' />">
-			<input type="hidden" id="animeNameHidden" value="<c:out value='${name}' />">
+			<input type="hidden" id="animeNameHidden" value="<c:out value='${nameHidden}' />">
 		</div>
 		<div class="col-sm-12" style="margin-bottom: 20px;">
 			<span style="font-size: 20px;"><spring:message code='输入要搜索的字幕台词' /></span>
 			<input class="input-lg enter-search-event" id="keyword" name="keyword" value="<c:out value='${keyword}' />">
-			<input type="hidden" id="keywordHidden" value="<c:out value='${keyword}' />">
+			<input type="hidden" id="keywordHidden" value="<c:out value='${keywordHidden}' />">
 		</div>
 		<div class="col-sm-12" style="margin-bottom: 20px;">
 			<div style="width: 110px; display: inline-block;">

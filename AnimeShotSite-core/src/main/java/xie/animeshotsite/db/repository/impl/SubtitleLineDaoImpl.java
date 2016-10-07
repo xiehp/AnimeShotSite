@@ -21,6 +21,7 @@ import xie.base.page.PageRequestUtil;
 import xie.base.repository.BaseRepositoryPlus;
 import xie.common.Constants;
 import xie.common.string.XStringUtils;
+import xie.module.language.XLanguageUtils;
 
 @Repository
 public class SubtitleLineDaoImpl extends BaseRepositoryPlus<SubtitleLine> {
@@ -58,14 +59,17 @@ public class SubtitleLineDaoImpl extends BaseRepositoryPlus<SubtitleLine> {
 		if (text == null) {
 			text = "";
 		}
-		String[] animeNameArray = animeName.split(" ");
-		String[] textArray = text.split(" ");
 
 		// return searchSubtitleLineByTextV2(animeNameArray, textArray, pageRequest);
 		if ((searchMode == null || searchMode == false) && XStringUtils.isNotBlank(text)) {
 			// 搜索类型为模糊搜索，并且搜索文本不为空，执行全文检索
-			return searchSubtitleLineByFullText(animeNameArray, text, textArray, pageRequest);
+			String[] animeNameArray = animeName.split(" ");
+			String newText = XLanguageUtils.chineseFullTextChange(text);
+			String[] textArray = newText.split(" ");
+			return searchSubtitleLineByFullText(animeNameArray, newText, textArray, pageRequest);
 		} else {
+			String[] animeNameArray = animeName.split(" ");
+			String[] textArray = text.split(" ");
 			return searchSubtitleLineByTextV3(animeNameArray, textArray, pageRequest);
 		}
 	}

@@ -24,6 +24,7 @@ import xie.animeshotsite.db.service.SubtitleLineService;
 import xie.base.controller.BaseController;
 import xie.base.page.PageRequestUtil;
 import xie.common.string.XStringUtils;
+import xie.module.language.XLanguageUtils;
 
 @Controller
 public class SearchController extends BaseController {
@@ -118,6 +119,7 @@ public class SearchController extends BaseController {
 				data = new LinkedHashMap<>();
 				searchResultMap.put(searchResultMapId, data);
 			}
+			@SuppressWarnings("unchecked")
 			List<SubtitleLine> subtitleListData = (List<SubtitleLine>) data.get("subtitleListData");
 			if (subtitleListData == null) {
 				subtitleListData = new ArrayList<>();
@@ -142,6 +144,12 @@ public class SearchController extends BaseController {
 		request.setAttribute("searchMode", searchMode);
 		request.setAttribute("name", name);
 		request.setAttribute("keyword", keyword);
+		if (name != null) {
+			request.setAttribute("nameHidden", XLanguageUtils.chineseFullTextChange(name));
+		}
+		if (keyword != null) {
+			request.setAttribute("keywordHidden", XLanguageUtils.chineseFullTextChange(keyword));
+		}
 
 		if (subtitleLineList.isEmpty()) {
 			// 没有数据
