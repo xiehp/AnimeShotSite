@@ -8,8 +8,8 @@
 
 <head>
 <title>动画截图网</title>
-<meta name="keywords" content="动画截图网,动画截图,动漫截图,动漫图片,动画图片,acg截图,acg图片,新番截图,截图字幕,截图台词,字幕截图,画像,截屏,スクリーンショット,anime shot,anime image" />
-<meta name="description" content="本站提供动画完整的动漫图片 动画图片以及字幕台词。截图图片一般以5秒为间隔，字幕尽量以外挂的形式显示。" />
+<meta name="keywords" content="动画截图网,动画截图,动漫截图,动漫图片,动画图片,acg截图,acg图片,新番截图,截图字幕,截图台词,字幕截图,高清截图,画像,截屏,Gif动态图片,スクリーンショット,anime shot,anime image" />
+<meta name="description" content="本站提供动画完整的动漫图片，动画图片以及字幕台词。截图图片一般以5秒为间隔，图片尽量为1080P，不包含字幕台词。字幕台词尽量为中日双语字幕，可以简繁切换，并且以外挂的形式显示。同时本站提供获取Gif动态图片的功能。" />
 <meta name='yandex-verification' content='64ecf3910c1154ef' />
 <meta name="google-site-verification" content="xgQXjnyjdOEL3cepdnkjkgfsegefTyyOGKuSSSanTjI" />
 </head>
@@ -18,7 +18,10 @@
 	<div class="row-fluid">
 		<div id="最新动画剧集一览">
 			<div class="blockTitle">
-				<span><spring:message code="最新动画剧集一览" /></span> <span class="count"><a href="${ctx}/anime/list"><spring:message code="当前剧集总数" />：${animeEpisodeCount}</a></span>
+				<span><spring:message code='最新动画剧集一览' /></span> <span class="count"><a href="${ctx}/anime/list">
+						<spring:message code='当前剧集总数' />
+						：${animeEpisodeCount}
+					</a></span>
 			</div>
 			<div>
 				<div class="row">
@@ -43,7 +46,7 @@
 
 		<div id="推荐动漫图片">
 			<div class="blockTitle">
-				<span><spring:message code="推荐动漫图片" /></span>
+				<span><spring:message code='推荐动漫图片' /></span>
 			</div>
 			<div class="row">
 				<c:forEach items="${ masterRecommandShotList }" var="shot" varStatus="status" end="29">
@@ -65,7 +68,7 @@
 		<c:if test="${false}">
 			<div id="点击热度图片">
 				<div class="blockTitle">
-					<span><spring:message code="点击热度图片" /></span>
+					<span><spring:message code='点击热度图片' /></span>
 				</div>
 				<div class="row">
 					<c:forEach items="${ publicLikeShotList }" var="shot" varStatus="status" end="23">
@@ -87,7 +90,7 @@
 
 		<div id="最新截图展示">
 			<div class="blockTitle">
-				<span><spring:message code="最新截图展示" /></span> <span class="count"><spring:message code="当前截图总数" />：${shotCount}</span>
+				<span><spring:message code='最新截图展示' /></span> <span class="count"><spring:message code=‘当前截图总数’ />：${shotCount}</span>
 			</div>
 			<div class="row">
 				<c:forEach items="${ newestShotList }" var="shot" varStatus="status" end="11">
@@ -107,11 +110,16 @@
 		</div>
 
 		<div align="left">
-			<h1 style="font-size: 14px;"><spring:message code="本站说明" /></h1>
+			<h1 style="font-size: 16px;"><spring:message code='动画截图网' /><spring:message code='本站说明' /></h1>
+			<p style="font-size: 14px;">
+				<spring:message code='本站说明具体内容' />
+			</p>
 		</div>
 
 		<div style="padding-top: 1px;" class="bdsharebuttonbox quickShareDivClass">
-			<a style="background-position: 0 -32px;padding-left: 0px;padding-right: 10px;" title="<spring:message code="分享本站" />"><spring:message code="分享本站" /></a>
+			<a style="background-position: 0 -32px; padding-left: 0px; padding-right: 10px;" title="<spring:message code='分享本站' />">
+				<spring:message code='分享本站' />
+			</a>
 			<a href="#" class="bds_mshare" data-cmd="mshare" title="百度一键分享"></a>
 			<a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
 			<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
@@ -120,7 +128,7 @@
 			<a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a>
 			<a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
 			<a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
-			<a href="#" class="bds_more" data-cmd="more" title="<spring:message code="更多" />"></a>
+			<a href="#" class="bds_more" data-cmd="more" title="<spring:message code='更多' />"></a>
 		</div>
 	</div>
 </div>
