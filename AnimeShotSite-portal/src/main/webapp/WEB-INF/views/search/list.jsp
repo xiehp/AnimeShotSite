@@ -150,7 +150,7 @@
 		function wordSplit(text, segWordArray) {
 			text += "";
 			var textLen = text.length;
-			var maxLen = textLen > 10 ? 10 : textLen;
+			var maxLen = textLen > 20 ? 20 : textLen;
 			// 单词从最大长度10到最小2
 			for (var wordLen = maxLen; wordLen > 1; wordLen--) {
 				// 每个长度，都从新从文本开头进行文字截取
@@ -166,35 +166,46 @@
 			return segWordArray;
 		}
 
-		// 编码html和正则字符
-		var keywordHidden = $("#keywordHidden").val();
-		var keywordArray = keywordHidden.split(" ");
-		var animeNameHidden = $("#animeNameHidden").val();
-		var animeNameArray = animeNameHidden.split(" ");
+		/**
+		 * 将搜索词对应文字标红
+		 */
+		function markSearchText() {
+			// 编码html和正则字符
+			var keywordHidden = $("#keywordHidden").val();
+			var keywordArray = keywordHidden.split(" ");
+			var animeNameHidden = $("#animeNameHidden").val();
+			var animeNameArray = animeNameHidden.split(" ");
 
-		// searchMode为全文检索时，需要将中文进行分词
-		var segWordArray = new Array();
-		for ( var keywordIndex in keywordArray) {
-			var keywordStr = keywordArray[keywordIndex];
-			segWordArray = wordSplit(keywordStr, segWordArray);
+			// searchMode为全文检索时，需要将中文进行分词
+			var segWordArray = new Array();
+			for ( var keywordIndex in keywordArray) {
+				var keywordStr = keywordArray[keywordIndex];
+				segWordArray = wordSplit(keywordStr, segWordArray);
+			}
+			segWordArray.sort(function(a,b) {
+				return a.length <= b.length;
+			});
+
+			// 高亮文字
+			$(".textLightMark").each(function() {
+				var text = $(this).text() + "";
+				var searchMode = document.getElementById("searchMode").checked; // true:like检索 false:全文检索
+				if (searchMode) {
+					// like检索
+					$(this).html(markTextWithArray(text, keywordArray));
+				} else {
+					$(this).html(markTextWithArray(text, segWordArray));
+				}
+			});
+
+			$(".animeNameLightMark").each(function() {
+				var text = $(this).text() + "";
+				$(this).html(markTextWithArray(text, animeNameArray));
+			});
 		}
 
-		// 高亮文字
-		$(".textLightMark").each(function() {
-			var text = $(this).text() + "";
-			var searchMode = document.getElementById("searchMode").checked; // true:like检索 false:全文检索
-			if (searchMode) {
-				// like检索
-				$(this).html(markTextWithArray(text, keywordArray));
-			} else {
-				$(this).html(markTextWithArray(text, segWordArray));
-			}
-		});
-
-		$(".animeNameLightMark").each(function() {
-			var text = $(this).text() + "";
-			$(this).html(markTextWithArray(text, animeNameArray));
-		});
+		// 执行标红代码，由于搜索词过长会速度比较慢，所以延迟执行
+		window.setTimeout(markSearchText, 10);
 	});
 </script>
 <div>
@@ -215,7 +226,8 @@
 				<input data-on-text="<spring:message code='精确搜索' />" data-off-text="<spring:message code='模糊搜索' />" data-label-width="0" data-handle-width="60" style="display: none;" type="checkbox" id="searchMode" name="searchMode" class="bootstrap-switch-small" ${searchMode ? 'checked' : ''}>
 			</div>
 			<a herf="javascript:void(0);" class="btn btn-lg btn-primary" onclick="searchKeyword();">
-				<i class="glyphicon glyphicon-search"></i> <spring:message code='搜索' />
+				<i class="glyphicon glyphicon-search"></i>
+				<spring:message code='搜索' />
 			</a>
 		</div>
 	</div>
