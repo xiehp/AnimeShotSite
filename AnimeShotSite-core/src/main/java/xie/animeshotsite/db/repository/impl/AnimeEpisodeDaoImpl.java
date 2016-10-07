@@ -17,6 +17,7 @@ import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.base.repository.BaseRepositoryPlus;
 import xie.common.Constants;
 import xie.common.string.XStringUtils;
+import xie.module.language.XLanguageUtils;
 
 @Repository
 public class AnimeEpisodeDaoImpl extends BaseRepositoryPlus<AnimeEpisode> {
@@ -76,8 +77,26 @@ public class AnimeEpisodeDaoImpl extends BaseRepositoryPlus<AnimeEpisode> {
 		querySql.append(AnimeEpisode.COLUMN_DELETE_FLAG + " = " + Constants.FLAG_INT_NO);
 
 		for (int i = 0; i < animeNameList.size(); i++) {
-			querySql.append(" and fullName like :animeName" + i);
-			map.put("animeName" + i, "%" + animeNameList.get(i) + "%");
+			String oneAnimeName = animeNameList.get(i);
+			querySql.append(" and (");
+			querySql.append(" fullName like :oneAnimeName" + i);
+			map.put("oneAnimeName" + i, "%" + oneAnimeName + "%");
+
+			// 转换成简体 看是否需要匹配
+			String oneAnimeNameSC = XLanguageUtils.convertToSC(oneAnimeName);
+			if (!oneAnimeNameSC.equals(oneAnimeName)) {
+				querySql.append(" or fullName like :oneAnimeNameSC" + i);
+				map.put("oneAnimeNameSC" + i, "%" + oneAnimeNameSC + "%");
+			}
+
+			// 转换成繁体 看是否需要匹配
+			String oneAnimeNameTC = XLanguageUtils.convertToSC(oneAnimeName);
+			if (!oneAnimeNameTC.equals(oneAnimeName)) {
+				querySql.append(" or fullName like :oneAnimeNameTC" + i);
+				map.put("oneAnimeNameTC" + i, "%" + oneAnimeNameTC + "%");
+			}
+
+			querySql.append(" ) ");
 		}
 
 		String countHql = "select count( episode.id) " + querySql.toString();
