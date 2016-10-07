@@ -90,7 +90,7 @@
 
 		<div id="最新截图展示">
 			<div class="blockTitle">
-				<span><spring:message code='最新截图展示' /></span> <span class="count"><spring:message code=‘当前截图总数’ />：${shotCount}</span>
+				<span><spring:message code='最新截图展示' /></span> <span class="count"><spring:message code='当前截图总数' />：${shotCount}</span>
 			</div>
 			<div class="row">
 				<c:forEach items="${ newestShotList }" var="shot" varStatus="status" end="11">
