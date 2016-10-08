@@ -63,9 +63,15 @@
 							<a href="javascript:void(0);" onclick="changeLanguage('en_US');">English</a>
 						</li>
 						<li>
+							<a href="javascript:void(0);" onclick="changeLanguage('ar');">عربي</a>
+						</li>
+						<li>
 							<a href="javascript:void(0);" onclick="changeLanguage('');">
 								<spring:message code='清除' />
 							</a>
+						</li>
+						<li>
+							<a href="javascript:void(0);" onclick="changeLanguage('zh');">简体(显示所有字幕)</a>
 						</li>
 					</ul>
 				</li>

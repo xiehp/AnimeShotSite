@@ -1,5 +1,8 @@
 package xie.animeshotsite.db.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -8,6 +11,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import xie.base.entity.BaseEntity;
+import xie.common.Constants;
 
 @Entity
 @Table(name = SubtitleInfo.TABLE_NAME)
@@ -28,7 +32,20 @@ public class SubtitleInfo extends BaseEntity {
 	/** 日语 */
 	public static final String LANGUAGE_JAPAN = "jp";
 	/** 英语 */
-	public static final String LANGUAGE_ENGLIST = "8";
+	public static final String LANGUAGE_ENGLISH = "8";
+	/** 阿拉伯语 */
+	public static final String LANGUAGE_ALABO = "11";
+
+	/** 字幕信息中语言字段和网站中Loacale的对应关系 */
+	public static final Map<String, String> LANGUAGE_MAPPING = new HashMap<>();
+
+	static {
+		LANGUAGE_MAPPING.put(Constants.LANGUAGE_ZH_CN.toLowerCase(), LANGUAGE_CHS.toLowerCase());
+		LANGUAGE_MAPPING.put(Constants.LANGUAGE_ZH_TW.toLowerCase(), LANGUAGE_CHT.toLowerCase());
+		LANGUAGE_MAPPING.put(Constants.LANGUAGE_JA.toLowerCase(), LANGUAGE_JAPAN.toLowerCase());
+		LANGUAGE_MAPPING.put(Constants.LANGUAGE_EN_US.toLowerCase(), LANGUAGE_ENGLISH.toLowerCase());
+		LANGUAGE_MAPPING.put(Constants.LANGUAGE_AR.toLowerCase(), LANGUAGE_ALABO.toLowerCase());
+	}
 
 	/** 动画信息的id */
 	private String animeInfoId;

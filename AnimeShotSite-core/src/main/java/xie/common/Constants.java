@@ -134,5 +134,7 @@ public class Constants {
 	public static final String LANGUAGE_JA = "ja";
 	/** 网站语言 日本语 */
 	public static final String LANGUAGE_EN_US = "en_US";
+	/** 网站语言 阿拉伯语 */
+	public static final String LANGUAGE_AR = "ar";
 
 }

@@ -127,6 +127,7 @@
 				<option ${subtitleInfo.language == '6' ? 'selected=\"selected\"' : ''} value="6">6:日繁</option>
 				<option ${subtitleInfo.language == '7' ? 'selected=\"selected\"' : ''} value="7">7:简日繁</option>
 				<option ${subtitleInfo.language == '8' ? 'selected=\"selected\"' : ''} value="8">8:英语</option>
+				<option ${subtitleInfo.language == '11' ? 'selected=\"selected\"' : ''} value="11">11:阿拉伯语</option>
 			</select>
 		</div>
 	</div>

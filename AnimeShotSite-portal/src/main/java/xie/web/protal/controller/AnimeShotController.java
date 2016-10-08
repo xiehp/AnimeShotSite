@@ -39,6 +39,7 @@ import xie.common.Constants;
 import xie.common.constant.XConst;
 import xie.common.string.XStringUtils;
 import xie.common.utils.XCookieUtils;
+import xie.common.utils.XRequestUtils;
 import xie.common.web.util.ConstantsWeb;
 
 @Controller
@@ -182,11 +183,13 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		model.addAttribute("nextShotInfo", shotInfoService.convertToVO(nextShotInfo));
 
 		// 搜索字幕
-		String localeLanguage = "";
-		if (RequestContextUtils.getLocale(request) != null) {
-			String language = RequestContextUtils.getLocale(request).getLanguage();
-			String country = RequestContextUtils.getLocale(request).getCountry();
-			localeLanguage = language + (XStringUtils.isBlank(country) ? "" : "_" + country);
+		String localeLanguage = "zh";
+		if (!XRequestUtils.isSearchspider(request)) {
+			if (RequestContextUtils.getLocale(request) != null) {
+				String language = RequestContextUtils.getLocale(request).getLanguage();
+				String country = RequestContextUtils.getLocale(request).getCountry();
+				localeLanguage = language + (XStringUtils.isBlank(country) ? "" : "_" + country);
+			}
 		}
 		List<String> actualShowLanage = subtitleInfoService.findActualShowLanguage(animeEpisode.getId(), localeLanguage, showLanage);
 		Long startTime = shotInfo.getTimeStamp();

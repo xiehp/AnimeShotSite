@@ -44,6 +44,7 @@ import xie.common.date.DateUtil;
 import xie.common.json.XJsonUtil;
 import xie.common.string.XStringUtils;
 import xie.common.utils.XCookieUtils;
+import xie.common.utils.XRequestUtils;
 import xie.common.web.util.ConstantsWeb;
 
 @Controller
@@ -172,11 +173,13 @@ public class GifController extends BaseFunctionController<GifInfo, String> {
 		model.addAttribute("nextGifInfo", gifInfoService.convertToVO(nextGifInfo));
 
 		// 搜索字幕
-		String localeLanguage = "";
-		if (RequestContextUtils.getLocale(request) != null) {
-			String language = RequestContextUtils.getLocale(request).getLanguage();
-			String country = RequestContextUtils.getLocale(request).getCountry();
-			localeLanguage = language + (XStringUtils.isBlank(country) ? "" : "_" + country);
+		String localeLanguage = "zh";
+		if (!XRequestUtils.isSearchspider(request)) {
+			if (RequestContextUtils.getLocale(request) != null) {
+				String language = RequestContextUtils.getLocale(request).getLanguage();
+				String country = RequestContextUtils.getLocale(request).getCountry();
+				localeLanguage = language + (XStringUtils.isBlank(country) ? "" : "_" + country);
+			}
 		}
 		List<String> actualShowLanage = subtitleInfoService.findActualShowLanguage(animeEpisode.getId(), localeLanguage, showLanage);
 		Long startTime = gifInfo.getTimeStamp();
