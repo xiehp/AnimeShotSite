@@ -181,6 +181,12 @@
 		</div>
 	</div>
 	<div class="form-group">
+		<label class="col-sm-2 control-label">哪个时间节点开始偏移，单位毫秒</label>
+		<div class="col-sm-5">
+			<input class="form-control" name="offsetTimeStart" value="${subtitleInfo.offsetTimeStart}" />
+		</div>
+	</div>
+	<div class="form-group">
 		<label class="col-sm-2 control-label">deleteFlag</label>
 		<div class="col-sm-5">
 			<input class="form-control" name="deleteFlag" value="${subtitleInfo.deleteFlag}" />

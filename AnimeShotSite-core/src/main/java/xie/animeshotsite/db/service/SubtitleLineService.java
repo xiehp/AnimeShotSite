@@ -130,8 +130,13 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 			subtitleLine.setStartTime(xSubtitleLine.getStartTime());
 			subtitleLine.setEndTime(xSubtitleLine.getEndTime());
 		} else {
-			subtitleLine.setStartTime(xSubtitleLine.getStartTime() + subtitleInfo.getOffsetTime());
-			subtitleLine.setEndTime(xSubtitleLine.getEndTime() + subtitleInfo.getOffsetTime());
+			if (subtitleInfo.getOffsetTimeStart() == null || xSubtitleLine.getStartTime() >= subtitleInfo.getOffsetTimeStart()) {
+				subtitleLine.setStartTime(xSubtitleLine.getStartTime() + subtitleInfo.getOffsetTime());
+				subtitleLine.setEndTime(xSubtitleLine.getEndTime() + subtitleInfo.getOffsetTime());
+			} else {
+				subtitleLine.setStartTime(xSubtitleLine.getStartTime());
+				subtitleLine.setEndTime(xSubtitleLine.getEndTime());
+			}
 		}
 		subtitleLine.setText(xSubtitleLine.getText());
 		subtitleLine.setStyle(xSubtitleLine.getStyle());
