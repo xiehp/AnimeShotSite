@@ -53,7 +53,7 @@ public class AnimeEpisodeController extends BaseFunctionController<AnimeEpisode,
 			request.setAttribute("canBaiduIndex", false);// 不要索引
 			return getUrlRedirectPath("404");
 		}
-		Page<AnimeEpisode> animeEpisodePage = animeEpisodeService.searchPageByParams(searchParams, pageNumber, Constants.PAGE_SIZE_40, sortType, AnimeEpisode.class);
+		Page<AnimeEpisode> animeEpisodePage = animeEpisodeService.searchPageByParams(searchParams, pageNumber, 54, sortType, AnimeEpisode.class);
 
 		model.addAttribute("animeInfo", animeInfo);
 		model.addAttribute("animeEpisodePage", animeEpisodePage);
