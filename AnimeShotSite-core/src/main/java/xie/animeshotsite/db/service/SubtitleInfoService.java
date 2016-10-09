@@ -123,7 +123,7 @@ public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 		if (siteLocaleLanguage == null) {
 			siteLocaleLanguage = "";
 		}
-		String key = "DefaultShowLanguage_" + animeEpisodeId + "_" + siteLocaleLanguage + "_" + showLanguage;
+		String key = "DefaultShowLanguage_" + animeEpisodeId + "_" + siteLocaleLanguage + "_" + showLanguage + "_" + showAllSubtitleFlag;
 		List<String> list = entityCache.get(key);
 		if (list != null) {
 			return list;
