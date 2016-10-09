@@ -11,11 +11,16 @@ function readCookieAndSetWidth(isCreateDom) {
 	var ShotViewImgWidth = $.cookie("ShotViewImgWidth");
 	$.log("读取设置图片尺寸cookie:" + ShotViewImgWidth);
 
+	var ImageAspectRatio = $("#shotImgDiv").attr("data-ImageAspectRatio");
+	if (ImageAspectRatio == "") {
+		ImageAspectRatio = orImgHeight / orImgWidth;
+	}
+
 	if (!isNaN(ShotViewImgWidth) && ShotViewImgWidth > 0) {
 		// 有cookie
 		var ShotViewImgDivWidth = ShotViewImgWidth * 1 + divPaddingLen * 2 + divBorderLen * 2;
 		if (isCreateDom) {
-			var setImgHeight = ShotViewImgWidth * orImgHeight / orImgWidth;
+			var setImgHeight = ShotViewImgWidth * ImageAspectRatio;
 			var setImgDivHeight = setImgHeight + divPaddingLen * 2 + divBorderLen * 2;
 			$("#shotImgDiv").css("width", ShotViewImgDivWidth);
 			$("#shotImgDiv").css("height", setImgDivHeight);
@@ -30,7 +35,7 @@ function readCookieAndSetWidth(isCreateDom) {
 			divWidth = parseFloat(divWidth);
 			$.log("当前div宽度:" + divWidth);
 			if (!isNaN(divWidth) && divWidth > 0) {
-				var setHeight = (divWidth - divPaddingLen * 2 - divBorderLen * 2) * orImgHeight / orImgWidth + divPaddingLen * 2 + divBorderLen * 2;
+				var setHeight = (divWidth - divPaddingLen * 2 - divBorderLen * 2) * ImageAspectRatio + divPaddingLen * 2 + divBorderLen * 2;
 				$("#shotImgDiv").css("height", setHeight);
 				$.log("设置图片div尺寸:" + divWidth + "," + setHeight);
 			}

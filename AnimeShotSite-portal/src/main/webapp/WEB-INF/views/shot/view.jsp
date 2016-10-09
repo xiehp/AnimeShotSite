@@ -11,6 +11,7 @@
 <c:set var="PreFullImageUrl" value="${previousShotInfo.tietukuOUrlChangeDomain}" />
 <c:set var="NextFullImageUrl" value="${nextShotInfo.tietukuOUrlChangeDomain}" />
 <c:set var="ThisPageUrl" value="${siteBaseUrl}/shot/view/${shotInfo.id}" />
+<c:set var="ImageAspectRatio" value="${(!empty animeEpisode.height && !empty animeEpisode.width) ? animeEpisode.height/animeEpisode.width : ''}" />
 
 <head>
 <title><c:out value='${EpisodeFullNameWithTime}' /></title>
@@ -102,7 +103,7 @@ body {
 			</div>
 			<div class="col-sm-8 col-xs-12">
 				<label><spring:message code='尺寸' />：</label><span id="imgWidth">${animeEpisode.width}</span>×<span id="imgHeight">${animeEpisode.height}</span> <span style="font-size: xx-small;"><spring:message code='设置图片宽度' /></span>
-				<input id="ShotViewImgWidth" type="text" value="${ShotViewImgWidth}" style="width: 50px; height: 18px; font-size: xx-small;" onchange="changeShotViewImgWidth(true);">
+				<input id="ShotViewImgWidth" type="text" value="${ShotViewImgWidth}" style="width: 50px; font-size: xx-small;" onchange="changeShotViewImgWidth(true);">
 				<input id="ShotImgDivWidth" type="hidden" value="${ShotImgDivWidth}">
 			</div>
 		</div>
@@ -112,7 +113,7 @@ body {
 	<input type="hidden" id="scorllTop" name="scorllTop" value="<c:out value="${scorllTop}" />">
 	<div align="center">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			<div id="shotImgDiv" class="thumbnail shotImgDivStyle" style="margin-bottom: 10px;<c:if test="${ShotImgDivWidth > 0}">width: ${ShotImgDivWidth}px; height: ${ShotImgDivWidth * 9 / 16}px;</c:if>">
+			<div id="shotImgDiv" class="thumbnail shotImgDivStyle" data-ImageAspectRatio="${ImageAspectRatio}" style="margin-bottom: 10px;<c:if test="${ShotImgDivWidth > 0}">width: ${ShotImgDivWidth}px; height: ${10 + (ShotImgDivWidth-10) * (empty ImageAspectRatio ? 9/16 : ImageAspectRatio)}px;</c:if>">
 				<script>
 					readCookieAndSetWidth(true);
 				</script>
