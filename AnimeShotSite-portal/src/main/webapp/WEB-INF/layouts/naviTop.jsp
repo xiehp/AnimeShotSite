@@ -73,10 +73,13 @@
 							</a>
 						</li>
 						<li>
-							<hr style="margin: 0px;border-top-width: 3px;">
+							<hr style="margin: 0px; border-top-width: 3px;">
 						</li>
 						<li>
-							<a href="javascript:void(0);" onclick="changeShowAllSubtitle();">显示所有字幕 ${showAllSubtitleFlag eq '1' ? '●' : ''}</a>
+							<a href="javascript:void(0);" onclick="changeShowAllSubtitle();">
+								<spring:message code='显示所有字幕' />
+								${showAllSubtitleFlag eq '1' ? '●' : ''}
+							</a>
 						</li>
 					</ul>
 				</li>
