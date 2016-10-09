@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import xie.animeshotsite.setup.ShotSiteSetup;
 import xie.animeshotsite.utils.SiteUtils;
@@ -23,8 +24,10 @@ import xie.common.excel.XSSHttpUtil;
 import xie.common.string.XStringUtils;
 import xie.common.utils.SpringUtils;
 import xie.common.utils.XCookieUtils;
+import xie.common.utils.XRequestUtils;
 import xie.common.web.util.ConstantsWeb;
 import xie.sys.auth.service.realm.ShiroRDbRealm.ShiroUser;
+import xie.web.util.SiteConstants;
 
 /**
  * 通用处理
@@ -210,6 +213,12 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 				shotSiteSetup.getAnimesiteServerHost();
 				request.setAttribute("httpScheme", request.getScheme());
 				request.setAttribute("siteBaseUrl", siteBaseUrl);
+
+				// 告诉前台当前语言
+				String localeLanguage = XRequestUtils.getLocaleLanguageCountry(request).toLowerCase();
+				request.setAttribute("localeLanguage", localeLanguage);
+				String showAllSubtitleFlag = XCookieUtils.getCookieValue(request, SiteConstants.COOKIE_SHOW_ALL_SUBTITLE_FLAG);
+				request.setAttribute("showAllSubtitleFlag", showAllSubtitleFlag);
 			}
 		}
 	}

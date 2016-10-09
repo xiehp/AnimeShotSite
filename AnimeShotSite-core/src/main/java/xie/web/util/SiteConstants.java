@@ -53,5 +53,6 @@ public class SiteConstants {
 	public static final int RATING_HAVE_RECORD_BUT_PAST =2;	// 已经存在记录,但是已过期 
 	public static final int RATING_HAVE_NOT_RECORD =0;	// 不存在记录 
 	
-	
+	/** 是否显示所有字幕 */
+	public static final String COOKIE_SHOW_ALL_SUBTITLE_FLAG = "SHOW_ALL_SUBTITLE_FLAG";
 }

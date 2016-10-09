@@ -2,6 +2,11 @@ package xie.common.utils;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.servlet.support.RequestContextUtils;
+
+import xie.common.Constants;
+import xie.common.string.XStringUtils;
+
 public class XRequestUtils {
 	public static final String USER_AGENT_SPIDER_BAIDU = "Baiduspider";
 	public static final String USER_AGENT_SPIDER_GOOGLE = "Googlebot";
@@ -24,5 +29,21 @@ public class XRequestUtils {
 		}
 
 		return false;
+	}
+
+	/**
+	 * 从spring里获得locale
+	 * @param request
+	 * @return
+	 */
+	public static String getLocaleLanguageCountry(HttpServletRequest request) {
+		String localeLanguage = Constants.LANGUAGE_UNKNOW;
+		if (RequestContextUtils.getLocale(request) != null) {
+			String language = RequestContextUtils.getLocale(request).getLanguage();
+			String country = RequestContextUtils.getLocale(request).getCountry();
+			localeLanguage = language + (XStringUtils.isBlank(country) ? "" : "_" + country);
+		}
+
+		return localeLanguage;
 	}
 }

@@ -62,6 +62,9 @@ function HomeFuction() {
 
 var home = new HomeFuction();
 
+/**
+ * 切换网站语言
+ */
 function changeLanguage(language) {
 	param = {};
 	param.new_lang = language;
@@ -73,4 +76,17 @@ function changeLanguage(language) {
 			$.showMessageModal(data.hashMap.message);
 		}
 	});
+}
+
+/**
+ * 切换是否显示所有字幕
+ */
+function changeShowAllSubtitle() {
+	var SHOW_ALL_SUBTITLE_FLAG = HomeCookie.getCookie("SHOW_ALL_SUBTITLE_FLAG");
+	if (SHOW_ALL_SUBTITLE_FLAG == 1) {
+		HomeCookie.setCookie("SHOW_ALL_SUBTITLE_FLAG", 0);
+	} else {
+		HomeCookie.setCookie("SHOW_ALL_SUBTITLE_FLAG", 1);
+	}
+	window.location.reload();
 }

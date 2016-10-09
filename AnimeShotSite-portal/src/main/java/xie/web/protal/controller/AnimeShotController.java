@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springside.modules.web.Servlets;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
@@ -37,10 +36,10 @@ import xie.animeshotsite.db.service.SubtitleLineService;
 import xie.base.controller.BaseFunctionController;
 import xie.common.Constants;
 import xie.common.constant.XConst;
-import xie.common.string.XStringUtils;
 import xie.common.utils.XCookieUtils;
 import xie.common.utils.XRequestUtils;
 import xie.common.web.util.ConstantsWeb;
+import xie.web.util.SiteConstants;
 
 @Controller
 @RequestMapping(value = "/shot")
@@ -183,15 +182,12 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		model.addAttribute("nextShotInfo", shotInfoService.convertToVO(nextShotInfo));
 
 		// 搜索字幕
-		String localeLanguage = "zh";
-		if (!XRequestUtils.isSearchspider(request)) {
-			if (RequestContextUtils.getLocale(request) != null) {
-				String language = RequestContextUtils.getLocale(request).getLanguage();
-				String country = RequestContextUtils.getLocale(request).getCountry();
-				localeLanguage = language + (XStringUtils.isBlank(country) ? "" : "_" + country);
-			}
+		String localeLanguage = Constants.LANGUAGE_UNKNOW;
+		if (!XRequestUtils.isSearchspider(request) ) {
+			localeLanguage = XRequestUtils.getLocaleLanguageCountry(request);
 		}
-		List<String> actualShowLanage = subtitleInfoService.findActualShowLanguage(animeEpisode.getId(), localeLanguage, showLanage);
+		boolean showAllSubtitleFlag = Constants.FLAG_STR_YES.equals(XCookieUtils.getCookieValue(request, SiteConstants.COOKIE_SHOW_ALL_SUBTITLE_FLAG));
+		List<String> actualShowLanage = subtitleInfoService.findActualShowLanguage(animeEpisode.getId(), localeLanguage, showLanage, showAllSubtitleFlag);
 		Long startTime = shotInfo.getTimeStamp();
 		Long endTime = nextShotInfo == null ? startTime + 5000 : nextShotInfo.getTimeStamp();
 		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), actualShowLanage, startTime, endTime);

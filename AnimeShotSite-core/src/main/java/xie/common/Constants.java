@@ -126,6 +126,8 @@ public class Constants {
 	public static final int IS_DELETE = 1;
 	public static final int NOT_DELETE = 0;
 
+	/** 网站语言 不特定 */
+	public static final String LANGUAGE_UNKNOW = "unknow";
 	/** 网站语言 简体中文 */
 	public static final String LANGUAGE_ZH_CN = "zh_CN";
 	/** 网站语言 繁体中文 */

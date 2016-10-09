@@ -5,7 +5,9 @@
 <div id="nav">
 	<nav class="navbar navbar-inverse" role="navigation">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="${ctx}/"><spring:message code='动画截图网' /></a>
+			<a class="navbar-brand" href="${ctx}/">
+				<spring:message code='动画截图网' />
+			</a>
 		</div>
 
 		<div>
@@ -47,23 +49,23 @@
 				</li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						Language <b class="caret"></b>
+						Language<b class="caret"></b>
 					</a>
 					<ul class="dropdown-menu">
 						<li>
-							<a href="javascript:void(0);" onclick="changeLanguage('zh_CN');">简体中文</a>
+							<a href="javascript:void(0);" onclick="changeLanguage('zh_CN');">简体中文 ${localeLanguage eq 'zh_cn' ? '●' : ''}</a>
 						</li>
 						<li>
-							<a href="javascript:void(0);" onclick="changeLanguage('zh_TW');">繁體中文</a>
+							<a href="javascript:void(0);" onclick="changeLanguage('zh_TW');">繁體中文 ${localeLanguage eq 'zh_tw' ? '●' : ''}</a>
 						</li>
 						<li>
-							<a href="javascript:void(0);" onclick="changeLanguage('ja');">日本語</a>
+							<a href="javascript:void(0);" onclick="changeLanguage('ja');">日本語 ${localeLanguage eq 'ja' ? '●' : ''}</a>
 						</li>
 						<li>
-							<a href="javascript:void(0);" onclick="changeLanguage('en_US');">English</a>
+							<a href="javascript:void(0);" onclick="changeLanguage('en_US');">English ${localeLanguage eq 'en_us' ? '●' : ''}</a>
 						</li>
 						<li>
-							<a href="javascript:void(0);" onclick="changeLanguage('ar');">عربي</a>
+							<a href="javascript:void(0);" onclick="changeLanguage('ar');">عربي ${localeLanguage eq 'ar' ? '●' : ''}</a>
 						</li>
 						<li>
 							<a href="javascript:void(0);" onclick="changeLanguage('');">
@@ -71,7 +73,10 @@
 							</a>
 						</li>
 						<li>
-							<a href="javascript:void(0);" onclick="changeLanguage('zh');">简体(显示所有字幕)</a>
+							<hr style="margin: 0px;border-top-width: 3px;">
+						</li>
+						<li>
+							<a href="javascript:void(0);" onclick="changeShowAllSubtitle();">显示所有字幕 ${showAllSubtitleFlag eq '1' ? '●' : ''}</a>
 						</li>
 					</ul>
 				</li>

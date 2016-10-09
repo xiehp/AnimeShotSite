@@ -19,7 +19,7 @@ import xie.common.string.XStringUtils;
  * 或者WebUtils.getCookie<br>
  */
 public class XCookieUtils {
-	public static Map<String, String> getCookieMap(HttpServletRequest request, String name) throws UnsupportedEncodingException {
+	public static Map<String, String> getCookieMap(HttpServletRequest request, String name) {
 		Map<String, String> map = new HashMap<String, String>();
 		if (name == null || request == null) {
 			return null;
@@ -30,7 +30,11 @@ public class XCookieUtils {
 			for (Cookie cookie : cookieList) {
 				String value = cookie.getValue();
 				if (value != null) {
-					value = URLDecoder.decode(value, XConst.CHARSET_UTF8);
+					try {
+						value = URLDecoder.decode(value, XConst.CHARSET_UTF8);
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
 				}
 				map.put(cookie.getName(), value);
 			}
@@ -39,7 +43,7 @@ public class XCookieUtils {
 		return map;
 	}
 
-	public static String getCookieValue(HttpServletRequest request, String name) throws UnsupportedEncodingException {
+	public static String getCookieValue(HttpServletRequest request, String name) {
 		if (name == null || request == null) {
 			return null;
 		}
@@ -51,7 +55,11 @@ public class XCookieUtils {
 				if (name.equals(cookie.getName())) {
 					value = cookie.getValue();
 					if (value != null) {
-						value = URLDecoder.decode(value, XConst.CHARSET_UTF8);
+						try {
+							value = URLDecoder.decode(value, XConst.CHARSET_UTF8);
+						} catch (UnsupportedEncodingException e) {
+							e.printStackTrace();
+						}
 					}
 					break;
 				}

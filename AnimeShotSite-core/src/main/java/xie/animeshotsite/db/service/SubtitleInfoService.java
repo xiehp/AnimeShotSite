@@ -119,7 +119,10 @@ public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 	 * 如果showLanguage为空，默认为中文或繁体+日语+英文<br>
 	 * 如果showLanguage不为空，则获取数据库语言和设定语言的交集<br>
 	 */
-	public List<String> findActualShowLanguage(String animeEpisodeId, String siteLocaleLanguage, List<String> showLanguage) {
+	public List<String> findActualShowLanguage(String animeEpisodeId, String siteLocaleLanguage, List<String> showLanguage, boolean showAllSubtitleFlag) {
+		if (siteLocaleLanguage == null) {
+			siteLocaleLanguage = "";
+		}
 		String key = "DefaultShowLanguage_" + animeEpisodeId + "_" + siteLocaleLanguage + "_" + showLanguage;
 		List<String> list = entityCache.get(key);
 		if (list != null) {
@@ -151,35 +154,43 @@ public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 				}
 			}
 
-			// 2.如果有超过一种字幕语言，则根据当前选择的网站语言，选出需要的语言，如果没有设定或不认识该网站语言，则显示全部字幕语言
+			// 2.如果有超过一种字幕语言，且不显示所有字幕语言，则根据当前选择的网站语言，选出需要的语言，如果没有设定或不认识该网站语言，则显示全部字幕语言
 			List<String> leaveLanguageList = new ArrayList<>();
-			if (defaultLanguageList.size() > 1) {
+			if (defaultLanguageList.size() > 1 && !showAllSubtitleFlag) {
+				// 网站未设置显示所有字幕语言
 				if (Constants.LANGUAGE_ZH_TW.equalsIgnoreCase(siteLocaleLanguage) || Constants.LANGUAGE_ZH_CN.equalsIgnoreCase(siteLocaleLanguage)) {
 					// 如果网站语言选择中文，则只保留中文和日文
+					leaveLanguageList.add(SubtitleInfo.LANGUAGE_MAPPING.get(Constants.LANGUAGE_JA.toLowerCase()));
 					leaveLanguageList.add(SubtitleInfo.LANGUAGE_MAPPING.get(Constants.LANGUAGE_ZH_TW.toLowerCase()));
 					leaveLanguageList.add(SubtitleInfo.LANGUAGE_MAPPING.get(Constants.LANGUAGE_ZH_CN.toLowerCase()));
-					leaveLanguageList.add(SubtitleInfo.LANGUAGE_MAPPING.get(Constants.LANGUAGE_JA.toLowerCase()));
-					
+
 				} else if (Constants.LANGUAGE_JA.equalsIgnoreCase(siteLocaleLanguage)) {
 					// 如果网站语言选择日文，则只保留中文和日文
+					leaveLanguageList.add(SubtitleInfo.LANGUAGE_MAPPING.get(Constants.LANGUAGE_JA.toLowerCase()));
 					leaveLanguageList.add(SubtitleInfo.LANGUAGE_MAPPING.get(Constants.LANGUAGE_ZH_TW.toLowerCase()));
 					leaveLanguageList.add(SubtitleInfo.LANGUAGE_MAPPING.get(Constants.LANGUAGE_ZH_CN.toLowerCase()));
-					leaveLanguageList.add(SubtitleInfo.LANGUAGE_MAPPING.get(Constants.LANGUAGE_JA.toLowerCase()));
-				} else {
-					// 其他情况，则只保留该网站语言对应字幕语言以及日文
+				} else if (SubtitleInfo.LANGUAGE_MAPPING.containsKey(siteLocaleLanguage.toLowerCase())) {
+					// 该语言在字幕mapping中存在，则只保留该网站语言对应字幕语言以及日文
 					leaveLanguageList.add(SubtitleInfo.LANGUAGE_MAPPING.get(Constants.LANGUAGE_JA.toLowerCase()));
 					leaveLanguageList.add(SubtitleInfo.LANGUAGE_MAPPING.get(siteLocaleLanguage.toLowerCase()));
+				} else {
+					// 其他情况，无法辨识语言，因此直接显示所有字幕，包括可能设定的网站语言all
 				}
 
-				XStringUtils.removeIfNotEqualIgnoreCase(defaultLanguageList, leaveLanguageList);
-				if (defaultLanguageList.size() == 0) {
-					defaultLanguageList = defaultLanguageListTemp;
+				if (leaveLanguageList.size() > 0) {
+					XStringUtils.removeIfNotEqualIgnoreCase(defaultLanguageList, leaveLanguageList);
+					if (defaultLanguageList.size() == 0) {
+						defaultLanguageList = defaultLanguageListTemp;
+					}
 				}
 			}
 		} else {
 			// 根据具体选定的字幕语言显示
 			// TODO 如果希望显示的字幕语言不存在，还需要做其他处理
 			XStringUtils.removeIfNotEqualIgnoreCase(defaultLanguageList, showLanguage);
+			if (defaultLanguageList.size() == 0) {
+				defaultLanguageList = defaultLanguageListTemp;
+			}
 		}
 
 		entityCache.put(key, defaultLanguageList, XConst.SECOND_05_HOUR * 1000);
