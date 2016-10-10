@@ -165,6 +165,9 @@ body {
 			<spring:message code='剧集图片' />
 		</a>
 	</c:if>
+	<a class="btn btn-primary btn-sm" href="${FullImageUrl}" target="_blank">
+		<spring:message code='查看原图' />
+	</a>
 </div>
 
 <div style="padding: 5px;">
@@ -195,6 +198,28 @@ body {
 
 
 <div id="链接地址" class="row ShareLinkDiv">
+	<div class="col-sm-12 ShareLinkItem">
+		<div class="col-sm-3 ShareLinkLabel">
+			<label><spring:message code='动漫图片链接' />：</label>
+		</div>
+		<div class="col-sm-6">
+			<input id="imageLink" readonly="readonly" class="form-control input-sm" style="cursor: text;" value="${FullImageUrl}">
+		</div>
+		<div class="col-sm-3 ShareLinkButton">
+			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-text="${FullImageUrl}" value="<spring:message code='复制' />" />
+		</div>
+	</div>
+	<div class="col-sm-12 ShareLinkItem">
+		<div class="col-sm-3 ShareLinkLabel">
+			<label><spring:message code='本页链接' />：</label>
+		</div>
+		<div class="col-sm-6">
+			<input id="pageLink" readonly="readonly" class="form-control input-sm" style="cursor: text;" value="${ThisPageUrl}">
+		</div>
+		<div class="col-sm-3 ShareLinkButton">
+			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-text="${ThisPageUrl}" value="<spring:message code='复制' />" />
+		</div>
+	</div>
 	<div class="col-sm-12 ShareLinkItem quickShareDivClass">
 		<div class="col-sm-3 ShareLinkLabel">
 			<label><spring:message code='分享本页' />：</label>
@@ -214,27 +239,5 @@ body {
 			</div>
 		</div>
 		<div class="col-sm-3 ShareLinkButton"></div>
-	</div>
-	<div class="col-sm-12 ShareLinkItem">
-		<div class="col-sm-3 ShareLinkLabel">
-			<label><spring:message code='本页链接' />：</label>
-		</div>
-		<div class="col-sm-6">
-			<input id="pageLink" readonly="readonly" class="form-control input-sm" style="cursor: text;" value="${ThisPageUrl}">
-		</div>
-		<div class="col-sm-3 ShareLinkButton">
-			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-text="${ThisPageUrl}" value="<spring:message code='复制' />" />
-		</div>
-	</div>
-	<div class="col-sm-12 ShareLinkItem">
-		<div class="col-sm-3 ShareLinkLabel">
-			<label><spring:message code='动漫图片链接' />：</label>
-		</div>
-		<div class="col-sm-6">
-			<input id="imageLink" readonly="readonly" class="form-control input-sm" style="cursor: text;" value="${FullImageUrl}">
-		</div>
-		<div class="col-sm-3 ShareLinkButton">
-			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-text="${FullImageUrl}" value="<spring:message code='复制' />" />
-		</div>
 	</div>
 </div>
