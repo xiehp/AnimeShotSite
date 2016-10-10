@@ -6,7 +6,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<title><spring:message code='动画列表一览' /> - 动画截图网</title>
+<title>动画列表一览 - 动画截图网</title>
 
 <div class="container-fluid">
 	<div class="row-fluid">

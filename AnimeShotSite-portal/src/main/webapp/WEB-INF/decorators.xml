@@ -4,6 +4,8 @@
 		<pattern>/static/*</pattern>
 		<pattern>/test/*</pattern>
 		<pattern>/login</pattern>
+		<pattern>/282f707a1a8abba0d668e5cd6214cda6.html</pattern>
+		<pattern>/sitemap.xml</pattern>
 	</excludes>
 
 	<decorator name="default" page="default.jsp">
