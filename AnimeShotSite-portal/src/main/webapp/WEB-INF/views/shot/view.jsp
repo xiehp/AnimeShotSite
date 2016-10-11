@@ -14,9 +14,12 @@
 <c:set var="ImageAspectRatio" value="${(!empty animeEpisode.height && !empty animeEpisode.width) ? animeEpisode.height/animeEpisode.width : ''}" />
 
 <head>
-<title><c:out value='${EpisodeFullNameWithTime}' /></title>
-<meta name="keywords" content="<c:out value='${EpisodeFullNameWithTime}' /> <c:out value='${subtitleLineTextStr100}' />" />
+<title><c:out value='${EpisodeFullNameWithTime}' /> - 动画截图网</title>
+<meta name="keywords" content="<c:out value='${EpisodeFullNameWithTime}' />,动画截图,动漫图片,字幕台词,图片外链" />
 <meta name="description" content="<c:out value='${subtitleLineTextStr200}' />" />
+<c:if test="${empty subtitleLineTextStr200}">
+	<meta name="robots" content="noindex,follow" />
+</c:if>
 
 <meta property="og:title" content="<c:out value='${EpisodeFullNameWithTime}' />" />
 <meta property="og:type" content="photo" />
@@ -226,7 +229,7 @@ body {
 		</div>
 		<div style="height: 24px;" align="center" class="col-sm-6">
 			<div style="display: block; width: 200px;">
-				<div style="margin-top: -4px;" class="bdsharebuttonbox">
+				<div style="margin-top: -4px;" class="bdsharebuttonbox bdshare-button-style0-16">
 					<a href="#" class="bds_mshare" data-cmd="mshare" title="百度一键分享"></a>
 					<a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
 					<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>

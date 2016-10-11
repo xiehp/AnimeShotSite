@@ -1,0 +1,3 @@
+User-agent: Baiduspider
+Disallow: /shot/list/*?*
+Sitemap: http://www.acgimage.com/sitemap.xml

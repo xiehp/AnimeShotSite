@@ -9,8 +9,13 @@
 
 <title><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' /> 第${shotInfoPage.number + 1}页 - 动画截图网</title>
 <head>
-<meta name="keywords" content="<c:out value='${animeEpisode.fullName}' />,<c:out value='${animeInfo.secondName}' />,第${shotInfoPage.number + 1}页,动画截图网,动画截图,动漫截图,动漫图片,动画图片,截图字幕" />
-<meta name="description" content="<c:out value='${animeEpisode.fullName}' /> <c:out value='${animeInfo.secondName}' /> 第${shotInfoPage.number + 1}页的动画截图,动漫截图,动漫图片,动画图片,截图字幕,${fn:substring(shotInfoPage.number == 0 ? animeEpisode.summaryCleanHtml : '',0,100)}" />
+<c:if test="${shotInfoPage.number == 0}">
+	<meta name="keywords" content="<c:out value='${animeEpisode.fullName}' />,<c:out value='${animeInfo.secondName}' />,第${shotInfoPage.number + 1}页,动画截图网,动画截图,动漫截图,动漫图片,动画图片,截图字幕" />
+	<meta name="description" content="${fn:substring(shotInfoPage.number == 0 ? animeEpisode.summaryCleanHtml : '', 0, 200)}" />
+</c:if>
+<c:if test="${shotInfoPage.number > 0}">
+	<meta name="robots" content="noindex,follow" />
+</c:if>
 
 <style>
 .blockTitle {
@@ -55,7 +60,9 @@ pre {
 	<div class="blockTitle">
 		<h1 style="font-size: 20px; display: inline;"><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <small><c:out value='${animeEpisode.title}' /></small></h1>
 		<c:if test="${!empty animeEpisode.summary and shotInfoPage.number == 0}">
-			<button type="button" class="btn btn-rimary btn-xs" data-toggle="collapse" data-target="#episodeSmmary"><spring:message code='显示剧集简介' /></button>
+			<button type="button" class="btn btn-rimary btn-xs" data-toggle="collapse" data-target="#episodeSmmary">
+				<spring:message code='显示剧集简介' />
+			</button>
 		</c:if>
 	</div>
 
@@ -64,6 +71,7 @@ pre {
 		<div class="col-md-12">
 			<div id="episodeSmmary" class="collapse">
 				<c:if test="${shotInfoPage.number == 0}">
+					<spring:message code='剧情介绍' />：
 					${animeEpisode.summary}
 				</c:if>
 			</div>
@@ -82,11 +90,13 @@ pre {
 				</a>
 				<c:if test="${IS_MASTER}">
 					<div class="btn btn-primary btn-xs" onclick="home.publicLike('${shotInfo.id}');">
-						<span class="glyphicon glyphicon-star"></span><spring:message code='喜欢' />
+						<span class="glyphicon glyphicon-star"></span>
+						<spring:message code='喜欢' />
 						<div id="publicLike_${shotInfo.id}" class="badge">${shotInfo.publicLikeCount}</div>
 					</div>
 					<div class="btn btn-primary btn-xs" onclick="home.masterLike('${MANAGE_URL_STR}/shot/masterLike', '${shotInfo.id}');">
-						<span class="glyphicon glyphicon-star"></span><spring:message code='推荐' />
+						<span class="glyphicon glyphicon-star"></span>
+						<spring:message code='推荐' />
 						<div id="masterLike_${shotInfo.id}" class="badge">${shotInfo.masterRecommendRank}</div>
 					</div>
 				</c:if>
@@ -100,7 +110,9 @@ pre {
 </div>
 
 <div>
-	<a class="btn btn-primary" href="${ctx}/episode/list/${animeEpisode.animeInfoId}" title="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' />"><spring:message code='返回剧集列表' /></a>
+	<a class="btn btn-primary" href="${ctx}/episode/list/${animeEpisode.animeInfoId}" title="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' />">
+		<spring:message code='返回剧集列表' />
+	</a>
 </div>
 
 <div style="margin-top: 50px;">
@@ -108,7 +120,9 @@ pre {
 		<div class="row-fluid">
 			<div class="row">
 				<c:if test="${!empty subtitleLineList}">
-					<div style="font-weight: 700;"><spring:message code='动画字幕台词一览' /></div>
+					<div style="font-weight: 700;">
+						<spring:message code='动画字幕台词一览' />
+					</div>
 					<div>
 						<pre class="subtitleTable">
 <c:out value="${animeEpisode.fullName}" /> <c:out value='${animeEpisode.title}' />

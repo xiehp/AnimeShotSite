@@ -7,9 +7,8 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <head>
+<title>动画字幕台词截图搜索 <c:out value='${name}' /> <c:out value='${keyword}' /> ${searchPageNumber} - 动画截图网</title>
 <meta name="keywords" content="动画截图网,字幕搜索,截图搜索,截图字幕,<c:out value='${name}' />,<c:out value='${keyword}' />" />
-<title>动画字幕台词截图搜索 <c:out value='${name}' /> <c:out value='${keyword}' /> ${searchPageNumber} - 动画截图网
-</title>
 <style>
 .blockTitle {
 	margin-top: 10px;

@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: 
-Host: www.acgimage.com
-Sitemap: http://www.acgimage.com/sitemap.xml

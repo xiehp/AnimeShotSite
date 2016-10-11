@@ -244,7 +244,7 @@ public class GifController extends BaseFunctionController<GifInfo, String> {
 		// 增加删除过滤
 		searchParams.put("EQ_" + ShotTask.COLUMN_TASK_TYPE, ShotTask.TASK_TYPE_GIF);
 
-		Page<ShotTask> shotTaskPage = shotTaskService.searchPageByParams(searchParams, pageNumber, ConstantsWeb.SHOT_LIST_PAGE_NUMBER, sortType, ShotTask.class);
+		Page<ShotTask> shotTaskPage = shotTaskService.searchPageByParams(searchParams, pageNumber, 50, sortType, ShotTask.class);
 		shotTaskService.fillParentData(shotTaskPage.getContent());
 		model.addAttribute("shotTaskPage", shotTaskPage);
 

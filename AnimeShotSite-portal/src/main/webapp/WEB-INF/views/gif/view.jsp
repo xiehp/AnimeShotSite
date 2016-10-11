@@ -12,8 +12,8 @@
 
 <head>
 
-<title><c:out value='${EpisodeFullNameWithTime}' /> 动态图片gif</title>
-<meta name="keywords" content="<c:out value='${EpisodeFullNameWithTime}' />,动态图片gif,<c:out value='${subtitleLineTextStr100}' />" />
+<title><c:out value='${EpisodeFullNameWithTime}' /> 动态图片gif - 动画截图网</title>
+<meta name="keywords" content="<c:out value='${EpisodeFullNameWithTime}' />,动画截图,动漫图片,字幕台词,图片外链,动态图片gif" />
 <meta name="description" content="<c:out value='${subtitleLineTextStr200}' />" />
 
 <meta property="og:title" content="<c:out value='${EpisodeFullNameWithTime}' /> 动态图片gif" />

@@ -9,7 +9,7 @@
 <title><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> - 动画截图网</title>
 <head>
 <meta name="keywords" content="<c:out value='${animeInfo.fullName}' />,<c:out value='${animeInfo.secondName}' />,动画截图网,动画截图,动漫截图,动漫图片,动画图片,截图字幕" />
-<meta name="description" content="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> 的动画截图,动漫截图,动漫图片,动画图片,截图字幕。<c:out value='${fn:substring(animeInfo.summaryCleanHtml,0,100)}' />" />
+<meta name="description" content="<c:out value='${fn:substring(animeInfo.summaryCleanHtml, 0, 200)}' />" />
 
 <style>
 .AnimeSummary li>p {

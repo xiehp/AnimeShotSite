@@ -10,7 +10,7 @@
 <title>动态图片生成任务一览 第${shotTaskPage.number + 1}页 - 动画截图网</title>
 <head>
 <meta name="keywords" content="动态图片生成任务一览 第${shotTaskPage.number + 1}页 - 动画截图网,动画截图网,动画截图,动漫截图,动漫图片,动画图片,截图字幕" />
-<meta name="description" content="动态图片生成任务一览 第${shotTaskPage.number + 1}页 - 动画截图网,动漫截图,动漫图片,动画图片,截图字幕" />
+<meta name="description" content="本页面为生成动态gif图片的任务页面，可以选择相应的动画，输入想要的时间，系统会生成对应的gif图片。" />
 
 <style>
 .blockTitle {

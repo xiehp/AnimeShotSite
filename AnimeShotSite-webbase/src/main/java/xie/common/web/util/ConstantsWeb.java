@@ -10,7 +10,7 @@ public class ConstantsWeb {
 	final public static String SITE_MANAGER_LOGIN_ID = "admin";
 
 	/** 截图列表页面中每页展示的图片数量 */
-	public static final int SHOT_LIST_PAGE_NUMBER = 24;
+	public static final int SHOT_LIST_PAGE_NUMBER = 48;
 
 	/** 标识某个人的CookieId的key */
 	public static final String SITE_COOKIE_ID = "SiteCookieId";
