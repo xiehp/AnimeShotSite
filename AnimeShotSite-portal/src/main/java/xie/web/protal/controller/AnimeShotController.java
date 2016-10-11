@@ -87,7 +87,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 			return "redirect:/anime/list";
 		}
 		AnimeInfo animeInfo = animeInfoService.findOne(animeEpisode.getAnimeInfoId());
-		Page<ShotInfo> shotInfoPage = shotInfoService.searchPageByParams(searchParams, pageNumber, ConstantsWeb.SHOT_LIST_PAGE_NUMBER, sortType, ShotInfo.class);
+		Page<ShotInfo> shotInfoPage = shotInfoService.searchPageByParams(searchParams, pageNumber, ConstantsWeb.SHOT_LIST_PAGE_NUMBER * 2, sortType, ShotInfo.class);
 		if (pageNumber > shotInfoPage.getTotalPages() && shotInfoPage.getTotalPages() > 0) {
 			// 页数不对， 并且有数据，直接定位到最后一页
 			String pageUrl = shotInfoPage.getTotalPages() > 1 ? "?page=" + shotInfoPage.getTotalPages() : "";
