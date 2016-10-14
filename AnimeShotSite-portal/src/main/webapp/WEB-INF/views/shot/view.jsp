@@ -11,7 +11,11 @@
 <c:set var="PreFullImageUrl" value="${previousShotInfo.tietukuOUrlChangeDomain}" />
 <c:set var="NextFullImageUrl" value="${nextShotInfo.tietukuOUrlChangeDomain}" />
 <c:set var="ThisPageUrl" value="${siteBaseUrl}/shot/view/${shotInfo.id}" />
-<c:set var="ImageAspectRatio" value="${(!empty animeEpisode.height && !empty animeEpisode.width) ? animeEpisode.height/animeEpisode.width : ''}" />
+<c:set var="DivPaddingBorderWidth" value="10" />
+<c:set var="DivPaddingBorderHeight" value="10" />
+<c:set var="ImageAspectRatio" value="${(!empty animeEpisode.height && !empty animeEpisode.width) ? animeEpisode.height/animeEpisode.width : 9/16}" />
+<c:set var="coordsWidth" value="${ShotImgDivWidth > 0 ? ShotImgDivWidth-DivPaddingBorderWidth : 800}" />
+<c:set var="coordsHeight" value="${ShotImgDivWidth > 0 ? (ShotImgDivWidth-DivPaddingBorderWidth) * ImageAspectRatio : 5000}" />
 
 <head>
 <title><c:out value='${EpisodeFullNameWithTime}' /> - 动画截图网</title>
@@ -116,7 +120,7 @@ body {
 	<input type="hidden" id="scorllTop" name="scorllTop" value="<c:out value="${scorllTop}" />">
 	<div align="center">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			<div id="shotImgDiv" class="thumbnail shotImgDivStyle" data-ImageAspectRatio="${ImageAspectRatio}" style="margin-bottom: 10px;<c:if test="${ShotImgDivWidth > 0}">width: ${ShotImgDivWidth}px; height: ${10 + (ShotImgDivWidth-10) * (empty ImageAspectRatio ? 9/16 : ImageAspectRatio)}px;</c:if>">
+			<div id="shotImgDiv" class="thumbnail shotImgDivStyle" data-ImageAspectRatio="${ImageAspectRatio}" style="margin-bottom: 10px;<c:if test="${ShotImgDivWidth > 0}">width: ${ShotImgDivWidth}px; height: ${DivPaddingBorderHeight + (ShotImgDivWidth-DivPaddingBorderWidth) * ImageAspectRatio}px;</c:if>">
 				<script>
 					readCookieAndSetWidth(true);
 				</script>
@@ -138,11 +142,11 @@ body {
 
 		<map id="planetmap" name="planetmap">
 			<c:if test="${!empty previousShotInfo.id}">
-				<area id="areaPrev" class="postByFromXXX" shape="rect" coords="0,0,200,5000" href="${ctx}/shot/view/${previousShotInfo.id}" title="<spring:message code='上一张' />" alt="<c:out value='EpisodeFullName' /> <c:out value='${previousShotInfo.formatedTimeChina}' />" />
+				<area id="areaPrev" class="postByFromXXX" shape="rect" coords="0,0,${coordsWidth/3},${coordsHeight}" href="${ctx}/shot/view/${previousShotInfo.id}" title="<spring:message code='上一张' />" alt="<c:out value='EpisodeFullName' /> <c:out value='${previousShotInfo.formatedTimeChina}' />" />
 				<img alt="" src="${PreFullImageUrl}" style="display: none;">
 			</c:if>
 			<c:if test="${!empty nextShotInfo.id}">
-				<area id="areaNext" class="postByFromXXX" shape="rect" coords="500,0,5000,5000" href="${ctx}/shot/view/${nextShotInfo.id}" title="<spring:message code='下一张' />" alt="<c:out value='EpisodeFullName' /> <c:out value='${nextShotInfo.formatedTimeChina}' />" />
+				<area id="areaNext" class="postByFromXXX" shape="rect" coords="${coordsWidth/3*2},0,${coordsWidth},${coordsHeight}" href="${ctx}/shot/view/${nextShotInfo.id}" title="<spring:message code='下一张' />" alt="<c:out value='EpisodeFullName' /> <c:out value='${nextShotInfo.formatedTimeChina}' />" />
 				<img alt="" src="${NextFullImageUrl}" style="display: none;">
 			</c:if>
 		</map>
