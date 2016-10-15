@@ -7,6 +7,8 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <c:set var="EpisodeFullName" value="${animeInfo.fullName} ${animeInfo.secondName} ${animeEpisode.divisionName}" />
 <c:set var="EpisodeFullNameWithTime" value="${EpisodeFullName} ${shotInfo.formatedTimeChina}" />
+<c:set var="DivPaddingBorderWidth" value="10" />
+<c:set var="DivPaddingBorderHeight" value="10" />
 <c:set var="FullImageUrl" value="${gifInfo.tietukuOUrlChangeDomain}" />
 <c:set var="ThisPageUrl" value="${siteBaseUrl}/gif/view/${gifInfo.id}" />
 
@@ -114,7 +116,7 @@ body {
 	<input type="hidden" id="scorllTop" name="scorllTop" value="<c:out value="${scorllTop}" />">
 	<div align="center">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			<div id="shotImgDiv" class="thumbnail shotImgDivStyle" style="margin-bottom: 10px;<c:if test="${gifInfo.width > 0}">max-width: ${gifInfo.width}px; max-height: ${gifInfo.height}px;</c:if>">
+			<div id="shotImgDiv" class="thumbnail shotImgDivStyle" style="margin-bottom: 10px;<c:if test="${gifInfo.width > 0}">max-width: ${gifInfo.width + DivPaddingBorderWidth}px; max-height: ${gifInfo.height + DivPaddingBorderHeight}px;</c:if>">
 				<script>
 					readCookieAndSetWidth(true);
 				</script>
