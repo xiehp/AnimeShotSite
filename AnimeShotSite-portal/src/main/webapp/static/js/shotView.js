@@ -43,43 +43,87 @@ function readCookieAndSetWidth(isCreateDom) {
 	}
 }
 
-function copyText(obj) {
-	try {
-		var rng = document.body.createTextRange();
-		rng.moveToElementText(obj);
-		rng.scrollIntoView();
-		rng.select();
-		rng.execCommand("Copy");
-		rng.collapse(false);
-		alert("已经复制到粘贴板!你可以使用Ctrl+V 贴到需要的地方去了哦!");
-	} catch (e) {
-		alert("您的浏览器不支持此复制功能，请选中相应内容并使用Ctrl+C进行复制!");
+/** 复制操作初始化，使用execCommand */
+function initZeroClipboard(obj, successMessage, failMessage) {
+	// 气泡弹出提示參數
+	if (successMessage == null || successMessage == "") {
+		successMessage = '复制成功-_-';
 	}
-}
-
-function initZeroClipboard(obj) {
-	// 气泡弹出提示
+	if (failMessage == null || failMessage == "") {
+		failMessage = '复制失败，\n请手动复制';
+	}
 	var options = {
+		"trigger" : '',
 		"placement" : 'auto right',
-		"trigger" : 'click',
 		"delay" : {
-			"show" : 200,
-			"hide" : 600
+		// "show" : 400,
+		// "hide" : 1000
 		},
-		"title" : '复制成功-_-'
+		"title" : successMessage
 	};
-	$(obj).tooltip(options);
 
-	// 复制剪切板插件
-	var client = new ZeroClipboard(obj);
-	client.on("ready", function(readyEvent) {
-		client.on("aftercopy", function(event) {
-			$(obj).tooltip('show');
-			setTimeout(function() {
-				$(obj).tooltip('hide');
-			}, 1000);
-		});
-	});
+	var copyResult = false;
+	var objCount = 0;
+	var targetObj = null;
+
+	function onButtonCopy() {
+		copyResult = true;
+	}
+
+	var targetObjId = $(obj).data("clipboard-target");
+	if (targetObjId != null && targetObjId != "") {
+		targetObj = document.getElementById(targetObjId);
+
+		// 拷贝对象oncopy事件
+		targetObj.oncopy = onButtonCopy;
+	}
+
+	function showToolTip() {
+		var closeTimeOut = 1000;
+		if (copyResult) {
+			options.title = successMessage;
+		} else {
+			options.title = failMessage;
+			closeTimeOut = 2000;
+		}
+
+		// 显示结果气泡
+		$(obj).tooltip(options);
+		$(obj).tooltip('show');
+		objCount++;
+		var thisObjCount = objCount;
+		setTimeout(function() {
+			closeToolTip(thisObjCount);
+		}, closeTimeOut);
+	}
+
+	function closeToolTip(thisObjCount) {
+		if (thisObjCount == objCount) {
+			$(obj).tooltip('destroy');
+		}
+	}
+
+	// execCommand
+	obj.onclick = function(event) {
+		copyResult = false;
+
+		if (targetObj) {
+			// 复制目标选择
+			$(targetObj).focus();
+			$(targetObj).select();
+
+			// 离开复制目标
+			// $(targetObj).blur();
+
+			// 执行拷贝
+			var result = document.execCommand('copy', false, null);
+		}
+
+		// 0.2秒后显示气泡
+		setTimeout(function() {
+			showToolTip();
+		}, 200);
+	};
 }
 
 /**

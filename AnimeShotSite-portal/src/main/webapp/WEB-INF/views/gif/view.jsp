@@ -72,7 +72,7 @@ body {
 	// 复制按钮
 	$(function() {
 		$(".ZeroClipboardButton").each(function() {
-			initZeroClipboard(this);
+			initZeroClipboard(this, "复制成功-_-", "复制失败，\n请手动复制");
 		});
 	});
 
@@ -194,7 +194,7 @@ body {
 			<input id="imageLink" readonly="readonly" class="form-control input-sm" style="cursor: text;" value="${FullImageUrl}">
 		</div>
 		<div class="col-sm-3 ShareLinkButton">
-			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-text="${FullImageUrl}" value="<spring:message code='复制' />" />
+			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-target="imageLink" value="<spring:message code='复制' />" />
 		</div>
 	</div>
 	<div class="col-sm-12 ShareLinkItem">
@@ -205,7 +205,7 @@ body {
 			<input id="pageLink" readonly="readonly" class="form-control input-sm" style="cursor: text;" value="${ThisPageUrl}">
 		</div>
 		<div class="col-sm-3 ShareLinkButton">
-			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-text="${ThisPageUrl}" value="<spring:message code='复制' />" />
+			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-target="pageLink" value="<spring:message code='复制' />" />
 		</div>
 	</div>
 	<div class="col-sm-12 ShareLinkItem quickShareDivClass">

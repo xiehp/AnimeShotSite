@@ -111,7 +111,7 @@
 		<!-- bootstrap -->
 		<script src="${ staticResourceUrl }bootstrap/${bootstrapVersion}/js/bootstrap.min.js" type="text/javascript"></script>
 		<!-- other -->
-		<script src="${ staticResourceUrl }zeroclipboard/${zeroClipboardVersion}/ZeroClipboard.min.js" type="text/javascript"></script>
+		<!-- <script src="${ staticResourceUrl }zeroclipboard/${zeroClipboardVersion}/ZeroClipboard.min.js" type="text/javascript"></script> -->
 		<!-- local js -->
 		<script src="${ ctx }/static/js/template/jsrender.min.js" type="text/javascript"></script>
 		<!-- self js -->
