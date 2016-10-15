@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
+<c:set var="ctxManage" value="${ctx}${MANAGE_URL_STR}" />
+
 <div id="nav">
 	<nav class="navbar navbar-inverse" role="navigation">
 		<div class="navbar-header">
@@ -84,20 +86,32 @@
 					</ul>
 				</li>
 				<c:if test="${IS_MASTER}">
-					<li>
-						<a href="javascript:void(0);" onclick="clearCache();">清除缓存</a>
-					</li>
-					<script>
-						function clearCache() {
-							if (confirm("是否清除缓存")) {
-								$.homePost("/tool/cleanCache", null, function(data) {
-									if (data && data.size) {
-										alert("清除缓存个数:" + data.size);
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						后台管理<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="javascript:void(0);" onclick="clearCache();">清除缓存</a>
+							<script>
+								function clearCache() {
+									if (confirm("是否清除缓存")) {
+										$.homePost("/tool/cleanCache", null, function(data) {
+											if (data && data.size) {
+												alert("清除缓存个数:" + data.size);
+											}
+										});
 									}
-								});
-							}
-						}
-					</script>
+								}
+							</script>
+						</li>
+						<li>
+							<a href="${ctxManage}/anime/list">
+								<spring:message code='动画列表' />
+							</a>
+						</li>
+					</ul>
+				</li>
 				</c:if>
 
 				<c:if test="${! empty aaa  }">
