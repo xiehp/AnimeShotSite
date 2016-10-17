@@ -224,6 +224,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 				String siteBaseUrl = XSSHttpUtil.getRemoteProto(request) + "://" + serverName + portStr + request.getContextPath();
 				request.setAttribute("httpScheme", httpScheme);
 				request.setAttribute("siteBaseUrl", siteBaseUrl);
+				request.setAttribute("isSecureHttp", "https".equals(httpScheme));
 
 				// 告诉前台当前语言
 				String localeLanguage = XRequestUtils.getLocaleLanguageCountry(request).toLowerCase();
