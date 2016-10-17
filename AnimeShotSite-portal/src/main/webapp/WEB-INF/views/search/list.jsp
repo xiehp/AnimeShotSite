@@ -146,16 +146,27 @@
 			return regStr
 		}
 
-		/** 搜索文本分词 */
-		function wordSplit(text, segWordArray) {
-			text += "";
-			var textLen = text.length;
-			var maxLen = textLen > 20 ? 20 : textLen;
-			// 单词从最大长度10到最小2
-			for (var wordLen = maxLen; wordLen > 1; wordLen--) {
+		/** 搜索文本分词, 2到20单词无差别分词法 */
+		var englishStr = new RegExp("^[a-zA-Z]+$");
+		function wordSplit(oneKeywordStr, segWordArray) {
+			oneKeywordStr += "";
+
+			// 如全是英文，不分词
+			if (englishStr.test(oneKeywordStr)) {
+				if (segWordArray.indexOf(oneKeywordStr) < 0) {
+					// 非重复
+					segWordArray.push(oneKeywordStr);
+				}
+				return segWordArray;
+			}
+
+			var oneKeywordStrLen = oneKeywordStr.length;
+			var maxLen = oneKeywordStrLen > 20 ? 20 : oneKeywordStrLen;
+			// 单词从最大长度20到最小2
+			for (var wordLen = maxLen; wordLen >= 2; wordLen--) {
 				// 每个长度，都从新从文本开头进行文字截取
-				for (var startIndex = 0; startIndex < textLen - wordLen + 1; startIndex++) {
-					var segWord = text.substring(startIndex, startIndex + wordLen);
+				for (var startIndex = 0; startIndex < oneKeywordStrLen - wordLen + 1; startIndex++) {
+					var segWord = oneKeywordStr.substring(startIndex, startIndex + wordLen);
 					if (segWordArray.indexOf(segWord) < 0) {
 						// 非重复
 						segWordArray.push(segWord);
@@ -179,8 +190,8 @@
 			// searchMode为全文检索时，需要将中文进行分词
 			var segWordArray = new Array();
 			for ( var keywordIndex in keywordArray) {
-				var keywordStr = keywordArray[keywordIndex];
-				segWordArray = wordSplit(keywordStr, segWordArray);
+				var oneKeywordStr = keywordArray[keywordIndex];
+				segWordArray = wordSplit(oneKeywordStr, segWordArray);
 			}
 			segWordArray.sort(function(a, b) {
 				return a.length <= b.length;
