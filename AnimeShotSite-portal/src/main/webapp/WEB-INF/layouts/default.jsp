@@ -95,6 +95,7 @@
 		<script type="text/javascript">
 			document.getElementById("aaaaa").value = document.documentElement.clientWidth + "," + window.innerWidth;
 		</script>
+		<input value="${siteBaseUrl}">
 	</c:if>
 
 	<div class="page-container row-fluid" align="center">

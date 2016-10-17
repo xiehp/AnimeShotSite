@@ -204,14 +204,25 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 				request.setAttribute("requestURI", request.getRequestURI());
 				request.setAttribute("requestURL", request.getRequestURL());
 
-				// 设置当前http或https
+				// 生成远程访问本地的http或https地址
+				String httpScheme = XSSHttpUtil.getRemoteProto(request);
 				String serverName = shotSiteSetup.getAnimesiteServerHost();
 				if (XStringUtils.isBlank(serverName)) {
-					serverName = XSSHttpUtil.getRemoteServerName(request) + ":" + XSSHttpUtil.getRemotePort(request);
+					serverName = XSSHttpUtil.getRemoteServerName(request);
 				}
-				String siteBaseUrl = request.getScheme() + "://" + serverName + request.getContextPath();
-				shotSiteSetup.getAnimesiteServerHost();
-				request.setAttribute("httpScheme", request.getScheme());
+				String portStr = XSSHttpUtil.getRemotePort(request);
+				if (XStringUtils.isNotBlank(portStr)) {
+					if ("http".equals(httpScheme) && "80".equals(portStr)) {
+						portStr = "";
+					} else if ("https".equals(httpScheme) && "443".equals(portStr)) {
+						portStr = "";
+					} else {
+						portStr = ":" + portStr;
+					}
+				}
+
+				String siteBaseUrl = XSSHttpUtil.getRemoteProto(request) + "://" + serverName + portStr + request.getContextPath();
+				request.setAttribute("httpScheme", httpScheme);
 				request.setAttribute("siteBaseUrl", siteBaseUrl);
 
 				// 告诉前台当前语言

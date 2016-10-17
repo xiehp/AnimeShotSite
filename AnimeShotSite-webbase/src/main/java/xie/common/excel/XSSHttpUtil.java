@@ -430,4 +430,13 @@ public class XSSHttpUtil {
 
 		return port;
 	}
+
+	public static String getRemoteProto(final HttpServletRequest request) {
+		String proto = request.getHeader("X-Forwarded-Proto");
+		if (XStringUtils.isBlank(proto)) {
+			proto = String.valueOf(request.getScheme());
+		}
+
+		return proto;
+	}
 }
