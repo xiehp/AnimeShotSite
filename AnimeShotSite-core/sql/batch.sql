@@ -51,3 +51,8 @@ and (language = '4' or language = 'sc')
 update comment_record set delete_flag = 1 where user_name = 'angelina' or content = 'angelina';
 update common_record set delete_flag = 1 where user_name = 'angelina' or name = '李明';
 
+
+-- 更新字幕信息是否已录入字幕字段
+update subtitle_info set SUB_IN_STATUS = 0;
+update subtitle_info aaa set SUB_IN_STATUS = 1
+where exists (select * from subtitle_line where subtitle_line.SUBTITLE_INFO_ID = aaa.id limit 1);
