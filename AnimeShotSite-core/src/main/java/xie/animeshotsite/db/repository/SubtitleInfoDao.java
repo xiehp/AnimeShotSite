@@ -13,6 +13,9 @@ public interface SubtitleInfoDao extends BaseRepository<SubtitleInfo, String> {
 	/** 获取某剧集下所有字幕信息 */
 	List<SubtitleInfo> findByAnimeEpisodeIdOrderByLocalFileName(String animeEpisodeId);
 
+	/** 获取某剧集下已经录入过字幕的字幕信息 */
+	List<SubtitleInfo> findByAnimeEpisodeIdAndSubInStatusOrderByLocalFileName(String animeEpisodeId, Integer subInStatus);
+
 	/** 获取某个剧集某语言的字幕信息 */
 	SubtitleInfo findByAnimeInfoIdAndAnimeEpisodeIdAndLanguage(String animeInfoId, String animeEpisodeId, String language);
 

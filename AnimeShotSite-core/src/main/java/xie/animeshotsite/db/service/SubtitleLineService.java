@@ -92,14 +92,23 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 					Date startDate = new Date();
 					List<SubtitleLine> listSubtitleLine = new ArrayList<>();
 					for (XSubtitleLine xSubtitleLine : list) {
-						SubtitleLine subtitleLine = getSubtitleLine(xSubtitleLine, subtitleInfo);
+						SubtitleLine subtitleLine = convertSubtitleLine(xSubtitleLine, subtitleInfo);
 						listSubtitleLine.add(subtitleLine);
 					}
 					if (listSubtitleLine.size() > 0) {
 						listSubtitleLine = getBaseRepository().save(listSubtitleLine);
+					} else {
+						logging.error("没有有效字幕行，放弃保存数据库");
 					}
 
 					logging.info("创建字幕数据成功，文件：{}，耗时：{}", file.getAbsolutePath(), DateUtil.formatTime(new Date().getTime() - startDate.getTime(), 3));
+
+					// 更新subtitleInfo已录入字段
+					if (!Constants.FLAG_INT_YES.equals(subtitleInfo.getSubInStatus())) {
+						subtitleInfo = subtitleInfoDao.findById(subtitleInfo.getId());
+						subtitleInfo.setSubInStatus(Constants.FLAG_INT_YES);
+						subtitleInfoDao.save(subtitleInfo);
+					}
 				}
 			}
 		} catch (IOException e) {
@@ -108,7 +117,15 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 		}
 	}
 
-	public SubtitleLine getSubtitleLine(XSubtitleLine xSubtitleLine, SubtitleInfo subtitleInfo) {
+	/**
+	 * 将原始字幕行转换为entity<br>
+	 * 如果数据库中已有该字幕行，则重新设置该字幕行。<br>
+	 * 
+	 * @param xSubtitleLine
+	 * @param subtitleInfo
+	 * @return
+	 */
+	private SubtitleLine convertSubtitleLine(XSubtitleLine xSubtitleLine, SubtitleInfo subtitleInfo) {
 		Integer lineIndex = xSubtitleLine.getLineIndex();
 		SubtitleLine subtitleLine = subtitleLineDao.findBySubtitleInfoIdAndLineIndex(subtitleInfo.getId(), lineIndex);
 		if (subtitleLine == null) {
@@ -145,12 +162,6 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 		// subtitleLine.setMarginR(xSubtitleLine.getMarginR());
 		// subtitleLine.setMarginV(xSubtitleLine.getMarginV());
 
-		return subtitleLine;
-	}
-
-	public SubtitleLine saveSubtitleLine(XSubtitleLine xSubtitleLine, SubtitleInfo subtitleInfo) {
-		SubtitleLine subtitleLine = getSubtitleLine(xSubtitleLine, subtitleInfo);
-		subtitleLine = getBaseRepository().save(subtitleLine);
 		return subtitleLine;
 	}
 
@@ -286,6 +297,7 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 
 	/**
 	 * 根据客户端显示语言和当前剧集
+	 * 
 	 * @param list
 	 * @param actualShowLanage
 	 * @param localeLanguage

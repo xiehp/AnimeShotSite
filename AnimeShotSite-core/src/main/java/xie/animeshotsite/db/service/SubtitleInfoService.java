@@ -132,7 +132,7 @@ public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 		// 生成所有语言的list
 		List<String> defaultLanguageList = new ArrayList<>();
 		List<String> defaultLanguageListTemp = new ArrayList<>();
-		List<SubtitleInfo> listSubtitleInfo = subtitleInfoDao.findByAnimeEpisodeIdOrderByLocalFileName(animeEpisodeId);
+		List<SubtitleInfo> listSubtitleInfo = subtitleInfoDao.findByAnimeEpisodeIdAndSubInStatusOrderByLocalFileName(animeEpisodeId, Constants.FLAG_INT_YES);
 		for (SubtitleInfo subtitleInfo : listSubtitleInfo) {
 			String language = subtitleInfo.getLanguage();
 			defaultLanguageList.add(language);

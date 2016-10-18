@@ -92,6 +92,9 @@ public class SubtitleInfo extends BaseEntity {
 	/** 排除某种属性文字 */
 	private String filterRemove;
 
+	/** 字幕录入状态 0:未录入 1:已录入 */
+	private Integer subInStatus;
+
 	/**
 	 * 获取 动画信息的id.
 	 *
@@ -350,6 +353,14 @@ public class SubtitleInfo extends BaseEntity {
 
 	public void setOffsetTimeStart(Long offsetTimeStart) {
 		this.offsetTimeStart = offsetTimeStart;
+	}
+
+	public Integer getSubInStatus() {
+		return subInStatus;
+	}
+
+	public void setSubInStatus(Integer subInStatus) {
+		this.subInStatus = subInStatus;
 	}
 
 }
