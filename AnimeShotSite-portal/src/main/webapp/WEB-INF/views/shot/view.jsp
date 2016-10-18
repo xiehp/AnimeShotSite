@@ -142,11 +142,11 @@ body {
 
 		<map id="planetmap" name="planetmap">
 			<c:if test="${!empty previousShotInfo.id}">
-				<area id="areaPrev" class="postByFromXXX" shape="rect" coords="0,0,${coordsWidth/3},${coordsHeight}" href="${ctx}/shot/view/${previousShotInfo.id}" title="<spring:message code='上一张' />" alt="<c:out value='EpisodeFullName' /> <c:out value='${previousShotInfo.formatedTimeChina}' />" />
+				<area id="areaPrev" class="postByFromXXX" shape="rect" coords="0,0,${coordsWidth/3},${coordsHeight}" href="${ctx}/shot/view/${previousShotInfo.id}" title="<spring:message code='上一张' />" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${previousShotInfo.formatedTimeChina}' />" />
 				<img alt="" src="${PreFullImageUrl}" style="display: none;">
 			</c:if>
 			<c:if test="${!empty nextShotInfo.id}">
-				<area id="areaNext" class="postByFromXXX" shape="rect" coords="${coordsWidth/3*2},0,${coordsWidth},${coordsHeight}" href="${ctx}/shot/view/${nextShotInfo.id}" title="<spring:message code='下一张' />" alt="<c:out value='EpisodeFullName' /> <c:out value='${nextShotInfo.formatedTimeChina}' />" />
+				<area id="areaNext" class="postByFromXXX" shape="rect" coords="${coordsWidth/3*2},0,${coordsWidth},${coordsHeight}" href="${ctx}/shot/view/${nextShotInfo.id}" title="<spring:message code='下一张' />" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${nextShotInfo.formatedTimeChina}' />" />
 				<img alt="" src="${NextFullImageUrl}" style="display: none;">
 			</c:if>
 		</map>
@@ -179,12 +179,12 @@ body {
 
 <div style="padding: 5px;">
 	<c:if test="${!empty previousShotInfo.id}">
-		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/shot/view/${previousShotInfo.id}" title="<c:out value='EpisodeFullName' /> <c:out value='${previousShotInfo.formatedTimeChina}' />">
+		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/shot/view/${previousShotInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${previousShotInfo.formatedTimeChina}' />">
 			<spring:message code='上一张' />
 		</a>
 	</c:if>
 	<c:if test="${!empty nextShotInfo.id}">
-		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/shot/view/${nextShotInfo.id}" title="<c:out value='EpisodeFullName' /> <c:out value='${nextShotInfo.formatedTimeChina}' />">
+		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/shot/view/${nextShotInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${nextShotInfo.formatedTimeChina}' />">
 			<spring:message code='下一张' />
 		</a>
 	</c:if>
@@ -192,7 +192,7 @@ body {
 <!-- </form>  -->
 
 <div>
-	<a class="btn btn-primary btn-sm" href="${ctx}/shot/list/${shotInfo.animeEpisodeId}${pageNumberUrl}" title="<c:out value='EpisodeFullName' />">
+	<a class="btn btn-primary btn-sm" href="${ctx}/shot/list/${shotInfo.animeEpisodeId}${pageNumberUrl}" title="<c:out value='${EpisodeFullName}' />">
 		<spring:message code='返回截图一览' />
 	</a>
 </div>
