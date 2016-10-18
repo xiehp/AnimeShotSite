@@ -15,7 +15,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import xie.animeshotsite.setup.ShotSiteSetup;
 import xie.animeshotsite.utils.SiteUtils;
@@ -206,24 +205,30 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 
 				// 生成远程访问本地的http或https地址
 				String httpScheme = XSSHttpUtil.getRemoteProto(request);
+				String portStr = XSSHttpUtil.getRemotePort(request);
 				String serverName = shotSiteSetup.getAnimesiteServerHost();
 				if (XStringUtils.isBlank(serverName)) {
+					// 获取访问host和port，主要用于本地调试
 					serverName = XSSHttpUtil.getRemoteServerName(request);
-				}
-				String portStr = XSSHttpUtil.getRemotePort(request);
-				if (XStringUtils.isNotBlank(portStr)) {
-					if ("http".equals(httpScheme) && "80".equals(portStr)) {
-						portStr = "";
-					} else if ("https".equals(httpScheme) && "443".equals(portStr)) {
-						portStr = "";
-					} else {
-						portStr = ":" + portStr;
+
+					if (XStringUtils.isNotBlank(portStr)) {
+						if ("http".equals(httpScheme) && "80".equals(portStr)) {
+							portStr = "";
+						} else if ("https".equals(httpScheme) && "443".equals(portStr)) {
+							portStr = "";
+						} else {
+							portStr = ":" + portStr;
+						}
 					}
+				} else {
+					// TODO 设定了主机地址的情况下，由于前端web服务配置问题会导致取到本地port，会有安全问题，暂时不加port
+					portStr = "";
 				}
 
 				String siteBaseUrl = XSSHttpUtil.getRemoteProto(request) + "://" + serverName + portStr + request.getContextPath();
 				request.setAttribute("httpScheme", httpScheme);
 				request.setAttribute("siteBaseUrl", siteBaseUrl);
+				request.setAttribute("thisPageUrl", siteBaseUrl + request.getRequestURI());
 				request.setAttribute("isSecureHttp", "https".equals(httpScheme));
 
 				// 告诉前台当前语言
