@@ -24,6 +24,8 @@ public class ShotTask extends BaseEntity {
 
 	/** 任务类型 截图 */
 	public static final String TASK_TYPE_SHOT = "SHOT";
+	/** 任务类型 指定截图 */
+	public static final String TASK_TYPE_SPECIAL_SHOT = "SPECIAL_SHOT";
 	/** 任务类型 字幕 */
 	public static final String TASK_TYPE_SUBTITLE = "SUBTITLE";
 	/** 任务类型 gif动画 */

@@ -32,6 +32,7 @@ public class Constants {
 	public static final String JSON_RESPONSE_KEY_CODE = "code";
 	public static final String JSON_RESPONSE_KEY_MESSAGE = "message";
 	public static final String JSON_RESPONSE_KEY_SUCCESS = "success";
+	public static final String JSON_RESPONSE_KEY_DATA = "data";
 
 	/**
 	 * 默认管理员ID

@@ -3,5 +3,5 @@ package xie.animeshotsite.constants;
 public class SysConstants {
 
 	/** 管理员角色ID */
-	public static final String ROLE_ADMIN = "1";
+	public static final String ROLE_ADMIN = "admin";
 }

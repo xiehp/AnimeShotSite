@@ -20,10 +20,12 @@
 	var _speedMark = new Date();
 	var global = {};
 	var baseUrl;
+	var ctx;
 	if (global.ctx == null) {
+		global.baseUrl = '${siteBaseUrl}';
 		global.ctx = '${ctx}';
-		global.baseUrl = '${ctx}';
-		baseUrl = '${ctx}';
+		baseUrl = '${siteBaseUrl}';
+		ctx = '${ctx}';
 	}
 	var IS_MASTER = false;
 	<c:if test="${IS_MASTER}">
@@ -95,7 +97,8 @@
 		<script type="text/javascript">
 			document.getElementById("aaaaa").value = document.documentElement.clientWidth + "," + window.innerWidth;
 		</script>
-		<input value="${siteBaseUrl}">
+		<input value="${siteBaseUrl}" size="50">
+		<input value="${thisPageUrl}" size="100">
 	</c:if>
 
 	<div class="page-container row-fluid" align="center">

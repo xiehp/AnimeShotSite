@@ -249,3 +249,113 @@ function setShotImgDivWidthCookie(value) {
 		HomeCookie.setCookie("ShotImgDivWidth", value);
 	}
 }
+
+/**
+ * 获取截图<br>
+ * 
+ * refShotInfoId 参照的截图ID<br>
+ * offsetTime 偏移多少毫秒<br>
+ * preFlg 向前还是向后<br>
+ */
+var startTime = new Date();
+var doCreateShotCheckTime = 1000;
+var taskResutStatus = 0;
+var taskResutMessage = "";
+var taskResutWriteCount = 0;
+function doCreateShot(shotInfoId, offsetTime, preFlg, doneCallback) {
+	if (confirm("是否继续？")) {
+		var param = {};
+		param.refShotInfoId = shotInfoId;
+		param.offsetTime = offsetTime;
+		param.preFlg = preFlg;
+		$.homePost("/shot/doCreateShot", param, function(result) {
+			if (result.message != null && result.message != "") {
+				$.showMessageModal(result.message);
+			}
+
+			if (result.success) {
+				startTime = new Date();
+				checkCreateShot(result.taskId, result.animeEpisodeId, result.timestamp, doneCallback);
+				rewriteResultMessage();
+			}
+		});
+	}
+}
+
+function rewriteResultMessage() {
+	setTimeout(function() {
+		var div = $("#createShotResultDiv");
+		var nowTime = new Date();
+		var nowSecond = parseInt((nowTime.getTime() - startTime.getTime()) / 1000);
+		var span = document.createElement("span")
+		if (taskResutStatus == 1) {
+			// 成功
+			span.setAttribute("style", "color:green;font-size:18px;")
+		} else if (taskResutStatus == 2) {
+			// 处理
+			span.setAttribute("style", "color:blue;font-size:18px;")
+		} else if (taskResutStatus == 3) {
+			// 失败
+			span.setAttribute("style", "color:red;font-size:18px;")
+		}  else if (taskResutStatus == 11) {
+			// 等待30-120秒
+			span.setAttribute("style", "color:orange;font-size:18px;")
+		}  else if (taskResutStatus == 12) {
+			// 等待120秒以上
+			span.setAttribute("style", "color:red;font-size:18px;")
+		} else {
+			// 等待
+			span.setAttribute("style", "color:black;font-size:18px;")
+		}
+		div.empty();
+		div.append(span);
+		taskResutWriteCount++;
+		var pointStr = "";
+		for (var i = 0; i <= taskResutWriteCount % 5; i++) {
+			pointStr = pointStr + ".";
+		}
+		div.find("span").text(taskResutMessage + "  " + nowSecond + "  " + pointStr);
+
+		if (taskResutStatus != 1) {
+			rewriteResultMessage();
+		}
+	}, 200);
+}
+
+/**
+ * 检测是否截图成功<br>
+ * 
+ * refShotInfoId 参照的截图ID<br>
+ * offsetTime 偏移多少毫秒<br>
+ * preFlg 向前还是向后<br>
+ */
+function checkCreateShot(taskId, animeEpisodeId, timestamp, doneCallback) {
+	var param = {};
+	param.taskId = taskId;
+	param.animeEpisodeId = animeEpisodeId;
+	param.timestamp = timestamp;
+	$.homePost("/shot/checkCreateShot", param, function(result) {
+		if (result.success) {
+			if (result.taskMessage != null && result.taskMessage != "") {
+				taskResutMessage = result.taskMessage;
+				taskResutStatus = result.taskResutStatus;
+			}
+
+			if (result.shotInfoId != null) {
+				$.showMessageModal(result.message);
+				setTimeout(function() {
+					window.location = global.ctx + "/shot/view/" + result.shotInfoId;
+				}, 2000);
+				return;
+			} else {
+				setTimeout(function() {
+					checkCreateShot(taskId, animeEpisodeId, timestamp, doneCallback);
+				}, doCreateShotCheckTime);
+			}
+		} else {
+			if (result.message != null && result.message != "") {
+				$.showMessageModal(result.message);
+			}
+		}
+	});
+}

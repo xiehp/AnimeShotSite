@@ -31,6 +31,7 @@ public class MainTimer {
 		// System.setProperty("spring.profiles.default", "production");
 
 		createTimer(ShotTaskTimer.class, 20000, ShotTask.TASK_TYPE_SHOT);
+		createTimer(ShotTaskTimer.class, 20000, ShotTask.TASK_TYPE_SPECIAL_SHOT);
 		createTimer(ShotTaskTimer.class, 20000, ShotTask.TASK_TYPE_SUBTITLE);
 		createTimer(ShotTaskTimer.class, 20000, ShotTask.TASK_TYPE_GIF);
 

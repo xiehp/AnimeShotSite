@@ -54,8 +54,37 @@ public class EntityCache {
 		return size;
 	}
 
+	/**
+	 * 清除以字符串开头的缓存
+	 * 
+	 * @param beginStr
+	 * @return
+	 */
+	public int clearBegin(String beginStr) {
+		synchronized (this) {
+			logger.info("准备清除以{}开头的缓存，当前缓存个数：{}", beginStr, cacheMap.size());
+
+			// 处理缓存
+			int count = 0;
+			Iterator<Entry<String, Object>> entryIt = cacheMap.entrySet().iterator();
+			while (entryIt.hasNext()) {
+				Entry<String, Object> entry = entryIt.next();
+				if (entry.getKey().startsWith(beginStr)) {
+					count++;
+					entryIt.remove();
+					String cacheId = entry.getKey();
+					timeoutMap.remove(cacheId);
+				}
+			}
+
+			logger.info("清除缓存个数:{}, 剩余缓存个数:{}", count, cacheMap.size());
+
+			return count;
+		}
+	}
+
 	private int clearExpire() {
-		synchronized (processExpireTime) {
+		synchronized (this) {
 			logger.info("准备清除过期缓存，当前缓存个数：{}", cacheMap.size());
 
 			// 处理过期对象
@@ -105,7 +134,7 @@ public class EntityCache {
 	}
 
 	public Object remove(String cacheId) {
-		synchronized (processExpireTime) {
+		synchronized (this) {
 			timeoutMap.remove(cacheId);
 			Object object = cacheMap.remove(cacheId);
 			return object;

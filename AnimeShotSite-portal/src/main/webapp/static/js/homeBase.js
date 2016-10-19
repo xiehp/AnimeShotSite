@@ -29,7 +29,7 @@
 
 	$.homePost = function(url, param, callback) {
 		$.ajax({
-			url : baseUrl + url,
+			url : global.ctx + url,
 			contentType : 'application/x-www-form-urlencoded',
 			dataType : "json",
 			type : "post",
@@ -48,7 +48,7 @@
 
 	$.homeGet = function(url, callback) {
 		$.ajax({
-			url : baseUrl + url,
+			url : global.ctx + url,
 			contentType : 'application/json',
 			dataType : "json",
 			type : "get",
@@ -66,7 +66,7 @@
 
 	$.homeJsonPost = function(url, param, callback) {
 		$.ajax({
-			url : baseUrl + url,
+			url : global.ctx + url,
 			contentType : 'application/json',
 			dataType : "json",
 			type : "post",
@@ -85,7 +85,7 @@
 
 	$.homeJsonGet = function(url, callback) {
 		$.ajax({
-			url : baseUrl + url,
+			url : global.ctx + url,
 			contentType : 'application/json',
 			dataType : "json",
 			type : "get",
@@ -103,7 +103,7 @@
 
 	$.homePostNotAsync = function(url, param, callback) {
 		$.ajax({
-			url : baseUrl + url,
+			url : global.ctx + url,
 			contentType : 'application/json',
 			dataType : "json",
 			type : "post",
@@ -123,7 +123,7 @@
 
 	$.homeGetNotAsync = function(url, callback) {
 		$.ajax({
-			url : baseUrl + url,
+			url : global.ctx + url,
 			contentType : 'application/json',
 			dataType : "json",
 			type : "GET",

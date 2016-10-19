@@ -5,12 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import xie.animeshotsite.constants.SysConstants;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.ShotTask;
 import xie.animeshotsite.db.entity.SubtitleInfo;
@@ -85,9 +82,16 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 	}
 
 	/**
+	 * 普通用户增加指定时间截图任务
+	 */
+	public ShotTask addUserSelfRunSpecifyEpisideTimeTask(String id, Date scheduleTime, Boolean forceUpload, String specifyTimes, String userIp) {
+		return addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes, userIp, "user");
+	}
+
+	/**
 	 * 增加指定时间截图任务
 	 */
-	public ShotTask addRunSpecifyEpisideTimeTask(String id, Date scheduleTime, Boolean forceUpload, String specifyTimes) {
+	public ShotTask addRunSpecifyEpisideTimeTask(String id, Date scheduleTime, Boolean forceUpload, String specifyTimes, String userIp, String source) {
 		if (XStringUtils.isBlank(id)) {
 			return null;
 		}
@@ -103,7 +107,7 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 		}
 		String jsonStr = XJsonUtil.toJsonString(paramMap);
 
-		return createShotTask(scheduleTime, ShotTask.TASK_TYPE_SHOT, "xie.animeshotsite.timer.task.ShotSpecifyTask", jsonStr);
+		return createShotTask(scheduleTime, ShotTask.TASK_TYPE_SPECIAL_SHOT, "xie.animeshotsite.timer.task.ShotSpecifyTask", jsonStr);
 	}
 
 	/**

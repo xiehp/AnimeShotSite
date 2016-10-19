@@ -116,7 +116,6 @@ body {
 		</div>
 	</div>
 
-	<!-- <form action="${ctx}/shot/view/${shotInfo.id}" method="post"> -->
 	<input type="hidden" id="scorllTop" name="scorllTop" value="<c:out value="${scorllTop}" />">
 	<div align="center">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -153,7 +152,7 @@ body {
 	</div>
 </div>
 
-<div style="padding: 5px;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<div class="buttonDiv">
 	<a class="btn btn-primary btn-sm" onclick="home.publicLike('${shotInfo.id}');">
 		<span class="glyphicon glyphicon-star"></span>
 		<spring:message code='喜欢' />
@@ -177,32 +176,47 @@ body {
 	</a>
 </div>
 
-<div style="padding: 5px;">
+<div class="buttonDiv">
 	<c:if test="${!empty previousShotInfo.id}">
-		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/shot/view/${previousShotInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${previousShotInfo.formatedTimeChina}' />">
+		<a class="btn btn-primary btn-md postByFromXXX" href="${ctx}/shot/view/${previousShotInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${previousShotInfo.formatedTimeChina}' />">
 			<spring:message code='上一张' />
 		</a>
 	</c:if>
 	<c:if test="${!empty nextShotInfo.id}">
-		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/shot/view/${nextShotInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${nextShotInfo.formatedTimeChina}' />">
+		<a class="btn btn-primary btn-md postByFromXXX" href="${ctx}/shot/view/${nextShotInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${nextShotInfo.formatedTimeChina}' />">
 			<spring:message code='下一张' />
 		</a>
 	</c:if>
 </div>
-<!-- </form>  -->
 
-<div>
-	<a class="btn btn-primary btn-sm" href="${ctx}/shot/list/${shotInfo.animeEpisodeId}${pageNumberUrl}" title="<c:out value='${EpisodeFullName}' />">
+<div id="createShotResultDiv" class="buttonDiv">
+	<c:if test="${!empty previousShotInfo.id}">
+		<a class="btn btn-primary btn-xs postByFromXXX" href="javascript:doCreateShot('${shotInfo.id}', 2000, true);">
+			<spring:message code='获取上2秒' />
+		</a>
+	</c:if>
+	<c:if test="${!empty previousShotInfo.id}">
+		<a class="btn btn-primary btn-xs postByFromXXX" href="javascript:doCreateShot('${shotInfo.id}', 1000, true);">
+			<spring:message code='获取上1秒' />
+		</a>
+	</c:if>
+	<c:if test="${!empty nextShotInfo.id}">
+		<a class="btn btn-primary btn-xs postByFromXXX" href="javascript:doCreateShot('${shotInfo.id}', 1000, false);">
+			<spring:message code='获取下1秒' />
+		</a>
+	</c:if>
+	<c:if test="${!empty nextShotInfo.id}">
+		<a class="btn btn-primary btn-xs postByFromXXX" href="javascript:doCreateShot('${shotInfo.id}', 2000, false);">
+			<spring:message code='获取下2秒' />
+		</a>
+	</c:if>
+</div>
+
+<div class="buttonDiv">
+	<a class="btn btn-primary btn-md" href="${ctx}/shot/list/${shotInfo.animeEpisodeId}${pageNumberUrl}" title="<c:out value='${EpisodeFullName}' />">
 		<spring:message code='返回截图一览' />
 	</a>
 </div>
-
-<%
-	request.getRequestURL();
-	//request.setAttribute("requestURI", request.getRequestURI());
-	//request.setAttribute("requestURL", request.getRequestURL());
-%>
-
 
 <div id="链接地址" class="row ShareLinkDiv">
 	<div class="col-sm-12 ShareLinkItem">

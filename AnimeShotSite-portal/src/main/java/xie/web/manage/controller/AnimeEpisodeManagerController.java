@@ -24,10 +24,11 @@ import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseManagerController;
 import xie.base.service.BaseService;
 import xie.common.date.DateUtil;
+import xie.common.excel.XSSHttpUtil;
 import xie.common.string.XStringUtils;
 import xie.common.utils.SpringUtils;
-import xie.common.web.util.RequestUtil;
 import xie.common.web.util.ConstantsWeb;
+import xie.common.web.util.RequestUtil;
 
 @Controller
 @RequestMapping(value = ConstantsWeb.MANAGE_URL_PREFIX_STR + "/animeEpisode")
@@ -167,7 +168,8 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 			@RequestParam(required = false) Long endTime,
 			@RequestParam(required = false) Long timeInterval,
 			@RequestParam(required = false) String specifyTimes,
-			@RequestParam(required = false) Boolean forceUpload) {
+			@RequestParam(required = false) Boolean forceUpload,
+			HttpServletRequest request) {
 
 		Map<String, Object> map = null;
 
@@ -181,7 +183,7 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 				map = getFailCode("type为2时，specifyTimes不能为空");
 				return getUrlRedirectPath("view/" + id);
 			}
-			shotTaskService.addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes);
+			shotTaskService.addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes, XSSHttpUtil.getIpAddr(request), "admin");
 		}
 
 		map = getSuccessCode();

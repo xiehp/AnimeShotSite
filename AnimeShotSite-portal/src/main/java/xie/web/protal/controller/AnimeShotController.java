@@ -1,6 +1,7 @@
 package xie.web.protal.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -18,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springside.modules.web.Servlets;
 
+import xie.animeshotsite.constants.SysConstants;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.entity.ShotInfo;
+import xie.animeshotsite.db.entity.ShotTask;
 import xie.animeshotsite.db.entity.SubtitleInfo;
 import xie.animeshotsite.db.entity.SubtitleLine;
 import xie.animeshotsite.db.entity.cache.EntityCache;
@@ -31,11 +36,13 @@ import xie.animeshotsite.db.repository.SubtitleLineDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotInfoService;
+import xie.animeshotsite.db.service.ShotTaskService;
 import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.db.service.SubtitleLineService;
 import xie.base.controller.BaseFunctionController;
 import xie.common.Constants;
 import xie.common.constant.XConst;
+import xie.common.excel.XSSHttpUtil;
 import xie.common.utils.XCookieUtils;
 import xie.common.utils.XRequestUtils;
 import xie.common.web.util.ConstantsWeb;
@@ -65,6 +72,8 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 	private SubtitleLineDao subtitleLineDao;
 	@Autowired
 	private EntityCache entityCache;
+	@Autowired
+	private ShotTaskService shotTaskService;
 
 	protected String getJspFileRootPath() {
 		return "/shot/";
@@ -183,7 +192,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 
 		// 搜索字幕
 		String localeLanguage = Constants.LANGUAGE_UNKNOW;
-		if (!XRequestUtils.isSearchspider(request) ) {
+		if (!XRequestUtils.isSearchspider(request)) {
 			localeLanguage = XRequestUtils.getLocaleLanguageCountry(request);
 		}
 		boolean showAllSubtitleFlag = Constants.FLAG_STR_YES.equals(XCookieUtils.getCookieValue(request, SiteConstants.COOKIE_SHOW_ALL_SUBTITLE_FLAG));
@@ -271,5 +280,150 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		model.addAttribute("shotInfoPage", masterRecommandShotPage);
 
 		return getJspFilePath("recommend");
+	}
+
+	/**
+	 * 增加一张截图
+	 * 
+	 * @param refShotInfoId 参照的截图ID
+	 * @param preFlg 向前还是向后
+	 * @param offsetTime 偏移多少毫秒
+	 * @return
+	 */
+	@RequestMapping(value = "/doCreateShot")
+	@ResponseBody
+	public Map<String, Object> doCreateShot(
+			@RequestParam(required = false) String refShotInfoId,
+			@RequestParam(required = false) Long offsetTime,
+			@RequestParam(required = false, defaultValue = "false") boolean preFlg,
+			Model model, HttpServletRequest request) {
+
+		if (refShotInfoId == null) {
+			return getFailCode("未指定图片");
+		}
+		if (offsetTime == null) {
+			return getFailCode("未指定偏移时间");
+		}
+		try {
+			Subject subject = SecurityUtils.getSubject();
+			subject.checkRole(SysConstants.ROLE_ADMIN);
+		} catch (Exception e) {
+			// 非管理員不能指定1000和2000之外
+			if (offsetTime != 1000 && offsetTime != 2000) {
+				return getFailCode("指定时间不正确，只能指定1000或2000");
+			}
+		}
+
+		ShotInfo shotInfo = shotInfoDao.findById(refShotInfoId);
+		if (shotInfo == null || Constants.FLAG_INT_YES.equals(shotInfo.getDeleteFlag())) {
+			return getFailCode("指定图片不存在，请从新操作");
+		}
+		String animeEpidodeId = shotInfo.getAnimeEpisodeId();
+		AnimeEpisode animeEpisode = animeEpisodeDao.findById(animeEpidodeId);
+		if (animeEpisode == null) {
+			return getFailCode("指定图片的剧集不存在，请从新操作");
+		}
+
+		long toGetTimestamp = shotInfo.getTimeStamp();
+		if (preFlg) {
+			toGetTimestamp = toGetTimestamp - offsetTime;
+		} else {
+			toGetTimestamp = toGetTimestamp + offsetTime;
+		}
+
+		// 判断图片是否已经存在
+		ShotInfo toGetShotInfo = shotInfoDao.findByAnimeEpisodeIdAndTimeStamp(animeEpidodeId, toGetTimestamp);
+		if (toGetShotInfo != null) {
+			return getFailCode("指定截图已存在，请刷新页面");
+		}
+
+		// TODO 判断相同任务是否已经存在，等待中或执行中
+		// ShotTask sameTask = shotTaskService.findByParam("");
+		// if (sameTask != null) {
+		// return getFailCode("指定任务已存在，请稍后刷新页面后查看");
+		// }
+
+		ShotTask shotTask = shotTaskService.addUserSelfRunSpecifyEpisideTimeTask(animeEpidodeId, new Date(), false, String.valueOf(toGetTimestamp), XSSHttpUtil.getIpAddr(request));
+
+		Map<String, Object> map = null;
+		map = getSuccessCode("正在截图中，请耐心等候，此过程大概需要1分钟");
+		map.put("taskId", shotTask.getId());
+		map.put("animeEpisodeId", animeEpidodeId);
+		map.put("timestamp", toGetTimestamp);
+
+		return map;
+	}
+
+	/**
+	 * 检测是否截图成功
+	 * 
+	 * @param refShotInfoId 参照的截图ID
+	 * @param preFlg 向前还是向后
+	 * @param offsetTime 偏移多少毫秒
+	 * @return
+	 */
+	@RequestMapping(value = "/checkCreateShot")
+	@ResponseBody
+	public Map<String, Object> checkCreateShot(
+			@RequestParam(required = false) String taskId,
+			@RequestParam(required = false) String animeEpisodeId,
+			@RequestParam(required = false) Long timestamp,
+			Model model, HttpServletRequest request) {
+
+		if (taskId == null) {
+			return getFailCode("未指定任务ID");
+		}
+		if (animeEpisodeId == null) {
+			return getFailCode("未指定剧集ID");
+		}
+		if (timestamp == null) {
+			return getFailCode("未指定时间");
+		}
+
+		Map<String, Object> map = null;
+
+		// 查看任务状态
+		ShotTask shotTask = shotTaskService.findById(taskId);
+		if (shotTask == null) {
+			return getFailCode("指定任务不存在");
+		}
+
+		long pastTime = (new Date().getTime() - shotTask.getCreateDate().getTime()) / 1000;
+		map = getSuccessCode();
+		map.put("pastTime", pastTime);
+		map.put("taskResutStatus", shotTask.getTaskResult());
+		if (ShotTask.TASK_RESULT_WAIT.equals(shotTask.getTaskResult())) {
+			if (pastTime < 30) {
+				map.put("taskMessage", "任务等待中，请稍后，请不要关闭画面");
+			} else if (pastTime < 120) {
+				map.put("taskResutStatus", 11);
+				map.put("taskMessage", "任务等待超时，或许是服务器正忙");
+			} else {
+				map.put("taskResutStatus", 12);
+				map.put("taskMessage", "任务等待超时，请改天再来查看您需要的截图");
+			}
+		}
+		if (ShotTask.TASK_RESULT_PROCESSING.equals(shotTask.getTaskResult())) {
+			map.put("taskMessage", "正在获取截图，请稍后，请不要关闭画面");
+		}
+		if (ShotTask.TASK_RESULT_FAIL.equals(shotTask.getTaskResult())) {
+			map.put("taskMessage", "获取截图失败，请联系管理员");
+		}
+		if (ShotTask.TASK_RESULT_SUCCESS.equals(shotTask.getTaskResult())) {
+			map.put("taskMessage", "获取截图已成功，等待返回截图，请不要关闭画面");
+		}
+
+		// 判断图片是否已经存在
+		ShotInfo shotInfo = shotInfoDao.findByAnimeEpisodeIdAndTimeStamp(animeEpisodeId, timestamp);
+		if (shotInfo != null) {
+			entityCache.clearBegin(EntityCache.CACHE_ID_Previous_ShotInfo);
+			entityCache.clearBegin(EntityCache.CACHE_ID_Next_ShotInfo);
+			map.put("taskResutStatus", ShotTask.TASK_RESULT_SUCCESS);
+			map.put("taskMessage", "已成功获取到截图");
+			map.put(Constants.JSON_RESPONSE_KEY_MESSAGE, "已成功获取到截图");
+			map.put("shotInfoId", shotInfo.getId());
+		}
+
+		return map;
 	}
 }
