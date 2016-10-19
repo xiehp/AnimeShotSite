@@ -297,10 +297,10 @@ function rewriteResultMessage() {
 		} else if (taskResutStatus == 3) {
 			// 失败
 			span.setAttribute("style", "color:red;font-size:18px;")
-		}  else if (taskResutStatus == 11) {
+		} else if (taskResutStatus == 11) {
 			// 等待30-120秒
 			span.setAttribute("style", "color:orange;font-size:18px;")
-		}  else if (taskResutStatus == 12) {
+		} else if (taskResutStatus == 12) {
 			// 等待120秒以上
 			span.setAttribute("style", "color:red;font-size:18px;")
 		} else {
@@ -358,4 +358,22 @@ function checkCreateShot(taskId, animeEpisodeId, timestamp, doneCallback) {
 			}
 		}
 	});
+}
+
+/**
+ * 删除图片
+ */
+function deleteShotById(id) {
+	if (confirm("确定是否删除？")) {
+		var param = {};
+		param.id = id;
+		$.homePost("/shot/delete/" + id, param, function(result) {
+			$.showMessageModal(result.message);
+			// if (result.showShotInfoId != null && showShotInfoId != "") {
+			// setTimeout(function() {
+			// window.location = global.ctx + "/shot/view/" + result.showShotInfoId;
+			// }, 2000);
+			// }
+		});
+	}
 }

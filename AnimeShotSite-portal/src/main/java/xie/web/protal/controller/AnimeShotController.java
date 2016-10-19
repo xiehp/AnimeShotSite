@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -234,6 +235,39 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		return getJspFilePath("view");
 	}
 
+	@RequiresPermissions(value = "userList:add")
+	@RequestMapping(value = "/delete/{id}")
+	@ResponseBody
+	public Map<String, Object> checkCreateShot(
+			@PathVariable String id,
+			Model model, HttpServletRequest request) throws Exception {
+
+		// 检查
+		ShotInfo shotInfo = shotInfoDao.findOne(id);
+		if (shotInfo == null) {
+			return getFailCode("数据不存在");
+		}
+
+		Map<String, Object> map = getSuccessCode("删除成功");
+
+		// 搜索前后页
+		ShotInfo showShotInfo = entityCache.findNextShotInfo(shotInfo.getAnimeEpisodeId(), shotInfo.getTimeStamp());
+		if (showShotInfo == null) {
+			showShotInfo = entityCache.findPreviousShotInfo(shotInfo.getAnimeEpisodeId(), shotInfo.getTimeStamp());
+		}
+		if (showShotInfo != null) {
+			map.put("showShotInfoId", showShotInfo.getId());
+		}
+
+		// 删除
+		shotInfoService.delete(shotInfo);
+
+		// 清除缓存
+		clearPreNextShotCache();
+
+		return map;
+	}
+
 	@RequestMapping(value = "/publicLike")
 	@ResponseBody
 	public Map<String, Object> publicLike(@RequestParam String id) {
@@ -416,8 +450,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		// 判断图片是否已经存在
 		ShotInfo shotInfo = shotInfoDao.findByAnimeEpisodeIdAndTimeStamp(animeEpisodeId, timestamp);
 		if (shotInfo != null) {
-			entityCache.clearBegin(EntityCache.CACHE_ID_Previous_ShotInfo);
-			entityCache.clearBegin(EntityCache.CACHE_ID_Next_ShotInfo);
+			clearPreNextShotCache();
 			map.put("taskResutStatus", ShotTask.TASK_RESULT_SUCCESS);
 			map.put("taskMessage", "已成功获取到截图");
 			map.put(Constants.JSON_RESPONSE_KEY_MESSAGE, "已成功获取到截图");
@@ -425,5 +458,10 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		}
 
 		return map;
+	}
+
+	public void clearPreNextShotCache() {
+		entityCache.clearBegin(EntityCache.CACHE_ID_Previous_ShotInfo);
+		entityCache.clearBegin(EntityCache.CACHE_ID_Next_ShotInfo);
 	}
 }

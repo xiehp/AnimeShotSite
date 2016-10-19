@@ -13,7 +13,7 @@
 			</div>
 			<div class="modal-body" style="font-size: 20px;"></div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">
+				<button id="ModalCloseButton" type="button" class="btn btn-default" data-dismiss="modal">
 					<spring:message code='关闭' />
 				</button>
 			</div>

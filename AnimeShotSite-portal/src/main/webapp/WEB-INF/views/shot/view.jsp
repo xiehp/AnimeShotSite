@@ -170,6 +170,9 @@ body {
 		<a class="btn btn-primary btn-sm" onclick="home.setAnimeTitleImage('/tool/setAnimeTitleImage', null, '${animeEpisode.id}', '${shotInfo.id}');">
 			<spring:message code='剧集图片' />
 		</a>
+		<a class="btn btn-primary btn-sm" onclick="deleteShotById('${shotInfo.id}');">
+			<spring:message code='删除图片' />
+		</a>
 	</c:if>
 	<a class="btn btn-primary btn-sm" href="${FullImageUrl}" target="_blank">
 		<spring:message code='查看原图' />
