@@ -233,4 +233,12 @@ if (canBaiduRecord) {
 		document.write(unescape("%3Cspan id='cnzz_stat_icon_1259030003'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol
 				+ "s95.cnzz.com/z_stat.php%3Fid%3D1259030003%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
 	})();
+
+	// 360分析
+	(function() {
+		var script360 = document.createElement("script");
+		script360.src = "//s.union.360.cn/67006.js";
+		var scriptNode = document.getElementsByTagName("script")[0];
+		scriptNode.parentNode.insertBefore(script360, scriptNode);
+	})();
 }
