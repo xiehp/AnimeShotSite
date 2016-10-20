@@ -24,9 +24,9 @@ import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseManagerController;
 import xie.base.service.BaseService;
 import xie.common.date.DateUtil;
-import xie.common.excel.XSSHttpUtil;
 import xie.common.string.XStringUtils;
 import xie.common.utils.SpringUtils;
+import xie.common.utils.XSSHttpUtil;
 import xie.common.web.util.ConstantsWeb;
 import xie.common.web.util.RequestUtil;
 

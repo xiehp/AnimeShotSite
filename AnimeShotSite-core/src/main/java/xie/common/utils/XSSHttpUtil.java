@@ -1,4 +1,4 @@
-package xie.common.excel;
+package xie.common.utils;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -110,6 +110,20 @@ public class XSSHttpUtil {
 		}
 
 		return rtn;
+	}
+
+	public static String changeToHttp(final String url) {
+		if (url == null) {
+			return null;
+		}
+		return url.replaceFirst("https://", "http://");
+	}
+
+	public static String changeToHttps(final String url) {
+		if (url == null) {
+			return null;
+		}
+		return url.replaceFirst("http://", "https://");
 	}
 
 	private static String getPortByProtocol(final String protocol, final Map<String, String> portMap) {
