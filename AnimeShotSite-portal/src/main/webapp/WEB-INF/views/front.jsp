@@ -18,7 +18,7 @@
 	<div class="row-fluid">
 		<div id="最新动画剧集一览">
 			<div class="blockTitle">
-				<span><spring:message code='最新动画剧集一览' /></span> <span class="count"><a href="${ctx}/anime/list">
+				<span><spring:message code='最新动画剧集一览' /></span> <span class="count"><a href="${ctx}/anime">
 						<spring:message code='当前剧集总数' />
 						：${animeEpisodeCount}
 					</a></span>

@@ -66,6 +66,6 @@
 </div>
 
 <div>
-	<a class="btn btn-primary" href="${ctx}/anime/list/${animeEpisode.animeInfoId}"><spring:message code='返回动画列表' /></a>
+	<a class="btn btn-primary" href="${ctx}/anime"><spring:message code='返回动画列表' /></a>
 </div>
 

@@ -106,7 +106,7 @@
 							</script>
 						</li>
 						<li>
-							<a href="${ctxManage}/anime/list">
+							<a href="${ctxManage}/anime">
 								<spring:message code='动画列表' />
 							</a>
 						</li>

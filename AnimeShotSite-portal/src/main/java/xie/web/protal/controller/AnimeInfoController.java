@@ -35,7 +35,17 @@ public class AnimeInfoController extends BaseFunctionController<AnimeInfo, Strin
 		return "/anime/";
 	};
 
-	@RequestMapping(value = "/list")
+	@Deprecated
+	@RequestMapping(value = "list")
+	public String oldlist(
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType,
+			@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+			Model model, HttpSession session, HttpServletRequest request) {
+
+		return getUrlRedirectPath("");
+	}
+
+	@RequestMapping(value = "")
 	public String list(
 			@RequestParam(value = "sortType", defaultValue = "auto") String sortType,
 			@RequestParam(value = "page", defaultValue = "1") int pageNumber,
