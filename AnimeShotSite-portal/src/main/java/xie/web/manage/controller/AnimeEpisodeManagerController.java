@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import xie.animeshotsite.constants.SysConstants;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
@@ -183,7 +184,7 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 				map = getFailCode("type为2时，specifyTimes不能为空");
 				return getUrlRedirectPath("view/" + id);
 			}
-			shotTaskService.addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes, XSSHttpUtil.getIpAddr(request), "admin");
+			shotTaskService.addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes, XSSHttpUtil.getIpAddr(request), SysConstants.ROLE_ADMIN);
 		}
 
 		map = getSuccessCode();

@@ -9,9 +9,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -41,6 +39,7 @@ import xie.animeshotsite.db.service.ShotTaskService;
 import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.db.service.SubtitleLineService;
 import xie.base.controller.BaseFunctionController;
+import xie.base.user.UserUtils;
 import xie.common.Constants;
 import xie.common.constant.XConst;
 import xie.common.utils.XCookieUtils;
@@ -338,10 +337,8 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		if (offsetTime == null) {
 			return getFailCode("未指定偏移时间");
 		}
-		try {
-			Subject subject = SecurityUtils.getSubject();
-			subject.checkRole(SysConstants.ROLE_ADMIN);
-		} catch (Exception e) {
+
+		if (!UserUtils.hasRole(SysConstants.ROLE_ADMIN)) {
 			// 非管理員不能指定1000和2000之外
 			if (offsetTime != 1000 && offsetTime != 2000) {
 				return getFailCode("指定时间不正确，只能指定1000或2000");

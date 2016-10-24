@@ -322,6 +322,8 @@
 						<tr>
 							<td style="padding: 5px;">${subtitleLine.startTimeMinSecMicro}</td>
 							<td style="padding: 5px;">${subtitleLine.endTimeMinSecMicro}</td>
+							<td style="padding: 5px;">${subtitleLine.subInStatus == 1 '已录入' : ''}</td>
+							
 							<td style="padding: 5px;">${subtitleLine.text}</td>
 						</tr>
 					</c:forEach>

@@ -8,12 +8,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import xie.animeshotsite.constants.SysConstants;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.ShotTask;
 import xie.animeshotsite.db.entity.SubtitleInfo;
 import xie.animeshotsite.db.repository.ShotTaskDao;
 import xie.base.repository.BaseRepository;
 import xie.base.service.BaseService;
+import xie.base.user.UserUtils;
 import xie.common.date.DateUtil;
 import xie.common.json.XJsonUtil;
 import xie.common.string.XStringUtils;
@@ -85,7 +87,8 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 	 * 普通用户增加指定时间截图任务
 	 */
 	public ShotTask addUserSelfRunSpecifyEpisideTimeTask(String id, Date scheduleTime, Boolean forceUpload, String specifyTimes, String userIp) {
-		return addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes, userIp, "user");
+		String userType = UserUtils.hasRole(SysConstants.ROLE_ADMIN) ? SysConstants.TASK_USER_TYPE_ADMIN : SysConstants.TASK_USER_TYPE_UNKNOW;
+		return addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes, userIp, userType);
 	}
 
 	/**

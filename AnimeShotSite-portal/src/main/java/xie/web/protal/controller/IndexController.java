@@ -141,7 +141,7 @@ public class IndexController extends BaseController {
 				if (masterRecommandShotList.size() == 0) {
 					masterRecommandShotList = shotInfoService.getMasterRecommandShotList(1, 3650, 42);
 				}
-				entityCache.put("masterRecommandShotList" + "Index", masterRecommandShotList, XConst.SECOND_02_HOUR * 1000);
+				entityCache.put("masterRecommandShotList" + "Index", masterRecommandShotList, XConst.SECOND_05_MIN * 1000);
 			}
 			request.setAttribute("masterRecommandShotList", masterRecommandShotList);
 		}

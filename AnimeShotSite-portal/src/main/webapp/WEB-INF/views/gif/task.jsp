@@ -88,7 +88,7 @@
 						<input name="animeNameSearch" id="animeNameSearch" class="form-control input-sm" placeholder="<spring:message code='请输入' /><spring:message code='动画名' />" />
 					</div>
 				</div> -->
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;" required>
 					<div class="col-sm-3">
 						<spring:message code='剧集名' />
 					</div>
@@ -97,7 +97,7 @@
 						<input name="episodeNameSearch" id="episodeNameSearch" class="form-control input-sm" placeholder="<spring:message code='请输入' /><spring:message code='剧集名' />" />
 					</div>
 				</div>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;" required>
 					<div class="col-sm-3">
 						<spring:message code='开始时间（分）' />
 					</div>
@@ -113,7 +113,7 @@
 						<input name="startTimeSecond" id="startTimeSecond" class="form-control input-sm" placeholder="<spring:message code='请输入' /><spring:message code='开始时间（秒）' />" />
 					</div>
 				</div>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3px;" required>
 					<div class="col-sm-3">
 						<spring:message code='持续时间' />
 					</div>
