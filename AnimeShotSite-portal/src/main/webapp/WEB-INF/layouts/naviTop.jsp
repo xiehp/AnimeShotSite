@@ -20,7 +20,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="${ctx}/anime/list">
+					<a href="${ctx}/anime">
 						<spring:message code='动画列表' />
 					</a>
 				</li>
@@ -106,7 +106,7 @@
 							</script>
 						</li>
 						<li>
-							<a href="${ctxManage}/anime">
+							<a href="${ctxManage}/anime/list">
 								<spring:message code='动画列表' />
 							</a>
 						</li>
@@ -114,7 +114,7 @@
 				</li>
 				</c:if>
 
-				<c:if test="${! empty aaa  }">
+				<c:if test="${! empty aaaaadasdasdasdas  }">
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							热门标签 <b class="caret"></b>
