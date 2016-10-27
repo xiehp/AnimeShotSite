@@ -293,6 +293,9 @@ public class SubtitleLineDaoImpl extends BaseRepositoryPlus<SubtitleLine> {
 		// 剧集全称sql部分
 		if (animeNameList != null && animeNameList.size() > 0) {
 			Page<String> animeEpisodeIdList = animeEpisodeDaoImpl.searchEpisodeIdByFullName(animeNameArray, null);
+			if (animeEpisodeIdList.getContent().size() == 0) {
+				return createEmptyPage(pageRequest);
+			}
 
 			query.append(" and line.anime_Episode_Id in (:animeEpisodeIdList)");
 			map.put("animeEpisodeIdList", animeEpisodeIdList.getContent());
