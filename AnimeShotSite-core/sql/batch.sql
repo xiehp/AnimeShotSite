@@ -48,8 +48,8 @@ and (language = '4' or language = 'sc')
 
 
 -- 删除乖离页面的垃圾数据
-update comment_record set delete_flag = 1 where user_name = 'angelina' or content = 'angelina';
-update common_record set delete_flag = 1 where user_name = 'angelina' or name = '李明';
+update comment_record set delete_flag = 1 where user_name = 'angelina' or content = 'angelina' or user_name = 'hacker' or content = '88888';
+update common_record set delete_flag = 1 where user_name = 'angelina' or user_name = 'hacker' or user_name = '88888' or NAME = '88888';
 
 
 -- 更新字幕信息是否已录入字幕字段
