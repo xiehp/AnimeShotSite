@@ -103,5 +103,7 @@
 			<bean class="xie.common.interceptor.MenuStatusInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
-
+	
+	<bean id="exceptionHandler" class="xie.common.exception.ExceptionHandler"></bean>
+ 
 </beans>

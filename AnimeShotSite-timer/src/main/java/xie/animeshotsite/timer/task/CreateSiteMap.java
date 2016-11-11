@@ -1,6 +1,7 @@
 package xie.animeshotsite.timer.task;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,15 +28,18 @@ import xie.animeshotsite.spring.SpringUtil;
 import xie.base.entity.BaseEntity;
 import xie.common.Constants;
 import xie.common.date.DateUtil;
+import xie.module.baidu.XPostBaiduUrls;
 import xie.module.sitemap.XSiteMap;
 
 @Component
 public class CreateSiteMap {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	String postBaiduUrl = "http://data.zz.baidu.com/urls?site=www.acgimage.com&token=Zxb8L0pj9RH7W8Ij";// 网站的服务器连接
 	String baseUrl = "http://www.acgimage.com";
 
 	XSiteMap xSiteMap = null;
+	List<String> urls = new ArrayList<>();
 
 	@Autowired
 	AnimeInfoService animeInfoService;
@@ -58,13 +62,6 @@ public class CreateSiteMap {
 
 	public void runTask(Map<String, Object> paramMap) {
 		xSiteMap = new XSiteMap();
-		{
-			logger.info("开始获取剧集信息");
-			AnimeEpisode animeEpisode = animeEpisodeService.findById("f39c57f4575200f2015752ad56250001");
-			logger.info("获得剧集信息成功,{}", animeEpisode.getFullName());
-			AnimeInfo animeInfo = animeInfoDao.findById(animeEpisode.getAnimeInfoId());
-			logger.info("获得动画信息成功,{}", animeInfo);
-		}
 
 		// 增加首页loc
 		addUrl("/", XSiteMap.CHANGEFREQ_DAILY, "1.0", null, "首页");
@@ -104,11 +101,21 @@ public class CreateSiteMap {
 		} catch (TransformerException e) {
 			logger.error("sitemap生成失败：", e);
 		}
+		
+		// 百度推送
+		try {
+			String[] urlArray = new String[urls.size()];
+			urls.toArray(urlArray);
+			XPostBaiduUrls.Post(postBaiduUrl, urlArray);
+		} catch (Exception e) {
+			logger.error("百度推送失败：", e);
+		}
 	}
 
 	private void addUrl(String path, String changefreq, String priority, String lastmod, String title) {
 		String loc = path.startsWith("/") ? baseUrl + path : baseUrl + "/" + path;
 		xSiteMap.addUrl(loc, changefreq, priority, lastmod, title);
+		urls.add(loc);
 		urlCount++;
 	}
 

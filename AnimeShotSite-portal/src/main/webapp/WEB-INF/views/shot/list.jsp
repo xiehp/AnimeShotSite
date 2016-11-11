@@ -83,7 +83,7 @@ pre {
 		<c:forEach items="${ shotInfoPage.content }" var="shotInfo">
 			<div style="min-height: 100px;" class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
 				<a href="${ctx}/shot/view/${shotInfo.id}" title="<c:out value='${animeEpisode.fullName}' /> <c:out value='${shotInfo.formatedTimeChina}' />">
-					<img data-original="${shotInfo.urlS}" class="img-responsive imagelazy">
+					<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${shotInfo.urlS}" class="img-responsive imagelazy">
 					<div style="margin-top: 5px;">
 						${shotInfo.formatedMinSec}<span style="color: lightgray;${shotInfo.formatedMicroSec > 0 ? '' : ' display: none;'}">:${shotInfo.formatedMicroSec}</span>
 					</div>

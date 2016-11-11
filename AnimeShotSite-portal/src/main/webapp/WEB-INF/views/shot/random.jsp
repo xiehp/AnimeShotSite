@@ -41,7 +41,7 @@
 		<c:forEach items="${ shotInfoList }" var="shotInfo">
 			<div style="min-height: 100px;" class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
 				<a href="${ctx}/shot/view/${shotInfo.id}">
-					<img data-original="${shotInfo.urlS}" class="img-responsive imagelazy">
+					<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${shotInfo.urlS}" class="img-responsive imagelazy">
 					<div style="margin-top: 5px;">
 						<div class="wordKeepLine" title="<c:out value='${shotInfo.animeEpisode.fullName}' />">
 							<c:out value="${shotInfo.animeEpisode.fullName}" />

@@ -40,6 +40,7 @@ import xie.animeshotsite.db.service.SubtitleLineService;
 import xie.base.controller.BaseFunctionController;
 import xie.common.Constants;
 import xie.common.date.DateUtil;
+import xie.common.exception.CodeApplicationException;
 import xie.common.json.XJsonUtil;
 import xie.common.utils.XCookieUtils;
 import xie.common.utils.XRequestUtils;
@@ -208,14 +209,14 @@ public class GifController extends BaseFunctionController<GifInfo, String> {
 
 	@RequestMapping(value = "/publicLike")
 	@ResponseBody
-	public Map<String, Object> publicLike(@RequestParam String id) {
+	public Map<String, Object> publicLike(@RequestParam String id) throws CodeApplicationException {
 		Map<String, Object> map = null;
 		GifInfo gifInfo = gifInfoService.publicLikeAdd(id);
 		if (gifInfo != null) {
 			map = getSuccessCode();
 			map.put("newCount", gifInfo.getPublicLikeCount());
 		} else {
-			map = getFailCode("截图不存在");
+			throw new CodeApplicationException("截图不存在");
 		}
 
 		return map;
@@ -275,7 +276,7 @@ public class GifController extends BaseFunctionController<GifInfo, String> {
 			@RequestParam(required = false, defaultValue = "0") long startTimeMiSe,
 			@RequestParam long continueTime,
 			@RequestParam(required = false) String animeInfoId,
-			@RequestParam(required = false) Date scheduleTime) {
+			@RequestParam(required = false) Date scheduleTime) throws CodeApplicationException {
 
 		long startTime = startTimeMinute * 60 + startTimeSecond;
 		try {

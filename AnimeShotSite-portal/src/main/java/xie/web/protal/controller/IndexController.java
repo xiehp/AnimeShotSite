@@ -111,8 +111,8 @@ public class IndexController extends BaseController {
 		{
 			List<ShotInfo> newestShotList = entityCache.get("newestShotList" + "Index");
 			if (newestShotList == null) {
-				newestShotList = shotInfoService.getNewestShotList(42);
-				entityCache.put("newestShotList" + "Index", newestShotList, XConst.SECOND_01_HOUR * 1000);
+				newestShotList = shotInfoService.getNewestShotList(6);
+				entityCache.put("newestShotList" + "Index", newestShotList, XConst.SECOND_05_MIN * 1000);
 			}
 			request.setAttribute("newestShotList", newestShotList);
 		}

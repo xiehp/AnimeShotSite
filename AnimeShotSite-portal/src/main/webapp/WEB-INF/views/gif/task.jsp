@@ -36,6 +36,14 @@
 	</c:if>
 
 	function doGifTask() {
+		// check
+		
+		if ($("#episodeInfoId").val().trim() == "") {
+			Message.message("aaaa");
+			return;
+		}
+		
+		
 		if (confirm("是否继续？")) {
 			$("#mainForm").submit();
 		}

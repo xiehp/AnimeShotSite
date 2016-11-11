@@ -45,7 +45,7 @@
 		<c:forEach items="${ shotInfoPage.content }" var="shotInfo">
 			<div style="min-height: 100px; font-size: 10px;" class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
 				<a href="${ctx}/shot/view/${shotInfo.id}" title="<c:out value='${shotInfo.animeEpisode.fullName}' /> <c:out value='${shotInfo.formatedTimeChina}' />">
-					<img data-original="${shotInfo.urlS}" class="img-responsive imagelazy">
+					<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${shotInfo.urlS}" class="img-responsive imagelazy">
 					<div class="wordKeepLine">
 						<c:out value="${shotInfo.animeInfo.fullName}" />
 						<c:out value='${shotInfo.animeInfo.secondName}' />

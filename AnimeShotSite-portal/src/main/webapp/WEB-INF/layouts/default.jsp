@@ -69,9 +69,12 @@
 	<c:set var="staticResourceUrl" value="//cdn.bootcss.com/" />
 </c:if>
 
+<!-- css -->
 <link href="${ staticResourceUrl }bootstrap/${bootstrapVersion}/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="${ staticResourceUrl }jqueryui/${jqueryUiVersion}/jquery-ui.min.css" rel="stylesheet" type="text/css" />
 <link href="${ ctx }/static/css/style.css" rel="stylesheet" type="text/css" />
+<link href="${ ctx }/static/js/layui/css/layui.css" rel="stylesheet" type="text/css" />
+<link href="${ staticResourceUrl }bootstrap-switch/${bootstrapSwitch}//css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
 
 <!-- jquery -->
 <script src="${ staticResourceUrl }jquery/${jqueryVersion}/jquery.min.js" type="text/javascript"></script>
@@ -80,7 +83,6 @@
 <script src="${ staticResourceUrl }jqueryui/${jqueryUiVersion}/jquery-ui.min.js" type="text/javascript"></script>
 
 <!-- other -->
-<link href="${ staticResourceUrl }bootstrap-switch/${bootstrapSwitch}//css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
 <script src="${ staticResourceUrl }bootstrap-switch/${bootstrapSwitch}/js//bootstrap-switch.min.js" type="text/javascript"></script>
 
 
@@ -118,9 +120,12 @@
 		<!-- <script src="${ staticResourceUrl }zeroclipboard/${zeroClipboardVersion}/ZeroClipboard.min.js" type="text/javascript"></script> -->
 		<!-- local js -->
 		<script src="${ ctx }/static/js/template/jsrender.min.js" type="text/javascript"></script>
+		<script src="${ ctx }/static/js/layui/layui.js" type="text/javascript"></script>
+		<script src="${ ctx }/static/js/layui/lay/dest/layui.all.js" type="text/javascript"></script>
 		<!-- self js -->
 		<script src="${ ctx }/static/js/homeBussness.js" type="text/javascript"></script>
 		<script src="${ ctx }/static/js/homeInit.js" type="text/javascript"></script>
+		<script src="${ ctx }/static/js/message.js" type="text/javascript"></script>
 	</div>
 </body>
 

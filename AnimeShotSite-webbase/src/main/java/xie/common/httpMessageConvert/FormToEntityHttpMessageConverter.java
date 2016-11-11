@@ -27,6 +27,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 
+import xie.common.json.XJsonUtil;
+
 public class FormToEntityHttpMessageConverter extends
 		AbstractHttpMessageConverter<Object> {
 	public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
@@ -40,9 +42,11 @@ public class FormToEntityHttpMessageConverter extends
 	public FormToEntityHttpMessageConverter(){
 		super(new MediaType("application", "x-www-form-urlencoded", DEFAULT_CHARSET));
 
-		objectMapper = new ObjectMapper();
-		objectMapper.setVisibility(JsonMethod.FIELD, Visibility.ANY);
-		objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//		objectMapper = new ObjectMapper();
+//		objectMapper.setVisibility(JsonMethod.FIELD, Visibility.ANY);
+//		objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+		objectMapper = XJsonUtil.getObjectMapper();
 	}
 	
 	/**

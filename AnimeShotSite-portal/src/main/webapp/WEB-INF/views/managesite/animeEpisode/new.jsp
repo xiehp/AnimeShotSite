@@ -5,6 +5,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
+<c:set var="animeUrl" value="${siteBaseUrl}/episode/list/${animeEpisodeInfo.animeInfoId}" />
+<c:set var="episodeUrl" value="${siteBaseUrl}/shot/list/${animeEpisodeInfo.id}" />
 
 <title>剧集详情</title>
 
@@ -86,6 +88,23 @@
 
 	function seriesChanged() {
 		seriesChangedFlg = true;
+	}
+
+	function doPostBaidu() {
+		$.ajax({
+			url : "http://data.zz.baidu.com/urls?site=www.acgimage.com&token=Zxb8L0pj9RH7W8Ij",
+			contentType : 'application/x-www-form-urlencoded',
+			//dataType : "json",
+			type : "post",
+			data : "",
+			success : function(data) {
+				alert(data);
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
+				alertErrorMsg(XMLHttpRequest, ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
+			}
+		});
 	}
 </script>
 
@@ -296,8 +315,21 @@
 			<input class="form-control" name="param" value="${param}" />
 		</div>
 	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">动画页面URL</label>
+		<div class="col-sm-5">
+			<input class="form-control" name="param" value="${animeUrl}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">剧集页面URL</label>
+		<div class="col-sm-5">
+			<input class="form-control" name="param" value="${episodeUrl}" />
+		</div>
+	</div>
 
 	<div class="form-group">
+		<input type="button" value="提交百度" onclick="doPostBaidu();" />
 		<input type="submit" value="更新" onclick="doSubmit(false);" />
 		<input type="button" value="新建一个" onclick="doSubmit(true);" />
 		<input type="button" value="新建或更新多个" onclick="doSubmitMuti();" />

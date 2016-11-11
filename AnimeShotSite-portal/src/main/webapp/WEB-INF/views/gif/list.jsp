@@ -47,7 +47,7 @@
 		<c:forEach items="${ gifInfoPage.content }" var="gifInfo">
 			<div style="min-height: 100px; font-size: 10px;" class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
 				<a href="${ctx}/gif/view/${gifInfo.id}" title="<c:out value='${gifInfo.animeEpisode.fullName}' /> <c:out value='${gifInfo.formatedTimeChina}' />">
-					<img data-original="${gifInfo.urlS}" class="img-responsive imagelazy">
+					<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${gifInfo.urlS}" class="img-responsive imagelazy">
 					<div class="wordKeepLine">
 						<c:out value="${gifInfo.animeInfo.fullName}" />
 						<c:out value='${gifInfo.animeInfo.secondName}' />

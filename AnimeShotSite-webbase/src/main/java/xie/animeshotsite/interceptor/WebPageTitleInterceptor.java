@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import xie.animeshotsite.setup.ShotSiteSetup;
 import xie.animeshotsite.utils.SiteUtils;
 import xie.common.Constants;
+import xie.common.exception.CodeApplicationException;
 import xie.common.string.XStringUtils;
 import xie.common.utils.SpringUtils;
 import xie.common.utils.XCookieUtils;
@@ -42,6 +44,9 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 	@Autowired(required = true)
 	private ShotSiteSetup shotSiteSetup;
 
+	@Autowired
+	private MessageSource messageSource;
+
 	private final Map<String, Integer> excludeIpsCount = new HashMap<>();
 
 	/**
@@ -57,6 +62,9 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response,
 			final Object handler) throws IOException {
+
+		// 设置多语言信息
+		CodeApplicationException.setMessageSource(messageSource);
 
 		// 检查是否有网站CookieId，没有的话设置当前sessionId为CookieId
 		String siteCookieId = SiteUtils.getSiteCookieId(request);
@@ -152,20 +160,23 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 			// 是否需要js debug
 			request.setAttribute("IS_JS_DEBUG", shotSiteSetup.getAnimesiteJsDebug());
 
+			boolean canBaiduRecord = true; // 是否让搜索引擎统计
+			boolean canBaiduIndex = true; // 是否让搜索引擎索引
 			// 判断是否需要网站统计和搜索引擎推送
 			{
-				boolean canBaiduRecord = false; // 是否让搜索引擎统计和索引
-				if (requestURL.contains(ConstantsWeb.MANAGE_URL_PREFIX_STR)) {
+				if (!"1".equals(shotSiteSetup.getAnimesiteSearchTrafficStatistics())) {
+					canBaiduRecord = false;
+					canBaiduIndex = false;
+				} else if (requestURL.contains(ConstantsWeb.MANAGE_URL_PREFIX_STR)) {
 					// 后台页面，不统计
 					canBaiduRecord = false;
+					canBaiduIndex = false;
 				} else if (isExcludeRecordIp(request)) {
 					// 排除的IP地址
 					canBaiduRecord = false;
+					// canBaiduIndex = false; // 排除的ip有很多是搜索引擎的，因此不能排除掉索引
 				} else {
 					// 其他页面，则判断配置文件是否允许
-					if ("1".equals(shotSiteSetup.getAnimesiteSearchTrafficStatistics())) {
-						canBaiduRecord = true;
-					}
 				}
 
 				// 是否进行网站统计
@@ -173,10 +184,10 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 
 				// 是否让搜索引擎索引
 				if (request.getAttribute("canBaiduIndex") == null) {
-					// 页面没有自行设定是否可以索引，则认为可以索引
-					request.setAttribute("canBaiduIndex", true);
+					// 页面没有自行设定是否可以索引，则统一设置
+					request.setAttribute("canBaiduIndex", canBaiduIndex);
 				}
-				System.out.println("canBaiduRecord: " + request.getAttribute("canBaiduRecord"));
+				// System.out.println("canBaiduRecord: " + request.getAttribute("canBaiduRecord"));
 			}
 
 			// 百度静态资源链接

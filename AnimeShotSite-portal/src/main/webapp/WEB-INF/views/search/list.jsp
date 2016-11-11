@@ -273,7 +273,7 @@
 				<div align="center" style="margin-bottom: 20px">
 					<div align="center" class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 						<a target="_blank" href="${ctx}/shot/view/${shotInfoMap[subtitleLine.id].id}">
-							<img style="max-height: 200px; display: inline;" class="img-responsive imagelazy" data-original="${shotInfoMap[subtitleLine.id].urlS}" alt="<c:out value="${shotFullName}" />">
+							<img src="${ctx}/static/img/imageLoading_mini.jpg" style="max-height: 200px; display: inline;" class="img-responsive imagelazy" data-original="${shotInfoMap[subtitleLine.id].urlS}" alt="<c:out value="${shotFullName}" />">
 						</a>
 					</div>
 					<div align="left" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
@@ -298,7 +298,7 @@
 					<div align="center" class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 						<c:if test="${!empty shotInfoData}">
 							<a target="_blank" href="${shotInfoUrl}">
-								<img style="max-height: 200px; display: inline;" class="img-responsive imagelazy" data-original="${shotInfoData.urlS}" alt="<c:out value="${shotInfoFullName}" />">
+								<img src="${ctx}/static/img/imageLoading_mini.jpg" style="max-height: 200px; display: inline;" class="img-responsive imagelazy" data-original="${shotInfoData.urlS}" alt="<c:out value="${shotInfoFullName}" />">
 							</a>
 						</c:if>
 					</div>

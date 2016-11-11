@@ -1,5 +1,41 @@
 (function($) {
 
+	function processGoPageResult(data, callback) {
+		// 显示信息
+		if (data.alertMessage != null && data.alertMessage.length > 0) {
+			// showMessageWithoutRefresh(obj);
+			// alert(data.alertMessage);
+
+			var message = data.alertMessage.join("\n");
+			if (data.success) {
+				Message.successMessage(message, function() {
+					processCallbackAndGoPage(data, callback);
+				});
+			} else {
+				Message.failedMessage(message, function() {
+					processCallbackAndGoPage(data, callback);
+				});
+			}
+		} else {
+			processCallbackAndGoPage(data, callback);
+		}
+	}
+
+	function processCallbackAndGoPage(data, callback) {
+		// 执行callback
+		if (callback) {
+			callback(data);
+		}
+
+		// 跳转
+		if (data.goPage != null && data.goPage.trim() != "") {
+			if (data.goPage.indexOf("/") != 0) {
+				data.goPage = "/" + data.goPage;
+			}
+			window.location.href = baseUrl + data.goPage;
+		}
+	}
+
 	function getDocumentCharset() {
 		return document.characterSet ? document.characterSet : document.charset;
 	}

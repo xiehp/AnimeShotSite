@@ -1,3 +1,4 @@
+
 (function() {
 	// 图片懒加载
 	var imageLazyImg = $("img.imagelazy");
@@ -184,35 +185,37 @@ $(function() {
 $(function() {
 	// 隐藏站长统计
 	if (!IS_MASTER) {
-		$("#cnzz_stat_icon_1259030003").attr("style", "display:none")
+		//$("#cnzz_stat_icon_1259030003").attr("style", "display:none")
+		$("#cnzz_stat_icon_1259030003").remove();
 	}
 });
 
 // 以下代码为直接运行，而不是加载后运行
+
+// 百度收录推送
+if (canBaiduIndex) {
+	(function() {
+		var bp = document.createElement('script');
+		var curProtocol = window.location.protocol.split(':')[0];
+		if (curProtocol == 'https') {
+			bp.src = '//zz.bdstatic.com/linksubmit/push.js';
+		} else {
+			bp.src = '//push.zhanzhang.baidu.com/push.js';
+		}
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(bp, s);
+	})();
+}
+
+// 360收录推送
+if (canBaiduIndex) {
+	(function() {
+		var src = document.location.protocol + '//js.passport.qihucdn.com/11.0.1.js?a1d5ba23049ed1de4d6a6aa4db2557c6';
+		document.write('<script src="' + src + '" id="sozz"><\/script>');
+	})();
+}
+
 if (canBaiduRecord) {
-	// 百度收录推送
-	if (canBaiduIndex) {
-		(function() {
-			var bp = document.createElement('script');
-			var curProtocol = window.location.protocol.split(':')[0];
-			if (curProtocol === 'https') {
-				bp.src = '//zz.bdstatic.com/linksubmit/push.js';
-			} else {
-				bp.src = '//push.zhanzhang.baidu.com/push.js';
-			}
-			var s = document.getElementsByTagName("script")[0];
-			s.parentNode.insertBefore(bp, s);
-		})();
-	}
-
-	// 360收录推送
-	if (canBaiduIndex) {
-		(function() {
-			var src = document.location.protocol + '//js.passport.qihucdn.com/11.0.1.js?a1d5ba23049ed1de4d6a6aa4db2557c6';
-			document.write('<script src="' + src + '" id="sozz"><\/script>');
-		})();
-	}
-
 	// 百度统计
 	var _hmt = _hmt || [];
 	(function() {

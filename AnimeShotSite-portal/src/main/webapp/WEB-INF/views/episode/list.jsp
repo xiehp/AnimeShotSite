@@ -50,7 +50,7 @@
 			<c:forEach items="${ animeEpisodePage.content }" var="animeEpisode">
 				<div class="col-lg-2 col-md-2 col-sm-3 col-xs-4 thumbnail">
 					<a href="${ctx}/shot/list/${animeEpisode.id}" title="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' />">
-						<img data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy">
+						<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy">
 						<div class="wordKeepLine" style="margin-top: 5px;">
 							<c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' />
 						</div>
