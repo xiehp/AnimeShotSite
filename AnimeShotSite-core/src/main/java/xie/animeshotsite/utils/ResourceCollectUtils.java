@@ -29,6 +29,13 @@ public class ResourceCollectUtils {
 	@Autowired
 	XHttpClientUtils xHttpClientUtils;
 
+	/**
+	 * Map 从1开始计数
+	 * 
+	 * @param url
+	 * @param titleReplaceReg
+	 * @return
+	 */
 	public LinkedHashMap<Integer, Map<String, String>> collectBaiduEpisodeSummary(String url, String titleReplaceReg) {
 		LinkedHashMap<Integer, Map<String, String>> collectedList = new LinkedHashMap<>();
 		if (titleReplaceReg == null) {
@@ -81,10 +88,9 @@ public class ResourceCollectUtils {
 		// System.out.println(document);
 
 		ResourceCollectUtils resourceCollectUtils = XTestUtils.getBean(ResourceCollectUtils.class, XHttpClientUtils.class, XPoolingHttpClientConnectionManager.class);
-		//resourceCollectUtils.collectBaiduEpisodeSummary("https://baike.baidu.com/item/NEW%20GAME%21/18751606#分集剧情", null);
-		//resourceCollectUtils.collectBaiduEpisodeSummary("http://baike.baidu.com/item/MACROSS%20DELTA?fromtitle=%E8%B6%85%E6%97%B6%E7%A9%BA%E8%A6%81%E5%A1%9EDelta&type=syn", "(MISSION .* )|(Mission .* )");
-		resourceCollectUtils.collectBaiduEpisodeSummary("http://baike.baidu.com/item/Fate%2Fkaleid%20liner%20%E9%AD%94%E6%B3%95%E5%B0%91%E5%A5%B3%E2%98%86%E4%BC%8A%E8%8E%89%E9%9B%85%203rei%21%21#分集剧情", null);
+		// resourceCollectUtils.collectBaiduEpisodeSummary("https://baike.baidu.com/item/NEW%20GAME%21/18751606#分集剧情", null);
+		// resourceCollectUtils.collectBaiduEpisodeSummary("http://baike.baidu.com/item/MACROSS%20DELTA?fromtitle=%E8%B6%85%E6%97%B6%E7%A9%BA%E8%A6%81%E5%A1%9EDelta&type=syn", "(MISSION .* )|(Mission .* )");
+		resourceCollectUtils.collectBaiduEpisodeSummary("http://baike.baidu.com/subview/9986478/13045952.htm", null);
 	}
-	
-	
+
 }

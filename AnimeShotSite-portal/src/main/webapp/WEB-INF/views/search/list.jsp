@@ -233,9 +233,11 @@
 			<input type="hidden" id="keywordHidden" value="<c:out value='${keywordHidden}' />">
 		</div>
 		<div class="col-sm-12" style="margin-bottom: 20px;">
+			<!-- 
 			<div style="width: 110px; display: inline-block;">
 				<input data-on-text="<spring:message code='精确搜索' />" data-off-text="<spring:message code='模糊搜索' />" data-label-width="0" data-handle-width="60" style="display: none;" type="checkbox" id="searchMode" name="searchMode" class="bootstrap-switch-small" ${searchMode ? 'checked' : ''}>
 			</div>
+			-->
 			<a herf="javascript:void(0);" class="btn btn-lg btn-primary" onclick="searchKeyword();">
 				<i class="glyphicon glyphicon-search"></i>
 				<spring:message code='搜索' />

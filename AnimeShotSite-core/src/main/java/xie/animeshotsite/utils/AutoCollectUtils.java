@@ -27,7 +27,7 @@ public class AutoCollectUtils {
 		System.setProperty("spring.profiles.default", "production");
 
 		AutoCollectUtils autoCollectUtils = SpringUtil.getBean(AutoCollectUtils.class);
-		autoCollectUtils.collectEpisodeSummary("f39c57f4579fd61c0157a21c05320000", "http://baike.baidu.com/item/NEW%20GAME%21/18751606#分集剧情", null);
+		autoCollectUtils.collectEpisodeSummary("f39c57f4583ca6b1015851b5411d000b", "http://baike.baidu.com/subview/9986478/13045952.htm", "#[0-9]+ ");
 
 		System.exit(0);
 	}
@@ -37,6 +37,7 @@ public class AutoCollectUtils {
 		LinkedHashMap<Integer, Map<String, String>> summaryMaps = resourceCollectUtils.collectBaiduEpisodeSummary(url, titleReplaceReg);
 
 		List<AnimeEpisode> list = animeEpisodeService.findByAnimeInfoId(animeInfoId);
+		int index = 1;
 		for (AnimeEpisode animeEpisode : list) {
 			Integer division = null;
 			try {
@@ -45,7 +46,8 @@ public class AutoCollectUtils {
 				e.printStackTrace();
 			}
 			if (division != null) {
-				Map<String, String> summaryMap = summaryMaps.get(division);
+				// Map<String, String> summaryMap = summaryMaps.get(division);
+				Map<String, String> summaryMap = summaryMaps.get(index);
 				if (summaryMap != null) {
 					animeEpisode.setTitle(summaryMap.get("title"));
 					animeEpisode.setSummary(summaryMap.get("summary"));
@@ -53,6 +55,8 @@ public class AutoCollectUtils {
 					logger.info("保存第{}集, title:{}", division, animeEpisode.getTitle());
 				}
 			}
+
+			index++;
 		}
 
 	}
