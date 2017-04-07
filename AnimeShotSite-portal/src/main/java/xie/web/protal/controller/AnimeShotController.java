@@ -2,8 +2,10 @@ package xie.web.protal.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -38,14 +40,18 @@ import xie.animeshotsite.db.service.ShotInfoService;
 import xie.animeshotsite.db.service.ShotTaskService;
 import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.db.service.SubtitleLineService;
+import xie.animeshotsite.setup.ShotSiteSetup;
 import xie.base.controller.BaseFunctionController;
 import xie.base.user.UserUtils;
 import xie.common.Constants;
 import xie.common.constant.XConst;
+import xie.common.string.XStringUtils;
 import xie.common.utils.XCookieUtils;
 import xie.common.utils.XRequestUtils;
 import xie.common.utils.XSSHttpUtil;
 import xie.common.web.util.ConstantsWeb;
+import xie.module.language.XELangLocal;
+import xie.module.language.translate.baidu.XELangBaidu;
 import xie.web.util.SiteConstants;
 
 @Controller
@@ -74,6 +80,8 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 	private EntityCache entityCache;
 	@Autowired
 	private ShotTaskService shotTaskService;
+	@Autowired
+	private ShotSiteSetup shotSiteSetup;
 
 	protected String getJspFileRootPath() {
 		return "/shot/";
@@ -85,7 +93,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 			@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "sortType", defaultValue = "timeStamp") String sortType,
 			Model model, HttpServletRequest request)
-					throws Exception {
+			throws Exception {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		// 增加删除过滤
 		searchParams.put("EQ_animeEpisodeId", animeEpisodeId);
@@ -149,7 +157,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 			@PathVariable(value = "page") int pageNumber,
 			@RequestParam(value = "sortType", defaultValue = "timeStamp") String sortType,
 			Model model, ServletRequest request)
-					throws Exception {
+			throws Exception {
 
 		return getUrlRedirectPath("list/" + animeEpisodeId + "?page=" + pageNumber);
 	}
@@ -202,6 +210,13 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), actualShowLanage, startTime, endTime);
 		subtitleLineList = subtitleLineService.convertChinese(subtitleLineList, actualShowLanage, localeLanguage);
 		model.addAttribute("subtitleLineList", subtitleLineList);
+
+		// TODO 生成每句話的百度翻譯API接口調用的MD5签名
+		showLanage = new ArrayList<>();
+		showLanage.add(localeLanguage);
+		setTranslateSign(showLanage, actualShowLanage, model, subtitleLineList);
+
+		// 生成前台title，描述等地方使用的字符串
 		StringBuilder subtitleLineTextStrSb = new StringBuilder();
 		for (SubtitleLine subtitleLine : subtitleLineList) {
 			subtitleLineTextStrSb.append(subtitleLine.getText());
@@ -232,6 +247,72 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		model.addAttribute("ShotImgDivWidth", ShotImgDivWidth);
 
 		return getJspFilePath("view");
+	}
+
+	/**
+	 * 
+	 * @param toShowLanage 用户设定的语言
+	 * @param actualShowLanage 数据库中实际可以显示的语言
+	 * @param model
+	 * @param subtitleLineList
+	 */
+	private void setTranslateSign(List<String> toShowLanage, List<String> actualShowLanage, Model model, List<SubtitleLine> subtitleLineList) {
+		{
+			// 用户设定了语言才执行翻译，否则不翻译
+			if (toShowLanage == null || toShowLanage.size() == 0) {
+				return;
+			}
+
+			if (actualShowLanage == null || actualShowLanage.size() == 0) {
+				return;
+			}
+
+			// 将语言名称转换成统一类型
+			List<String> actualShowLanageTemp = actualShowLanage;
+			actualShowLanage = new ArrayList<>();
+			for (int i = 0; i < actualShowLanageTemp.size(); i++) {
+				actualShowLanage.add(SubtitleInfo.LANGUAGE_MAPPING_this2Constants.get(actualShowLanageTemp.get(i)));
+			}
+
+			// 决定翻译成哪些语言
+			List<String> toTranslateLangList = new ArrayList<>();
+			for (String lan : toShowLanage) {
+				// 用户设定的语言在实际可以显示语言中不存在，则进行翻译
+				if (!XStringUtils.existIgnoreCase(actualShowLanage, lan)) {
+					toTranslateLangList.add(lan);
+				}
+			}
+
+			if (toTranslateLangList.size() == 0) {
+				return;
+			}
+
+			Map<String, Object> translateParam = new HashMap<>();
+			String appId = shotSiteSetup.getBaiduTranslateAppid();
+			String key = shotSiteSetup.getBaiduTranslateKey();
+			String salt = new Random().nextInt(999999) + "";
+			// String fromLang = "auto";
+			String fromLang = actualShowLanage.get(0); // TODO 根据优先级获得翻译源语言
+			String doSubtitleLang = SubtitleInfo.LANGUAGE_MAPPING.get(fromLang); // 语言标识为数据库类型，应该和fromLang保持一致
+
+			// String toLang = "en";
+			List<String> toLangList = toTranslateLangList;
+			for (int i = 0; i < toLangList.size(); i++) {
+				toLangList.set(i, XELangBaidu.getLanguage(XELangLocal.parseValue(toLangList.get(i), XELangLocal.class)).getValue());
+			}
+
+			translateParam.put("appId", appId);
+			translateParam.put("salt", salt);
+			translateParam.put("doSubtitleLang", doSubtitleLang); // 语言标识为数据库类型
+			translateParam.put("fromLang", XELangBaidu.getLanguage(XELangLocal.parseValue(fromLang, XELangLocal.class)).getValue());
+			// translateParam.put("toLang", XELangBaidu.getLanguage(XELangLocal.parseValue(toLang, XELangLocal.class)).getValue());
+			translateParam.put("toLangList", toLangList);
+			model.addAttribute("translateParam", translateParam);
+
+			List<String> subtitleLineSignList = subtitleLineService.createBaiduTranslateSign(subtitleLineList, appId, key, salt);
+			model.addAttribute("subtitleLineSignList", subtitleLineSignList);
+		}
+
 	}
 
 	@RequiresPermissions(value = "userList:add")

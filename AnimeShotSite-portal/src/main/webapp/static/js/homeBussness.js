@@ -90,3 +90,36 @@ function changeShowAllSubtitle() {
 	}
 	window.location.reload();
 }
+
+/** 百度翻譯 */
+var BaiduT = function(appId) {
+
+	function translate(fromLan, toLan, salt, sign, text, callback) {
+
+		$.ajax({
+			url : "https://fanyi-api.baidu.com/api/trans/vip/translate",
+			// contentType : 'application/x-www-form-urlencoded',
+			type : 'post',
+			dataType : 'jsonp',
+			data : {
+				q : text,
+				from : fromLan,
+				to : toLan,
+				appid : appId,
+				salt : salt,
+				sign : sign,
+			},
+			success : function(data) {
+				callback(data);
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
+			}
+		});
+
+	}
+
+	return {
+		translate : translate
+	};
+}

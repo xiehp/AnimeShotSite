@@ -38,6 +38,7 @@ public class SubtitleInfo extends BaseEntity {
 
 	/** 字幕信息中语言字段和网站中Loacale的对应关系 */
 	public static final Map<String, String> LANGUAGE_MAPPING = new HashMap<>();
+	public static final Map<String, String> LANGUAGE_MAPPING_this2Constants = new HashMap<>();
 
 	static {
 		LANGUAGE_MAPPING.put(Constants.LANGUAGE_ZH_CN.toLowerCase(), LANGUAGE_CHS.toLowerCase());
@@ -45,6 +46,12 @@ public class SubtitleInfo extends BaseEntity {
 		LANGUAGE_MAPPING.put(Constants.LANGUAGE_JA.toLowerCase(), LANGUAGE_JAPAN.toLowerCase());
 		LANGUAGE_MAPPING.put(Constants.LANGUAGE_EN_US.toLowerCase(), LANGUAGE_ENGLISH.toLowerCase());
 		LANGUAGE_MAPPING.put(Constants.LANGUAGE_AR.toLowerCase(), LANGUAGE_ALABO.toLowerCase());
+		
+		LANGUAGE_MAPPING_this2Constants.put(LANGUAGE_CHS.toLowerCase(), Constants.LANGUAGE_ZH_CN.toLowerCase());
+		LANGUAGE_MAPPING_this2Constants.put(LANGUAGE_CHT.toLowerCase(), Constants.LANGUAGE_ZH_TW.toLowerCase());
+		LANGUAGE_MAPPING_this2Constants.put(LANGUAGE_JAPAN.toLowerCase(), Constants.LANGUAGE_JA.toLowerCase());
+		LANGUAGE_MAPPING_this2Constants.put(LANGUAGE_ENGLISH.toLowerCase(), Constants.LANGUAGE_EN_US.toLowerCase());
+		LANGUAGE_MAPPING_this2Constants.put(LANGUAGE_ALABO.toLowerCase(), Constants.LANGUAGE_AR.toLowerCase());
 	}
 
 	/** 动画信息的id */

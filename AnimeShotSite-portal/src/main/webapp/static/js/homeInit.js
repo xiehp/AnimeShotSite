@@ -4,7 +4,7 @@
 	var imageLazyImg = $("img.imagelazy");
 	imageLazyImg.show();
 	imageLazyImg.lazyload({
-		placeholder : global.ctx + "/static/img/imageLoading_mini.jpg",
+		// placeholder : global.ctx + "/static/img/imageLoading_mini.jpg",
 		effect : "fadeIn"
 	});
 

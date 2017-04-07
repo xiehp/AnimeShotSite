@@ -234,7 +234,9 @@
 				<table>
 					<c:forEach items="${ subtitleInfoList }" var="subtitleInfo">
 						<tr>
-							<td style="font-size: 10px; padding: 3px;"><a href="${ctx}${MANAGE_URL_STR}/subtitle/view/${subtitleInfo.id}">${subtitleInfo.id}</a></td>
+							<td style="font-size: 10px; padding: 3px;">
+								<a href="${ctx}${MANAGE_URL_STR}/subtitle/view/${subtitleInfo.id}">${subtitleInfo.id}</a>
+							</td>
 							<td style="font-size: 10px; padding: 3px;">${animeEpisode.divisionName}</td>
 							<td style="padding: 5px;">${subtitleInfo.subInStatus == 1 ? '已录入' : ''}</td>
 							<td style="font-size: 10px; padding: 3px;">${subtitleInfo.localFileName}</td>
@@ -247,5 +249,14 @@
 </div>
 
 <div>
+	<script>
+		function createSubtitleTask(type) {
+			if (confirm("是否继续？")) {
+				$("#mainForm").attr("action", "${ctx}${MANAGE_URL_STR}/subtitle/createSubtitleTask");
+				$("#mainForm").submit();
+			}
+		}
+	</script>
+
 	<a href="${ctx}${MANAGE_URL_STR}/subtitle/new?animeInfoId=${animeInfo.id}"> 增加字幕信息 </a>
 </div>

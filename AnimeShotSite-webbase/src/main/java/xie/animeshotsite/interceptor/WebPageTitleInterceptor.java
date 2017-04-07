@@ -73,9 +73,9 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 		}
 
 		// 判断是否是合适的host
-		logger.debug("getHeader Host:{1}", request.getHeader("Host"));
-		logger.debug("getServerName:{1}", request.getServerName());
-		logger.debug("X-Forwarded-Host:{1}", request.getHeader("X-Forwarded-Host"));
+		logger.debug("getHeader Host:{}", request.getHeader("Host"));
+		logger.debug("getServerName:{}", request.getServerName());
+		logger.debug("X-Forwarded-Host:{}", request.getHeader("X-Forwarded-Host"));
 		if (shotSiteSetup == null) {
 			shotSiteSetup = SpringUtils.getBean(ShotSiteSetup.class);
 			logger.warn("shotSiteSetup未初始化，从新获取shotSiteSetup：{}", shotSiteSetup);
@@ -96,6 +96,8 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 						return false;
 					} else {
 						// 除了acgimage.cn，acgimage.com 其他都显示404
+						logger.warn("当前主机地址不符合访问规则，禁止访问，地址必须为acgimage。当前地址:" + hostName);
+						System.err.println("当前主机地址不符合访问规则，禁止访问，地址必须为acgimage。当前地址:" + hostName);
 						response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 						return false;
 					}

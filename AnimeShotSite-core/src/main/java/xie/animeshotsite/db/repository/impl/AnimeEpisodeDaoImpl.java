@@ -90,7 +90,7 @@ public class AnimeEpisodeDaoImpl extends BaseRepositoryPlus<AnimeEpisode> {
 			}
 
 			// 转换成繁体 看是否需要匹配
-			String oneAnimeNameTC = XLanguageUtils.convertToSC(oneAnimeName);
+			String oneAnimeNameTC = XLanguageUtils.convertToTC(oneAnimeName);
 			if (!oneAnimeNameTC.equals(oneAnimeName)) {
 				querySql.append(" or fullName like :oneAnimeNameTC" + i);
 				map.put("oneAnimeNameTC" + i, "%" + oneAnimeNameTC + "%");

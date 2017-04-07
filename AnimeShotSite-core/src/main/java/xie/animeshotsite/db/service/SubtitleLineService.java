@@ -28,6 +28,7 @@ import xie.base.repository.BaseRepository;
 import xie.base.service.BaseService;
 import xie.common.Constants;
 import xie.common.date.DateUtil;
+import xie.common.modules.baidutranslate.BaiduLanguageMapping;
 import xie.common.string.XStringUtils;
 import xie.module.language.XLanguageUtils;
 import xie.subtitle.Subtitle;
@@ -369,5 +370,19 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 		System.out.println(subtitleLineService.isInTime(5L, 10L, 6L, 222L));
 		System.out.println(subtitleLineService.isInTime(5L, 10L, 5L, 222L));
 		;
+	}
+
+	/**
+	 * 创建字幕对应的百度的翻译签名
+	 */
+	public List<String> createBaiduTranslateSign(List<SubtitleLine> subtitleLineList, String appId, String key, String salt) {
+		List<String> list = new ArrayList<>();
+		subtitleLineList.forEach(line -> {
+			String queryText = line.getText();
+			String sign = BaiduLanguageMapping.getBaiduSign(appId, queryText, salt, key);
+			list.add(sign);
+		});
+		
+		return list;
 	}
 }

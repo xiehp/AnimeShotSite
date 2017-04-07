@@ -46,7 +46,16 @@ public class ShotSiteSetup {
 	/** 指定哪些贴图库网址转成自己的域名 */
 	private String[] tietukuChangeDoman = new String[] {
 			"i1.piimg.com", "i2.piimg.com", "i3.piimg.com", "i4.piimg.com",
-			"i1.buimg.com", "i2.buimg.com", "i3.buimg.com", "i4.buimg.com"};
+			"i1.buimg.com", "i2.buimg.com", "i3.buimg.com", "i4.buimg.com" };
+
+	/** 百度翻译appid */
+	// @Value("#{" + XSpringConstants.SPRING_PROPERTIES_ID + "['baidu.translate.appid']}")
+	@Value("${xie.baidu.translate.appid}")
+	private String baiduTranslateAppid;
+
+	/** 百度翻译key */
+	@Value("${xie.baidu.translate.key}")
+	private String baiduTranslateKey;
 
 	public String getProperty(String key) {
 		return properties.getProperty(key);
@@ -93,6 +102,22 @@ public class ShotSiteSetup {
 
 	public void setTietukuChangeDoman(String[] tietukuChangeDoman) {
 		this.tietukuChangeDoman = tietukuChangeDoman;
+	}
+
+	public String getBaiduTranslateAppid() {
+		return baiduTranslateAppid;
+	}
+
+	public void setBaiduTranslateAppid(String baiduTranslateAppid) {
+		this.baiduTranslateAppid = baiduTranslateAppid;
+	}
+
+	public String getBaiduTranslateKey() {
+		return baiduTranslateKey;
+	}
+
+	public void setBaiduTranslateKey(String baiduTranslateKey) {
+		this.baiduTranslateKey = baiduTranslateKey;
 	}
 
 }

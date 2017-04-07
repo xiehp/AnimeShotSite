@@ -37,7 +37,7 @@
 			<properties>
 				<tomcat.deploy.active.spring.profile>production</tomcat.deploy.active.spring.profile>
 				<tomcat.deploy.server>tomcat8_product</tomcat.deploy.server>
-				<tomcat.deploy.url>http://115.28.215.116:34702/manager11223344551qaz2wsx/text</tomcat.deploy.url>
+				<tomcat.deploy.url>http://115.28.215.116:34801/manager11223344551qaz2wsx/text</tomcat.deploy.url>
 				<tomcat.deploy.war.exclude.jar>%regex[WEB-INF/lib/(?!Anime)(?!video2img)(?!xcommon)(?!XSubtitle)(?!tietuku-api).*]</tomcat.deploy.war.exclude.jar>
 			</properties>
 		</profile>

@@ -56,3 +56,8 @@ update common_record set delete_flag = 1 where user_name = 'angelina' or user_na
 update subtitle_info set SUB_IN_STATUS = 0;
 update subtitle_info aaa set SUB_IN_STATUS = 1
 where exists (select * from subtitle_line where subtitle_line.SUBTITLE_INFO_ID = aaa.id limit 1);
+
+
+-- 删除繁体字幕
+delete from subtitle_line where SUBTITLE_INFO_ID in (select id from subtitle_info where ANIME_INFO_ID='f39c57f45580ccaf0155aff0c4410054' and LANGUAGE = 4)  ;
+delete  from subtitle_info where ANIME_INFO_ID='f39c57f45580ccaf0155aff0c4410054' and LANGUAGE = 4;

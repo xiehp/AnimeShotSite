@@ -145,6 +145,15 @@ public class SaveImageListener extends Video2ImageAdapter {
 
 	@Override
 	public void isRefreshedAfterChangeTime(long setTime, long originalTime, BufferedImage image) {
+		try {
+			doSaveAndPostImage(setTime, originalTime, image);
+		} catch (Exception e) {
+			logger.error("发生错误，再次进行提交", e);
+			doSaveAndPostImage(setTime, originalTime, image);
+		}
+	}
+
+	private void doSaveAndPostImage(long setTime, long originalTime, BufferedImage image) {
 		// 保存截图到本地硬盘
 		logger.info("isRefreshedAfterChangeTime setTime:" + setTime + ", originalTime" + originalTime);
 
@@ -178,8 +187,8 @@ public class SaveImageListener extends Video2ImageAdapter {
 
 			// 保存截图到贴图库网站
 			logger.info("贴图库上传, " + "shotInfoId:" + shotInfo.getId());
-			TietukuUploadResponse tietukuUploadResponse =  postImage.uploadToTietuku(file, tietukuToken);
-			String tietukuUrl =tietukuUploadResponse.getLinkurl();
+			TietukuUploadResponse tietukuUploadResponse = postImage.uploadToTietuku(file, tietukuToken);
+			String tietukuUrl = tietukuUploadResponse.getLinkurl();
 
 			String tietukuImageUrlPrefix = TietukuUtils.getImageUrlPrefix(tietukuUrl, true);
 			String tietukuImageUrlId = TietukuUtils.getImageUrlID(tietukuUrl);

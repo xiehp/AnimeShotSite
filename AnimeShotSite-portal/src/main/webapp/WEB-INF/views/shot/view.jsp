@@ -96,6 +96,29 @@ body {
 		originalImg.src = $("#shotImg").attr("src");
 		$.log("开始显示当前图片尺寸");
 		checkImgSize(originalImg, 100);
+
+		// 百度翻译
+		var baiduT = new BaiduT("${translateParam.appId}");
+		$(".subtitleText").each(function(index, element) {
+			<c:forEach items="${translateParam.toLangList}" var="toLang" varStatus="status">
+			var fromLang = "${translateParam.fromLang}";
+			fromLang = "auto"; // TODO 是否需要自动
+			var doSubtitleLang = "${translateParam.doSubtitleLang}";
+
+			var thisSubtitleLang = $(element).attr("data-lang");
+			if (thisSubtitleLang == doSubtitleLang) {
+				baiduT.translate(fromLang, "${toLang}", "${translateParam.salt}", $(element).attr("data-sign"), $(element).attr("data-text"), function(data) {
+					if (data.trans_result != null) {
+						//var oldStr = $(element).text();
+						//var newStr = $.escapeHtml(oldStr) + "<br>" + $.escapeHtml(data.trans_result[0].dst);
+						//$(element).html(newStr);
+						$(element).append("<br>");
+						$(element).append($.escapeHtml(data.trans_result[0].dst));
+					}
+				});
+			}
+			</c:forEach>
+		});
 	});
 </script>
 
@@ -119,18 +142,20 @@ body {
 	<input type="hidden" id="scorllTop" name="scorllTop" value="<c:out value="${scorllTop}" />">
 	<div align="center">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<!-- 图片 -->
 			<div id="shotImgDiv" class="thumbnail shotImgDivStyle" data-ImageAspectRatio="${ImageAspectRatio}" style="margin-bottom: 10px;<c:if test="${ShotImgDivWidth > 0}">width: ${ShotImgDivWidth}px; height: ${DivPaddingBorderHeight + (ShotImgDivWidth-DivPaddingBorderWidth) * ImageAspectRatio}px;</c:if>">
 				<script>
 					readCookieAndSetWidth(true);
 				</script>
 				<img id="shotImg" src="${FullImageUrl}" alt="<c:out value='${EpisodeFullNameWithTime}' />" title="<c:out value='${EpisodeFullNameWithTime}' />" usemap="#planetmap">
 			</div>
+			<!-- 字幕 -->
 			<c:if test="${!empty subtitleLineList}">
 				<table class="shotSubtitle" style="margin-top: 0px; margin-bottom: 10px;">
-					<c:forEach items="${subtitleLineList}" var="subtitleLine">
+					<c:forEach items="${subtitleLineList}" var="subtitleLine" varStatus="status">
 						<tr>
 							<td style="font-size: 10px;" class="noBreak" title="${subtitleLine.startTimeMinSecMicro}-${subtitleLine.endTimeMinSecMicro}">${subtitleLine.startTimeMinSec}-${subtitleLine.endTimeMinSec}</td>
-							<td>
+							<td class="subtitleText" data-lang="${subtitleLine.language}" data-text='<c:out value="${subtitleLine.text}" />' data-sign="${empty subtitleLineSignList ? '' : subtitleLineSignList[status.index]}">
 								<c:out value="${subtitleLine.text}" />
 							</td>
 						</tr>
@@ -139,6 +164,8 @@ body {
 			</c:if>
 		</div>
 
+
+		<!-- 热点 -->
 		<map id="planetmap" name="planetmap">
 			<c:if test="${!empty previousShotInfo.id}">
 				<area id="areaPrev" class="postByFromXXX" shape="rect" coords="0,0,${coordsWidth/3},${coordsHeight}" href="${ctx}/shot/view/${previousShotInfo.id}" title="<spring:message code='上一张' />" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${previousShotInfo.formatedTimeChina}' />" />
@@ -152,6 +179,7 @@ body {
 	</div>
 </div>
 
+<!--按钮 -->
 <div class="buttonDiv">
 	<a class="btn btn-primary btn-sm" onclick="home.publicLike('${shotInfo.id}');">
 		<span class="glyphicon glyphicon-star"></span>

@@ -11,6 +11,8 @@
 		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
 	</context:component-scan>
 
+	<context:property-placeholder ignore-resource-not-found="true" properties-ref="springProperties" />
+
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 
 	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
@@ -103,7 +105,7 @@
 			<bean class="xie.common.interceptor.MenuStatusInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
-	
+
 	<bean id="exceptionHandler" class="xie.common.exception.ExceptionHandler"></bean>
- 
+
 </beans>

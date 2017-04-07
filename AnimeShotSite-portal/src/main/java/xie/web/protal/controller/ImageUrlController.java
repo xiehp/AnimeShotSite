@@ -34,7 +34,7 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 	@Autowired
 	ShotInfoService shotInfoService;
 
-	@RequestMapping(value = "/${type}/{id}")
+	@RequestMapping(value = "/{type}/{id}")
 	public void getImage(@PathVariable String type, @PathVariable String id, ServletResponse servletResponse) throws Exception {
 		FileInputStream fis = null;
 		servletResponse.setContentType("image/jpg");

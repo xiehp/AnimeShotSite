@@ -122,7 +122,9 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 		if (searchParams == null) {
 			searchParams = new LinkedHashMap<>();
 		}
-		searchParams.put("EQ_" + BaseEntity.COLUMN_DELETE_FLAG, Constants.FLAG_INT_NO);
+		if (!searchParams.containsKey("EQ_" + BaseEntity.COLUMN_DELETE_FLAG)) {
+			searchParams.put("EQ_" + BaseEntity.COLUMN_DELETE_FLAG, Constants.FLAG_INT_NO);
+		}
 
 		// Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 		// Specification<ShotInfo> spec = DynamicSpecifications.bySearchFilter(filters.values(), ShotInfo.class);
