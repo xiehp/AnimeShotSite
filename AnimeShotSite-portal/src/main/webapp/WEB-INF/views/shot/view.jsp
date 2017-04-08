@@ -71,6 +71,11 @@ body {
 		text-align: left;
 	}
 }
+
+.subtitleTranslatedText {
+	font-size: smaller;
+	color: blue;
+}
 </style>
 
 <script src="${ ctx }/static/js/shotView.js" type="text/javascript"></script>
@@ -113,7 +118,7 @@ body {
 						//var newStr = $.escapeHtml(oldStr) + "<br>" + $.escapeHtml(data.trans_result[0].dst);
 						//$(element).html(newStr);
 						$(element).append("<br>");
-						$(element).append($.escapeHtml(data.trans_result[0].dst));
+						$(element).append("<span class='subtitleTranslatedText'>" + $.escapeHtml(data.trans_result[0].dst) + "<span>");
 					}
 				});
 			}
