@@ -74,7 +74,7 @@ body {
 
 .subtitleTranslatedText {
 	font-size: smaller;
-	color: blue;
+	color: lime;
 }
 </style>
 
