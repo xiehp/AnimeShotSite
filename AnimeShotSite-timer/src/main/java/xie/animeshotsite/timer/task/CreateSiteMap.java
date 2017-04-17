@@ -33,7 +33,7 @@ import xie.module.sitemap.XSiteMap;
 
 @Component
 public class CreateSiteMap {
-	Logger logger = LoggerFactory.getLogger(this.getClass());
+	static Logger logger = LoggerFactory.getLogger(CreateSiteMap.class);
 
 	String postBaiduUrl = "http://data.zz.baidu.com/urls?site=www.acgimage.com&token=Zxb8L0pj9RH7W8Ij";// 网站的服务器连接
 	String baseUrl = "http://www.acgimage.com";
@@ -101,14 +101,17 @@ public class CreateSiteMap {
 		} catch (TransformerException e) {
 			logger.error("sitemap生成失败：", e);
 		}
-		
+
 		// 百度推送
-		try {
-			String[] urlArray = new String[urls.size()];
-			urls.toArray(urlArray);
-			XPostBaiduUrls.Post(postBaiduUrl, urlArray);
-		} catch (Exception e) {
-			logger.error("百度推送失败：", e);
+		boolean doPostBaiduUrl = false;
+		if (doPostBaiduUrl) {
+			try {
+				String[] urlArray = new String[urls.size()];
+				urls.toArray(urlArray);
+				XPostBaiduUrls.Post(postBaiduUrl, urlArray);
+			} catch (Exception e) {
+				logger.error("百度推送失败：", e);
+			}
 		}
 	}
 

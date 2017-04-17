@@ -1,6 +1,7 @@
 package xie.web.protal.controller;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Random;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -167,9 +169,15 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 			@PathVariable String id,
 			@RequestParam(required = false) String scorllTop,
 			@RequestParam(required = false) List<String> showLanage,
-			Model model, HttpServletRequest request) throws Exception {
+			Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		ShotInfo shotInfo = shotInfoDao.findOne(id);
+		if (shotInfo == null) {
+			// TODO 404跳转
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			request.setAttribute("canBaiduIndex", false);// 不要索引
+			return getUrlRedirectPath("404");
+		}
 		shotInfo = shotInfoService.convertToVO(shotInfo);
 		AnimeInfo animeInfo = entityCache.findOne(animeInfoDao, shotInfo.getAnimeInfoId());
 		AnimeEpisode animeEpisode = entityCache.findOne(animeEpisodeDao, shotInfo.getAnimeEpisodeId());
@@ -212,9 +220,13 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		model.addAttribute("subtitleLineList", subtitleLineList);
 
 		// TODO 生成每句話的百度翻譯API接口調用的MD5签名
-		showLanage = new ArrayList<>();
-		showLanage.add(localeLanguage);
-		setTranslateSign(showLanage, actualShowLanage, model, subtitleLineList);
+		try {
+			List<String> toTranLanguage = new ArrayList<>();
+			toTranLanguage.add(localeLanguage); // TODO 从前台更新，cookie中获取
+			setTranslateSign(toTranLanguage, actualShowLanage, model, subtitleLineList);
+		} catch (Exception e) {
+			_log.error(e.getMessage(), e);
+		}
 
 		// 生成前台title，描述等地方使用的字符串
 		StringBuilder subtitleLineTextStrSb = new StringBuilder();
@@ -257,62 +269,108 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 	 * @param subtitleLineList
 	 */
 	private void setTranslateSign(List<String> toShowLanage, List<String> actualShowLanage, Model model, List<SubtitleLine> subtitleLineList) {
-		{
-			// 用户设定了语言才执行翻译，否则不翻译
-			if (toShowLanage == null || toShowLanage.size() == 0) {
-				return;
-			}
-
-			if (actualShowLanage == null || actualShowLanage.size() == 0) {
-				return;
-			}
-
-			// 将语言名称转换成统一类型
-			List<String> actualShowLanageTemp = actualShowLanage;
-			actualShowLanage = new ArrayList<>();
-			for (int i = 0; i < actualShowLanageTemp.size(); i++) {
-				actualShowLanage.add(SubtitleInfo.LANGUAGE_MAPPING_this2Constants.get(actualShowLanageTemp.get(i)));
-			}
-
-			// 决定翻译成哪些语言
-			List<String> toTranslateLangList = new ArrayList<>();
-			for (String lan : toShowLanage) {
-				// 用户设定的语言在实际可以显示语言中不存在，则进行翻译
-				if (!XStringUtils.existIgnoreCase(actualShowLanage, lan)) {
-					toTranslateLangList.add(lan);
-				}
-			}
-
-			if (toTranslateLangList.size() == 0) {
-				return;
-			}
-
-			Map<String, Object> translateParam = new HashMap<>();
-			String appId = shotSiteSetup.getBaiduTranslateAppid();
-			String key = shotSiteSetup.getBaiduTranslateKey();
-			String salt = new Random().nextInt(999999) + "";
-			// String fromLang = "auto";
-			String fromLang = actualShowLanage.get(0); // TODO 根据优先级获得翻译源语言
-			String doSubtitleLang = SubtitleInfo.LANGUAGE_MAPPING.get(fromLang); // 语言标识为数据库类型，应该和fromLang保持一致
-
-			// String toLang = "en";
-			List<String> toLangList = toTranslateLangList;
-			for (int i = 0; i < toLangList.size(); i++) {
-				toLangList.set(i, XELangBaidu.getLanguage(XELangLocal.parseValue(toLangList.get(i), XELangLocal.class)).getValue());
-			}
-
-			translateParam.put("appId", appId);
-			translateParam.put("salt", salt);
-			translateParam.put("doSubtitleLang", doSubtitleLang); // 语言标识为数据库类型
-			translateParam.put("fromLang", XELangBaidu.getLanguage(XELangLocal.parseValue(fromLang, XELangLocal.class)).getValue());
-			// translateParam.put("toLang", XELangBaidu.getLanguage(XELangLocal.parseValue(toLang, XELangLocal.class)).getValue());
-			translateParam.put("toLangList", toLangList);
-			model.addAttribute("translateParam", translateParam);
-
-			List<String> subtitleLineSignList = subtitleLineService.createBaiduTranslateSign(subtitleLineList, appId, key, salt);
-			model.addAttribute("subtitleLineSignList", subtitleLineSignList);
+		// 用户设定了语言才执行翻译，否则不翻译
+		if (toShowLanage == null || toShowLanage.size() == 0) {
+			return;
 		}
 
+		if (actualShowLanage == null || actualShowLanage.size() == 0) {
+			return;
+		}
+
+		if (subtitleLineList == null || subtitleLineList.size() == 0) {
+			return;
+		}
+
+		// 将语言名称转换成统一类型
+		List<String> actualShowLanageTemp = actualShowLanage;
+		actualShowLanage = new ArrayList<>();
+		for (int i = 0; i < actualShowLanageTemp.size(); i++) {
+			String subLangType = actualShowLanageTemp.get(i);
+			if (subLangType == null) {
+				continue;
+			}
+
+			// 检查该语言是否在当前显示的字幕中存在，不存在的话，则要从翻译源怨言中删除掉
+			for (SubtitleLine sub : subtitleLineList) {
+				if (subLangType.equals(sub.getLanguage())) {
+					// 存在這個語言的字幕
+					actualShowLanage.add(SubtitleInfo.LANGUAGE_MAPPING_this2Constants.get(subLangType));
+					break;
+				}
+			}
+		}
+
+		if (actualShowLanage == null || actualShowLanage.size() == 0) {
+			return;
+		}
+
+		// 决定翻译成哪些语言
+		List<String> toTranslateLangList = new ArrayList<>();
+		for (String lan : toShowLanage) {
+			// 用户设定的语言在实际可以显示语言中不存在，则进行翻译
+			if (!XStringUtils.existIgnoreCase(actualShowLanage, lan)) {
+				toTranslateLangList.add(lan);
+			}
+		}
+
+		if (toTranslateLangList.size() == 0) {
+			return;
+		}
+
+		Map<String, Object> translateParam = new HashMap<>();
+		String appId = shotSiteSetup.getBaiduTranslateAppid();
+		String key = shotSiteSetup.getBaiduTranslateKey();
+		String salt = new Random().nextInt(999999) + "";
+		// String fromLang = "auto";
+		// 根据优先级获得翻译源语言
+		actualShowLanage.sort(new Comparator<String>() {
+
+			@Override
+			public int compare(String o1, String o2) {
+				XELangLocal lan1 = XELangLocal.parseValue(o1, XELangLocal.class);
+				XELangLocal lan2 = XELangLocal.parseValue(o2, XELangLocal.class);
+				if (lan1 == null || lan2 == null) {
+					return 0;
+				}
+
+				return lan1.getOrder() - lan2.getOrder();
+			}
+		});
+		String fromLang = actualShowLanage.get(0);
+		String doSubtitleLang = SubtitleInfo.LANGUAGE_MAPPING.get(fromLang); // 语言标识为数据库类型，应该和fromLang保持一致
+
+		// String toLang = "en";
+		List<String> toLangList = toTranslateLangList;
+		List<String> toDeleteList = new ArrayList<>();
+		for (int i = 0; i < toLangList.size(); i++) {
+			// 翻译成百度的语言标识
+			XELangBaidu l = XELangBaidu.getLanguage(XELangLocal.parseValue(toLangList.get(i), XELangLocal.class));
+			if (l != null) {
+				toLangList.set(i, l.getValue());
+			} else {
+				toDeleteList.add(toLangList.get(i));
+			}
+		}
+		toLangList.removeAll(toDeleteList);
+
+		// 如果字幕中存在简体或者繁体，则不需要翻译成简体或繁体
+		if (XStringUtils.existIgnoreCase(actualShowLanage, XELangLocal.ZH_CN.getValue()) ||
+				XStringUtils.existIgnoreCase(actualShowLanage, XELangLocal.ZH_TW.getValue())) {
+			toLangList.remove(XELangBaidu.zh.getValue());
+			toLangList.remove(XELangBaidu.cht.getValue());
+		}
+
+		translateParam.put("appId", appId);
+		translateParam.put("salt", salt);
+		translateParam.put("doSubtitleLang", doSubtitleLang); // 语言标识为数据库类型
+		translateParam.put("fromLang", XELangBaidu.getLanguage(XELangLocal.parseValue(fromLang, XELangLocal.class)).getValue());
+		// translateParam.put("toLang", XELangBaidu.getLanguage(XELangLocal.parseValue(toLang, XELangLocal.class)).getValue());
+		translateParam.put("toLangList", toLangList);
+		model.addAttribute("translateParam", translateParam);
+
+		List<String> subtitleLineSignList = subtitleLineService.createBaiduTranslateSign(subtitleLineList, appId, key, salt);
+		model.addAttribute("subtitleLineSignList", subtitleLineSignList);
 	}
 
 	@RequiresPermissions(value = "userList:add")

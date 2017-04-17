@@ -179,20 +179,17 @@ public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 
 				if (leaveLanguageList.size() > 0) {
 					XStringUtils.removeIfNotEqualIgnoreCase(defaultLanguageList, leaveLanguageList);
-					if (defaultLanguageList.size() == 0) {
-						defaultLanguageList = defaultLanguageListTemp;
-					}
 				}
 			}
 		} else {
 			// 根据具体选定的字幕语言显示
 			// TODO 如果希望显示的字幕语言不存在，还需要做其他处理
 			XStringUtils.removeIfNotEqualIgnoreCase(defaultLanguageList, showLanguage);
-			if (defaultLanguageList.size() == 0) {
-				defaultLanguageList = defaultLanguageListTemp;
-			}
 		}
 
+		if (defaultLanguageList.size() == 0) {
+			defaultLanguageList = defaultLanguageListTemp;
+		}
 		entityCache.put(key, defaultLanguageList, XConst.SECOND_05_HOUR * 1000);
 		return defaultLanguageList;
 	}

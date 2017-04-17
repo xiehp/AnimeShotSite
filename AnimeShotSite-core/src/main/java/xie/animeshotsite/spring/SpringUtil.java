@@ -2,6 +2,7 @@ package xie.animeshotsite.spring;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,7 @@ public final class SpringUtil implements BeanFactoryAware {
 
 	/** The factory. */
 	private static BeanFactory factory;
-	
+
 	/**
 	 * 
 	 * 根据对象名获得对象
@@ -106,6 +107,32 @@ public final class SpringUtil implements BeanFactoryAware {
 		return nowProfilesList;
 	}
 
+	public static void printNowProfilesList() {
+		List<String> list = getNowProfilesList();
+
+		String[] defaultProfiles = SpringUtil.getCtx().getEnvironment().getDefaultProfiles();
+		LOG.info("当前默认的profile：" + defaultProfiles.length + "个");
+		for (String value : defaultProfiles) {
+			LOG.info(value);
+		}
+
+		String[] activeProfiles = SpringUtil.getCtx().getEnvironment().getActiveProfiles();
+		LOG.info("当前激活的profile：" + activeProfiles.length + "个");
+		for (String value : activeProfiles) {
+			LOG.info(value);
+		}
+
+		LOG.info("当前实际profile：");
+		for (String str : list) {
+			LOG.info(str);
+		}
+
+		Properties p = SpringUtil.getBean("springProperties");
+		LOG.info(p.getProperty("jdbc.url"));
+		LOG.info(p.getProperty("jdbc.username"));
+		LOG.info(p.getProperty("jdbc.password"));
+	}
+
 	/**
 	 * 
 	 * 初始化Factory
@@ -136,6 +163,8 @@ public final class SpringUtil implements BeanFactoryAware {
 					ctx = new ClassPathXmlApplicationContext("classpath*:applicationContext.xml");
 					factory = ctx.getBeanFactory();
 					LOG.info("手动加载结束，xml：" + factory + ", ctx.getApplicationName():" + ctx.getApplicationName() + ", ctx.getDisplayName():" + ctx.getDisplayName());
+
+					printNowProfilesList();
 				}
 			}
 		}

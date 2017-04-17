@@ -89,7 +89,7 @@ public class AnimeManagerController extends BaseManagerController<AnimeInfo, Str
 			animeInfo.setShotStatus(0);
 			animeInfo.setStatus(0);
 			animeInfo.setType(0);
-			animeInfo.setLocalRootPath(FilePathUtils.getRootDefault().getAbsolutePath());
+			animeInfo.setLocalRootPath(FilePathUtils.getRootDefault().getPath());
 			animeInfo.setSort(1);
 			animeInfo.setShowFlg(1);
 			animeInfo.setDeleteFlag(0);

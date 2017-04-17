@@ -1,4 +1,3 @@
-
 (function() {
 	// 图片懒加载
 	var imageLazyImg = $("img.imagelazy");
@@ -182,48 +181,51 @@ $(function() {
 	});
 });
 
-$(function() {
-	// 隐藏站长统计
-	if (!IS_MASTER) {
-		//$("#cnzz_stat_icon_1259030003").attr("style", "display:none")
-		$("#cnzz_stat_icon_1259030003").remove();
-	}
-});
-
-// 以下代码为直接运行，而不是加载后运行
-
+// 以下代码部分改为直接运行，而不是加载后运行
 // 百度收录推送
 if (canBaiduIndex) {
-	(function() {
-		var bp = document.createElement('script');
-		var curProtocol = window.location.protocol.split(':')[0];
-		if (curProtocol == 'https') {
-			bp.src = '//zz.bdstatic.com/linksubmit/push.js';
-		} else {
-			bp.src = '//push.zhanzhang.baidu.com/push.js';
-		}
-		var s = document.getElementsByTagName("script")[0];
-		s.parentNode.insertBefore(bp, s);
-	})();
+	$(function() {
+		(function() {
+			var bp = document.createElement('script');
+			var curProtocol = window.location.protocol.split(':')[0];
+			if (curProtocol == 'https') {
+				bp.src = '//zz.bdstatic.com/linksubmit/push.js';
+			} else {
+				bp.src = '//push.zhanzhang.baidu.com/push.js';
+			}
+			var s = document.getElementsByTagName("script")[0];
+			s.parentNode.insertBefore(bp, s);
+		})();
+	});
 }
 
 // 360收录推送
 if (canBaiduIndex) {
-	(function() {
-		var src = document.location.protocol + '//js.passport.qihucdn.com/11.0.1.js?a1d5ba23049ed1de4d6a6aa4db2557c6';
-		document.write('<script src="' + src + '" id="sozz"><\/script>');
-	})();
+	$(function() {
+		(function() {
+			// var src = document.location.protocol + '//js.passport.qihucdn.com/11.0.1.js?a1d5ba23049ed1de4d6a6aa4db2557c6';
+			// document.write('<script src="' + src + '" id="sozz"><\/script>');
+
+			// 改为加载后运行
+			var script = document.createElement('script');
+			script.src = document.location.protocol + '//js.passport.qihucdn.com/11.0.1.js?a1d5ba23049ed1de4d6a6aa4db2557c6';
+			var firstScript = document.getElementsByTagName("script")[0];
+			firstScript.parentNode.insertBefore(script, firstScript);
+		})();
+	});
 }
 
 if (canBaiduRecord) {
-	// 百度统计
-	var _hmt = _hmt || [];
-	(function() {
-		var hm = document.createElement("script");
-		hm.src = "//hm.baidu.com/hm.js?292dc181c5dbc431b3ded9d841c0920e";
-		var s = document.getElementsByTagName("script")[0];
-		s.parentNode.insertBefore(hm, s);
-	})();
+	$(function() {
+		// 百度统计
+		var _hmt = _hmt || [];
+		(function() {
+			var hm = document.createElement("script");
+			hm.src = "//hm.baidu.com/hm.js?292dc181c5dbc431b3ded9d841c0920e";
+			var s = document.getElementsByTagName("script")[0];
+			s.parentNode.insertBefore(hm, s);
+		})();
+	});
 
 	// 腾讯分析
 	/*
@@ -232,16 +234,39 @@ if (canBaiduRecord) {
 
 	// 站长统计
 	(function() {
-		var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-		document.write(unescape("%3Cspan id='cnzz_stat_icon_1259030003'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol
-				+ "s95.cnzz.com/z_stat.php%3Fid%3D1259030003%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
+		 var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+		 document.write(unescape("%3Cspan id='cnzz_stat_icon_1259030003'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol
+		 + "s95.cnzz.com/z_stat.php%3Fid%3D1259030003%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
+
+		 /*
+		// 改为加载后运行
+		var span = document.createElement('span');
+		span.id = "cnzz_stat_icon_1259030003";
+		var body = document.getElementsByTagName("body")[0];
+		body.appendChild(span);
+
+		var script = document.createElement('script');
+		script.src = document.location.protocol + "//s95.cnzz.com/z_stat.php%3Fid%3D1259030003%26online%3D1%26show%3Dline";
+		var firstScript = document.getElementsByTagName("script")[0];
+		firstScript.parentNode.insertBefore(script, firstScript);
+		*/
+
+		$(function() {
+			// 隐藏站长统计
+			if (!IS_MASTER) {
+				// $("#cnzz_stat_icon_1259030003").attr("style", "display:none")
+				$("#cnzz_stat_icon_1259030003").remove();
+			}
+		});
 	})();
 
 	// 360分析
-	(function() {
-		var script360 = document.createElement("script");
-		script360.src = "//s.union.360.cn/67006.js";
-		var scriptNode = document.getElementsByTagName("script")[0];
-		scriptNode.parentNode.insertBefore(script360, scriptNode);
-	})();
+	$(function() {
+		(function() {
+			var script360 = document.createElement("script");
+			script360.src = "//s.union.360.cn/67006.js";
+			var scriptNode = document.getElementsByTagName("script")[0];
+			scriptNode.parentNode.insertBefore(script360, scriptNode);
+		})();
+	});
 }

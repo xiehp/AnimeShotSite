@@ -99,7 +99,7 @@ public class SubtitleManagerController extends BaseManagerController<SubtitleInf
 			subtitleInfo.setAnimeInfoId(animeInfoId);
 			subtitleInfo.setFileType("ass");
 
-			subtitleInfo.setLocalRootPath(FilePathUtils.getAnimeRootDefault().getAbsolutePath());
+			subtitleInfo.setLocalRootPath(FilePathUtils.getAnimeRootDefault().getPath());
 			subtitleInfo.setLocalDetailPath("");
 			subtitleInfo.setShowFlg(1);
 			subtitleInfo.setFileLocation("1");
