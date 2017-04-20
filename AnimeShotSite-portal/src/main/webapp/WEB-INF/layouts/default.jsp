@@ -84,7 +84,8 @@
 
 <!-- other -->
 <script src="${ staticResourceUrl }bootstrap-switch/${bootstrapSwitch}/js//bootstrap-switch.min.js" type="text/javascript"></script>
-
+<script src="${ ctx }/static/plugins/menu/amazonmenu/amazonmenu.js" type="text/javascript"></script>
+<link href="${ ctx }/static/plugins/menu/amazonmenu/amazonmenu.css" rel="stylesheet" type="text/css" />
 
 <script src="${ ctx }/static/js/homeBase.js" type="text/javascript"></script>
 </head>

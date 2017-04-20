@@ -35,7 +35,7 @@
 			<property name="minEvictableIdleTimeMillis" value="600000" />
 			<property name="validationInterval" value="30000" />  <!--检查连接死活的时间间隔（单位：毫妙） 0以下的话不检查。默认是0。 -->
 			<property name="validationQuery" value="SELECT 1" />
-			<property name="initialSize" value="2" />
+			<property name="initialSize" value="1" />
 			<property name="testWhileIdle" value="true" />
 		</bean>
 	</beans>
@@ -56,9 +56,12 @@
 			<property name="maxIdle" value="${jdbc.pool.maxIdle}" />
 			<property name="minIdle" value="0" />
 			<property name="defaultAutoCommit" value="false" />
+			<!-- 连接Idle10分钟后超时，每1分钟检查一次 -->
+			<property name="timeBetweenEvictionRunsMillis" value="60000" />
+			<property name="minEvictableIdleTimeMillis" value="600000" />
 			<property name="validationInterval" value="30000" />  <!--检查连接死活的时间间隔（单位：毫妙） 0以下的话不检查。默认是0。 -->
 			<property name="validationQuery" value="SELECT 1" />
-			<property name="initialSize" value="2" />
+			<property name="initialSize" value="1" />
 			<property name="testWhileIdle" value="true" />
 		</bean>
 	</beans>

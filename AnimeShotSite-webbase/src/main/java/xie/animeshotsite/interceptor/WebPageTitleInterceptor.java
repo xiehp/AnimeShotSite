@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import xie.animeshotsite.setup.ShotSiteSetup;
+import xie.animeshotsite.setup.UserConfig;
 import xie.animeshotsite.utils.SiteUtils;
 import xie.common.Constants;
 import xie.common.exception.CodeApplicationException;
@@ -63,25 +64,10 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response,
 			final Object handler) throws IOException {
 
-		// 设置多语言信息
-		CodeApplicationException.setMessageSource(messageSource);
-
-		// 检查是否有网站CookieId，没有的话设置当前sessionId为CookieId
-		String siteCookieId = SiteUtils.getSiteCookieId(request);
-		if (XStringUtils.isBlank(siteCookieId)) {
-			XCookieUtils.addCookieValue(response, ConstantsWeb.SITE_COOKIE_ID, request.getSession().getId());
-		}
-
-		// 判断是否是合适的host
-		logger.debug("getHeader Host:{}", request.getHeader("Host"));
-		logger.debug("getServerName:{}", request.getServerName());
-		logger.debug("X-Forwarded-Host:{}", request.getHeader("X-Forwarded-Host"));
-		if (shotSiteSetup == null) {
-			shotSiteSetup = SpringUtils.getBean(ShotSiteSetup.class);
-			logger.warn("shotSiteSetup未初始化，从新获取shotSiteSetup：{}", shotSiteSetup);
-		}
+		// 检查访问地址是否正确
 		if (XStringUtils.isNotBlank(shotSiteSetup.getAnimesiteServerHost())) {
 			String hostName = XSSHttpUtil.getRemoteServerName(request);
+			String remoteIp = XSSHttpUtil.getIpAddr(request);
 
 			if ("127.0.0.1".equals(hostName) || "localhost".equals(hostName)) {
 				// 来自本地，则不做跳转
@@ -91,18 +77,44 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 				if (!shotSiteSetup.getAnimesiteServerHost().startsWith(hostName)) {
 					if (hostName.contains("acgimage.cn") || hostName.contains("acgimage.com")) {
 						// serverName不符合配置文件设定的值，进行跳转
+						logger.warn("当前主机地址不符合访问规则，跳转到www域名。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
+						System.err.println("当前主机地址不符合访问规则，跳转到www域名。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
 						response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
 						response.setHeader("Location", "//" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
 						return false;
 					} else {
 						// 除了acgimage.cn，acgimage.com 其他都显示404
-						logger.warn("当前主机地址不符合访问规则，禁止访问，地址必须为acgimage。当前地址:" + hostName);
-						System.err.println("当前主机地址不符合访问规则，禁止访问，地址必须为acgimage。当前地址:" + hostName);
+						logger.warn("当前主机地址不符合访问规则，禁止访问，地址必须为acgimage。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
+						System.err.println("当前主机地址不符合访问规则，禁止访问，地址必须为acgimage。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
 						response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 						return false;
 					}
 				}
 			}
+		}
+
+		// 设置多语言信息
+		CodeApplicationException.setMessageSource(messageSource);
+
+		// 检查是否有网站CookieId，没有的话设置当前sessionId为CookieId
+		UserConfig userConfig = SiteUtils.getUserConfig(request);
+		if (userConfig == null) {
+			userConfig = new UserConfig();
+			SiteUtils.setUserConfig(request, userConfig);
+		}
+		String siteCookieId = SiteUtils.getSiteCookieId(request);
+		if (XStringUtils.isBlank(siteCookieId)) {
+			XCookieUtils.addCookieValue(response, ConstantsWeb.SITE_COOKIE_ID, request.getSession().getId());
+		}
+		userConfig.setSiteCookieId(siteCookieId);
+
+		// 判断是否是合适的host
+		logger.debug("getHeader Host:{}", request.getHeader("Host"));
+		logger.debug("getServerName:{}", request.getServerName());
+		logger.debug("X-Forwarded-Host:{}", request.getHeader("X-Forwarded-Host"));
+		if (shotSiteSetup == null) {
+			shotSiteSetup = SpringUtils.getBean(ShotSiteSetup.class);
+			logger.warn("shotSiteSetup未初始化，从新获取shotSiteSetup：{}", shotSiteSetup);
 		}
 
 		return true;

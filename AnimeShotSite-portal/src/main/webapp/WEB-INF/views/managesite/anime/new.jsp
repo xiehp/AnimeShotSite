@@ -61,6 +61,41 @@
 	function seriesChanged() {
 		seriesChangedFlg = true;
 	}
+	
+
+	/** 显示剧集 */
+	function updateToShow(animeEpisodeInfoId, domLink) {
+		if (confirm("是否继续？")) {
+		var param = {};
+		param.id = animeEpisodeInfoId;
+		param.columnName = "showFlg";
+		param.columnValue = 1;
+		$.homePost("${MANAGE_URL_STR}/animeEpisode/updateOneColumn", param, function(data) {
+			if (data.success) {
+				domLink.innerHTML = "已展示";
+			} else {
+				$.showMessageModal(data.message);
+			}
+		});
+		}
+	}
+
+	function doShotTask(id) {
+		if (confirm("是否继续？")) {
+			var param = {};
+			param.taskType = 1;
+			param.id = id;
+			param.timeInterval = 5000;
+			//$("#mainForm").attr("action", "${ctx}${MANAGE_URL_STR}/animeEpisode/addShotTask?taskType=1&id=" + id + "&timeInterval="+5000);
+			$.homePost("${MANAGE_URL_STR}/animeEpisode/addShotTaskAjax", param, function(data) {
+				if (data.success) {
+					$.showMessageModal(data.message);
+				} else {
+					$.showMessageModal(data.message);
+				}
+			});
+		}
+	}
 </script>
 
 <script id="updateOneColumnButtonTemplate" type="text/x-jsrender">
@@ -104,7 +139,7 @@
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label"></label>
-		<div class="col-sm-9">
+		<div class="col-sm-9" style="min-height: 300px;">
 			<textarea id="summaryEditor"><c:out value="${animeInfo.summary}"></c:out></textarea>
 		</div>
 		<div id="summaryCount" class="col-sm-1"></div>
@@ -196,7 +231,7 @@
 
 	<input type="submit" />
 
-	<a href="${ctx}${MANAGE_URL_STR}/anime/list">返回上层</a>
+	<a href="${ctx}${MANAGE_URL_STR}/anime/list" class="btn btn-primary">返回上层</a>
 </form>
 
 <div>
@@ -212,7 +247,13 @@
 								<c:out value='${animeEpisode.title}' />
 							</div>
 							<div style="margin-top: 5px;">
-								<span stype="${animeEpisode.showFlg == "1" ? "" :"color:red;"}"> ${animeEpisode.showFlg == "1" ? "已展示" :"未展示"} </span>
+								<a href="javascript:void();" onclick="doShotTask('<c:out value='${animeEpisode.id}' />', this);" style="color: blue;">截图</a>
+								<c:if test="${animeEpisode.showFlg eq '0'}">
+									<a href="javascript:void();" onclick="updateToShow('<c:out value='${animeEpisode.id}' />', this);" style="color: red;">展示</a>
+								</c:if>
+								<c:if test="${animeEpisode.showFlg eq '1'}">
+									<span style="${animeEpisode.showFlg == "1" ? "" :"color:red;"}"> ${animeEpisode.showFlg == "1" ? "已展示" :"未展示"} </span>
+								</c:if>
 							</div>
 						</a>
 					</div>

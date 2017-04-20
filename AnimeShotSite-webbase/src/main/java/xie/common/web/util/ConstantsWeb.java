@@ -1,5 +1,7 @@
 package xie.common.web.util;
 
+import xie.animeshotsite.setup.UserConfig;
+
 public class ConstantsWeb {
 
 	final public static String MANAGE_URL_PREFIX_STR = "/managesite333";
@@ -11,6 +13,9 @@ public class ConstantsWeb {
 
 	/** 截图列表页面中每页展示的图片数量 */
 	public static final int SHOT_LIST_PAGE_NUMBER = 48;
+
+	/** 存放在session中的key，使用{@link UserConfig} */
+	public static final String SITE_USER_CONFIG = "SITE_USER_CONFIG";
 
 	/** 标识某个人的CookieId的key */
 	public static final String SITE_COOKIE_ID = "SiteCookieId";

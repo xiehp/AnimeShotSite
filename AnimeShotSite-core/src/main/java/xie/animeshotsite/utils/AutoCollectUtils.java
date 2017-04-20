@@ -27,7 +27,7 @@ public class AutoCollectUtils {
 		System.setProperty("spring.profiles.default", "production");
 
 		AutoCollectUtils autoCollectUtils = SpringUtil.getBean(AutoCollectUtils.class);
-		autoCollectUtils.collectEpisodeSummary("2c938084593bc51d015af3da371b0d5f", "http://baike.baidu.com/item/%E7%99%BD%E8%89%B2%E7%9B%B8%E7%B0%BF2/12006682", "第[0-9]+话 ");
+		autoCollectUtils.collectEpisodeSummary("2c9380825b61c4a1015b7a3a74c1000c", "http://baike.baidu.com/item/兽娘动物园/20379001", "第[0-9]+话 ");
 
 		System.exit(0);
 	}

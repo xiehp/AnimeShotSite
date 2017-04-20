@@ -79,6 +79,54 @@ function changeLanguage(language) {
 }
 
 /**
+ * 切换字幕翻译语言
+ */
+function changeTranLan(language) {
+	param = {};
+	param.newTranLan = language;
+	$.homePost("/tool/changeTranLan", param, function(data) {
+		if (data.hashMap.success) {
+			$.showMessageModal(data.hashMap.message);
+			window.location.reload();
+		} else {
+			$.showMessageModal(data.hashMap.message);
+		}
+	});
+}
+
+/**
+ * 切换字幕翻译颜色
+ */
+function changeTranLanColor(color) {
+	param = {};
+	param.newTranLanColor = color;
+	$.homePost("/tool/changeTranLanColor", param, function(data) {
+		if (data.hashMap.success) {
+			$.showMessageModal(data.hashMap.message);
+			// window.location.reload();
+		} else {
+			$.showMessageModal(data.hashMap.message);
+		}
+	});
+}
+
+/**
+ * 切换字幕翻译字体大小
+ */
+function changeTranLanFontsize(thisObj) {
+	param = {};
+	param.newTranLanFonsize = $(thisObj).css("font-size");
+	$.homePost("/tool/changeTranLanFontsize", param, function(data) {
+		if (data.hashMap.success) {
+			$.showMessageModal(data.hashMap.message);
+			window.location.reload();
+		} else {
+			$.showMessageModal(data.hashMap.message);
+		}
+	});
+}
+
+/**
  * 切换是否显示所有字幕
  */
 function changeShowAllSubtitle() {

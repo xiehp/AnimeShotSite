@@ -118,6 +118,8 @@ public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 	 * 决定使用哪些语言文本<br>
 	 * 如果showLanguage为空，默认为中文或繁体+日语+英文<br>
 	 * 如果showLanguage不为空，则获取数据库语言和设定语言的交集<br>
+	 * 
+	 * @return 字幕用语言的列表
 	 */
 	public List<String> findActualShowLanguage(String animeEpisodeId, String siteLocaleLanguage, List<String> showLanguage, boolean showAllSubtitleFlag) {
 		if (siteLocaleLanguage == null) {

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import xie.animeshotsite.constants.SysConstants;
 import xie.animeshotsite.db.entity.AnimeEpisode;
@@ -24,6 +25,7 @@ import xie.animeshotsite.db.service.ShotTaskService;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseManagerController;
 import xie.base.service.BaseService;
+import xie.common.Constants;
 import xie.common.date.DateUtil;
 import xie.common.string.XStringUtils;
 import xie.common.utils.SpringUtils;
@@ -192,9 +194,42 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 		return getUrlRedirectPath("view/" + id);
 	}
 
+	@RequiresPermissions(value = "userList:add")
+	@RequestMapping(value = "/addShotTaskAjax")
+	@ResponseBody
+	public Map<String, Object> addShotTaskAjax(
+			@RequestParam String id,
+			@RequestParam String taskType,
+			@RequestParam(required = false) Date scheduleTime,
+			@RequestParam(required = false) Long startTime,
+			@RequestParam(required = false) Long endTime,
+			@RequestParam(required = false) Long timeInterval,
+			@RequestParam(required = false) String specifyTimes,
+			@RequestParam(required = false) Boolean forceUpload,
+			HttpServletRequest request) {
+
+		Map<String, Object> map = null;
+
+		System.out.println(springUtils);
+		System.out.println(animeEpisodeService);
+
+		if ("1".equals(taskType)) {
+			shotTaskService.addRunNormalEpisideTimeTask(id, scheduleTime, forceUpload, startTime, endTime, timeInterval);
+		} else if ("2".equals(taskType)) {
+			if (specifyTimes == null) {
+				map = getFailCode("type为2时，specifyTimes不能为空");
+				return map;
+			}
+			shotTaskService.addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes, XSSHttpUtil.getIpAddr(request), SysConstants.ROLE_ADMIN);
+		}
+
+		map = getSuccessCode();
+		return map;
+	}
+
 	@Override
 	public Map<String, Object> updateOneColumn(String id, String columnName, String columnValue) {
-		if ("showFlg".equals(columnName)) {
+		if ("showFlg".equals(columnName) && Constants.FLAG_STR_YES.equals(columnValue)) {
 			super.updateOneColumn(id, "showDate", DateUtil.convertToString(new Date()));
 		}
 		return super.updateOneColumn(id, columnName, columnValue);

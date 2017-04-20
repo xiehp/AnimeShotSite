@@ -234,11 +234,11 @@ if (canBaiduRecord) {
 
 	// 站长统计
 	(function() {
-		 var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-		 document.write(unescape("%3Cspan id='cnzz_stat_icon_1259030003'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol
-		 + "s95.cnzz.com/z_stat.php%3Fid%3D1259030003%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
+		var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+		document.write(unescape("%3Cspan id='cnzz_stat_icon_1259030003'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol
+				+ "s95.cnzz.com/z_stat.php%3Fid%3D1259030003%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
 
-		 /*
+		/*
 		// 改为加载后运行
 		var span = document.createElement('span');
 		span.id = "cnzz_stat_icon_1259030003";
@@ -270,3 +270,111 @@ if (canBaiduRecord) {
 		})();
 	});
 }
+
+/**
+ * 语言菜单初始化操作
+ */
+jQuery(function() {
+	// 语言菜单点击事件
+	{
+		var tranLanColorPicker = null;
+		var languageSetupMenuInitFlag = false;
+		$("#languageSetupMenu").on("click", function() {
+			// 获得列表成功，并且还没有初始化过
+			if (!languageSetupMenuInitFlag) {
+				// 展示翻译语言
+				{
+					getTranLanList(function(result) {
+						languageSetupMenuInitFlag = true;
+						$("#languageSetupDropdownMenuLoadingLabel").remove();
+
+						var timeout = 0;
+						var nowTranLan = result.data.nowTranLan;
+						result.data.tranLanList.forEach(function(val, index) {
+							timeout = timeout + 50;
+							setTimeout(function() {
+								var paramsTemplate = {};
+								paramsTemplate.lanValue = val.value;
+								paramsTemplate.lanName = val.name;
+								paramsTemplate.lanOriginalName = val.originalName;
+								if (val.selectedFlag) {
+									if (val.value == "notTranFlag") {
+										paramsTemplate.selectedText = "✔";
+									} else {
+										paramsTemplate.selectedText = "●";
+									}
+									paramsTemplate.selectedCss = "menuSelected";
+								}
+								var htmlStr = $("#languageSetupDropdownMenuLiTpl").render(paramsTemplate);
+								// $(dropdownMenu.lastChild).after(buttonHtml);
+								// $(dropdownMenu.lastChild).append(htmlStr);
+								$("#tranLanListPostion").before(htmlStr);
+							}, timeout);
+						});
+
+						// 将获取到的颜色填入调色板span
+						var tranLanColor = result.data.tranLanColor;
+						if (tranLanColor != null && tranLanColor != "") {
+							$("#tranLanColorSpan").text(tranLanColor);
+							$("#tranLanColorSpan").css("color", tranLanColor);
+							if (tranLanColorPicker != null) {
+								tranLanColorPicker.setColor(tranLanColor);
+							}
+						}
+					});
+				}
+
+				// 展示翻译颜色
+				{
+					// 加载翻译颜色调色板
+					loadStyles(global.ctx + "/static/plugins/panel/farbtastic/farbtastic.css");
+					loadScript(global.ctx + "/static/plugins/panel/farbtastic/farbtastic.js", function() {
+						// 初期化调色板
+						tranLanColorPicker = $.farbtastic('#tranLanColorpicker', function(color) {
+							console.log(color);
+							// changeTranLanColor(color);
+							$(".subtitleTranslatedText").css("color", color);
+
+							$("#tranLanColorSpan").text(color);
+							$("#tranLanColorSpan").css("color", color);
+						});
+
+						// 将颜色设定到调色板上
+						if ($("#tranLanColorSpan").text() != null && $("#tranLanColorSpan").text() != "") {
+							tranLanColorPicker.setColor($("#tranLanColorSpan").text());
+						}
+					});
+				}
+
+				// 展示翻译字体大小
+				$(".tranLanFontsizeLi a").each(function() {
+					$(this).text($(this).css("font-size"));
+				});
+			}
+		});
+	}
+
+	// 加载语言菜单插件
+	$(".amazonmenu").each(function() {
+		amazonmenu.init({
+			// menuid : this.id
+			menuSelector : $(this)
+		})
+	});
+
+	/**
+	 * 获得网站语言网站语言
+	 */
+	function getTranLanList(successCallback) {
+		param = {};
+		$.homePost("/tool/getTranLanList", param, function(result) {
+			if (result.success) {
+				if (successCallback) {
+					successCallback(result);
+				}
+			} else {
+				$.showMessageModal(data.message);
+			}
+		});
+	}
+})

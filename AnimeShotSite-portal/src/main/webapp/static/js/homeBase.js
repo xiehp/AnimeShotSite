@@ -681,7 +681,7 @@ fillObjId: 绑定autocomplete事件的input对象的ID
 sourceUrl:选择项的URL (返回元素为item的json集合,每个item,必须有code,label属性)
 setparams:JSON类型的参数，包含：
 	fillRelation:
-           	页面元素ID 与 返回的Item值 的匹配关系, 如 ["name":"name","address":"userAddress"] 
+       	页面元素ID 与 返回的Item值 的匹配关系, 如 ["name":"name","address":"userAddress"] 
 	selectFunc: 选着后的回调函数，参数为  item 对象
 	cleanFunc: 不选择的回调函数，无参数
 	isAutoCleanSourceObj:是否自动清除输入值 :true 自动清除，false 不自动清除 (默认true)
@@ -799,20 +799,22 @@ function jqueryAutoComplete(sourceObjId, sourceUrl, setparams) {
 		});
 	}
 }
-
 // 格式化
 Date.prototype.Format = function(fmt) {
-	// author: meizz
+	var jidu = Math.floor((this.getMonth() + 3) / 3);
 	var o = {
 		"M+" : this.getMonth() + 1, // 月份
 		"d+" : this.getDate(), // 日
 		"h+" : this.getHours(), // 小时
 		"m+" : this.getMinutes(), // 分
-		"s+" : this.getSeconds(), // 秒
-		"q+" : Math.floor((this.getMonth() + 3) / 3), // 季度
+		// 秒
+		"s+" : this.getSeconds(),
+		// 季度
+		"q+" : jidu,
+		// 毫秒
 		"S" : this.getMilliseconds()
-	// 毫秒
 	};
+
 	if (/(y+)/.test(fmt)) {
 		fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
 	}
@@ -822,4 +824,40 @@ Date.prototype.Format = function(fmt) {
 		}
 	}
 	return fmt;
+}
+
+// 动态加载css文件
+function loadStyles(url) {
+	var link = document.createElement("link");
+	link.type = "text/css";
+	link.rel = "stylesheet";
+	link.href = url;
+	document.getElementsByTagName("head")[0].appendChild(link);
+}
+
+// 动态加载js脚本文件
+function loadScript(url, successCallback) {
+	// var script = document.createElement("script");
+	// script.type = "text/javascript";
+	// script.src = url;
+	// document.body.appendChild(script);
+
+	$.ajax({
+		url : url,
+		success : function(code) {
+			var script = document.createElement("script");
+			script.type = "text/javascript";
+			try {
+				// firefox、safari、chrome和Opera
+				script.appendChild(document.createTextNode(code));
+			} catch (ex) {
+				// IE早期的浏览器 ,需要使用script的text属性来指定javascript代码。
+				script.text = code;
+			}
+			document.body.appendChild(script);
+			if (successCallback) {
+				successCallback();
+			}
+		}
+	});
 }

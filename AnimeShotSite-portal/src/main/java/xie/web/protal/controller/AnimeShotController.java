@@ -43,6 +43,8 @@ import xie.animeshotsite.db.service.ShotTaskService;
 import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.db.service.SubtitleLineService;
 import xie.animeshotsite.setup.ShotSiteSetup;
+import xie.animeshotsite.setup.UserConfig;
+import xie.animeshotsite.utils.SiteUtils;
 import xie.base.controller.BaseFunctionController;
 import xie.base.user.UserUtils;
 import xie.common.Constants;
@@ -216,14 +218,25 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		Long startTime = shotInfo.getTimeStamp();
 		Long endTime = nextShotInfo == null ? startTime + 5000 : nextShotInfo.getTimeStamp();
 		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), actualShowLanage, startTime, endTime);
+		// 如果显示语言在搜索到的字幕中不存在，则删除掉
+		deleteNoSubtitleLanguage(actualShowLanage, subtitleLineList);
 		subtitleLineList = subtitleLineService.convertChinese(subtitleLineList, actualShowLanage, localeLanguage);
 		model.addAttribute("subtitleLineList", subtitleLineList);
 
-		// TODO 生成每句話的百度翻譯API接口調用的MD5签名
+		// 生成每句話的百度翻譯API接口調用的MD5签名
+		UserConfig userConfig = SiteUtils.getUserConfig(request);
 		try {
 			List<String> toTranLanguage = new ArrayList<>();
-			toTranLanguage.add(localeLanguage); // TODO 从前台更新，cookie中获取
-			setTranslateSign(toTranLanguage, actualShowLanage, model, subtitleLineList);
+			if (!userConfig.isNotTranFlag()) {
+				if (userConfig.getTranLanguage() != null) {
+					// 现在 TODO 每次session清空都会导致翻译设置失效
+					toTranLanguage.add(userConfig.getTranLanguage().getValue());
+				} else {
+					// 翻译设置不存在，则直接将显示语言作为翻译语言
+					toTranLanguage.add(localeLanguage);
+				}
+				setTranslateSign(toTranLanguage, actualShowLanage, model, subtitleLineList);
+			}
 		} catch (Exception e) {
 			_log.error(e.getMessage(), e);
 		}
@@ -258,19 +271,47 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		}
 		model.addAttribute("ShotImgDivWidth", ShotImgDivWidth);
 
+		model.addAttribute("subtitleTranslatedTextColor", userConfig.getTranLanguageColor());
+		model.addAttribute("subtitleTranslatedTextFontsize", userConfig.getTranLanFonsize() == null ? "smaller" : userConfig.getTranLanFonsize());
+
 		return getJspFilePath("view");
 	}
 
 	/**
+	 * 删除没有在字幕列表中出现的显示语言
+	 */
+	private void deleteNoSubtitleLanguage(List<String> actualShowLanage, List<SubtitleLine> subtitleLineList) {
+		List<String> toDelActList = new ArrayList<>();
+		for (String actLan : actualShowLanage) {
+			if (actLan == null) {
+				toDelActList.add(actLan);
+				continue;
+			}
+
+			boolean hasDataFlag = false;
+			for (SubtitleLine subLine : subtitleLineList) {
+				if (actLan.equals(subLine.getLanguage())) {
+					hasDataFlag = true;
+					break;
+				}
+			}
+			if (!hasDataFlag) {
+				toDelActList.add(actLan);
+			}
+		}
+		actualShowLanage.removeAll(toDelActList);
+	}
+
+	/**
 	 * 
-	 * @param toShowLanage 用户设定的语言
+	 * @param toTranLanguage 用户设定的语言
 	 * @param actualShowLanage 数据库中实际可以显示的语言
 	 * @param model
 	 * @param subtitleLineList
 	 */
-	private void setTranslateSign(List<String> toShowLanage, List<String> actualShowLanage, Model model, List<SubtitleLine> subtitleLineList) {
+	private void setTranslateSign(List<String> toTranLanguage, List<String> actualShowLanage, Model model, List<SubtitleLine> subtitleLineList) {
 		// 用户设定了语言才执行翻译，否则不翻译
-		if (toShowLanage == null || toShowLanage.size() == 0) {
+		if (toTranLanguage == null || toTranLanguage.size() == 0) {
 			return;
 		}
 
@@ -307,7 +348,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 
 		// 决定翻译成哪些语言
 		List<String> toTranslateLangList = new ArrayList<>();
-		for (String lan : toShowLanage) {
+		for (String lan : toTranLanguage) {
 			// 用户设定的语言在实际可以显示语言中不存在，则进行翻译
 			if (!XStringUtils.existIgnoreCase(actualShowLanage, lan)) {
 				toTranslateLangList.add(lan);
@@ -345,9 +386,14 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		List<String> toDeleteList = new ArrayList<>();
 		for (int i = 0; i < toLangList.size(); i++) {
 			// 翻译成百度的语言标识
-			XELangBaidu l = XELangBaidu.getLanguage(XELangLocal.parseValue(toLangList.get(i), XELangLocal.class));
-			if (l != null) {
-				toLangList.set(i, l.getValue());
+			XELangLocal xeLangLocal = XELangLocal.parseValue(toLangList.get(i), XELangLocal.class);
+			if (xeLangLocal == null) {
+				toDeleteList.add(toLangList.get(i));
+				continue;
+			}
+			XELangBaidu xeLangBaidu = XELangBaidu.getLanguage(xeLangLocal);
+			if (xeLangBaidu != null) {
+				toLangList.set(i, xeLangBaidu.getValue());
 			} else {
 				toDeleteList.add(toLangList.get(i));
 			}
@@ -359,6 +405,10 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 				XStringUtils.existIgnoreCase(actualShowLanage, XELangLocal.ZH_TW.getValue())) {
 			toLangList.remove(XELangBaidu.zh.getValue());
 			toLangList.remove(XELangBaidu.cht.getValue());
+		}
+
+		if (toLangList.size() == 0) {
+			return;
 		}
 
 		translateParam.put("appId", appId);

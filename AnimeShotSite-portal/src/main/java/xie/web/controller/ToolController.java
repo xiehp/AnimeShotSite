@@ -1,5 +1,8 @@
 package xie.web.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -16,14 +19,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.db.service.ImageUrlService;
 import xie.animeshotsite.setup.ShotSiteSetup;
+import xie.animeshotsite.setup.UserConfig;
+import xie.animeshotsite.utils.SiteUtils;
 import xie.base.controller.BaseController;
 import xie.common.string.XStringUtils;
+import xie.module.language.XELangLocal;
+import xie.module.language.translate.baidu.XELangBaidu;
 
 @Controller
 @RequestMapping(value = "/tool")
@@ -116,5 +122,144 @@ public class ToolController extends BaseController {
 			map = getFailCode("切换语言失败");
 		}
 		return new ModelMap(map);
+	}
+
+	/**
+	 * 改变翻译语言
+	 */
+	@RequestMapping(value = "/changeTranLan")
+	@ResponseBody
+	public ModelMap changeTranLan(
+			@RequestParam String newTranLan,
+			HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> map;
+
+		try {
+			UserConfig userConfig = SiteUtils.getUserConfig(request);
+			if ("notTranFlag".equals(newTranLan)) {
+				userConfig.setNotTranFlag(!userConfig.isNotTranFlag());
+			} else if ("defaultLan".equals(newTranLan)) {
+				userConfig.setTranLanguage(null);
+			} else {
+				userConfig.setTranLanguage(XELangLocal.parseValue(newTranLan));
+			}
+			LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+			map = getSuccessCode(messageSource.getMessage("切换翻译语言成功", null, localeResolver.resolveLocale(request)));
+		} catch (Exception ex) {
+			map = getFailCode("切换翻译语言失败");
+		}
+		return new ModelMap(map);
+	}
+
+	/**
+	 * 改变翻译颜色
+	 */
+	@RequestMapping(value = "/changeTranLanColor")
+	@ResponseBody
+	public ModelMap changeTranLanColor(
+			@RequestParam String newTranLanColor,
+			HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> map;
+
+		LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+		try {
+			UserConfig userConfig = SiteUtils.getUserConfig(request);
+			userConfig.setTranLanguageColor(newTranLanColor);
+			map = getSuccessCode(messageSource.getMessage("切换翻译颜色成功", null, localeResolver.resolveLocale(request)));
+		} catch (Exception ex) {
+			map = getFailCode(messageSource.getMessage("切换翻译颜色失败", null, localeResolver.resolveLocale(request)));
+		}
+		return new ModelMap(map);
+	}
+
+	/**
+	 * 改变翻译字体大小
+	 */
+	@RequestMapping(value = "/changeTranLanFontsize")
+	@ResponseBody
+	public ModelMap changeTranLanFontsize(
+			@RequestParam String newTranLanFonsize,
+			HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> map;
+
+		try {
+			UserConfig userConfig = SiteUtils.getUserConfig(request);
+			userConfig.setTranLanFonsize(newTranLanFonsize);
+			LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+			map = getSuccessCode(messageSource.getMessage("切换翻译字体大小成功", null, localeResolver.resolveLocale(request)));
+		} catch (Exception ex) {
+			map = getFailCode("切换翻译字体大小失败");
+		}
+		return new ModelMap(map);
+	}
+
+	@RequestMapping(value = "/getTranLanList")
+	@ResponseBody
+	public Map<String, Object> getTranLanList(
+			HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> result;
+		Map<String, Object> data = new HashMap<>();
+
+		try {
+			LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+			UserConfig userConfig = SiteUtils.getUserConfig(request);
+
+			List<XELangBaidu> listBaiduLan = XELangBaidu.values(XELangBaidu.class);
+			listBaiduLan.remove(XELangBaidu.auto);
+
+			List<Map<String, Object>> tranLanList = new ArrayList<>();
+
+			{
+				// 增加不显示
+				Map<String, Object> notTranFlagMap = new HashMap<>();
+				notTranFlagMap.put("value", "notTranFlag");
+				notTranFlagMap.put("name", messageSource.getMessage("不显示", null, localeResolver.resolveLocale(request)));
+				notTranFlagMap.put("originalName", messageSource.getMessage("不显示", null, localeResolver.resolveLocale(request)));
+				notTranFlagMap.put("selectedFlag", userConfig.isNotTranFlag() == true);
+				tranLanList.add(notTranFlagMap);
+			}
+
+			{
+				// 增加默认
+				Map<String, Object> defaultMap = new HashMap<>();
+				defaultMap.put("value", "defaultLan");
+				defaultMap.put("name", messageSource.getMessage("默认", null, localeResolver.resolveLocale(request)));
+				defaultMap.put("originalName", messageSource.getMessage("默认", null, localeResolver.resolveLocale(request)));
+				defaultMap.put("selectedFlag", userConfig.getTranLanguage() == null);
+				tranLanList.add(defaultMap);
+			}
+
+			// 增加百度的可翻译语言
+			listBaiduLan.forEach(lanEnum -> {
+				XELangLocal local = lanEnum.getLangLocal();
+				if (local != null) {
+					Map<String, Object> lanMap = new HashMap<>();
+					tranLanList.add(lanMap);
+
+					lanMap.put("value", local.getValue());
+					lanMap.put("name", lanEnum.getName());
+					lanMap.put("originalName", lanEnum.getOriginalName());
+					if (userConfig.getTranLanguage() != null) {
+						lanMap.put("selectedFlag", userConfig.getTranLanguage().equals((local)));
+					}
+				}
+			});
+			data.put("tranLanList", tranLanList);
+
+			// 其他信息
+			if (userConfig.getTranLanguage() != null) {
+				data.put("nowTranLan", userConfig.getTranLanguage().getValue());
+			}
+			data.put("notTranFlag", userConfig.isNotTranFlag());
+			data.put("tranLanColor", userConfig.getTranLanguageColor());
+			data.put("tranLanFontsize", userConfig.getTranLanFonsize());
+
+			result = getSuccessCode();
+			result.put("data", data);
+
+		} catch (Exception ex) {
+			result = getFailCode("切换语言失败");
+		}
+		return result;
 	}
 }

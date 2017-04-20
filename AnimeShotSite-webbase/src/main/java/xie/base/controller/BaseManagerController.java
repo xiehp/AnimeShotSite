@@ -44,7 +44,6 @@ public abstract class BaseManagerController<M extends IdEntity, ID extends Seria
 		}
 
 		return map;
-
 	}
 
 	private void invokeMethod(Object baseEntity, String methodName, String columnValue) {

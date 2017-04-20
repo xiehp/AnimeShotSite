@@ -73,8 +73,8 @@ body {
 }
 
 .subtitleTranslatedText {
-	font-size: smaller;
-	color: lime;
+	font-size: ${subtitleTranslatedTextFontsize};
+	color: ${subtitleTranslatedTextColor};
 }
 </style>
 

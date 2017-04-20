@@ -28,9 +28,9 @@ import xie.base.repository.BaseRepository;
 import xie.base.service.BaseService;
 import xie.common.Constants;
 import xie.common.date.DateUtil;
-import xie.common.modules.baidutranslate.BaiduLanguageMapping;
 import xie.common.string.XStringUtils;
 import xie.module.language.XLanguageUtils;
+import xie.module.language.translate.baidu.XBaiduTranslateUtils;
 import xie.subtitle.Subtitle;
 import xie.subtitle.SubtitleFactory;
 import xie.subtitle.line.XSubtitleLine;
@@ -379,7 +379,7 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 		List<String> list = new ArrayList<>();
 		subtitleLineList.forEach(line -> {
 			String queryText = line.getText();
-			String sign = BaiduLanguageMapping.getBaiduSign(appId, queryText, salt, key);
+			String sign = XBaiduTranslateUtils.getBaiduSign(appId, queryText, salt, key);
 			list.add(sign);
 		});
 		
