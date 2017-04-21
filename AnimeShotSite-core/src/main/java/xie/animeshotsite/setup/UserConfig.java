@@ -14,7 +14,7 @@ public class UserConfig {
 	private XELangLocal tranLanguage;
 
 	/** 用户设定的翻译语言的颜色 */
-	private String tranLanguageColor;
+	private String tranLanguageColor = "#39aa1d";
 
 	/** 用户设定的翻译语言的字体大小 */
 	private String tranLanFonsize;
