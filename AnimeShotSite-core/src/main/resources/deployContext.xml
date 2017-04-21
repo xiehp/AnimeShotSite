@@ -28,7 +28,7 @@
 			<property name="password" value="${jdbc.password}" />
 			<property name="maxActive" value="${jdbc.pool.maxActive}" />
 			<property name="maxIdle" value="${jdbc.pool.maxIdle}" />
-			<property name="minIdle" value="1" />
+			<property name="minIdle" value="5" />
 			<property name="defaultAutoCommit" value="false" />
 			<!-- 连接Idle10分钟后超时，每1分钟检查一次 -->
 			<property name="timeBetweenEvictionRunsMillis" value="60000" />
@@ -54,7 +54,7 @@
 			<property name="password" value="${jdbc.password}" />
 			<property name="maxActive" value="${jdbc.pool.maxActive}" />
 			<property name="maxIdle" value="${jdbc.pool.maxIdle}" />
-			<property name="minIdle" value="1" />
+			<property name="minIdle" value="5" />
 			<property name="defaultAutoCommit" value="false" />
 			<!-- 连接Idle10分钟后超时，每1分钟检查一次 -->
 			<property name="timeBetweenEvictionRunsMillis" value="60000" />
@@ -80,7 +80,7 @@
 			<property name="password" value="${jdbc.password}" />
 			<property name="maxActive" value="${jdbc.pool.maxActive}" />
 			<property name="maxIdle" value="${jdbc.pool.maxIdle}" />
-			<property name="minIdle" value="1" />
+			<property name="minIdle" value="5" />
 			<property name="defaultAutoCommit" value="false" />
 			<!-- 连接Idle10分钟后超时，每1分钟检查一次 -->
 			<property name="timeBetweenEvictionRunsMillis" value="60000" />
