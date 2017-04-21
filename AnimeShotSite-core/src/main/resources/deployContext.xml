@@ -28,12 +28,12 @@
 			<property name="password" value="${jdbc.password}" />
 			<property name="maxActive" value="${jdbc.pool.maxActive}" />
 			<property name="maxIdle" value="${jdbc.pool.maxIdle}" />
-			<property name="minIdle" value="0" />
+			<property name="minIdle" value="1" />
 			<property name="defaultAutoCommit" value="false" />
 			<!-- 连接Idle10分钟后超时，每1分钟检查一次 -->
 			<property name="timeBetweenEvictionRunsMillis" value="60000" />
 			<property name="minEvictableIdleTimeMillis" value="600000" />
-			<property name="validationInterval" value="30000" />  <!--检查连接死活的时间间隔（单位：毫妙） 0以下的话不检查。默认是0。 -->
+			<property name="validationInterval" value="30000" />  <!--(long) 避免过度验证，保证验证不超过这个频率——以毫秒为单位。如果一个连接应该被验证，但上次验证未达到指定间隔，将不再次验证。 -->
 			<property name="validationQuery" value="SELECT 1" />
 			<property name="initialSize" value="1" />
 			<property name="testWhileIdle" value="true" />
@@ -54,7 +54,7 @@
 			<property name="password" value="${jdbc.password}" />
 			<property name="maxActive" value="${jdbc.pool.maxActive}" />
 			<property name="maxIdle" value="${jdbc.pool.maxIdle}" />
-			<property name="minIdle" value="0" />
+			<property name="minIdle" value="1" />
 			<property name="defaultAutoCommit" value="false" />
 			<!-- 连接Idle10分钟后超时，每1分钟检查一次 -->
 			<property name="timeBetweenEvictionRunsMillis" value="60000" />
@@ -80,11 +80,14 @@
 			<property name="password" value="${jdbc.password}" />
 			<property name="maxActive" value="${jdbc.pool.maxActive}" />
 			<property name="maxIdle" value="${jdbc.pool.maxIdle}" />
-			<property name="minIdle" value="0" />
+			<property name="minIdle" value="1" />
 			<property name="defaultAutoCommit" value="false" />
-			<property name="validationInterval" value="30000" />  <!--检查连接死活的时间间隔（单位：毫妙） 0以下的话不检查。默认是0。 -->
+			<!-- 连接Idle10分钟后超时，每1分钟检查一次 -->
+			<property name="timeBetweenEvictionRunsMillis" value="60000" />
+			<property name="minEvictableIdleTimeMillis" value="600000" />
+			<property name="validationInterval" value="30000" />  <!--(long) 避免过度验证，保证验证不超过这个频率——以毫秒为单位。如果一个连接应该被验证，但上次验证未达到指定间隔，将不再次验证。 -->
 			<property name="validationQuery" value="SELECT 1" />
-			<property name="initialSize" value="2" />
+			<property name="initialSize" value="1" />
 			<property name="testWhileIdle" value="true" />
 		</bean>
 	</beans>

@@ -1,6 +1,8 @@
 package xie.web.manage.controller;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.entity.SubtitleInfo;
+import xie.animeshotsite.db.repository.ShotInfoDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ImageUrlService;
@@ -36,6 +39,9 @@ public class AnimeManagerController extends BaseManagerController<AnimeInfo, Str
 
 	@Autowired
 	private SubtitleInfoService subtitleInfoService;
+
+	@Autowired
+	private ShotInfoDao shotInfoDao;
 
 	@Autowired
 	private ImageUrlService imageUrlService;
@@ -70,6 +76,16 @@ public class AnimeManagerController extends BaseManagerController<AnimeInfo, Str
 		// 获得剧集 列表
 		List<AnimeEpisode> animeEpisodeList = animeEpisodeService.findByAnimeInfoId(animeInfoId);
 		request.setAttribute("animeEpisodeList", animeEpisodeList);
+		List<Map<String, Object>> list = shotInfoDao.countRowNumberGroupByAnimeEpisodeId(animeInfoId);
+		Map<String, Long> shotCountMap = new LinkedHashMap<>();
+		Map<String, Long> maxTimestampMap = new LinkedHashMap<>();
+		for (Object ob : list) {
+			Object[] obs = (Object[]) ob;
+			shotCountMap.put((String) obs[1], (Long) obs[2]);
+			maxTimestampMap.put((String) obs[1], (Long) obs[3] - ((Long) obs[3]) % 5000);
+		}
+		request.setAttribute("shotCountMap", shotCountMap);
+		request.setAttribute("maxTimestampMap", maxTimestampMap);
 
 		// 获得字幕 列表
 		List<SubtitleInfo> subtitleInfoList = subtitleInfoService.findByAnimeInfoId(animeInfoId);

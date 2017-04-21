@@ -1,6 +1,7 @@
 package xie.animeshotsite.db.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.jpa.repository.Query;
 
@@ -34,4 +35,12 @@ public interface ShotInfoDao extends BaseRepository<ShotInfo, String> {
 	 */
 	@Query("SELECT COUNT(id) FROM ShotInfo where animeEpisodeId = ?1 and timeStamp <= ?2 and deleteFlag = ?3 order by timeStamp")
 	int getRowNumber(String animeEpisodeId, long timeStamp, int deleteFlag);
+
+	/**
+	 * 获得剧集分组后，每剧集的图片数量
+	 * 
+	 * @return animeInfoId, animeEpisodeId, count, maxTimeStamp
+	 */
+	@Query("select animeInfoId, animeEpisodeId, count(animeEpisodeId) as count, max(timeStamp) as maxTimeStamp from ShotInfo where animeInfoId = ?1 group by animeEpisodeId")
+	List<Map<String, Object>> countRowNumberGroupByAnimeEpisodeId(String animeInfoId);
 }

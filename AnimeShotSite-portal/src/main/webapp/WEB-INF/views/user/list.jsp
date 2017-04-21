@@ -21,11 +21,11 @@
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home"></i>
-								<a href="javascript:void();">用户管理</a> 
+								<a href="javascript:void(0);">用户管理</a> 
 								<i class="icon-angle-right"></i>
 							</li>
 							<li>
-								<a href="javascript:void();">用户列表</a>
+								<a href="javascript:void(0);">用户列表</a>
 							</li>
 						</ul>
 						<!-- END PAGE TITLE & BREADCRUMB-->

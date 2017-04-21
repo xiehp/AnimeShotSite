@@ -20,11 +20,11 @@
 		<ul class="breadcrumb">
 			<li>
 				<i class="icon-home"></i>
-				<a href="javascript:void();">案例管理</a> 
+				<a href="javascript:void(0);">案例管理</a> 
 				<i class="icon-angle-right"></i>
 			</li>
 			<li>
-				<a href="javascript:void();">案例列表</a>
+				<a href="javascript:void(0);">案例列表</a>
 			</li>
 		</ul>
 		<!-- END PAGE TITLE & BREADCRUMB-->

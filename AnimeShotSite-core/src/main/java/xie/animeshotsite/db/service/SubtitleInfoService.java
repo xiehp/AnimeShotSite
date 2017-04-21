@@ -21,6 +21,7 @@ import xie.base.service.BaseService;
 import xie.common.Constants;
 import xie.common.constant.XConst;
 import xie.common.string.XStringUtils;
+import xie.common.utils.XListUtils;
 
 @Service
 public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
@@ -128,7 +129,8 @@ public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 		String key = "DefaultShowLanguage_" + animeEpisodeId + "_" + siteLocaleLanguage + "_" + showLanguage + "_" + showAllSubtitleFlag;
 		List<String> list = entityCache.get(key);
 		if (list != null) {
-			return list;
+			List<String> returnList = XListUtils.copy(list);
+			return returnList;
 		}
 
 		// 生成所有语言的list
@@ -193,7 +195,8 @@ public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 			defaultLanguageList = defaultLanguageListTemp;
 		}
 		entityCache.put(key, defaultLanguageList, XConst.SECOND_05_HOUR * 1000);
-		return defaultLanguageList;
+		List<String> returnList = XListUtils.copy(defaultLanguageList);
+		return returnList;
 	}
 
 	@Override

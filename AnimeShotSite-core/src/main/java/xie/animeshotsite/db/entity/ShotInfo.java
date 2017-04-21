@@ -40,7 +40,7 @@ public class ShotInfo extends BaseTietukuUrl {
 	/** 原始视频时间戳 */
 	private Long originalTime;
 
-	/** 预计获取的时间戳 */
+	/** 预计获取的时间戳，时间戳以该字段为准 */
 	private Long timeStamp;
 
 	/** 时间偏移，新生成的图片可能和第一次片源不一样 */
@@ -164,7 +164,7 @@ public class ShotInfo extends BaseTietukuUrl {
 	}
 
 	/**
-	 * 获取 预计获取的时间戳.
+	 * 获取 预计获取的时间戳，时间戳以该字段为准.
 	 *
 	 * @return 预计获取的时间戳
 	 */

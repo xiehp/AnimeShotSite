@@ -80,12 +80,15 @@
 		}
 	}
 
-	function doShotTask(id) {
+	function doShotTask(id, thisObj, startTime) {
 		if (confirm("是否继续？")) {
 			var param = {};
 			param.taskType = 1;
 			param.id = id;
 			param.timeInterval = 5000;
+			if (startTime != null) {
+				param.startTime = startTime;
+			}
 			//$("#mainForm").attr("action", "${ctx}${MANAGE_URL_STR}/animeEpisode/addShotTask?taskType=1&id=" + id + "&timeInterval="+5000);
 			$.homePost("${MANAGE_URL_STR}/animeEpisode/addShotTaskAjax", param, function(data) {
 				if (data.success) {
@@ -247,13 +250,17 @@
 								<c:out value='${animeEpisode.title}' />
 							</div>
 							<div style="margin-top: 5px;">
-								<a href="javascript:void();" onclick="doShotTask('<c:out value='${animeEpisode.id}' />', this);" style="color: blue;">截图</a>
+								<a href="javascript:void(0);" onclick="doShotTask('<c:out value='${animeEpisode.id}' />', this);" style="color: blue;">从头截图</a>
+								<c:if test="${!empty maxTimestampMap[animeEpisode.id]}">
+									<a href="javascript:void(0);" onclick="doShotTask('<c:out value='${animeEpisode.id}' />', this, '${maxTimestampMap[animeEpisode.id]}');" style="color: blue;">${maxTimestampMap[animeEpisode.id]}开始截图</a>
+								</c:if>
 								<c:if test="${animeEpisode.showFlg eq '0'}">
-									<a href="javascript:void();" onclick="updateToShow('<c:out value='${animeEpisode.id}' />', this);" style="color: red;">展示</a>
+									<a href="javascript:void(0);" onclick="updateToShow('<c:out value='${animeEpisode.id}' />', this);" style="color: red;">展示</a>
 								</c:if>
 								<c:if test="${animeEpisode.showFlg eq '1'}">
 									<span style="${animeEpisode.showFlg == "1" ? "" :"color:red;"}"> ${animeEpisode.showFlg == "1" ? "已展示" :"未展示"} </span>
 								</c:if>
+								${empty shotCountMap[animeEpisode.id] ? 0 : shotCountMap[animeEpisode.id]}张
 							</div>
 						</a>
 					</div>
