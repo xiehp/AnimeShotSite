@@ -142,6 +142,7 @@ public class ToolController extends BaseController {
 				userConfig.setTranLanguage(null);
 			} else {
 				userConfig.setTranLanguage(XELangLocal.parseValue(newTranLan));
+				userConfig.setNotTranFlag(false);
 			}
 			LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
 			map = getSuccessCode(messageSource.getMessage("切换翻译语言成功", null, localeResolver.resolveLocale(request)));
