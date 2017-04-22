@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xie</groupId>
 	<artifactId>AnimeShotSite-parent</artifactId>
@@ -6,23 +7,24 @@
 	<packaging>pom</packaging>
 
 	<repositories>
-		<repository>
+		<!--<repository>
 			<id>central</id>
 			<name>Central Repository</name>
 			<url>http://repo.maven.apache.org/maven2</url>
 			<layout>default</layout>
 			<releases>
-				<updatePolicy>daily</updatePolicy><!-- never,always,interval n -->
+				<updatePolicy>daily</updatePolicy>
 				<enabled>true</enabled>
-				<checksumPolicy>warn</checksumPolicy><!-- fail,ignore -->
+				<checksumPolicy>warn</checksumPolicy>
 			</releases>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		-->
 
 	</repositories>
-  
+
 	<!-- 
 	<modules>
 		<module>../AnimeShotSite-core</module>
@@ -106,7 +108,7 @@
 		<fileupload.version>1.2.2.LIFERAY-PATCHED-1</fileupload.version>
 		<apache.poi.version>3.12</apache.poi.version>
 		<dom4j.version>2.6.0</dom4j.version>
-		
+
 		<!-- Plugin的属性 -->
 		<druid.version>0.2.23</druid.version>
 
@@ -167,9 +169,8 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			
-			
-			
+
+
 			<!-- *********************************************************** -->
 			<!-- SPRINGSIDE MODULES begin -->
 			<dependency>
@@ -537,7 +538,7 @@
 				<artifactId>ezmorph</artifactId>
 				<version>1.0.6</version>
 			</dependency>-->
-			
+
 			<!-- JSON end -->
 
 			<!-- XML begin
@@ -631,7 +632,7 @@
 				<artifactId>poi-examples</artifactId>
 				<version>${apache.poi.version}</version>
 			</dependency> -->
-			
+
 			<!-- GENERAL UTILS end -->
 
 			<!-- OTHER TOOLS begin -->
@@ -874,7 +875,7 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.7</version>
 			</dependency>
-			
+
 			<!-- sftp
 			<dependency>
 			    <groupId>com.jcraft</groupId>
@@ -897,7 +898,7 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
-			
+
 			<!-- 打包前删除lib/MavenDependencies
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>

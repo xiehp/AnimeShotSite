@@ -126,11 +126,6 @@ public final class SpringUtil implements BeanFactoryAware {
 		for (String str : list) {
 			LOG.info(str);
 		}
-
-		Properties p = SpringUtil.getBean("springProperties");
-		LOG.info(p.getProperty("jdbc.url"));
-		LOG.info(p.getProperty("jdbc.username"));
-		LOG.info(p.getProperty("jdbc.password"));
 	}
 
 	/**
@@ -160,6 +155,7 @@ public final class SpringUtil implements BeanFactoryAware {
 					// }
 
 					LOG.warn("未发现自动设置bean，开始手动加载applicationContext.xml");
+
 					ctx = new ClassPathXmlApplicationContext("classpath*:applicationContext.xml");
 					factory = ctx.getBeanFactory();
 					LOG.info("手动加载结束，xml：" + factory + ", ctx.getApplicationName():" + ctx.getApplicationName() + ", ctx.getDisplayName():" + ctx.getDisplayName());

@@ -13,8 +13,8 @@ import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.timer.timer.ShotTaskTimer;
 
 //@SpringBootApplication
-@Configuration
-@ComponentScan("xie")
+//@Configuration
+//@ComponentScan("xie")
 public class MainTimer {
 
 	private static Logger logger = LoggerFactory.getLogger(MainTimer.class);
