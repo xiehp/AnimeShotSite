@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -139,9 +140,14 @@ public class GifController extends BaseFunctionController<GifInfo, String> {
 			@PathVariable String id,
 			@RequestParam(required = false) String scorllTop,
 			@RequestParam(required = false) List<String> showLanage,
-			Model model, HttpServletRequest request) throws Exception {
+			Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		GifInfo gifInfo = gifInfoDao.findOne(id);
+		if (gifInfo == null) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			request.setAttribute("canBaiduIndex", false);// 不要索引
+			return getUrlRedirectPath("404");
+		}
 		gifInfo = gifInfoService.convertToVO(gifInfo);
 		AnimeInfo animeInfo = entityCache.findOne(animeInfoDao, gifInfo.getAnimeInfoId());
 		AnimeEpisode animeEpisode = entityCache.findOne(animeEpisodeDao, gifInfo.getAnimeEpisodeId());
