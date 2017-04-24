@@ -285,4 +285,15 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		list = fillParentData(list);
 		return list;
 	}
+
+	public List<ShotInfo> findRandom(String animeEpisodeId, int number) {
+		int range = shotInfoDao.countByAnimeEpisodeId(animeEpisodeId);
+		if (range <= 0){
+			return new ArrayList<>();
+		}
+		int from = RandomUtils.nextInt(range);
+		List<ShotInfo> list = shotInfoDao.findRandom(from, number);
+		list = fillParentData(list);
+		return list;
+	}
 }

@@ -1,11 +1,6 @@
 package xie.animeshotsite.db.service;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,17 +8,24 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 import org.springside.modules.mapper.BeanMapper;
-
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.ImageUrl;
+import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.base.page.PageRequestUtil;
 import xie.base.repository.BaseRepository;
+import xie.base.repository.BaseSearchFilter;
 import xie.base.service.BaseService;
 import xie.common.Constants;
 import xie.common.string.XStringUtils;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class AnimeEpisodeService extends BaseService<AnimeEpisode, String> {
@@ -42,19 +44,23 @@ public class AnimeEpisodeService extends BaseService<AnimeEpisode, String> {
 		return animeEpisodeDao;
 	}
 
-	/** 获取所有需要进行截图的动画列表 */
+	/**
+	 * 获取所有需要进行截图的动画列表
+	 */
 	public List<AnimeEpisode> findByProcessAction(Integer processAction) {
 		return animeEpisodeDao.findByProcessAction(processAction);
 	}
 
-	/** 获取某动画下所有剧集 */
+	/**
+	 * 获取某动画下所有剧集
+	 */
 	public List<AnimeEpisode> findByAnimeInfoId(String animeInfoId) {
 		return animeEpisodeDao.findByAnimeInfoIdOrderBySort(animeInfoId);
 	}
 
 	/**
 	 * 获得最新截图
-	 * 
+	 *
 	 * @param listCount
 	 * @return
 	 */
@@ -79,7 +85,7 @@ public class AnimeEpisodeService extends BaseService<AnimeEpisode, String> {
 	}
 
 	public String saveMuti(String param, Integer start, Integer end, Integer extention,
-			Map<String, Object> requestMap) {
+						   Map<String, Object> requestMap) {
 		String[] paramArray = new String[0];
 		if (param != null && param.length() > 0) {
 			paramArray = param.split(",");
@@ -139,5 +145,15 @@ public class AnimeEpisodeService extends BaseService<AnimeEpisode, String> {
 		ImageUrl imageUrl = imageUrlService.saveImageInfo(rootPath, detailPath, name, tietukuImageUrlId, tietukuImageUrlPrefix);
 		animeEpisode.setTitleUrlId(imageUrl.getId());
 		animeEpisodeDao.save(animeEpisode);
+	}
+
+	public List<AnimeEpisode> findRandom(int range, int number) {
+		int from = RandomUtils.nextInt(range) + 1;
+
+		Map<String, Object> searchParams = new HashMap<>();
+		searchParams.put(BaseSearchFilter.BaseOperator.EQ + "_" + AnimeEpisode.COLUMN_SHOW_FLG, Constants.FLAG_INT_YES);
+		Page<AnimeEpisode> animeEpisodePage = searchPageByParams(searchParams, from, 1, null, AnimeEpisode.class);
+		List<AnimeEpisode> list = animeEpisodePage.getContent();
+		return list;
 	}
 }

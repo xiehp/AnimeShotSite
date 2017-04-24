@@ -471,7 +471,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		return map;
 	}
 
-	@RequestMapping(value = "/random")
+	@RequestMapping(value = "/random_old")
 	public String random(Model model) throws Exception {
 		List<ShotInfo> shotInfoList = new ArrayList<ShotInfo>();
 		int count = (int) shotInfoDao.count();
@@ -479,6 +479,25 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 			List<ShotInfo> list = shotInfoService.findRandom(count - 2, 2);
 			shotInfoList.addAll(list);
 		}
+		model.addAttribute("shotInfoList", shotInfoList);
+
+		return getJspFilePath("random");
+	}
+
+	@RequestMapping(value = "/random")
+	public String random2(Model model) throws Exception {
+		List<AnimeEpisode> episodeList = new ArrayList<AnimeEpisode>();
+		int count = (int) animeEpisodeDao.count();
+		for (int i = 0; i < 10; i++) {
+			List<AnimeEpisode> list = animeEpisodeService.findRandom(count, 2);
+			episodeList.addAll(list);
+		}
+
+		List<ShotInfo> shotInfoList = new ArrayList<ShotInfo>();
+		episodeList.forEach(animeEpisode -> {
+			List<ShotInfo> list = shotInfoService.findRandom(animeEpisode.getId(), 1);
+			shotInfoList.addAll(list);
+		});
 		model.addAttribute("shotInfoList", shotInfoList);
 
 		return getJspFilePath("random");
@@ -576,10 +595,10 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 
 	/**
 	 * 检测是否截图成功
-	 * 
-	 * @param refShotInfoId 参照的截图ID
-	 * @param preFlg 向前还是向后
-	 * @param offsetTime 偏移多少毫秒
+	 *
+	 * @param taskId 参照的截图ID
+	 * @param animeEpisodeId 向前还是向后
+	 * @param timestamp 偏移多少毫秒
 	 * @return
 	 */
 	@RequestMapping(value = "/checkCreateShot")

@@ -201,8 +201,8 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 		if (list == null || list.size() == 0) {
 			return list;
 		}
-		for (M shotInfo : list) {
-			fillParentData(shotInfo);
+		for (M entity : list) {
+			fillParentData(entity);
 		}
 		return list;
 	}
@@ -210,7 +210,7 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 	/**
 	 * 填充Entity的扩展数据
 	 */
-	public M fillParentData(M shotInfo) {
-		return shotInfo;
+	public M fillParentData(M entity) {
+		return entity;
 	}
 }

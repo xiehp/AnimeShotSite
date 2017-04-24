@@ -43,4 +43,9 @@ public interface ShotInfoDao extends BaseRepository<ShotInfo, String> {
 	 */
 	@Query("select animeInfoId, animeEpisodeId, count(animeEpisodeId) as count, max(timeStamp) as maxTimeStamp from ShotInfo where animeInfoId = ?1 group by animeEpisodeId")
 	List<Map<String, Object>> countRowNumberGroupByAnimeEpisodeId(String animeInfoId);
+
+	/**
+	 * 获得剧集的图片数量
+	 */
+	int countByAnimeEpisodeId(String animeEpisodeId);
 }
