@@ -193,7 +193,7 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="col-sm-7 control-label">规则(针对ass格式), "#":包含, "=":相等, ",":区分，判断不区分大小写，格式为name1=value1,name2#value2 </label>
+		<label class="col-sm-7 control-label">规则(针对ass格式), "#":包含, "=":相等, ",":区分，判断不区分大小写，格式为name1=value1,name2#value2，value为正则表达式</label>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label">包含某种属性文字filterInclude(Style#jp)</label>

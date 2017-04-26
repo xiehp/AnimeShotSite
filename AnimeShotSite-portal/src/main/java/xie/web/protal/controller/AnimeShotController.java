@@ -475,7 +475,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 	public String random(Model model) throws Exception {
 		List<ShotInfo> shotInfoList = new ArrayList<ShotInfo>();
 		int count = (int) shotInfoDao.count();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 9; i++) {
 			List<ShotInfo> list = shotInfoService.findRandom(count - 2, 2);
 			shotInfoList.addAll(list);
 		}

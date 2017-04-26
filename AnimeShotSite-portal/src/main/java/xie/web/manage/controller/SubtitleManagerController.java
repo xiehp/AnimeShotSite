@@ -112,7 +112,7 @@ public class SubtitleManagerController extends BaseManagerController<SubtitleInf
 				request.setAttribute("animeInfo", animeInfo);
 
 				if (XStringUtils.isNotBlank(animeInfo.getLocalRootPath())) {
-					subtitleInfo.setLocalRootPath(FilePathUtils.getAnimeRoot(animeInfo, null).getAbsolutePath());
+					subtitleInfo.setLocalRootPath(FilePathUtils.getAnimeRoot(animeInfo, null).getPath());
 				}
 
 				if (XStringUtils.isNotBlank(animeInfo.getLocalDetailPath())) {
