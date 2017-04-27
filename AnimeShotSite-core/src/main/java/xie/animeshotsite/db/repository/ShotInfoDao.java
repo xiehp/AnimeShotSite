@@ -31,6 +31,12 @@ public interface ShotInfoDao extends BaseRepository<ShotInfo, String> {
 	List<ShotInfo> findRandom(Integer from, Integer number);
 
 	/**
+	 * 指定剧集中随机获取一些记录
+	 */
+	@Query(nativeQuery = true, value = "select * from " + ShotInfo.TABLE_NAME + " limit ?1,?2")
+	List<ShotInfo> findRandomByAnimeEpisodeId(String animeEpisodeId, int from, int number);
+
+	/**
 	 * 获得某个截图在剧集中的位置
 	 */
 	@Query("SELECT COUNT(id) FROM ShotInfo where animeEpisodeId = ?1 and timeStamp <= ?2 and deleteFlag = ?3 order by timeStamp")
@@ -48,4 +54,5 @@ public interface ShotInfoDao extends BaseRepository<ShotInfo, String> {
 	 * 获得剧集的图片数量
 	 */
 	int countByAnimeEpisodeId(String animeEpisodeId);
+
 }

@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +23,7 @@ import xie.animeshotsite.db.vo.ShotInfoVO;
 import xie.animeshotsite.setup.ShotSiteSetup;
 import xie.base.page.PageRequestUtil;
 import xie.base.repository.BaseRepository;
+import xie.base.repository.BaseSearchFilter.BaseOperator;
 import xie.base.service.BaseService;
 import xie.common.date.DateUtil;
 import xie.common.number.XNumberUtils;
@@ -279,21 +279,20 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		return shotInfo;
 	}
 
-	public List<ShotInfo> findRandom(int range, int number) {
-		int from = RandomUtils.nextInt(range);
-		List<ShotInfo> list = shotInfoDao.findRandom(from, number);
-		list = fillParentData(list);
-		return list;
-	}
-
-	public List<ShotInfo> findRandom(String animeEpisodeId, int number) {
-		int range = shotInfoDao.countByAnimeEpisodeId(animeEpisodeId);
-		if (range <= 0){
-			return new ArrayList<>();
-		}
-		int from = RandomUtils.nextInt(range);
-		List<ShotInfo> list = shotInfoDao.findRandom(from, number);
-		list = fillParentData(list);
+	/**
+	 * 随机获得数据
+	 * 
+	 * @param range
+	 * @param number
+	 * @param animeInfoId 可以为空
+	 * @param animeEpisodeId 可以为空
+	 * @return
+	 */
+	public List<ShotInfo> findRandomShot(int number, String animeInfoId, String animeEpisodeId) {
+		Map<String, Object> searchParams = new HashMap<>();
+		searchParams.put(BaseOperator.EQ.getStr(ShotInfo.COLUMN_ANIME_INFO_ID), animeInfoId);
+		searchParams.put(BaseOperator.EQ.getStr(ShotInfo.COLUMN_ANIME_EPISODE_ID), animeEpisodeId);
+		List<ShotInfo> list = findRandom(-1, number, ShotInfo.class, searchParams);
 		return list;
 	}
 }

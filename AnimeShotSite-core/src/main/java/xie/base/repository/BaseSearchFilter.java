@@ -38,7 +38,11 @@ public class BaseSearchFilter {
 		/** 小于等于（<= value） */
 		LTE,
 		/** IN（in (value1, value2, ...)） 注：value需要以Collection形式传递 */
-		IN
+		IN;
+
+		public String getStr(String columnName) {
+			return name() + "_" + columnName;
+		}
 	}
 
 	/** 检索字段 */

@@ -474,9 +474,8 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 	@RequestMapping(value = "/random_old")
 	public String random(Model model) throws Exception {
 		List<ShotInfo> shotInfoList = new ArrayList<ShotInfo>();
-		int count = (int) shotInfoDao.count();
 		for (int i = 0; i < 9; i++) {
-			List<ShotInfo> list = shotInfoService.findRandom(count - 2, 2);
+			List<ShotInfo> list = shotInfoService.findRandomShot(1, null, null);
 			shotInfoList.addAll(list);
 		}
 		model.addAttribute("shotInfoList", shotInfoList);
@@ -487,16 +486,19 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 	@RequestMapping(value = "/random")
 	public String random2(Model model) throws Exception {
 		List<AnimeEpisode> episodeList = new ArrayList<AnimeEpisode>();
-		int count = (int) animeEpisodeDao.count();
-		for (int i = 0; i < 10; i++) {
-			List<AnimeEpisode> list = animeEpisodeService.findRandom(count, 2);
-			episodeList.addAll(list);
+		for (int i = 0; i < 12; i++) {
+			List<AnimeEpisode> list = animeEpisodeService.findRandom(1);
+			if (list.size() > 0) {
+				episodeList.addAll(list);
+			}
 		}
 
 		List<ShotInfo> shotInfoList = new ArrayList<ShotInfo>();
 		episodeList.forEach(animeEpisode -> {
-			List<ShotInfo> list = shotInfoService.findRandom(animeEpisode.getId(), 1);
-			shotInfoList.addAll(list);
+			List<ShotInfo> list = shotInfoService.findRandomShot(1, null, animeEpisode.getId());
+			if (list.size() > 0) {
+				shotInfoList.addAll(list);
+			}
 		});
 		model.addAttribute("shotInfoList", shotInfoList);
 

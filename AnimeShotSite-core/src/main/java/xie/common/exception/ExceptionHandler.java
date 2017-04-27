@@ -14,18 +14,15 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import xie.common.Constants;
 import xie.common.response.body.GoPageResult;
-import xie.common.utils.props.PropsKeys;
-import xie.common.utils.props.PropsUtil;
-import xie.common.utils.string.GetterUtil;
 
 
 
-@Component
+//@Component
 public class ExceptionHandler implements HandlerExceptionResolver {
 
 	private Logger _log = LoggerFactory.getLogger(this.getClass());
 
-	private static boolean LogFlag = GetterUtil.getBoolean(PropsUtil.getProperty(PropsKeys.SYSTEM_ERROR_LOG_ENABLED), false);
+	//private static boolean LogFlag = GetterUtil.getBoolean(PropsUtil.getProperty(PropsKeys.SYSTEM_ERROR_LOG_ENABLED), false);
 
 	public ModelAndView resolveException(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex) {

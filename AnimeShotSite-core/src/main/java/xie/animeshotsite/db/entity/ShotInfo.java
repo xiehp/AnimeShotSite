@@ -17,6 +17,8 @@ import xie.common.date.DateUtil;
 public class ShotInfo extends BaseTietukuUrl {
 
 	private static final long serialVersionUID = 1L;
+	public static final String COLUMN_ANIME_INFO_ID = "animeInfoId";
+	public static final String COLUMN_ANIME_EPISODE_ID = "animeEpisodeId";
 	public static final String COLUMN_PUBLIC_LIKE_COUNT = "publicLikeCount";
 	public static final String COLUMN_MEMBER_LIKE_COUNT = "memberLikeCount";
 	public static final String COLUMN_PUBLIC_SHARE_COUNT = "publicShareCount";

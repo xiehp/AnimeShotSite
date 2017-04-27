@@ -2,11 +2,13 @@ package xie.base.service;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -212,5 +214,49 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 	 */
 	public M fillParentData(M entity) {
 		return entity;
+	}
+
+	/**
+	 * 随机获得数据
+	 * 
+	 * @param range 范围，-1或小于0时，自动获得最大值
+	 * @param number
+	 * @param addSearchParams EQ_COLUMN,Value格式的搜索条件，可以为null
+	 * @return
+	 */
+	public List<M> findRandom(int range, int number, Class<M> clazz, Map<String, Object> addSearchParams) {
+		if (range == 0 || number == 0 || clazz == null) {
+			logging.warn("错误的参数，range:{}，number:{}，clazz:{}", range, number, clazz);
+			return new ArrayList<>();
+		}
+
+		// 搜索条件
+		Map<String, Object> searchParams = new HashMap<>();
+		searchParams.put(BaseSearchFilter.BaseOperator.EQ.getStr(BaseEntity.COLUMN_DELETE_FLAG), Constants.FLAG_INT_NO);
+		searchParams.putAll(addSearchParams);
+
+		// 获得开始点
+		int from = 0;
+		if (range < 0) {
+			Page<M> page = searchPageByParams(searchParams, 1, 1, null, clazz);
+			int totalElement = (int) page.getTotalElements();
+			if (totalElement > 0) {
+				from = RandomUtils.nextInt(totalElement) + 1;
+			} else {
+				logging.warn("搜出数据总数为0，range:{}，number:{}，clazz:{}，参数：{}", range, number, clazz, searchParams);
+				return new ArrayList<>();
+			}
+		} else {
+			from = RandomUtils.nextInt(range) + 1;
+		}
+
+		Page<M> animeEpisodePage = searchPageByParams(searchParams, from, number, null, clazz);
+		List<M> list = animeEpisodePage.getContent();
+		list = fillParentData(list);
+
+		if (list.size() == 0) {
+			logging.warn("搜出0条数据，from:{}，number:{}，clazz:{}，参数：{}", from, number, clazz, searchParams);
+		}
+		return list;
 	}
 }

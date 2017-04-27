@@ -258,8 +258,6 @@ public class GifController extends BaseFunctionController<GifInfo, String> {
 		// 生成任务相关信息
 		Map<String, Map<String, Object>> taskValueMap = new HashMap<String, Map<String, Object>>();
 		for (ShotTask task : shotTaskPage.getContent()) {
-			Map<String, Object> map = new HashMap<>();
-
 			Map<String, Object> paramMap = XJsonUtil.fromJsonString(task.getTaskParam());
 			String animeEpisodeId = (String) paramMap.get(AnimeEpisode.COLUMN_ID);
 			AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
