@@ -22,6 +22,7 @@ import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotTaskService;
+import xie.animeshotsite.utils.AutoCollectUtils;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseManagerController;
 import xie.base.service.BaseService;
@@ -45,6 +46,8 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 	private ShotTaskService shotTaskService;
 	@Autowired
 	private SpringUtils springUtils;
+	@Autowired
+	private AutoCollectUtils autoCollectUtils;
 
 	@Override
 	protected BaseService<AnimeEpisode, String> getBaseService() {
@@ -234,4 +237,25 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 		}
 		return super.updateOneColumn(id, columnName, columnValue);
 	}
+
+
+	@RequiresPermissions(value = "userList:add")
+	@RequestMapping(value = "/updateEpisodeTitleAndSummary")
+	@ResponseBody
+	public Map<String, Object> updateEpisodeTitleAndSummary(
+			@RequestParam(required = false) String animeInfoId,
+			@RequestParam(required = false) String episodeInfoId,
+			@RequestParam(required = false, defaultValue = "false") Boolean forceUpdate,
+			HttpServletRequest request) {
+
+		Map<String, Object> map;
+
+		AnimeInfo animeInfo = animeInfoService.findOne(animeInfoId);
+
+		autoCollectUtils.collectEpisodeSummary(animeInfoId, animeInfo.getSummaryCollectUrl(),animeInfo.getSummaryCollectTitleExp(), forceUpdate);
+
+		map = getSuccessCode("操作成功");
+		return map;
+	}
+
 }

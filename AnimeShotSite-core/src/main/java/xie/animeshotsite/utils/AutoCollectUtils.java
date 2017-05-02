@@ -1,5 +1,6 @@
 package xie.animeshotsite.utils;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.spring.SpringUtil;
+import xie.common.string.XStringUtils;
 
 @Component
 public class AutoCollectUtils {
@@ -19,22 +21,25 @@ public class AutoCollectUtils {
 
 	@Autowired
 	private AnimeEpisodeService animeEpisodeService;
+	@Autowired
+	private ResourceCollectUtils resourceCollectUtils;
 
 	public static void main(String[] args) {
 
 		System.setProperty("spring.profiles.default", "production");
 
 		AutoCollectUtils autoCollectUtils = SpringUtil.getBean(AutoCollectUtils.class);
-		autoCollectUtils.collectEpisodeSummary("2c9380825b61c4a1015b7a3a74c1000c", "http://baike.baidu.com/item/兽娘动物园/20379001", "第[0-9]+话 ");
+		autoCollectUtils.collectEpisodeSummary("2c9380825b61c4a1015b7a3a74c1000c", "http://baike.baidu.com/item/兽娘动物园/20379001", "第[0-9]+话 ", false);
 
 		System.exit(0);
 	}
 
-	public void collectEpisodeSummary(String animeInfoId, String url, String titleReplaceReg) {
-		ResourceCollectUtils resourceCollectUtils = SpringUtil.getBean(ResourceCollectUtils.class);
+	public void collectEpisodeSummary(String animeInfoId, String url, String titleReplaceReg, boolean forceUpdate) {
 		LinkedHashMap<Integer, Map<String, String>> summaryMaps = resourceCollectUtils.collectBaiduEpisodeSummary(url, titleReplaceReg);
 
-		List<AnimeEpisode> list = animeEpisodeService.findByAnimeInfoId(animeInfoId);
+		List<AnimeEpisode> list;
+		list = animeEpisodeService.findByAnimeInfoId(animeInfoId);
+
 		int index = 1;
 		for (AnimeEpisode animeEpisode : list) {
 			Integer division = null;
@@ -47,10 +52,19 @@ public class AutoCollectUtils {
 				// Map<String, String> summaryMap = summaryMaps.get(division);
 				Map<String, String> summaryMap = summaryMaps.get(index);
 				if (summaryMap != null) {
-					animeEpisode.setTitle(summaryMap.get("title"));
-					animeEpisode.setSummary(summaryMap.get("summary"));
-					animeEpisodeService.save(animeEpisode);
-					logger.info("保存第{}集, title:{}", division, animeEpisode.getTitle());
+					boolean updateFlag = false;
+					if (forceUpdate || animeEpisode.getTitle() == null){
+						animeEpisode.setTitle(summaryMap.get("title"));
+						updateFlag = true;
+					}
+					if (forceUpdate || animeEpisode.getSummary() == null){
+						animeEpisode.setSummary(summaryMap.get("summary"));
+						updateFlag = true;
+					}
+					if (updateFlag) {
+						animeEpisodeService.save(animeEpisode);
+						logger.info("保存第{}集, title:{}", division, animeEpisode.getTitle());
+					}
 				}
 			}
 

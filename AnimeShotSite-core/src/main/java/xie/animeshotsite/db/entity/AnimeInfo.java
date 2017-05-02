@@ -84,6 +84,12 @@ public class AnimeInfo extends BaseEntity {
 	/** 简介 */
 	private String summary;
 
+	/** 获取简介的url */
+	private String summaryCollectUrl;
+
+	/** 获取简介标题的正则 */
+	private String summaryCollectTitleExp;
+
 	/** 排序 */
 	private Integer sort;
 
@@ -355,6 +361,24 @@ public class AnimeInfo extends BaseEntity {
 	 */
 	public void setSummary(String summary) {
 		this.summary = summary;
+	}
+
+
+
+	public String getSummaryCollectUrl() {
+		return summaryCollectUrl;
+	}
+
+	public void setSummaryCollectUrl(String summaryCollectUrl) {
+		this.summaryCollectUrl = summaryCollectUrl;
+	}
+
+	public String getSummaryCollectTitleExp() {
+		return summaryCollectTitleExp;
+	}
+
+	public void setSummaryCollectTitleExp(String summaryCollectTitleExp) {
+		this.summaryCollectTitleExp = summaryCollectTitleExp;
 	}
 
 	/**
