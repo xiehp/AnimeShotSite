@@ -662,33 +662,20 @@ function urlAddParam(url, paramStr) {
 	}
 }
 
-/*
- * 设置 autocomplete 配置参数 ：
- * {
- *  isAutoCleanSourceObj:是否自动清除输入值 :true 自动清除，false 不自动清除 (默认true)
-	minLength: 最少输入几个字，才去服务器获取选择项的数据，默认为1
-	maxItemCount:下拉选择项的最大条数.默认15条(global_autocomplete_max_item_count)	
-	isClickShowMenu:是否点击就提供下拉选择框，true/false,默认false
- * }
+/**
+ * 设置 autocomplete 配置参数 ： { isAutoCleanSourceObj:是否自动清除输入值 :true 自动清除，false 不自动清除 (默认true) minLength: 最少输入几个字，才去服务器获取选择项的数据，默认为1 maxItemCount:下拉选择项的最大条数.默认15条(global_autocomplete_max_item_count)
+ * isClickShowMenu:是否点击就提供下拉选择框，true/false,默认false }
  */
 var defaultAutoCompleteParams = {};
 function configAutoComplete(conf) {
 	$.extend(defaultAutoCompleteParams, conf);
 }
 
-/*
-fillObjId: 绑定autocomplete事件的input对象的ID
-sourceUrl:选择项的URL (返回元素为item的json集合,每个item,必须有code,label属性)
-setparams:JSON类型的参数，包含：
-	fillRelation:
-       	页面元素ID 与 返回的Item值 的匹配关系, 如 ["name":"name","address":"userAddress"] 
-	selectFunc: 选着后的回调函数，参数为  item 对象
-	cleanFunc: 不选择的回调函数，无参数
-	isAutoCleanSourceObj:是否自动清除输入值 :true 自动清除，false 不自动清除 (默认true)
-	minLength: 最少输入几个字，才去服务器获取选择项的数据，默认为1
-	maxItemCount:下拉选择项的最大条数.默认15条(global_autocomplete_max_item_count)	
-	isClickShowMenu:是否点击就提供下拉选择框，true/false,默认false
-*/
+/**
+ * fillObjId: 绑定autocomplete事件的input对象的ID sourceUrl:选择项的URL (返回元素为item的json集合,每个item,必须有code,label属性) setparams:JSON类型的参数，包含： fillRelation: 页面元素ID 与 返回的Item值 的匹配关系, 如
+ * ["name":"name","address":"userAddress"] selectFunc: 选着后的回调函数，参数为 item 对象 cleanFunc: 不选择的回调函数，无参数 isAutoCleanSourceObj:是否自动清除输入值 :true 自动清除，false 不自动清除 (默认true) minLength: 最少输入几个字，才去服务器获取选择项的数据，默认为1
+ * maxItemCount:下拉选择项的最大条数.默认15条(global_autocomplete_max_item_count) isClickShowMenu:是否点击就提供下拉选择框，true/false,默认false
+ */
 function jqueryAutoComplete(sourceObjId, sourceUrl, setparams) {
 	var params = {};
 	params = $.extend(params, defaultAutoCompleteParams);
@@ -799,7 +786,10 @@ function jqueryAutoComplete(sourceObjId, sourceUrl, setparams) {
 		});
 	}
 }
-// 格式化
+
+/**
+ * 格式化
+ */
 Date.prototype.Format = function(fmt) {
 	var jidu = Math.floor((this.getMonth() + 3) / 3);
 	var o = {
@@ -826,7 +816,9 @@ Date.prototype.Format = function(fmt) {
 	return fmt;
 }
 
-// 动态加载css文件
+/**
+ * 动态加载css文件
+ */
 function loadStyles(url) {
 	var link = document.createElement("link");
 	link.type = "text/css";
@@ -835,7 +827,9 @@ function loadStyles(url) {
 	document.getElementsByTagName("head")[0].appendChild(link);
 }
 
-// 动态加载js脚本文件
+/**
+ * 动态加载js脚本文件
+ */
 function loadScript(url, successCallback) {
 	// var script = document.createElement("script");
 	// script.type = "text/javascript";
@@ -860,4 +854,25 @@ function loadScript(url, successCallback) {
 			}
 		}
 	});
+}
+
+/**
+ * 使用$(function() {})延迟加载，在文档加载后才计时
+ * 
+ * @Parm timeout 默认100毫秒，该值<0时，和$(function() {})处于同一队列
+ */
+function lazyRun(fun, timeout) {
+	if (timeout == null) {
+		timeout = 100;
+	}
+
+	$(function() {
+		if (timeout >= 0) {
+			setTimeout(function() {
+				fun();
+			}, timeout);
+		} else {
+			fun();
+		}
+	})
 }

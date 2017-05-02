@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
@@ -243,5 +244,24 @@ public class SubtitleManagerController extends BaseManagerController<SubtitleInf
 		} else {
 			return animeController.getUrlRedirectPath("view/" + subtitleInfoId);
 		}
+	}
+
+	@RequiresPermissions(value = "userList:add")
+	@RequestMapping(value = "/createSubtitleTaskAjax")
+	@ResponseBody
+	public Map<String, Object> createSubtitleTaskAjax(
+			@RequestParam String animeInfoId,
+			@RequestParam(required = false)  String subtitleInfoId,
+			@RequestParam(required = false) Date scheduleTime,
+			@RequestParam(required = false) Long startTime,
+			@RequestParam(required = false) Long endTime,
+			@RequestParam(required = false) Long timeInterval,
+			@RequestParam(required = false) String specifyTimes,
+			@RequestParam(required = false) Boolean forceUpdate,
+			@RequestParam(required = false) Boolean forceDelete) {
+
+		shotTaskService.addCreateSubtitleTask(subtitleInfoId, animeInfoId, scheduleTime, forceUpdate, forceDelete);
+
+		return getSuccessCode("操作成功");
 	}
 }

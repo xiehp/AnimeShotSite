@@ -223,7 +223,7 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 			shotTaskService.addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes, XSSHttpUtil.getIpAddr(request), SysConstants.ROLE_ADMIN);
 		}
 
-		map = getSuccessCode();
+		map = getSuccessCode("操作成功");
 		return map;
 	}
 

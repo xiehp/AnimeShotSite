@@ -171,3 +171,19 @@ var BaiduT = function(appId) {
 		translate : translate
 	};
 }
+
+function createSubtitleTask(animeInfoId, episodeInfoId) {
+	if (confirm("是否继续？")) {
+		var param = {};
+		param.animeInfoId = animeInfoId;
+		param.episodeInfoId = episodeInfoId;
+		//$("#mainForm").attr("action", "${ctx}${MANAGE_URL_STR}/animeEpisode/addShotTask?taskType=1&id=" + id + "&timeInterval="+5000);
+		$.homePost(MANAGE_URL_STR + "/subtitle/createSubtitleTaskAjax", param, function(data) {
+			if (data.success) {
+				$.showMessageModal(data.message);
+			} else {
+				$.showMessageModal(data.message);
+			}
+		});
+	}
+}

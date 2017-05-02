@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
-import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
-import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.spring.SpringUtil;
 
 @Component

@@ -275,7 +275,8 @@
 </div>
 
 
-<div>
+<div style="margin-top: 20px;">
+	<a href="javascript:void(0);" onclick="createSubtitleTask('<c:out value='${animeInfo.id}' />');" style="color: blue;">生成字幕</a>
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="row">
@@ -297,14 +298,5 @@
 </div>
 
 <div>
-	<script>
-		function createSubtitleTask(type) {
-			if (confirm("是否继续？")) {
-				$("#mainForm").attr("action", "${ctx}${MANAGE_URL_STR}/subtitle/createSubtitleTask");
-				$("#mainForm").submit();
-			}
-		}
-	</script>
-
 	<a href="${ctx}${MANAGE_URL_STR}/subtitle/new?animeInfoId=${animeInfo.id}"> 增加字幕信息 </a>
 </div>

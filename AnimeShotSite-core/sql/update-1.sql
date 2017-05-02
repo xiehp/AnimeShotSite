@@ -118,6 +118,10 @@ ALTER TABLE `ma_damage` ADD COLUMN `targeting_Percent` INT(11) NULL DEFAULT NULL
 ALTER TABLE `subtitle_info` ADD COLUMN `OFFSET_TIME` INT(12) NULL COMMENT '当前字幕文件需要偏移的时间，单位毫秒' AFTER `LOCAL_FILE_NAME`;
 
 
+-----------------------------20170502---------------------------------------
+ALTER TABLE `anime_info` ADD COLUMN `SUMMARY_COLLECT_URL` VARCHAR(500) NULL COMMENT '获取简介的url' AFTER `SUMMARY`;
+ALTER TABLE `anime_info` ADD COLUMN `SUMMARY_COLLECT_TITLE_EXP` VARCHAR(100) NULL COMMENT '获取简介标题的正则' AFTER `SUMMARY_COLLECT_URL`;
+
 
 -----------------------------以上为已更新sql---------------------------------------
 -----------------------------以上为已更新sql---------------------------------------

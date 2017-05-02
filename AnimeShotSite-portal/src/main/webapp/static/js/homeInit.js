@@ -206,14 +206,20 @@ if (canBaiduIndex) {
 			// var src = document.location.protocol + '//js.passport.qihucdn.com/11.0.1.js?a1d5ba23049ed1de4d6a6aa4db2557c6';
 			// document.write('<script src="' + src + '" id="sozz"><\/script>');
 
+			/*
 			// 改为加载后运行
 			var script = document.createElement('script');
 			script.src = document.location.protocol + '//js.passport.qihucdn.com/11.0.1.js?a1d5ba23049ed1de4d6a6aa4db2557c6';
 			var firstScript = document.getElementsByTagName("script")[0];
 			firstScript.parentNode.insertBefore(script, firstScript);
+			*/
 		})();
 	});
 }
+
+lazyRun(function() {
+	console.log(3000);
+}, 3000);
 
 if (canBaiduRecord) {
 	$(function() {
@@ -254,13 +260,16 @@ if (canBaiduRecord) {
 		$(function() {
 			// 隐藏站长统计
 			if (!IS_MASTER) {
-				// $("#cnzz_stat_icon_1259030003").attr("style", "display:none")
-				$("#cnzz_stat_icon_1259030003").remove();
+				$("#cnzz_stat_icon_1259030003").attr("style", "display:none")
+				setTimeout(function() {
+					$("#cnzz_stat_icon_1259030003").remove();
+				}, 5000);
 			}
 		});
 	})();
 
 	// 360分析
+	/*
 	$(function() {
 		(function() {
 			var script360 = document.createElement("script");
@@ -269,12 +278,25 @@ if (canBaiduRecord) {
 			scriptNode.parentNode.insertBefore(script360, scriptNode);
 		})();
 	});
+	*/
 }
 
 /**
  * 语言菜单初始化操作
  */
-jQuery(function() {
+$(function() {
+	// 加载amazonmenu的js和css
+	loadStyles(global.ctx + "/static/plugins/menu/amazonmenu/amazonmenu.css");
+	loadScript(global.ctx + "/static/plugins/menu/amazonmenu/amazonmenu.js", function() {
+		// 加载语言菜单插件
+		$(".amazonmenu").each(function() {
+			amazonmenu.init({
+				// menuid : this.id
+				menuSelector : $(this)
+			})
+		});
+	});
+
 	// 语言菜单点击事件
 	{
 		var tranLanColorPicker = null;
@@ -354,16 +376,8 @@ jQuery(function() {
 		});
 	}
 
-	// 加载语言菜单插件
-	$(".amazonmenu").each(function() {
-		amazonmenu.init({
-			// menuid : this.id
-			menuSelector : $(this)
-		})
-	});
-
 	/**
-	 * 获得网站语言网站语言
+	 * 获得网站语言
 	 */
 	function getTranLanList(successCallback) {
 		param = {};

@@ -222,7 +222,7 @@
 <div>
 	<!-- 搜索框 -->
 	<div class="row">
-		<div class="col-sm-12" style="margin-bottom: 20px;display: none;">
+		<div class="col-sm-12" style="margin-bottom: 20px;">
 			<span style="font-size: 20px;"><spring:message code='请输入要搜索的动画名' /></span>
 			<input class="input-lg enter-search-event" id="animeName" name="animeName" value="<c:out value='${name}' />">
 			<input type="hidden" id="animeNameHidden" value="<c:out value='${nameHidden}' />">
