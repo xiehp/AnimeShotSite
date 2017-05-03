@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import xie.common.date.XTimeUtils;
 import xie.common.utils.XWaitTime;
 
 @Component
@@ -29,9 +30,10 @@ public class UploadPerHourCouter {
 		// 上传前判断是否已经超限
 		nowUploadPerHour++;
 		if (nowUploadPerHour > maxUploadPerHour) {
-			logger.info("达到最大每小时上传限制" + maxUploadPerHour + ", 等待一小时。");
+			logger.info("达到最大每小时上传限制" + maxUploadPerHour + ", 等待到下个整点。");
 			try {
-				Thread.sleep(3600 * 1000);
+				long sleepTime = XTimeUtils.getNeedTimeNextHour() + 5000;
+				Thread.sleep(sleepTime);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

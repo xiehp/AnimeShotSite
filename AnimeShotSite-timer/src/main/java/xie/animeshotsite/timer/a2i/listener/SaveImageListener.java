@@ -36,7 +36,10 @@ public class SaveImageListener extends Video2ImageAdapter {
 	private UploadPerHourCouter uploadPerHourCouter;
 
 	/** 是否已经保存过剧集和动画信息的图片 */
-	private boolean hasSaveEpisodeImageFlg = false;
+	private boolean hasSavedEpisodeImageFlg = false;
+
+	/** 是否已经保存过时长 */
+	private boolean hasSavedDurationFlg = false;
 
 	/** 如果数据库图片已经已经存在，是否强制更新 */
 	private boolean forceUpdate = false;
@@ -149,11 +152,22 @@ public class SaveImageListener extends Video2ImageAdapter {
 			doSaveAndPostImage(setTime, originalTime, image);
 		} catch (Exception e) {
 			logger.error("发生错误，再次进行提交", e);
+
+			// 连续发生两次错误就终止
 			doSaveAndPostImage(setTime, originalTime, image);
 		}
 	}
 
 	private void doSaveAndPostImage(long setTime, long originalTime, BufferedImage image) {
+		if (hasSavedDurationFlg) {
+			hasSavedDurationFlg = true;
+
+			AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
+			if (animeEpisode.getInfoDuration() == null) {
+				animeEpisode.setInfoDuration(getTotalTime());
+				animeEpisodeService.save(animeEpisode);
+			}
+		}
 		// 保存截图到本地硬盘
 		logger.info("isRefreshedAfterChangeTime setTime:" + setTime + ", originalTime" + originalTime);
 
@@ -183,7 +197,8 @@ public class SaveImageListener extends Video2ImageAdapter {
 
 		if (forceUpload || XStringUtils.isBlank(shotInfo.getTietukuUrlId())) {
 			// 增加次数，同时判断当前是否刷新上传次数，以及暂停操作
-			// uploadPerHourCouter.addCount(); 直接根据返回值判断，这里就不用自己判断了
+			// 控制295张图，留5张备用
+			uploadPerHourCouter.addCount();
 
 			// 保存截图到贴图库网站
 			logger.info("贴图库上传, " + "shotInfoId:" + shotInfo.getId());
@@ -200,7 +215,7 @@ public class SaveImageListener extends Video2ImageAdapter {
 		shotInfo = shotInfoService.save(shotInfo);
 
 		// 修改剧集图片信息
-		if (!hasSaveEpisodeImageFlg) {
+		if (!hasSavedEpisodeImageFlg) {
 			if (setTime > getTotalTime() / 2) {
 				AnimeInfo animeinfo = animeInfoService.findOne(animeInfoId);
 				AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
@@ -215,7 +230,7 @@ public class SaveImageListener extends Video2ImageAdapter {
 					animeInfoService.saveTitleUrl(animeinfo, rootPath.getAbsolutePath(), detailPathWithNumber.getPath(), file.getName(), shotInfo.getTietukuUrlId(), shotInfo.getTietukuUrlPrefix());
 				}
 
-				hasSaveEpisodeImageFlg = true;
+				hasSavedEpisodeImageFlg = true;
 			}
 		}
 

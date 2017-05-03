@@ -121,6 +121,9 @@ ALTER TABLE `subtitle_info` ADD COLUMN `OFFSET_TIME` INT(12) NULL COMMENT '当�
 -----------------------------20170502---------------------------------------
 ALTER TABLE `anime_info` ADD COLUMN `SUMMARY_COLLECT_URL` VARCHAR(500) NULL COMMENT '获取简介的url' AFTER `SUMMARY`;
 ALTER TABLE `anime_info` ADD COLUMN `SUMMARY_COLLECT_TITLE_EXP` VARCHAR(100) NULL COMMENT '获取简介标题的正则' AFTER `SUMMARY_COLLECT_URL`;
+ALTER TABLE `anime_episode` ADD COLUMN `INFO_DURATION` INT(11) COMMENT '剧集时长' AFTER `HEIGHT`;
+
+
 
 
 -----------------------------以上为已更新sql---------------------------------------

@@ -94,6 +94,9 @@ public class AnimeEpisode extends BaseEntity {
 	/** 分辨率 高度 */
 	private Integer height;
 
+	/** 时长 */
+	private Long infoDuration;
+
 	/** 图片ID,没有值时使用AnimeInfo的值 */
 	private String titleUrlId;
 	public final static String COLUMN_TITLE_URL_ID = "titleUrlId";
@@ -423,6 +426,14 @@ public class AnimeEpisode extends BaseEntity {
 	 */
 	public void setHeight(Integer height) {
 		this.height = height;
+	}
+
+	public Long getInfoDuration() {
+		return infoDuration;
+	}
+
+	public void setInfoDuration(Long infoDuration) {
+		this.infoDuration = infoDuration;
 	}
 
 	/**
