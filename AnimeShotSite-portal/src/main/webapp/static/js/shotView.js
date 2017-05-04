@@ -11,7 +11,8 @@ function readCookieAndSetWidth(isCreateDom) {
 	var ShotViewImgWidth = $.cookie("ShotViewImgWidth");
 	$.log("读取设置图片尺寸cookie:" + ShotViewImgWidth);
 
-	var ImageAspectRatio = $("#shotImgDiv").attr("data-ImageAspectRatio");
+	var $shotImgDiv = $("#shotImgDiv");
+	var ImageAspectRatio = $shotImgDiv.attr("data-ImageAspectRatio");
 	if (ImageAspectRatio == "") {
 		ImageAspectRatio = orImgHeight / orImgWidth;
 	}
@@ -22,8 +23,8 @@ function readCookieAndSetWidth(isCreateDom) {
 		if (isCreateDom) {
 			var setImgHeight = ShotViewImgWidth * ImageAspectRatio;
 			var setImgDivHeight = setImgHeight + divPaddingLen * 2 + divBorderLen * 2;
-			$("#shotImgDiv").css("width", ShotViewImgDivWidth);
-			$("#shotImgDiv").css("height", setImgDivHeight);
+			$shotImgDiv.css("width", ShotViewImgDivWidth);
+			$shotImgDiv.css("height", setImgDivHeight);
 			$.log("设置图片div尺寸:" + ShotViewImgDivWidth + "," + setImgDivHeight);
 		} else {
 			$("#ShotViewImgWidth").val(ShotViewImgWidth);
@@ -31,12 +32,12 @@ function readCookieAndSetWidth(isCreateDom) {
 	} else {
 		// 无cookie，直接根据当前div宽度设定宽高
 		if (isCreateDom) {
-			var divWidth = $("#shotImgDiv").css("width");
+			var divWidth = $shotImgDiv.css("width");
 			divWidth = parseFloat(divWidth);
 			$.log("当前div宽度:" + divWidth);
 			if (!isNaN(divWidth) && divWidth > 0) {
 				var setHeight = (divWidth - divPaddingLen * 2 - divBorderLen * 2) * ImageAspectRatio + divPaddingLen * 2 + divBorderLen * 2;
-				$("#shotImgDiv").css("height", setHeight);
+				$shotImgDiv.css("height", setHeight);
 				$.log("设置图片div尺寸:" + divWidth + "," + setHeight);
 			}
 		}
@@ -193,35 +194,39 @@ function reCreateImgHotLink(width, height) {
 		shotImgMapWidth = width;
 		shotImgMapHeight = height;
 	}
-	$("#areaPrev").attr("coords", "0,0," + shotImgMapWidth / 3 + "," + shotImgMapHeight);
-	$("#areaNext").attr("coords", shotImgMapWidth / 3 * 2 + ",0," + shotImgMapWidth + "," + shotImgMapHeight);
-	$.log("图片左热点设置：" + $("#areaPrev").attr("coords"));
-	$.log("图片右热点设置：" + $("#areaNext").attr("coords"));
+    var $areaPrev = $("#areaPrev");
+    $areaPrev.attr("coords", "0,0," + shotImgMapWidth / 3 + "," + shotImgMapHeight);
+    var $areaNext = $("#areaNext");
+    $areaNext.attr("coords", shotImgMapWidth / 3 * 2 + ",0," + shotImgMapWidth + "," + shotImgMapHeight);
+	$.log("图片左热点设置：" + $areaPrev.attr("coords"));
+	$.log("图片右热点设置：" + $areaNext.attr("coords"));
 }
 
 function changeShotViewImgWidth(saveToCookieFlag) {
-	var ShotViewImgWidth = $("#ShotViewImgWidth").val();
+    var $ShotViewImgWidth = $("#ShotViewImgWidth");
+    var ShotViewImgWidth = $ShotViewImgWidth.val();
 	if (ShotViewImgWidth != null && isNaN(ShotViewImgWidth)) {
-		$("#ShotViewImgWidth").val("");
+		$ShotViewImgWidth.val("");
 		$.showMessageModal("请输入数字");
 		return;
 	}
 
+    var $shotImgDiv = $("#shotImgDiv");
 	if (ShotViewImgWidth <= 0) {
 		HomeCookie.removeCookie("ShotViewImgWidth");
 		// 设置图片尺寸
 		var width = '';
 		var height = '';
-		$("#shotImgDiv").css("width", width);
-		$("#shotImgDiv").css("height", height);
+		$shotImgDiv.css("width", width);
+		$shotImgDiv.css("height", height);
 		$.log("改变图片div尺寸：" + width + ", " + height);
-		setShotImgDivWidthCookie($("#shotImgDiv").css("width"));
+		setShotImgDivWidthCookie($shotImgDiv.css("width"));
 		// $("#shotImg").css("width", '');
 	} else {
 		if (originalImg != null && originalImg.width > 0 && ShotViewImgWidth > originalImg.width) {
 			ShotViewImgWidth = originalImg.width;
 			if (saveToCookieFlag) {
-				$("#ShotViewImgWidth").val(ShotViewImgWidth);
+				$ShotViewImgWidth.val(ShotViewImgWidth);
 			}
 		}
 		if (saveToCookieFlag) {
@@ -231,8 +236,8 @@ function changeShotViewImgWidth(saveToCookieFlag) {
 		// 设置图片尺寸
 		var divWidth = ShotViewImgWidth * 1 + divPaddingLen * 2 + divBorderLen * 2;
 		var divHeight = '';
-		$("#shotImgDiv").css("width", divWidth);
-		$("#shotImgDiv").css("height", divHeight);
+		$shotImgDiv.css("width", divWidth);
+		$shotImgDiv.css("height", divHeight);
 		// $("#shotImg").css("width", ShotViewImgWidth);
 		$.log("改变图片div尺寸：" + divWidth + ", " + divHeight);
 	}
@@ -259,9 +264,9 @@ function setShotImgDivWidthCookie(value) {
  */
 var startTime = new Date();
 var doCreateShotCheckTime = 1000;
-var taskResutStatus = 0;
-var taskResutMessage = "";
-var taskResutWriteCount = 0;
+var taskResultStatus = 0;
+var taskResultMessage = "";
+var taskResultWriteCount = 0;
 function doCreateShot(shotInfoId, offsetTime, preFlg, doneCallback) {
 	if (confirm("是否继续？")) {
 		var param = {};
@@ -288,35 +293,35 @@ function rewriteResultMessage() {
 		var nowTime = new Date();
 		var nowSecond = parseInt((nowTime.getTime() - startTime.getTime()) / 1000);
 		var span = document.createElement("span")
-		if (taskResutStatus == 1) {
+		if (taskResultStatus == 1) {
 			// 成功
-			span.setAttribute("style", "color:green;font-size:18px;")
-		} else if (taskResutStatus == 2) {
+			span.setAttribute("style", "color:green;font-size:18px;");
+		} else if (taskResultStatus == 2) {
 			// 处理
-			span.setAttribute("style", "color:blue;font-size:18px;")
-		} else if (taskResutStatus == 3) {
+			span.setAttribute("style", "color:blue;font-size:18px;");
+		} else if (taskResultStatus == 3) {
 			// 失败
-			span.setAttribute("style", "color:red;font-size:18px;")
-		} else if (taskResutStatus == 11) {
+			span.setAttribute("style", "color:red;font-size:18px;");
+		} else if (taskResultStatus == 11) {
 			// 等待30-120秒
-			span.setAttribute("style", "color:orange;font-size:18px;")
-		} else if (taskResutStatus == 12) {
+			span.setAttribute("style", "color:orange;font-size:18px;");
+		} else if (taskResultStatus == 12) {
 			// 等待120秒以上
-			span.setAttribute("style", "color:red;font-size:18px;")
+			span.setAttribute("style", "color:red;font-size:18px;");
 		} else {
 			// 等待
-			span.setAttribute("style", "color:black;font-size:18px;")
+			span.setAttribute("style", "color:black;font-size:18px;");
 		}
 		div.empty();
 		div.append(span);
-		taskResutWriteCount++;
+		taskResultWriteCount++;
 		var pointStr = "";
-		for (var i = 0; i <= taskResutWriteCount % 5; i++) {
+		for (var i = 0; i <= taskResultWriteCount % 5; i++) {
 			pointStr = pointStr + ".";
 		}
-		div.find("span").text(taskResutMessage + "  " + nowSecond + "  " + pointStr);
+		div.find("span").text(taskResultMessage + "  " + nowSecond + "  " + pointStr);
 
-		if (taskResutStatus != 1) {
+		if (taskResultStatus != 1) {
 			rewriteResultMessage();
 		}
 	}, 200);
@@ -337,8 +342,8 @@ function checkCreateShot(taskId, animeEpisodeId, timestamp, doneCallback) {
 	$.homePost("/shot/checkCreateShot", param, function(result) {
 		if (result.success) {
 			if (result.taskMessage != null && result.taskMessage != "") {
-				taskResutMessage = result.taskMessage;
-				taskResutStatus = result.taskResutStatus;
+				taskResultMessage = result.taskMessage;
+				taskResultStatus = result.taskResutStatus;
 			}
 
 			if (result.shotInfoId != null) {
