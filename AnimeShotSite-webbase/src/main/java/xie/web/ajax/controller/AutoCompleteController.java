@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -57,8 +59,6 @@ public class AutoCompleteController extends BaseController {
 	}
 
 	/**
-	 * 获取服务器时间
-	 * 
 	 * @return
 	 */
 	@RequestMapping("/getAnimeName")
@@ -88,21 +88,26 @@ public class AutoCompleteController extends BaseController {
 	}
 
 	/**
-	 * 获取服务器时间
-	 * 
 	 * @return
 	 */
 	@RequestMapping("/getEpisodeName")
 	public ResponseEntity<?> getEpisodeName(
 			@RequestParam(value = "name", required = false) String name,
 			Model model, ServletRequest request) {
-
 		name = request.getParameter("term");
+
+		Assert.hasText(name, "名字不能为空");
+
 		Map<String, String> map = new HashMap<String, String>();
-		Map<String, Object> searchParams = new HashMap<String, Object>();
-		if (XStringUtils.isNotBlank(name)) {
-			searchParams.put("LIKE_" + AnimeEpisode.COLUMN_FULL_NAME, name.trim());
+//		Map<String, Object> searchParams = new HashMap<String, Object>();
+		Map<String, Object> searchParams = new IdentityHashMap<>();
+
+		List<String> fullNameValueList = new ArrayList<>();
+		String[] nameArray = name.split(" ");
+		for (String s : nameArray) {
+			fullNameValueList.add(s);
 		}
+		searchParams.put("LIKE_" + AnimeEpisode.COLUMN_FULL_NAME, fullNameValueList);
 		searchParams.put("EQ_" + AnimeEpisode.COLUMN_SHOW_FLG, Constants.FLAG_INT_YES);
 		searchParams.put("EQ_" + AnimeEpisode.COLUMN_DELETE_FLAG, Constants.FLAG_INT_NO);
 		Page<AnimeEpisode> page = animeEpisodeService.searchPageByParams(searchParams, 1, 20, AnimeEpisode.COLUMN_FULL_NAME, AnimeEpisode.class);

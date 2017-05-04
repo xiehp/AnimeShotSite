@@ -5,9 +5,9 @@
  *******************************************************************************/
 package xie.base.repository;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -17,11 +17,12 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.data.jpa.domain.Specification;
 import org.springside.modules.utils.Collections3;
 
 import com.google.common.collect.Lists;
+
+import xie.base.repository.BaseSearchFilter.BaseOperator;
 
 /**
  * 转换检索数据
@@ -50,27 +51,40 @@ public class BaseSpecifications {
 							expression = expression.get(names[i]);
 						}
 
-						// logic operator
-						switch (filter.operator) {
-						case EQ:
-							predicates.add(builder.equal(expression, filter.value));
-							break;
-						case LIKE:
-							predicates.add(builder.like(expression, "%" + filter.value + "%"));
-							break;
-						case GT:
-							predicates.add(builder.greaterThan(expression, (Comparable) filter.value));
-							break;
-						case LT:
-							predicates.add(builder.lessThan(expression, (Comparable) filter.value));
-							break;
-						case GTE:
-							predicates.add(builder.greaterThanOrEqualTo(expression, (Comparable) filter.value));
-							break;
-						case LTE:
-							predicates.add(builder.lessThanOrEqualTo(expression, (Comparable) filter.value));
-							break;
-						case IN:
+						List<Object> listValue = new ArrayList<>();
+						if (filter.value instanceof List) {
+							listValue = (List<Object>) filter.value;
+						} else {
+							listValue.add(filter.value);
+						}
+
+						for (Object value : listValue) {
+							// logic operator
+							switch (filter.operator) {
+							case EQ:
+								predicates.add(builder.equal(expression, value));
+								break;
+							case LIKE:
+								predicates.add(builder.like(expression, "%" + value + "%"));
+								break;
+							case GT:
+								predicates.add(builder.greaterThan(expression, (Comparable) value));
+								break;
+							case LT:
+								predicates.add(builder.lessThan(expression, (Comparable) value));
+								break;
+							case GTE:
+								predicates.add(builder.greaterThanOrEqualTo(expression, (Comparable) value));
+								break;
+							case LTE:
+								predicates.add(builder.lessThanOrEqualTo(expression, (Comparable) value));
+								break;
+							case IN:
+								break;
+							}
+						}
+
+						if (BaseOperator.IN.equals(filter.operator)) {
 							if (filter.value instanceof Collection) {
 								Collection<?> collectoin = (Collection<?>) filter.value;
 								predicates.add(expression.in(collectoin));
@@ -78,7 +92,7 @@ public class BaseSpecifications {
 								Object[] array = (Object[]) filter.value;
 								List<Object> list = Arrays.asList(array);
 								predicates.add(expression.in(list));
-							} else if (filter.value instanceof String){
+							} else if (filter.value instanceof String) {
 								String str = (String) filter.value;
 								Object[] array = str.split(str);
 								List<Object> list = Arrays.asList(array);
@@ -88,6 +102,7 @@ public class BaseSpecifications {
 							}
 							break;
 						}
+
 					}
 
 					if (!predicates.isEmpty()) {
