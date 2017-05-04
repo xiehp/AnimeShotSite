@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,10 +66,17 @@ public class AutoCompleteController extends BaseController {
 			Model model, ServletRequest request) {
 
 		name = request.getParameter("term");
-		Map<String, String> map = new HashMap<String, String>();
+
 		Map<String, Object> searchParams = new HashMap<String, Object>();
 		if (XStringUtils.isNotBlank(name)) {
-			searchParams.put("LIKE_" + AnimeInfo.COLUMN_FULL_NAME, name.trim());
+			List<String> fullNameValueList = new ArrayList<>();
+			for (int i=0; i<name.length(); i++) {
+				String str = name.substring(i, i+1);
+				if (XStringUtils.isNotBlank(str)) {
+					fullNameValueList.add(str);
+				}
+			}
+			searchParams.put("LIKE_" + AnimeInfo.COLUMN_FULL_NAME, fullNameValueList);
 		}
 		searchParams.put("EQ_" + AnimeInfo.COLUMN_SHOW_FLG, Constants.FLAG_INT_YES);
 		searchParams.put("EQ_" + AnimeInfo.COLUMN_DELETE_FLAG, Constants.FLAG_INT_NO);
@@ -98,15 +104,16 @@ public class AutoCompleteController extends BaseController {
 
 		Assert.hasText(name, "名字不能为空");
 
-		Map<String, String> map = new HashMap<String, String>();
-//		Map<String, Object> searchParams = new HashMap<String, Object>();
-		Map<String, Object> searchParams = new IdentityHashMap<>();
+		Map<String, Object> searchParams = new HashMap<String, Object>();
 
 		List<String> fullNameValueList = new ArrayList<>();
-		String[] nameArray = name.split(" ");
-		for (String s : nameArray) {
-			fullNameValueList.add(s);
+		for (int i=0; i<name.length(); i++) {
+			String str = name.substring(i, i+1);
+			if (XStringUtils.isNotBlank(str)) {
+				fullNameValueList.add(str);
+			}
 		}
+
 		searchParams.put("LIKE_" + AnimeEpisode.COLUMN_FULL_NAME, fullNameValueList);
 		searchParams.put("EQ_" + AnimeEpisode.COLUMN_SHOW_FLG, Constants.FLAG_INT_YES);
 		searchParams.put("EQ_" + AnimeEpisode.COLUMN_DELETE_FLAG, Constants.FLAG_INT_NO);
