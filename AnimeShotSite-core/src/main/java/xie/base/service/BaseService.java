@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springside.modules.mapper.BeanMapper;
 
@@ -89,6 +90,20 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 	 * @return 分页数据
 	 */
 	public Page<M> searchPageByParams(Map<String, Object> searchParams, int pageNumber, int defaultPageSize, String sortType, Class<M> c) {
+		return searchPageByParams(searchParams, pageNumber, defaultPageSize, sortType, Direction.DESC, c);
+	}
+
+	/**
+	 * 分页检索，根据检索条件，搜索数据库，返回对应分页数据
+	 * 
+	 * @param searchParams 检索条件, EQ_Param1=value1,GT_Param2=value2的特殊格式
+	 * @param pageNumber 页数从1开始
+	 * @param defaultPageSize 每页显示条数
+	 * @param sortType 排序条件，用于单条件排序
+	 * @param c 返回的数据类型
+	 * @return 分页数据
+	 */
+	public Page<M> searchPageByParams(Map<String, Object> searchParams, int pageNumber, int defaultPageSize, String sortType, Direction direction, Class<M> c) {
 		if (searchParams == null) {
 			searchParams = new HashMap<>();
 		}
@@ -98,14 +113,14 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 		}
 
 		// 创建分页对象
-		PageRequest pageRequest = PageRequestUtil.buildPageRequest(pageNumber, defaultPageSize, sortType);
+		PageRequest pageRequest = PageRequestUtil.buildPageRequest(pageNumber, defaultPageSize, sortType, direction);
 
 		// 检索
 		Page<M> page = searchPageByParams(searchParams, pageRequest, c);
 
 		// 页数不对， 并且有数据，直接定位到最后一页
 		if (pageNumber > page.getTotalPages() && page.getTotalPages() > 0) {
-			return searchPageByParams(searchParams, page.getTotalPages(), defaultPageSize, sortType, c);
+			return searchPageByParams(searchParams, page.getTotalPages(), defaultPageSize, sortType, direction, c);
 		}
 
 		return page;

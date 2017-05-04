@@ -1,5 +1,6 @@
 package xie.web.manage.controller;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,8 @@ import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseManagerController;
 import xie.base.service.BaseService;
+import xie.common.Constants;
+import xie.common.date.DateUtil;
 import xie.common.web.util.ConstantsWeb;
 
 @Controller
@@ -124,5 +127,13 @@ public class AnimeManagerController extends BaseManagerController<AnimeInfo, Str
 		request.setAttribute("animeInfo", newAnimeInfo);
 
 		return getUrlRedirectPath("view/" + newAnimeInfo.getId());
+	}
+
+	@Override
+	public Map<String, Object> updateOneColumn(String id, String columnName, String columnValue) {
+		if ("showFlg".equals(columnName) && Constants.FLAG_STR_YES.equals(columnValue)) {
+			super.updateOneColumn(id, "showDate", DateUtil.convertToString(new Date()));
+		}
+		return super.updateOneColumn(id, columnName, columnValue);
 	}
 }

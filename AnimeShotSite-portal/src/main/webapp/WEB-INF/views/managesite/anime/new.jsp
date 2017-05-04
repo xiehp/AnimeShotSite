@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
@@ -236,6 +237,12 @@
 		<label class="col-sm-2 control-label">showFlg</label>
 		<div class="col-sm-5">
 			<input class="form-control" name="showFlg" value="${animeInfo.showFlg}"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">showDate</label>
+		<div class="col-sm-5">
+			<input class="form-control" name="showDate" value="<fmt:formatDate value='${animeInfo.showDate}' pattern='yyyy-MM-dd HH:mm:ss'/>" />
 		</div>
 	</div>
 	<div class="form-group">

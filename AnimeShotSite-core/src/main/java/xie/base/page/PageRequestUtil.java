@@ -27,22 +27,21 @@ public class PageRequestUtil {
 	 * 创建分页请求.
 	 */
 	public static PageRequest buildPageRequest(int pageNumber, int pagzSize, String sortType) {
-		Sort sort = null;
-		if (SORT_TYPE_AUTO.equals(sortType) || "id".equals(sortType)) {
-			sort = new Sort(Direction.DESC, BaseEntity.COLUMN_CREATE_DATE);
-		} else if (sortType != null) {
-			sort = new Sort(Direction.ASC, sortType);
-		}
-
-		return new PageRequest(pageNumber - 1, pagzSize, sort);
+		return buildPageRequest(pageNumber, pagzSize, sortType, null);
 	}
 
 	public static PageRequest buildPageRequest(int pageNumber, int pagzSize, String sortType, Direction direction) {
 
 		Sort sort = null;
 		if (SORT_TYPE_AUTO.equals(sortType)) {
+			if (direction == null) {
+				direction = Direction.DESC;
+			}
 			sort = new Sort(direction, BaseEntity.COLUMN_CREATE_DATE);
 		} else if (sortType != null) {
+			if (direction == null) {
+				direction = Direction.ASC;
+			}
 			sort = new Sort(direction, sortType);
 		}
 

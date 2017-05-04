@@ -1,5 +1,7 @@
 package xie.animeshotsite.db.entity;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -95,6 +97,9 @@ public class AnimeInfo extends BaseEntity {
 
 	/** 是否显示 */
 	private Integer showFlg;
+
+	/** 显示时间 */
+	private Date showDate;
 
 	private Integer status;
 
@@ -415,6 +420,14 @@ public class AnimeInfo extends BaseEntity {
 	 */
 	public void setShowFlg(Integer showFlg) {
 		this.showFlg = showFlg;
+	}
+
+	public Date getShowDate() {
+		return showDate;
+	}
+
+	public void setShowDate(Date showDate) {
+		this.showDate = showDate;
 	}
 
 	/**

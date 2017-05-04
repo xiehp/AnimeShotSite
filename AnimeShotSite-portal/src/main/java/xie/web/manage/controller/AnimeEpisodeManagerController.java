@@ -238,7 +238,6 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 		return super.updateOneColumn(id, columnName, columnValue);
 	}
 
-
 	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/updateEpisodeTitleAndSummary")
 	@ResponseBody

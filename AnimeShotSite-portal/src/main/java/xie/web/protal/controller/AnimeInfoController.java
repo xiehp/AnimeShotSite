@@ -50,6 +50,7 @@ public class AnimeInfoController extends BaseFunctionController<AnimeInfo, Strin
 			@RequestParam(value = "sortType", defaultValue = "auto") String sortType,
 			@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			Model model, HttpSession session, HttpServletRequest request) {
+		sortType = "showDate";
 
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		// 增加删除过滤
