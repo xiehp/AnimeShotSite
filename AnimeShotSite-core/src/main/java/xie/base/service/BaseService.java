@@ -90,7 +90,7 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 	 * @return 分页数据
 	 */
 	public Page<M> searchPageByParams(Map<String, Object> searchParams, int pageNumber, int defaultPageSize, String sortType, Class<M> c) {
-		return searchPageByParams(searchParams, pageNumber, defaultPageSize, sortType, Direction.DESC, c);
+		return searchPageByParams(searchParams, pageNumber, defaultPageSize, sortType, null, c);
 	}
 
 	/**

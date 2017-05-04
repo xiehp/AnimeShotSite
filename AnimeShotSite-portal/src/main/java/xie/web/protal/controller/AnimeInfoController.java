@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,7 +57,7 @@ public class AnimeInfoController extends BaseFunctionController<AnimeInfo, Strin
 		// 增加删除过滤
 		searchParams.put("EQ_deleteFlag", Constants.FLAG_STR_NO);
 		searchParams.put("EQ_showFlg", Constants.FLAG_STR_YES);
-		Page<AnimeInfo> animeInfoPage = animeInfoService.searchPageByParams(searchParams, pageNumber, 50, sortType, AnimeInfo.class);
+		Page<AnimeInfo> animeInfoPage = animeInfoService.searchPageByParams(searchParams, pageNumber, 50, sortType, Sort.Direction.DESC, AnimeInfo.class);
 
 		model.addAttribute("animeInfoPage", animeInfoPage);
 		// 将搜索条件编码成字符串，用于排序，分页的URL
