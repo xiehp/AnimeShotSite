@@ -19,8 +19,9 @@
 			</activation>
 			<properties>
 				<tomcat.deploy.active.spring.profile>development</tomcat.deploy.active.spring.profile>
-				<tomcat.deploy.server></tomcat.deploy.server>
-				<tomcat.deploy.war.exclude.jar></tomcat.deploy.war.exclude.jar>
+				<tomcat.deploy.server> </tomcat.deploy.server>
+				<tomcat.deploy.url> </tomcat.deploy.url>
+				<tomcat.deploy.war.exclude.jar> </tomcat.deploy.war.exclude.jar>
 			</properties>
 		</profile>
 		<profile>
