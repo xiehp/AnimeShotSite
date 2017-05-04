@@ -15,7 +15,7 @@ public class UploadPerHourCouter {
 
 	private int nowUploadPerHour = 0;
 
-	private XWaitTime uploadPerHourWait = new XWaitTime(3600 * 1000);
+	private XWaitTime uploadPerHourWait = new XWaitTime(XTimeUtils.getNeedTimeNextHour() + 5000);
 
 	/**
 	 * 增加次数，同时判断当前是否刷新上传次数，以及暂停操作
