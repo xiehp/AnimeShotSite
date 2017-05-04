@@ -26,7 +26,7 @@ public class AutoCollectUtils {
 
 	public static void main(String[] args) {
 
-		System.setProperty("spring.profiles.default", "production");
+		System.setProperty("spring.profiles.default", "productRemote");
 
 		AutoCollectUtils autoCollectUtils = SpringUtil.getBean(AutoCollectUtils.class);
 		autoCollectUtils.collectEpisodeSummary("2c9380825b61c4a1015b7a3a74c1000c", "http://baike.baidu.com/item/兽娘动物园/20379001", "第[0-9]+话 ", false);

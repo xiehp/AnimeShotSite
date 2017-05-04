@@ -13,6 +13,33 @@
 
 	<description>根据环境不同产生的不同配置</description>
 
+	<!-- 家里的timer环境 -->
+	<beans profile="productRemote">
+		<util:properties id="tietuku" location="classpath*:/tietuku.properties" />
+		<util:properties id="springProperties" location="classpath*:/application.properties,classpath*:/tietuku.properties" />
+		<context:property-placeholder ignore-resource-not-found="true" properties-ref="springProperties" />
+
+		<!-- 数据源配置,使用应用内的Tomcat JDBC连接池 -->
+		<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+			<!-- Connection Info -->
+			<property name="driverClassName" value="${jdbc.url.production.productRemote}" />
+			<property name="url" value="${jdbc.url}" />
+			<property name="username" value="${jdbc.username}" />
+			<property name="password" value="${jdbc.password}" />
+			<property name="maxActive" value="${jdbc.pool.maxActive}" />
+			<property name="maxIdle" value="${jdbc.pool.maxIdle}" />
+			<property name="minIdle" value="5" />
+			<property name="defaultAutoCommit" value="false" />
+			<!-- 连接Idle10分钟后超时，每1分钟检查一次 -->
+			<property name="timeBetweenEvictionRunsMillis" value="60000" />
+			<property name="minEvictableIdleTimeMillis" value="600000" />
+			<property name="validationInterval" value="30000" />  <!--(long) 避免过度验证，保证验证不超过这个频率——以毫秒为单位。如果一个连接应该被验证，但上次验证未达到指定间隔，将不再次验证。 -->
+			<property name="validationQuery" value="SELECT 1" />
+			<property name="initialSize" value="1" />
+			<property name="testWhileIdle" value="true" />
+		</bean>
+	</beans>
+
 	<!-- production环境 -->
 	<beans profile="production">
 		<util:properties id="tietuku" location="classpath*:/tietuku.properties" />
@@ -22,7 +49,7 @@
 		<!-- 数据源配置,使用应用内的Tomcat JDBC连接池 -->
 		<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
 			<!-- Connection Info -->
-			<property name="driverClassName" value="${jdbc.driver}" />
+			<property name="driverClassName" value="${jdbc.url}" />
 			<property name="url" value="${jdbc.url}" />
 			<property name="username" value="${jdbc.username}" />
 			<property name="password" value="${jdbc.password}" />

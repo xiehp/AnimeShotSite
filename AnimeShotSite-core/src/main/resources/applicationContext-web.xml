@@ -7,7 +7,7 @@
 
 	<import resource="security/applicationContext-shiro.xml" />
 
-	<beans profile="production,test">
+	<beans profile="production,productRemote,test">
 		<!--
 		<import resource="schedule/applicationContext-quartz-cron-local.xml" />
 		-->

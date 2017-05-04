@@ -28,7 +28,7 @@ public class MainTimer {
 
 		// createTimer(AnimeShotTimer.class);
 		System.setProperty("spring.profiles.default", "development");
-		// System.setProperty("spring.profiles.default", "production");
+		// System.setProperty("spring.profiles.default", "productRemote");
 
 		createTimer(ShotTaskTimer.class, 20000, ShotTask.TASK_TYPE_SHOT);
 		createTimer(ShotTaskTimer.class, 5000, ShotTask.TASK_TYPE_SPECIAL_SHOT);
