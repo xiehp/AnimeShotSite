@@ -4,7 +4,6 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <c:set var="ctxManage" value="${ctx}${MANAGE_URL_STR}" />
 
-<
 <style>
 <!--
 .dropdown-menu .menuTitle a, .dropdown-menu .menuTitle a:FOCUS, .dropdown-menu .menuTitle a:HOVER, .dropdown-menu .menuTitle a:ACTIVE {
@@ -20,6 +19,12 @@
 
 .tranLanColorLi {
 	width: 100px;
+}
+
+@media ( max-width : 768px) {
+	.navbar-nav {
+		margin: 5px !important;
+	}
 }
 -->
 </style>
@@ -84,9 +89,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="javascript:void(0);" class="menuTitle">
-											<spring:message code='网站语言' />
-										</a>
+										<a href="javascript:void(0);" class="menuTitle"> language </a>
 										<ul>
 											<li>
 												<a href="javascript:void(0);" onclick="changeLanguage('zh_CN');">简体中文 ${localeLanguage eq 'zh_cn' ? ' ●' : ''}</a>

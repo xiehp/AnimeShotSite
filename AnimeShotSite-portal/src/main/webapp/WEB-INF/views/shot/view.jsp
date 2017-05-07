@@ -70,11 +70,21 @@ body {
 	.ShareLinkButton {
 		text-align: left;
 	}
+	.shotTitleInfo {
+		width: 400px;
+	}
+}
+
+@media ( max-width : 768px) {
+	.noLeftRightPadding {
+		padding-right: 1px !important;
+		padding-left: 1px !important;
+	}
 }
 
 .subtitleTranslatedText {
-	font-size: ${subtitleTranslatedTextFontsize};
-	color: ${subtitleTranslatedTextColor};
+	font-size: <c:out value="${subtitleTranslatedTextFontsize}"></c:out>;
+	color: <c:out value="${subtitleTranslatedTextColor}"></c:out>;
 }
 </style>
 
@@ -127,12 +137,12 @@ body {
 	});
 </script>
 
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noLeftRightPadding">
 	<div style="margin-bottom: 3px;">
 		<h1 style="font-size: 14px; margin: 0px;"><c:out value='${EpisodeFullNameWithTime}' /></h1>
 	</div>
 	<div style="margin-bottom: 3px;">
-		<div style="width: 400px; white-space: nowrap; word-break: keep-all;">
+		<div class="shotTitleInfo" style="white-space: nowrap; word-break: keep-all;">
 			<div class="col-sm-4 col-xs-12">
 				<label><spring:message code='时间戳' />：${shotInfo.timeStamp}</label>
 			</div>
@@ -146,7 +156,7 @@ body {
 
 	<input type="hidden" id="scorllTop" name="scorllTop" value="<c:out value="${scorllTop}" />">
 	<div align="center">
-		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noLeftRightPadding">
 			<!-- 图片 -->
 			<div id="shotImgDiv" class="thumbnail shotImgDivStyle" data-ImageAspectRatio="${ImageAspectRatio}" style="margin-bottom: 10px;<c:if test="${ShotImgDivWidth > 0}">width: ${ShotImgDivWidth}px; height: ${DivPaddingBorderHeight + (ShotImgDivWidth-DivPaddingBorderWidth) * ImageAspectRatio}px;</c:if>">
 				<script>
@@ -254,8 +264,8 @@ body {
 	</a>
 </div>
 
-<div id="链接地址" class="row ShareLinkDiv">
-	<div class="col-sm-12 ShareLinkItem">
+<div id="链接地址" class="row ShareLinkDiv" style="margin-left: 0; margin-right: 0;">
+	<div class="col-sm-12 ShareLinkItem noLeftRightPadding">
 		<div class="col-sm-3 ShareLinkLabel">
 			<label><spring:message code='动漫图片链接' />：</label>
 		</div>
@@ -266,7 +276,7 @@ body {
 			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-target="imageLink" value="<spring:message code='复制' />" />
 		</div>
 	</div>
-	<div class="col-sm-12 ShareLinkItem">
+	<div class="col-sm-12 ShareLinkItem noLeftRightPadding">
 		<div class="col-sm-3 ShareLinkLabel">
 			<label><spring:message code='本页链接' />：</label>
 		</div>
@@ -277,7 +287,7 @@ body {
 			<input type="button" class="btn btn-sm btn-primary ZeroClipboardButton" data-clipboard-target="pageLink" value="<spring:message code='复制' />" />
 		</div>
 	</div>
-	<div class="col-sm-12 ShareLinkItem quickShareDivClass">
+	<div class="col-sm-12 ShareLinkItem noLeftRightPadding quickShareDivClass">
 		<div class="col-sm-3 ShareLinkLabel">
 			<label><spring:message code='分享本页' />：</label>
 		</div>
