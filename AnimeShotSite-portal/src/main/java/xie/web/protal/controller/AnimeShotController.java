@@ -214,9 +214,23 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 			localeLanguage = XRequestUtils.getLocaleLanguageCountry(request);
 		}
 		boolean showAllSubtitleFlag = Constants.FLAG_STR_YES.equals(XCookieUtils.getCookieValue(request, SiteConstants.COOKIE_SHOW_ALL_SUBTITLE_FLAG));
+
+		UserConfig userConfig = SiteUtils.getUserConfig(request);
+		List<String> toTranLanguage = new ArrayList<>();
+		if (!userConfig.isNotTranFlag()) {
+			if (userConfig.getTranLanguage() != null) {
+				// 现在 TODO 每次session清空都会导致翻译设置失效
+				toTranLanguage.add(userConfig.getTranLanguage().getValue());
+			} else {
+				// 翻译设置不存在，则直接将显示语言作为翻译语言
+				toTranLanguage.add(localeLanguage);
+			}
+		}
+
 		List<String> actualShowLanage = subtitleInfoService.findActualShowLanguage(animeEpisode.getId(), localeLanguage, showLanage, showAllSubtitleFlag);
 		Long startTime = shotInfo.getTimeStamp();
 		Long endTime = nextShotInfo == null ? startTime + 5000 : nextShotInfo.getTimeStamp();
+		actualShowLanage.addAll(toTranLanguage);
 		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), actualShowLanage, startTime, endTime);
 		// 如果显示语言在搜索到的字幕中不存在，则删除掉
 		deleteNoSubtitleLanguage(actualShowLanage, subtitleLineList);
@@ -224,17 +238,8 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		model.addAttribute("subtitleLineList", subtitleLineList);
 
 		// 生成每句話的百度翻譯API接口調用的MD5签名
-		UserConfig userConfig = SiteUtils.getUserConfig(request);
 		try {
-			List<String> toTranLanguage = new ArrayList<>();
-			if (!userConfig.isNotTranFlag()) {
-				if (userConfig.getTranLanguage() != null) {
-					// 现在 TODO 每次session清空都会导致翻译设置失效
-					toTranLanguage.add(userConfig.getTranLanguage().getValue());
-				} else {
-					// 翻译设置不存在，则直接将显示语言作为翻译语言
-					toTranLanguage.add(localeLanguage);
-				}
+			if (toTranLanguage.size() > 0) {
 				setTranslateSign(toTranLanguage, actualShowLanage, model, subtitleLineList);
 			}
 		} catch (Exception e) {
@@ -303,7 +308,8 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 	}
 
 	/**
-	 * 
+	 * 设置api接口调用时的签名
+	 *
 	 * @param toTranLanguage 用户设定的语言
 	 * @param actualShowLanage 数据库中实际可以显示的语言
 	 * @param model
