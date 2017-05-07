@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,8 +43,23 @@ public class EntityCache {
 
 	XWaitTime processExpireTime = new XWaitTime(600000);
 
-	public boolean contain(String id) {
-		return cacheMap.containsKey(id);
+	/**
+	 * 判断是否存在缓存
+	 * 
+	 * @param cacheId
+	 * @return
+	 */
+	public boolean contain(String cacheId) {
+		if (get(cacheId) == null) {
+			// 返回null有两种情况
+			// 1.可能是缓存过期
+			// 2.数据本身为null
+			// 3.数据不存在
+			// 因此null的情况，先get后可以清除缓存，此时才能判断是否存在cacheId
+			return cacheMap.containsKey(cacheId);
+		} else {
+			return true;
+		}
 	}
 
 	public int clear() {
@@ -153,9 +169,14 @@ public class EntityCache {
 		}
 
 		return (T) cacheMap.get(cacheId);
-
 	}
 
+	/**
+	 * 多个字符串组合成一个cacheId
+	 * 
+	 * @param cacheIds 多个字符串组合成一个cacheId
+	 * @return
+	 */
 	public <T> T get(String... cacheIds) {
 		String cacheId = "";
 		for (int i = 0; i < cacheIds.length; i++) {
@@ -224,5 +245,19 @@ public class EntityCache {
 		}
 
 		return gifInfo;
+	}
+
+	/**
+	 * 根据传入的cacheId获取缓存，如果缓存不存在，则调用回调函数
+	 * @param cacheId
+	 * @param fun
+	 * @return
+	 */
+	public <RR> RR findByCacheId(String cacheId, Supplier<RR> fun) {
+		RR rr = get(cacheId);
+		if (rr == null) {
+			rr = fun.get();
+		}
+		return rr;
 	}
 }

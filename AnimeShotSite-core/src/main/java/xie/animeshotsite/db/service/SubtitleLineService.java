@@ -177,7 +177,11 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 	 * @return
 	 */
 	public List<SubtitleLine> findByTimeRemoveDuplicate(String animeEpisodeId, List<String> showLanage, Long shotStartTime, Long shotEndTime) {
-		List<SubtitleLine> list = subtitleLineDao.findByTime(animeEpisodeId, shotStartTime, shotEndTime);
+
+		// List<SubtitleLine> list = subtitleLineDao.findByTime(animeEpisodeId, shotStartTime, shotEndTime);
+		List<SubtitleLine> list = entityCache.findByCacheId(animeEpisodeId + "_" + shotStartTime + "_" + shotEndTime, () -> {
+			return subtitleLineDao.findByTime(animeEpisodeId, shotStartTime, shotEndTime);
+		});
 
 		if (shotEndTime <= shotStartTime) {
 			return list;
@@ -382,7 +386,7 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 			String sign = XBaiduTranslateUtils.getBaiduSign(appId, queryText, salt, key);
 			list.add(sign);
 		});
-		
+
 		return list;
 	}
 }
