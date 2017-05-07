@@ -191,9 +191,11 @@ public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 			XStringUtils.removeIfNotEqualIgnoreCase(defaultLanguageList, showLanguage);
 		}
 
+		// 没有可显示的字幕，则将所有字幕显示出来
 		if (defaultLanguageList.size() == 0) {
 			defaultLanguageList = defaultLanguageListTemp;
 		}
+
 		entityCache.put(key, defaultLanguageList, XConst.SECOND_05_HOUR * 1000);
 		List<String> returnList = XListUtils.copy(defaultLanguageList);
 		return returnList;

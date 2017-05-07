@@ -57,7 +57,7 @@ public class AnimeInfoController extends BaseFunctionController<AnimeInfo, Strin
 		// 增加删除过滤
 		searchParams.put("EQ_deleteFlag", Constants.FLAG_STR_NO);
 		searchParams.put("EQ_showFlg", Constants.FLAG_STR_YES);
-		Page<AnimeInfo> animeInfoPage = animeInfoService.searchPageByParams(searchParams, pageNumber, 50, sortType, Sort.Direction.DESC, AnimeInfo.class);
+		Page<AnimeInfo> animeInfoPage = animeInfoService.searchPageByParams(searchParams, pageNumber, 500, sortType, Sort.Direction.DESC, AnimeInfo.class);
 
 		model.addAttribute("animeInfoPage", animeInfoPage);
 		// 将搜索条件编码成字符串，用于排序，分页的URL
