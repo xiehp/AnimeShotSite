@@ -5,7 +5,7 @@ import java.util.Properties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import xie.common.XSpringConstants;
+import xie.common.constant.XSpringConstants;
 
 @Component
 public class XSpringProperties {

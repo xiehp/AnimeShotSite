@@ -1,6 +1,5 @@
 package xie.animeshotsite.utils;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.spring.SpringUtil;
-import xie.common.string.XStringUtils;
 
 @Component
 public class AutoCollectUtils {
@@ -24,7 +22,7 @@ public class AutoCollectUtils {
 	@Autowired
 	private ResourceCollectUtils resourceCollectUtils;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 
 		System.setProperty("spring.profiles.default", "productRemote");
 
@@ -34,7 +32,7 @@ public class AutoCollectUtils {
 		System.exit(0);
 	}
 
-	public void collectEpisodeSummary(String animeInfoId, String url, String titleReplaceReg, boolean forceUpdate) {
+	public void collectEpisodeSummary(String animeInfoId, String url, String titleReplaceReg, boolean forceUpdate) throws Exception {
 		LinkedHashMap<Integer, Map<String, String>> summaryMaps = resourceCollectUtils.collectBaiduEpisodeSummary(url, titleReplaceReg);
 
 		List<AnimeEpisode> list;

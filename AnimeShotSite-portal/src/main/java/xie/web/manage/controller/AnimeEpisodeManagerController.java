@@ -245,7 +245,7 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 			@RequestParam(required = false) String animeInfoId,
 			@RequestParam(required = false) String episodeInfoId,
 			@RequestParam(required = false, defaultValue = "false") Boolean forceUpdate,
-			HttpServletRequest request) {
+			HttpServletRequest request) throws Exception {
 
 		Map<String, Object> map;
 

@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import xie.animeshotsite.constants.ShotCoreConstants;
-import xie.common.XSpringConstants;
+import xie.common.constant.XSpringConstants;
 import xie.common.io.XFileWriter;
 
 @Component

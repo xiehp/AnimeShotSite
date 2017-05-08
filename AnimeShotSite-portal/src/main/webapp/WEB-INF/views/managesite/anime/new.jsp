@@ -162,7 +162,7 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="col-sm-2 control-label">获取简介标题的正则</label>
+		<label class="col-sm-2 control-label">获取简介标题的正则(.*\\s+(.*))</label>
 		<div class="col-sm-5">
 			<input class="form-control" name="summaryCollectTitleExp" value="<c:out value="${animeInfo.summaryCollectTitleExp}"></c:out>"/>
 		</div>
@@ -240,7 +240,7 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="col-sm-2 control-label">showDate</label>
+		<label class="col-sm-2 control-label">showDate(新增时格式yyyy/MM/dd HH:mm:ss)</label>
 		<div class="col-sm-5">
 			<input class="form-control" name="showDate" value="<fmt:formatDate value='${animeInfo.showDate}' pattern='yyyy-MM-dd HH:mm:ss'/>" />
 		</div>

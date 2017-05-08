@@ -1,6 +1,5 @@
 package xie.animeshotsite.utils;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -38,8 +37,9 @@ public class ResourceCollectUtils {
 	 * @param url
 	 * @param titleReplaceReg
 	 * @return
+	 * @throws Exception 
 	 */
-	public LinkedHashMap<Integer, Map<String, String>> collectBaiduEpisodeSummary(String url, String titleReplaceReg) {
+	public LinkedHashMap<Integer, Map<String, String>> collectBaiduEpisodeSummary(String url, String titleReplaceReg) throws Exception {
 		LinkedHashMap<Integer, Map<String, String>> collectedList = new LinkedHashMap<>();
 		if (titleReplaceReg == null) {
 			titleReplaceReg = ".*\\s+(.*)";
@@ -95,12 +95,13 @@ public class ResourceCollectUtils {
 
 		} catch (Exception e) {
 			Logger.error("collectBaiduEpisodeSummary出错", e);
+			throw e;
 		}
 
 		return collectedList;
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 
 		// URL url = new URL("http://www.acgimage.com");
 		// Document document = Jsoup.parse(url, 30000);
@@ -109,7 +110,7 @@ public class ResourceCollectUtils {
 		ResourceCollectUtils resourceCollectUtils = XTestUtils.getBean(ResourceCollectUtils.class, XHttpClientUtils.class, XPoolingHttpClientConnectionManager.class);
 		// resourceCollectUtils.collectBaiduEpisodeSummary("https://baike.baidu.com/item/NEW%20GAME%21/18751606#分集剧情", null);
 		// resourceCollectUtils.collectBaiduEpisodeSummary("http://baike.baidu.com/item/MACROSS%20DELTA?fromtitle=%E8%B6%85%E6%97%B6%E7%A9%BA%E8%A6%81%E5%A1%9EDelta&type=syn", "(MISSION .* )|(Mission .* )");
-		resourceCollectUtils.collectBaiduEpisodeSummary("http://baike.baidu.com/item/%E5%A4%8F%E7%9B%AE%E5%8F%8B%E4%BA%BA%E5%B8%90%E9%99%86#reference-[2]-21004121-wrap", null);
+		resourceCollectUtils.collectBaiduEpisodeSummary("http://baike.baidu.com/item/%E5%A2%83%E7%95%8C%E4%B9%8B%E8%BD%AE%E5%9B%9E/16040880", ".*\\s+(.*)");
 	}
 
 }

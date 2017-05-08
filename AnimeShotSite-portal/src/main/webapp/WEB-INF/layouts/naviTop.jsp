@@ -39,7 +39,7 @@
 
 		<div>
 			<ul class="nav navbar-nav">
-				<li class="active">
+				<li class="activeXXX">
 					<a href="${ctx}/">
 						<spring:message code='首页' />
 					</a>
