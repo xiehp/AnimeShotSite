@@ -179,7 +179,7 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 	public List<SubtitleLine> findByTimeRemoveDuplicate(String animeEpisodeId, List<String> showLanage, Long shotStartTime, Long shotEndTime) {
 
 		// List<SubtitleLine> list = subtitleLineDao.findByTime(animeEpisodeId, shotStartTime, shotEndTime);
-		List<SubtitleLine> list = entityCache.findByCacheId(animeEpisodeId + "_" + shotStartTime + "_" + shotEndTime, () -> {
+		List<SubtitleLine> list = entityCache.get(animeEpisodeId + "_" + shotStartTime + "_" + shotEndTime, () -> {
 			return subtitleLineDao.findByTime(animeEpisodeId, shotStartTime, shotEndTime);
 		});
 

@@ -41,6 +41,7 @@ public class EntityCache {
 	private Map<String, Object> cacheMap = new HashMap<String, Object>();
 	private Map<String, XWaitTime> timeoutMap = new LinkedHashMap<String, XWaitTime>();
 
+	/** 每过一段时间清理缓存的过期时间 */
 	XWaitTime processExpireTime = new XWaitTime(600000);
 
 	/**
@@ -157,6 +158,32 @@ public class EntityCache {
 		}
 	}
 
+	/**
+	 * 根据传入的cacheId获取缓存，如果缓存不存在，则调用回调函数
+	 * @param cacheId
+	 * @param fun
+	 * @return
+	 */
+	public <RR> RR get(String cacheId, Supplier<RR> fun) {
+		return get(cacheId, fun, 60000);
+	}
+
+	/**
+	 * 根据传入的cacheId获取缓存，如果缓存不存在，则调用回调函数
+	 * @param cacheId
+	 * @param fun
+	 * @return
+	 */
+	public <RR> RR get(String cacheId, Supplier<RR> fun, long timeout) {
+		if (contain(cacheId)) {
+			return get(cacheId);
+		} else {
+			RR rr = fun.get();
+			put(cacheId, rr, timeout);
+			return rr;
+		}
+	}
+
 	public <T> T get(String cacheId) {
 		XWaitTime xWaitTime = timeoutMap.get(cacheId);
 		if (xWaitTime == null) {
@@ -245,19 +272,5 @@ public class EntityCache {
 		}
 
 		return gifInfo;
-	}
-
-	/**
-	 * 根据传入的cacheId获取缓存，如果缓存不存在，则调用回调函数
-	 * @param cacheId
-	 * @param fun
-	 * @return
-	 */
-	public <RR> RR findByCacheId(String cacheId, Supplier<RR> fun) {
-		RR rr = get(cacheId);
-		if (rr == null) {
-			rr = fun.get();
-		}
-		return rr;
 	}
 }

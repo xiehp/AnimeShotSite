@@ -8,29 +8,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
+import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.repository.ShotInfoDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
+import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotInfoService;
 import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.db.service.SubtitleLineService;
 import xie.base.controller.BaseController;
 import xie.common.Constants;
 import xie.common.constant.XConst;
-import xie.common.utils.XWaitTime;
 
 @Controller
 public class IndexController extends BaseController {
 
 	@Autowired
 	AnimeInfoDao animeInfoDao;
+	@Autowired
+	AnimeInfoService animeInfoService;
 	@Autowired
 	AnimeEpisodeDao animeEpisodeDao;
 	@Autowired
@@ -46,103 +51,61 @@ public class IndexController extends BaseController {
 	@Autowired
 	EntityCache entityCache;
 
-	private static Map<String, Object> cacheData = new HashMap<>();
-	private static XWaitTime waitTime = new XWaitTime(60000);
-
 	@RequestMapping(value = "/index")
 	public String index(HttpSession session, HttpServletRequest request) {
-		// if (waitTime.isTimeout()) {
-		// waitTime.setTimeout(600000);
-		// waitTime.resetNowtime();
-		//
-		// // 获得最新剧集列表
-		// List<AnimeEpisode> animeEpisodeList = animeEpisodeService.getNewestAnimeEpisodeList(20);
-		// cacheData.put("animeEpisodeList", animeEpisodeList);
-		//
-		// // 获得剧集总数
-		// cacheData.put("animeEpisodeCount", animeEpisodeDao.count());
-		//
-		// // 获得最新截图
-		// List<ShotInfo> newestShotList = shotInfoService.getNewestShotList(20);
-		// cacheData.put("newestShotList", newestShotList);
-		//
-		// // 获得截图总数
-		// cacheData.put("shotCount", shotInfoDao.count());
-		//
-		// // 获得站长推荐
-		// List<ShotInfo> masterRecommandShotList = shotInfoService.getMasterRecommandShotList(7, 20);
-		// cacheData.put("masterRecommandShotList", masterRecommandShotList);
-		//
-		// // 获得公众推荐
-		// List<ShotInfo> publicLikeShotList = shotInfoService.getPublicLikeShotList(20);
-		// cacheData.put("publicLikeShotList", publicLikeShotList);
-		// }
-		//
-		// request.setAttribute("animeEpisodeList", cacheData.get("animeEpisodeList"));
-		// request.setAttribute("animeEpisodeCount", cacheData.get("animeEpisodeCount"));
-		// request.setAttribute("newestShotList", cacheData.get("newestShotList"));
-		// request.setAttribute("shotCount", cacheData.get("shotCount"));
-		// request.setAttribute("masterRecommandShotList", cacheData.get("masterRecommandShotList"));
-		// request.setAttribute("publicLikeShotList", cacheData.get("publicLikeShotList"));
-
 		// 获得最新剧集列表
 		{
-			List<AnimeEpisode> animeEpisodeList = entityCache.get("animeEpisodeList" + "Index");
-			if (animeEpisodeList == null) {
-				animeEpisodeList = animeEpisodeService.getNewestAnimeEpisodeList(42);
-				entityCache.put("animeEpisodeList" + "Index", animeEpisodeList, XConst.SECOND_05_HOUR * 1000);
-			}
+			List<AnimeEpisode> animeEpisodeList = entityCache.get("animeEpisodeList" + "Index", () -> {
+				return animeEpisodeService.getNewestAnimeEpisodeList(42);
+			}, XConst.SECOND_01_HOUR * 1000);
+
 			request.setAttribute("animeEpisodeList", animeEpisodeList);
 		}
 
 		// 获得剧集总数
 		{
-			Long animeEpisodeCount = entityCache.get("animeEpisodeCount" + "Index");
-			if (animeEpisodeCount == null) {
+			Long animeEpisodeCount = entityCache.get("animeEpisodeCount" + "Index", () -> {
 				// animeEpisodeCount = animeEpisodeDao.count();
-				animeEpisodeCount = animeEpisodeDao.countByShowFlgAndDeleteFlag(Constants.FLAG_INT_YES, Constants.FLAG_INT_NO);
+				return animeEpisodeDao.countByShowFlgAndDeleteFlag(Constants.FLAG_INT_YES, Constants.FLAG_INT_NO);
+			}, XConst.SECOND_01_HOUR * 1000);
 
-				entityCache.put("animeEpisodeCount" + "Index", animeEpisodeCount, XConst.SECOND_05_HOUR * 1000);
-			}
 			request.setAttribute("animeEpisodeCount", animeEpisodeCount);
 		}
 
 		// 获得最新截图
 		{
-			List<ShotInfo> newestShotList = entityCache.get("newestShotList" + "Index");
-			if (newestShotList == null) {
-				newestShotList = shotInfoService.getNewestShotList(6);
-				entityCache.put("newestShotList" + "Index", newestShotList, XConst.SECOND_05_MIN * 1000);
-			}
+			List<ShotInfo> newestShotList = entityCache.get("newestShotList" + "Index", () -> {
+				return shotInfoService.getNewestShotList(6);
+			}, XConst.SECOND_05_MIN * 1000 + XConst.SECOND_01_MIN * 1000);
+
 			request.setAttribute("newestShotList", newestShotList);
 		}
 
 		// 获得截图总数
 		{
-			Long shotCount = entityCache.get("shotCount" + "Index");
-			if (shotCount == null) {
-				shotCount = shotInfoDao.count();
-				entityCache.put("shotCount" + "Index", shotCount, XConst.SECOND_01_HOUR * 1000);
-			}
+			Long shotCount = entityCache.get("shotCount" + "Index", () -> {
+				return shotInfoDao.count();
+			}, XConst.SECOND_05_MIN * 1000 + XConst.SECOND_01_MIN * 1000);
+
 			request.setAttribute("shotCount", shotCount);
 		}
 
 		// 获得站长推荐
 		{
-			List<ShotInfo> masterRecommandShotList = entityCache.get("masterRecommandShotList" + "Index");
-			if (masterRecommandShotList == null) {
+			List<ShotInfo> masterRecommandShotList = entityCache.get("masterRecommandShotList" + "Index", () -> {
 				// 一周之内的
-				masterRecommandShotList = shotInfoService.getMasterRecommandShotList(1, 7, 42);
+				List<ShotInfo> list = shotInfoService.getMasterRecommandShotList(1, 7, 42);
 				// 一年之内的
-				if (masterRecommandShotList.size() == 0) {
-					masterRecommandShotList = shotInfoService.getMasterRecommandShotList(1, 365, 42);
+				if (list.size() == 0) {
+					list = shotInfoService.getMasterRecommandShotList(1, 365, 42);
 				}
 				// 十年之内的
-				if (masterRecommandShotList.size() == 0) {
-					masterRecommandShotList = shotInfoService.getMasterRecommandShotList(1, 3650, 42);
+				if (list.size() == 0) {
+					list = shotInfoService.getMasterRecommandShotList(1, 3650, 42);
 				}
-				entityCache.put("masterRecommandShotList" + "Index", masterRecommandShotList, XConst.SECOND_05_MIN * 1000);
-			}
+				return list;
+			}, XConst.SECOND_05_MIN * 1000);
+
 			request.setAttribute("masterRecommandShotList", masterRecommandShotList);
 		}
 
@@ -154,6 +117,19 @@ public class IndexController extends BaseController {
 			// entityCache.put("publicLikeShotList" + "Index", publicLikeShotList, XConst.SECOND_20_MIN * 1000);
 			// }
 			// request.setAttribute("publicLikeShotList", publicLikeShotList);
+		}
+
+		{
+			Page<AnimeInfo> animeInfoPage = entityCache.get("Index_AnimeInfoList", () -> {
+				Map<String, Object> searchParams = new HashMap<>();
+				// 增加删除过滤
+				searchParams.put("EQ_deleteFlag", Constants.FLAG_STR_NO);
+				searchParams.put("EQ_showFlg", Constants.FLAG_STR_YES);
+				Page<AnimeInfo> page = animeInfoService.searchPageByParams(searchParams, 1, 500, "showDate", Sort.Direction.DESC, AnimeInfo.class);
+				return page;
+			}, XConst.SECOND_10_MIN * 1000 - XConst.SECOND_01_MIN * 1000);
+
+			request.setAttribute("animeInfoPage", animeInfoPage);
 		}
 
 		return "front";

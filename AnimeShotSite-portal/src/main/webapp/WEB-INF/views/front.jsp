@@ -57,8 +57,10 @@
 								<c:out value="${shot.animeInfo.fullName}" />
 								<c:out value='${shot.animeInfo.secondName}' />
 							</div>
-							<c:out value="${shot.animeEpisode.divisionName}" />
-							${shot.formatedTimeChina}
+							<div class="wordKeepLine">
+								<c:out value="${shot.animeEpisode.divisionName}" />
+								${shot.formatedTimeChina}
+							</div>
 						</a>
 					</div>
 				</c:forEach>
@@ -79,8 +81,10 @@
 									<c:out value="${shot.animeInfo.fullName}" />
 									<c:out value='${shot.animeInfo.secondName}' />
 								</div>
-								<c:out value="${shot.animeEpisode.divisionName}" />
-								${shot.formatedTimeChina}
+								<div class="wordKeepLine">
+									<c:out value="${shot.animeEpisode.divisionName}" />
+									${shot.formatedTimeChina}
+								</div>
 							</a>
 						</div>
 					</c:forEach>
@@ -101,8 +105,29 @@
 								<c:out value="${shot.animeInfo.fullName}" />
 								<c:out value='${shot.animeInfo.secondName}' />
 							</div>
-							<c:out value="${shot.animeEpisode.divisionName}" />
-							${shot.formatedTimeChina}
+							<div class="wordKeepLine">
+								<c:out value="${shot.animeEpisode.divisionName}" />
+								${shot.formatedTimeChina}
+							</div>
+						</a>
+					</div>
+				</c:forEach>
+			</div>
+		</div>
+
+		<div id="最新截图展示">
+			<div class="blockTitle">
+				<span><spring:message code='动画列表一览' /></span>
+			</div>
+			<div class="row">
+				<c:forEach items="${ animeInfoPage.content }" var="anime">
+					<div class="col-lg-3 col-sm-4 col-xs-6 thumbnail">
+						<a href="${ctx}/episode/list/${anime.id}" title="<c:out value='${anime.fullName}' /> <c:out value='${anime.secondName}' />">
+							<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${anime.titleUrl.urlS}" class="img-responsive imagelazy">
+							<div class="wordKeepLine" style="margin-top: 5px;">
+								<c:out value='${anime.fullName}' />
+								<c:out value='${anime.secondName}' />
+							</div>
 						</a>
 					</div>
 				</c:forEach>
@@ -110,7 +135,7 @@
 		</div>
 
 		<div align="left">
-			<h1 style="font-size: 16px;"><spring:message code='动画截图网' /><spring:message code='本站说明' /></h1>
+			<h1 style="font-size: 16px;"><spring:message code='动画截图网' /> <spring:message code='本站说明' /></h1>
 			<p style="font-size: 14px;">
 				<spring:message code='本站说明具体内容' />
 			</p>
