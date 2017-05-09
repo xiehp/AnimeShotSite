@@ -1,10 +1,20 @@
 (function() {
 	// 图片懒加载
 	var imageLazyImg = $("img.imagelazy");
-	imageLazyImg.show();
 	imageLazyImg.lazyload({
 		// placeholder : global.ctx + "/static/img/imageLoading_mini.jpg",
 		effect : "fadeIn"
+	});
+	imageLazyImg.show();
+
+	var selectorStrDiv = "div.thumbnail";
+	var selectorStrImg = "img.imagelazy";
+
+	// resizeImg(imageLazyImg);
+	// resizeImgBySelector(selectorStrDiv, selectorStrImg);
+	$(window).resize(function() {
+		// resizeImg(imageLazyImg);
+		// resizeImgBySelector(selectorStrDiv, selectorStrImg);
 	});
 
 	function subWidth(width, subWidth) {
@@ -15,45 +25,78 @@
 		return width - parseFloat(subWidth);
 	}
 
-	function resizeImg(imageLazyImg) {
-		if (imageLazyImg != null && imageLazyImg.length > 0) {
-			divParent = imageLazyImg.parents("div.thumbnail");
-			if (divParent != null & divParent.length > 0) {
-				var divWidth = divParent.css("width");
-				if (divWidth != null) {
-					divWidth = parseFloat(divWidth);
-					if (divWidth > 0) {
-						// var marginleft = divParent.css("margin-left");
-						// var marginright = divParent.css("margin-right");
-						var borderwidth = divParent.css("border-width");
-						var paddingleft = divParent.css("padding-left");
-						var paddingright = divParent.css("padding-right");
+	function resizeImgBySelector(selectorStrDiv, selectorStrImg) {
+		$(selectorStrDiv).each(function() {
+			var divParent = $(this);
+			var divWidth = divParent.css("width");
+			if (divWidth != null) {
+				divWidth = parseFloat(divWidth);
+				if (divWidth > 0) {
+					// var marginleft = divParent.css("margin-left");
+					// var marginright = divParent.css("margin-right");
+					var borderwidth = divParent.css("border-width");
+					var paddingleft = divParent.css("padding-left");
+					var paddingright = divParent.css("padding-right");
 
-						// divWidth = subWidth(divWidth, marginleft);
-						// divWidth = subWidth(divWidth, marginright);
-						divWidth = subWidth(divWidth, borderwidth);
-						divWidth = subWidth(divWidth, paddingleft);
-						divWidth = subWidth(divWidth, paddingright);
-						var maxHeight = divWidth * 9 / 16;
+					// divWidth = subWidth(divWidth, marginleft);
+					// divWidth = subWidth(divWidth, marginright);
+					divWidth = subWidth(divWidth, borderwidth);
+					divWidth = subWidth(divWidth, paddingleft);
+					divWidth = subWidth(divWidth, paddingright);
+					var maxHeight = divWidth * 9 / 16;
 
-						// if (divWidth >= 300) {
-						// // 300为缩略图宽度
-						// divWidth = 300;
-						// maxHeight = 168;
-						// }
+					// if (divWidth >= 300) {
+					// // 300为缩略图宽度
+					// divWidth = 300;
+					// maxHeight = 168;
+					// }
 
-						// imageLazyImg.css("max-height", maxHeight);
-						imageLazyImg.css("height", maxHeight);
-					}
+					// imageLazyImg.css("max-height", maxHeight);
+					divParent.find(selectorStrImg).css("height", maxHeight);
 				}
 			}
-		}
+		});
+
 	}
 
-	resizeImg(imageLazyImg);
-	$(window).resize(function() {
-		resizeImg(imageLazyImg);
-	});
+	function resizeImg(imageLazyImg) {
+		if (imageLazyImg != null && imageLazyImg.length > 0) {
+			$divParentList = imageLazyImg.parents("div.thumbnail");
+			$divParentList.each(function() {
+				if ($divParentList != null & $divParentList.length > 0) {
+					var divParent = $(this);
+					var divWidth = divParent.css("width");
+					if (divWidth != null) {
+						divWidth = parseFloat(divWidth);
+						if (divWidth > 0) {
+							// var marginleft = divParent.css("margin-left");
+							// var marginright = divParent.css("margin-right");
+							var borderwidth = divParent.css("border-width");
+							var paddingleft = divParent.css("padding-left");
+							var paddingright = divParent.css("padding-right");
+
+							// divWidth = subWidth(divWidth, marginleft);
+							// divWidth = subWidth(divWidth, marginright);
+							divWidth = subWidth(divWidth, borderwidth);
+							divWidth = subWidth(divWidth, paddingleft);
+							divWidth = subWidth(divWidth, paddingright);
+							var maxHeight = divWidth * 9 / 16;
+
+							// if (divWidth >= 300) {
+							// // 300为缩略图宽度
+							// divWidth = 300;
+							// maxHeight = 168;
+							// }
+
+							// imageLazyImg.css("max-height", maxHeight);
+							imageLazyImg.css("height", maxHeight);
+						}
+					}
+				}
+			});
+
+		}
+	}
 })();
 
 // 表格内容滚动
