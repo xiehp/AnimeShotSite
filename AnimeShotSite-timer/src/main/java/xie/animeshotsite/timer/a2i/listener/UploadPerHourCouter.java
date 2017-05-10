@@ -1,5 +1,7 @@
 package xie.animeshotsite.timer.a2i.listener;
 
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -23,12 +25,15 @@ public class UploadPerHourCouter {
 	public void addCount() {
 		// 判断当前是否刷新上传次数
 		if (uploadPerHourWait.isTimeout()) {
+			logger.info("时间到，刷新上传次数，当前时间:{}", new Date());
 			nowUploadPerHour = 0;
 			uploadPerHourWait.resetNowtime();
+			uploadPerHourWait.setTimeout(XTimeUtils.getNeedTimeNextHour() + 5000);
 		}
 
 		// 上传前判断是否已经超限
 		nowUploadPerHour++;
+		logger.info("当前次数:{}，当前时间:{}", nowUploadPerHour, new Date());
 		if (nowUploadPerHour > maxUploadPerHour) {
 			logger.info("达到最大每小时上传限制" + maxUploadPerHour + ", 等待到下个整点。");
 			try {
@@ -39,6 +44,7 @@ public class UploadPerHourCouter {
 			}
 			nowUploadPerHour = 1;
 			uploadPerHourWait.resetNowtime();
+			uploadPerHourWait.setTimeout(XTimeUtils.getNeedTimeNextHour() + 5000);
 		}
 	}
 }
