@@ -66,8 +66,8 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 
 		// 检查访问地址是否正确
 		if (XStringUtils.isNotBlank(shotSiteSetup.getAnimesiteServerHost())) {
-			String hostName = XSSHttpUtil.getRemoteServerName(request);
-			String remoteIp = XSSHttpUtil.getIpAddr(request);
+			String hostName = XSSHttpUtil.getForwardedServerName(request);
+			String remoteIp = XSSHttpUtil.getForwardedRemoteIpAddr(request);
 
 			if ("127.0.0.1".equals(hostName) || "localhost".equals(hostName)) {
 				// 来自本地，则不做跳转
@@ -229,12 +229,12 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 				request.setAttribute("requestURL", request.getRequestURL());
 
 				// 生成远程访问本地的http或https地址
-				String httpScheme = XSSHttpUtil.getRemoteProto(request);
-				String portStr = XSSHttpUtil.getRemotePort(request);
+				String httpScheme = XSSHttpUtil.getForwardedRemoteProto(request);
+				String portStr = XSSHttpUtil.getForwardedServerPort(request);
 				String serverName = shotSiteSetup.getAnimesiteServerHost();
 				if (XStringUtils.isBlank(serverName)) {
 					// 获取访问host和port，主要用于本地调试
-					serverName = XSSHttpUtil.getRemoteServerName(request);
+					serverName = XSSHttpUtil.getForwardedServerName(request);
 
 					if (XStringUtils.isNotBlank(portStr)) {
 						if ("http".equals(httpScheme) && "80".equals(portStr)) {
@@ -250,7 +250,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 					portStr = "";
 				}
 
-				String siteBaseUrl = XSSHttpUtil.getRemoteProto(request) + "://" + serverName + portStr + request.getContextPath();
+				String siteBaseUrl = XSSHttpUtil.getForwardedRemoteProto(request) + "://" + serverName + portStr + request.getContextPath();
 				request.setAttribute("httpScheme", httpScheme);
 				request.setAttribute("siteBaseUrl", siteBaseUrl);
 				request.setAttribute("thisPageUrl", siteBaseUrl + request.getRequestURI());
@@ -269,7 +269,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 	 * 不希望进行网页统计的IP地址
 	 */
 	private boolean isExcludeRecordIp(final HttpServletRequest request) {
-		String ip = XSSHttpUtil.getIpAddrFirst(request);
+		String ip = XSSHttpUtil.getFirstForwardedRemoteIpAddr(request);
 		if (ip == null) {
 			logger.warn("无法识别IP地址。{}{}", "当前线程：", Thread.currentThread().getName());
 			return true;

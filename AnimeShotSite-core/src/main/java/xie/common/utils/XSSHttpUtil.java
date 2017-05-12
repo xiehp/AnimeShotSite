@@ -355,7 +355,7 @@ public class XSSHttpUtil {
 	 * @param request
 	 * @return
 	 */
-	public static String getIpAddr(final HttpServletRequest request) {
+	public static String getForwardedRemoteIpAddr(final HttpServletRequest request) {
 		if (request == null) {
 			return "unknown";
 		}
@@ -395,12 +395,12 @@ public class XSSHttpUtil {
 	 * @param request
 	 * @return
 	 */
-	public static String[] getIpAddrArray(final HttpServletRequest request) {
+	public static String[] getForwardedRemoteIpAddrArray(final HttpServletRequest request) {
 		if (request == null) {
 			return new String[] { "unknown" };
 		}
 
-		String ipAddr = getIpAddr(request);
+		String ipAddr = getForwardedRemoteIpAddr(request);
 		if (ipAddr == null) {
 			ipAddr = "unknown";
 		}
@@ -422,12 +422,12 @@ public class XSSHttpUtil {
 	 * @param request
 	 * @return
 	 */
-	public static String getIpAddrFirst(final HttpServletRequest request) {
-		String[] ips = getIpAddrArray(request);
+	public static String getFirstForwardedRemoteIpAddr(final HttpServletRequest request) {
+		String[] ips = getForwardedRemoteIpAddrArray(request);
 		return ips[0];
 	}
 
-	public static String getRemoteServerName(final HttpServletRequest request) {
+	public static String getForwardedServerName(final HttpServletRequest request) {
 		String hostName = request.getHeader("X-Forwarded-Host");
 		if (XStringUtils.isBlank(hostName)) {
 			hostName = request.getServerName();
@@ -436,7 +436,7 @@ public class XSSHttpUtil {
 		return hostName;
 	}
 
-	public static String getRemotePort(final HttpServletRequest request) {
+	public static String getForwardedServerPort(final HttpServletRequest request) {
 		String port = request.getHeader("X-Forwarded-Port");
 		if (XStringUtils.isBlank(port)) {
 			port = String.valueOf(request.getServerPort());
@@ -445,7 +445,7 @@ public class XSSHttpUtil {
 		return port;
 	}
 
-	public static String getRemoteProto(final HttpServletRequest request) {
+	public static String getForwardedRemoteProto(final HttpServletRequest request) {
 		String proto = request.getHeader("X-Forwarded-Proto");
 		if (XStringUtils.isBlank(proto)) {
 			proto = String.valueOf(request.getScheme());

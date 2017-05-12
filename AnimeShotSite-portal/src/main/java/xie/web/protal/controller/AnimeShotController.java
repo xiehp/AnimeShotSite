@@ -590,7 +590,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		// return getFailCode("指定任务已存在，请稍后刷新页面后查看");
 		// }
 
-		ShotTask shotTask = shotTaskService.addUserSelfRunSpecifyEpisideTimeTask(animeEpidodeId, new Date(), false, String.valueOf(toGetTimestamp), XSSHttpUtil.getIpAddr(request));
+		ShotTask shotTask = shotTaskService.addUserSelfRunSpecifyEpisideTimeTask(animeEpidodeId, new Date(), false, String.valueOf(toGetTimestamp), XSSHttpUtil.getForwardedRemoteIpAddr(request));
 
 		Map<String, Object> map = null;
 		map = getSuccessCode("正在截图中，请耐心等候，此过程大概需要1分钟");

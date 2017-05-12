@@ -162,7 +162,7 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="col-sm-2 control-label">获取简介标题的正则(.*\\s+(.*))</label>
+		<label class="col-sm-2 control-label">获取简介标题的正则: .*?\s+(.*)</label>
 		<div class="col-sm-5">
 			<input class="form-control" name="summaryCollectTitleExp" value="<c:out value="${animeInfo.summaryCollectTitleExp}"></c:out>"/>
 		</div>

@@ -189,7 +189,7 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 				map = getFailCode("type为2时，specifyTimes不能为空");
 				return getUrlRedirectPath("view/" + id);
 			}
-			shotTaskService.addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes, XSSHttpUtil.getIpAddr(request), SysConstants.ROLE_ADMIN);
+			shotTaskService.addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes, XSSHttpUtil.getForwardedRemoteIpAddr(request), SysConstants.ROLE_ADMIN);
 		}
 
 		map = getSuccessCode();
@@ -223,7 +223,7 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 				map = getFailCode("type为2时，specifyTimes不能为空");
 				return map;
 			}
-			shotTaskService.addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes, XSSHttpUtil.getIpAddr(request), SysConstants.ROLE_ADMIN);
+			shotTaskService.addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes, XSSHttpUtil.getForwardedRemoteIpAddr(request), SysConstants.ROLE_ADMIN);
 		}
 
 		map = getSuccessCode("操作成功");
