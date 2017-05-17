@@ -5,6 +5,7 @@ import xie.animeshotsite.setup.UserConfig;
 public class ConstantsWeb {
 
 	final public static String MANAGE_URL_PREFIX_STR = "/managesite333";
+	final public static String MIP_URL_PREFIX_STR = "/mip";
 
 	/** 默认网站所有人的ID */
 	final public static String SITE_MANAGER_ID = "1";

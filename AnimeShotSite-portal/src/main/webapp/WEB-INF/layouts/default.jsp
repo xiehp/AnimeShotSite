@@ -50,6 +50,7 @@
 	</c:if>
 </script>
 
+<!-- 定义使用的资源版本 -->
 <c:set var="staticResourceUrl" value="${ ctx }/static/plugin/" />
 <c:set var="jqueryVersion" value="2.2.1" />
 <c:set var="jqueryFormVersion" value="3.51" />

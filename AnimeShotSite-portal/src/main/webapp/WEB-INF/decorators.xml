@@ -15,4 +15,8 @@
 	<decorator name="manage" page="default.jsp">
 		<pattern>/managesite333/*</pattern>
 	</decorator>
+
+	<decorator name="mip" page="mip/default.jsp">
+		<pattern>/mip*</pattern>
+	</decorator>
 </decorators>

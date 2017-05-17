@@ -26,7 +26,7 @@ public abstract class BaseController {
 	/**
 	 * 本Controll对应contextPath的root的url
 	 */
-	private String getUrlRootPath() {
+	protected String getUrlRootPath() {
 		return defaultViewPrefix();
 	}
 

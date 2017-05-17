@@ -58,10 +58,20 @@
 			} else {
 		%>
 		<li class="disabled">
-			<a href="javascript:void(0);">&lt;&lt;</a>
+			<c:if test="${isMipPage}">
+				&lt;&lt;
+			</c:if>
+			<c:if test="${not isMipPage}">
+				<a href="javascript:void(0);">&lt;&lt;</a>
+			</c:if>
 		</li>
 		<li class="disabled">
-			<a href="javascript:void(0);">&lt;</a>
+			<c:if test="${isMipPage}">
+				&lt;	
+			</c:if>
+			<c:if test="${not isMipPage}">
+				<a href="javascript:void(0);">&lt;</a>
+			</c:if>
 		</li>
 		<%
 			}
@@ -71,7 +81,12 @@
 			<c:choose>
 				<c:when test="${i == current}">
 					<li class="active">
-						<a class="disabled" href="javascript:void(0);">${i}</a>
+						<c:if test="${isMipPage}">
+							${i}
+						</c:if>
+						<c:if test="${not isMipPage}">
+							<a class="disabled" href="javascript:void(0);">${i}</a>
+						</c:if>
 					</li>
 				</c:when>
 				<c:otherwise>
@@ -100,10 +115,20 @@
 			} else {
 		%>
 		<li class="disabled">
-			<a href="javascript:void(0);">&gt;</a>
+			<c:if test="${isMipPage}">
+				&gt;
+			</c:if>
+			<c:if test="${not isMipPage}">
+				<a href="javascript:void(0);">&gt;</a>
+			</c:if>
 		</li>
 		<li class="disabled">
-			<a href="javascript:void(0);">&gt;&gt;</a>
+			<c:if test="${isMipPage}">
+				&gt;&gt;
+			</c:if>
+			<c:if test="${not isMipPage}">
+				<a href="javascript:void(0);">&gt;&gt;</a>
+			</c:if>
 		</li>
 		<%
 			}
@@ -113,42 +138,44 @@
 	<div style="margin-top: -20px; margin-bottom: 20px; font-size: 8px;">
 		<input id="paginationPage_goPageSearchStr" type="hidden" value="<c:out value='${searchStr}' />">
 		<span> ${page.number + 1}/${page.totalPages}<spring:message code='页' /> <spring:message code='共' />${page.totalElements}<spring:message code='条' /></span>
-		<c:if test="${page.totalPages > 1}">
-			<spring:message code='跳转到' />
-			<input id="goPageNumber" type="text" style="width: 40px;">
-			<spring:message code='页' />
-			<input type="button" value="<spring:message code='跳转' />" onclick="goPage()">
-			<script type="text/javascript">
-				function goPage() {
-					var goPageNumber = document.getElementById("goPageNumber").value;
-					if (goPageNumber == null) {
-						$.showMessageModal("<spring:message code='页数为空' />");
-						return;
-					}
-					if (isNaN(goPageNumber)) {
-						$.showMessageModal("<spring:message code='页数必须数字' />");
-						return;
-					}
-					if (goPageNumber > parseInt("${page.totalPages}")) {
-						$.showMessageModal("<spring:message code='没有该页' />");
-						return;
-					}
-					if (goPageNumber < 1) {
-						$.showMessageModal("<spring:message code='页数过小' />");
-						return;
-					}
+		<c:if test="${not isMipPage}">
+			<c:if test="${page.totalPages > 1}">
+				<spring:message code='跳转到' />
+				<input id="goPageNumber" type="text" style="width: 40px;">
+				<spring:message code='页' />
+				<input type="button" value="<spring:message code='跳转' />" onclick="goPage()">
+				<script type="text/javascript">
+					function goPage() {
+						var goPageNumber = document.getElementById("goPageNumber").value;
+						if (goPageNumber == null) {
+							$.showMessageModal("<spring:message code='页数为空' />");
+							return;
+						}
+						if (isNaN(goPageNumber)) {
+							$.showMessageModal("<spring:message code='页数必须数字' />");
+							return;
+						}
+						if (goPageNumber > parseInt("${page.totalPages}")) {
+							$.showMessageModal("<spring:message code='没有该页' />");
+							return;
+						}
+						if (goPageNumber < 1) {
+							$.showMessageModal("<spring:message code='页数过小' />");
+							return;
+						}
 
-					// 跳转
-					var searchStr = document.getElementById("paginationPage_goPageSearchStr").value;
-					if (goPageNumber == 1) {
-						document.location.href = searchStr;
-					} else {
-						var symbol = searchStr.indexOf("?") > -1 ? "&" : "?";
-						var url = searchStr + symbol + "page=" + goPageNumber;
-						document.location.href = url;
+						// 跳转
+						var searchStr = document.getElementById("paginationPage_goPageSearchStr").value;
+						if (goPageNumber == 1) {
+							document.location.href = searchStr;
+						} else {
+							var symbol = searchStr.indexOf("?") > -1 ? "&" : "?";
+							var url = searchStr + symbol + "page=" + goPageNumber;
+							document.location.href = url;
+						}
 					}
-				}
-			</script>
+				</script>
+			</c:if>
 		</c:if>
 	</div>
 </div>

@@ -261,6 +261,11 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 				request.setAttribute("localeLanguage", localeLanguage);
 				String showAllSubtitleFlag = XCookieUtils.getCookieValue(request, SiteConstants.COOKIE_SHOW_ALL_SUBTITLE_FLAG);
 				request.setAttribute("showAllSubtitleFlag", showAllSubtitleFlag);
+
+				// 告诉前台当前是否为mip页面
+				boolean isMipPage = request.getRequestURI().contains(ConstantsWeb.MIP_URL_PREFIX_STR);
+				request.setAttribute("isMipPage", isMipPage);
+				
 			}
 		}
 	}
