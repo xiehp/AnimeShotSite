@@ -11,6 +11,7 @@
 <meta name="keywords" content="<c:out value='${animeInfo.fullName}' />,<c:out value='${animeInfo.secondName}' />,动画截图网,动画截图,动漫截图,动漫图片,动画图片,截图字幕" />
 <meta name="description" content="<c:out value='${fn:substring(animeInfo.summaryCleanHtml, 0, 200)}' />" />
 
+<link rel="miphtml" href="${siteBaseUrl}/episode/list/${animeInfo.id}">
 </head>
 
 
@@ -24,14 +25,14 @@
 		<!-- 信息 -->
 		<div class="col-sm-8 col-xs-12">
 			<!-- 名称 -->
-			<div class="blockTitle" style="margin-left: 0px;">
-				<h1 style="font-size: 28px;"><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /></h1>
+			<div class="blockTitle margin-left-0px">
+				<h1 class="font-size-28px"><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /></h1>
 			</div>
 
 			<!-- 动画简介 -->
 			<c:if test="${!empty animeInfo.summary}">
-				<div class="AnimeSummary" style="text-align: left;">
-					<div style="font-weight: 700;">
+				<div class="AnimeSummary text-align-left" >
+					<div class="bold">
 						<spring:message code='动画简介' />
 					</div>
 					<div>${animeInfo.summary}</div>
@@ -44,12 +45,12 @@
 	<div class="blockTitle">
 		<span><spring:message code='动画剧集一览' /></span>
 	</div>
-	<div style="margin-top: 10px;">
+	<div class="margin-top-10px">
 		<c:forEach items="${ animeEpisodePage.content }" var="animeEpisode">
 			<div class="listImg">
-				<a href="${ctx}/mip/shot/list/${animeEpisode.id}" title="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' />">
+				<a href="${siteBaseUrl}/mip/shot/list/${animeEpisode.id}" title="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' />">
 					<mip-img src="${animeEpisode.titleUrl.urlS}" data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy"></mip-img>
-					<div class="wordKeepLine" style="margin-top: 5px;">
+					<div class="wordKeepLine margin-top-5px" >
 						<c:out value='${animeEpisode.divisionName}' />
 						<c:out value='${animeEpisode.title}' />
 					</div>
@@ -64,7 +65,7 @@
 </div>
 
 <div>
-	<a class="btn btn-primary" href="${ctx}/mip/anime">
+	<a class="btn btn-primary" href="${siteBaseUrl}/mip/anime">
 		<spring:message code='返回动画列表' />
 	</a>
 </div>

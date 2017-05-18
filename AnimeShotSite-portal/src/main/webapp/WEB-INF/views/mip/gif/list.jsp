@@ -14,13 +14,13 @@
 
 </head>
 
-<script>
 	<c:if test="${IS_MANAGER}">
+<script>
 	function masterLike(id) {
 		home.masterLike("${MANAGE_URL_STR}/gif/masterLike", id, "#masterLike_" + id, "#publicLike_" + id);
 	}
-	</c:if>
 </script>
+	</c:if>
 
 <div>
 	<!-- 标题 -->
@@ -31,16 +31,16 @@
 	<!-- 截图一览 -->
 	<div class="row">
 		<c:forEach items="${ gifInfoPage.content }" var="gifInfo">
-			<div style="min-height: 100px; font-size: 10px;" class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
-				<a href="${ctx}/gif/view/${gifInfo.id}" title="<c:out value='${gifInfo.animeEpisode.fullName}' /> <c:out value='${gifInfo.formatedTimeChina}' />">
-					<mip-img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${gifInfo.urlS}" class="img-responsive imagelazy"></mip-img>
+			<div class="listImg min-height-100px  font-size-10px">
+				<a href="${siteBaseUrl}/mip/gif/view/${gifInfo.id}" title="<c:out value='${gifInfo.animeEpisode.fullName}' /> <c:out value='${gifInfo.formatedTimeChina}' />">
+					<mip-img src="${gifInfo.urlS}" data-original="${gifInfo.urlS}" class="img-responsive imagelazy"></mip-img>
 					<div class="wordKeepLine">
 						<c:out value="${gifInfo.animeInfo.fullName}" />
 						<c:out value='${gifInfo.animeInfo.secondName}' />
 					</div>
 					<div>
 						<c:out value="${gifInfo.animeEpisode.divisionName}" />
-						${gifInfo.formatedMinSec}<span style="color: lightgray;${gifInfo.formatedMicroSec > 0 ? '' : ' display: none;'}">:${gifInfo.formatedMicroSec}</span>
+						${gifInfo.formatedMinSec}<span class="color-lightgray ${gifInfo.formatedMicroSec > 0 ? '' : ' display-none'}">:${gifInfo.formatedMicroSec}</span>
 					</div>
 				</a>
 				<c:if test="${IS_MASTER}">
@@ -65,10 +65,10 @@
 </div>
 
 <div>
-	<a class="btn btn-primary" href="${ctx}/">
+	<a class="btn btn-primary" href="${siteBaseUrl}/mip">
 		<spring:message code='返回首页' />
 	</a>
-	<a class="btn btn-primary" href="${ctx}/gif/task">
+	<a class="btn btn-primary" href="${siteBaseUrl}/mip/gif/task">
 		<spring:message code='制作动态图片' />
 	</a>
 </div>

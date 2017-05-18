@@ -78,3 +78,9 @@ label {
 	margin-left: 5px;
 	margin-right: 5px;
 }
+
+.pageInfoLine {
+	margin-top: -20px;
+	margin-bottom: 20px;
+	font-size: 8px;
+}

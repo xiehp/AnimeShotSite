@@ -253,7 +253,9 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 				String siteBaseUrl = XSSHttpUtil.getForwardedRemoteProto(request) + "://" + serverName + portStr + request.getContextPath();
 				request.setAttribute("httpScheme", httpScheme);
 				request.setAttribute("siteBaseUrl", siteBaseUrl);
-				request.setAttribute("thisPageUrl", siteBaseUrl + request.getRequestURI());
+				String thisPageUrl = siteBaseUrl + request.getServletPath() + (XStringUtils.isBlank(request.getQueryString()) ? "" : "?" + request.getQueryString());
+				request.setAttribute("thisPageUrl", thisPageUrl);
+				request.setAttribute("thisMipPageToOriginalUrl", thisPageUrl.replace(ConstantsWeb.MIP_URL_PREFIX_STR, ""));
 				request.setAttribute("isSecureHttp", "https".equals(httpScheme));
 
 				// 告诉前台当前语言
@@ -265,7 +267,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 				// 告诉前台当前是否为mip页面
 				boolean isMipPage = request.getRequestURI().contains(ConstantsWeb.MIP_URL_PREFIX_STR);
 				request.setAttribute("isMipPage", isMipPage);
-				
+
 			}
 		}
 	}

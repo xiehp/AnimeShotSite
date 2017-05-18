@@ -6,7 +6,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
+<head>
 <title>动画列表一览 - 动画截图网</title>
+<link rel="miphtml" href="${siteBaseUrl}/anime">
+</head>
 
 <div>
 	<div class="blockTitle">
@@ -15,9 +18,9 @@
 	<div>
 		<c:forEach items="${ animeInfoPage.content }" var="anime">
 			<div class="listImg">
-				<a href="${ctx}/mip/episode/list/${anime.id}" title="<c:out value='${anime.fullName}' /> <c:out value='${anime.secondName}' />">
+				<a href="${siteBaseUrl}/mip/episode/list/${anime.id}" title="<c:out value='${anime.fullName}' /> <c:out value='${anime.secondName}' />">
 					<mip-img src="${anime.titleUrl.urlS}" data-original="${anime.titleUrl.urlS}" class="img-responsive imagelazy"></mip-img>
-					<div class="wordKeepLine" style="margin-top: 5px;">
+					<div class="wordKeepLine margin-top-5px">
 						<c:out value='${anime.fullName}' />
 						<c:out value='${anime.secondName}' />
 					</div>

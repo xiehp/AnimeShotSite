@@ -44,18 +44,19 @@
 }
 </script>
 
+<link rel="miphtml" href="${siteBaseUrl}/shot/view/${shotInfo.id}">
 </head>
 
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noLeftRightPadding">
-	<div style="margin-bottom: 3px;">
-		<h1 style="font-size: 14px; margin: 0px;"><c:out value='${EpisodeFullNameWithTime}' /></h1>
+<div>
+	<div class="margin-bottom-3px">
+		<h1 class="font-size-14px margin-0"><c:out value='${EpisodeFullNameWithTime}' /></h1>
 	</div>
-	<div style="margin-bottom: 3px;">
-		<div class="shotTitleInfo" style="white-space: nowrap; word-break: keep-all;">
-			<div style="display: inline-block; margin: 5px;" class="col-sm-4 col-xs-12">
+	<div class="margin-bottom-3px">
+		<div class="shotTitleInfo">
+			<div class="col-sm-4 col-xs-12 textLine">
 				<label><spring:message code='时间戳' />：${shotInfo.timeStamp}</label>
 			</div>
-			<div style="display: inline-block; margin: 5px;" class="col-sm-8 col-xs-12">
+			<div class="col-sm-8 col-xs-12 textLine">
 				<label><spring:message code='尺寸' />：</label><span id="imgWidth">${animeEpisode.width}</span>×<span id="imgHeight">${animeEpisode.height}</span>
 			</div>
 		</div>
@@ -63,22 +64,21 @@
 
 	<div>
 		<!-- 图片 -->
-		<div id="shotImgDiv" style="position: relative;" class="thumbnail shotImgDivStyle" data-ImageAspectRatio="${ImageAspectRatio}"
-			style="margin-bottom: 10px;<c:if test="${ShotImgDivWidth > 0}">width: ${ShotImgDivWidth}px; height: ${DivPaddingBorderHeight + (ShotImgDivWidth-DivPaddingBorderWidth) * ImageAspectRatio}px;</c:if>">
-			<a style="height: 100%; width: 40%; position: absolute; left: 0;z-index: 2;" href="${ctx}/mip/shot/view/${previousShotInfo.id}" title="<spring:message code='上一张' />"> </a>
-			<a style="height: 100%; width: 40%; position: absolute; right: 0;z-index: 2;" href="${ctx}/mip/shot/view/${nextShotInfo.id}" title="<spring:message code='下一张' />"></a>
+		<div id="shotImgDiv" class="thumbnail shotImgDivStyle" data-ImageAspectRatio="${ImageAspectRatio}">
+			<a class="shotImgHotPoint left-0" href="${siteBaseUrl}/mip/shot/view/${previousShotInfo.id}" title="<spring:message code='上一张' />"> </a>
+			<a class="shotImgHotPoint right-0" href="${siteBaseUrl}/mip/shot/view/${nextShotInfo.id}" title="<spring:message code='下一张' />"></a>
 
-			<mip-img style="width: 98%;" id="shotImg" src="${FullImageUrl}" alt="<c:out value='${EpisodeFullNameWithTime}' />" title="<c:out value='${EpisodeFullNameWithTime}' />"></mip-img>
+			<mip-img id="shotImg" class="shotImg" src="${FullImageUrl}" alt="<c:out value='${EpisodeFullNameWithTime}' />" title="<c:out value='${EpisodeFullNameWithTime}' />"></mip-img>
 
-			<mip-img src="${PreFullImageUrl}" style="display: none;"></mip-img>
-			<mip-img src="${NextFullImageUrl}" style="display: none;"></mip-img>
+			<mip-img src="${PreFullImageUrl}" class="display-none"></mip-img>
+			<mip-img src="${NextFullImageUrl}" class="display-none"></mip-img>
 		</div>
 		<!-- 字幕 -->
 		<c:if test="${!empty subtitleLineList}">
-			<table class="shotSubtitle" style="margin-top: 0px; margin-bottom: 10px;">
+			<table class="shotSubtitle">
 				<c:forEach items="${subtitleLineList}" var="subtitleLine" varStatus="status">
 					<tr>
-						<td style="font-size: 10px;" class="noBreak" title="${subtitleLine.startTimeMinSecMicro}-${subtitleLine.endTimeMinSecMicro}">${subtitleLine.startTimeMinSec}-${subtitleLine.endTimeMinSec}</td>
+						<td class="noBreak font-size-10px" title="${subtitleLine.startTimeMinSecMicro}-${subtitleLine.endTimeMinSecMicro}">${subtitleLine.startTimeMinSec}-${subtitleLine.endTimeMinSec}</td>
 						<td class="subtitleText" data-lang="${subtitleLine.language}" data-text='<c:out value="${subtitleLine.text}" />' data-sign="${empty subtitleLineSignList ? '' : subtitleLineSignList[status.index]}">
 							<c:out value="${subtitleLine.text}" />
 						</td>
@@ -107,27 +107,27 @@
 			<spring:message code='删除图片' />
 		</a>
 	</c:if>
-	<a style="margin: 5px; display: inline-block;" class="btn btn-primary btn-sm" href="${FullImageUrl}" target="_blank">
+	<a class="btn btn-primary btn-sm" href="${FullImageUrl}" target="_blank">
 		<spring:message code='查看原图' />
 	</a>
 </div>
 
 <div class="buttonDiv">
 	<c:if test="${!empty previousShotInfo.id}">
-		<a style="margin: 5px; display: inline-block;" class="btn btn-primary btn-md postByFromXXX" href="${ctx}/mip/shot/view/${previousShotInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${previousShotInfo.formatedTimeChina}' />">
+		<a class="btn btn-primary btn-md postByFromXXX" href="${siteBaseUrl}/mip/shot/view/${previousShotInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${previousShotInfo.formatedTimeChina}' />">
 			<spring:message code='上一张' />
 		</a>
 	</c:if>
 	<c:if test="${!empty nextShotInfo.id}">
-		<a style="margin: 5px; display: inline-block;" class="btn btn-primary btn-md postByFromXXX" href="${ctx}/mip/shot/view/${nextShotInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${nextShotInfo.formatedTimeChina}' />">
+		<a class="btn btn-primary btn-md postByFromXXX" href="${siteBaseUrl}/mip/shot/view/${nextShotInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${nextShotInfo.formatedTimeChina}' />">
 			<spring:message code='下一张' />
 		</a>
 	</c:if>
 </div>
 
 
-<div style="margin: 5px;" class="buttonDiv">
-	<a class="btn btn-primary btn-md" href="${ctx}/mip/shot/list/${shotInfo.animeEpisodeId}${pageNumberUrl}" title="<c:out value='${EpisodeFullName}' />">
+<div class="buttonDiv margin-5px">
+	<a class="btn btn-primary btn-md" href="${siteBaseUrl}/mip/shot/list/${shotInfo.animeEpisodeId}${pageNumberUrl}" title="<c:out value='${EpisodeFullName}' />">
 		<spring:message code='返回截图一览' />
 	</a>
 </div>

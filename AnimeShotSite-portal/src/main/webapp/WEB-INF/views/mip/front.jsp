@@ -13,12 +13,13 @@
 <meta name='yandex-verification' content='64ecf3910c1154ef' />
 <meta name="google-site-verification" content="xgQXjnyjdOEL3cepdnkjkgfsegefTyyOGKuSSSanTjI" />
 
+<link rel="miphtml" href="${siteBaseUrl}">
 </head>
 
 <div>
 	<div id="最新动画剧集一览">
 		<div class="blockTitle">
-			<span><spring:message code='最新动画剧集一览' /></span> <span class="count"> <a href="${ctx}/anime">
+			<span><spring:message code='最新动画剧集一览' /></span> <span class="count"> <a href="${siteBaseUrl}/anime">
 					<spring:message code='当前剧集总数' />
 					：${animeEpisodeCount}
 				</a></span>
@@ -26,7 +27,7 @@
 		<div>
 			<c:forEach items="${ animeEpisodeList }" var="animeEpisode" end="35">
 				<div class="listImg">
-					<a href="${ctx}/mip/shot/list/${animeEpisode.id}" title="<c:out value='${animeEpisode.animeInfo.fullName}' /> <c:out value='${animeEpisode.animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' />">
+					<a href="${siteBaseUrl}/mip/shot/list/${animeEpisode.id}" title="<c:out value='${animeEpisode.animeInfo.fullName}' /> <c:out value='${animeEpisode.animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' />">
 						<mip-img src="${animeEpisode.titleUrl.urlS}" data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy" alt="<c:out value='${animeEpisode.fullName}' />"></mip-img>
 						<div class="wordKeepLine">
 							<c:out value='${animeEpisode.animeInfo.fullName}' />
@@ -49,7 +50,7 @@
 		<div>
 			<c:forEach items="${ masterRecommandShotList }" var="shot" varStatus="status" end="29">
 				<div class="listImg">
-					<a href="${ctx}/mip/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
+					<a href="${siteBaseUrl}/mip/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
 						<mip-img src="${shot.urlS}" data-original="${shot.urlS}" class="img-responsive imagelazy"></mip-img>
 						<div class="wordKeepLine">
 							<c:out value="${shot.animeInfo.fullName}" />
@@ -73,7 +74,7 @@
 			<div>
 				<c:forEach items="${ publicLikeShotList }" var="shot" varStatus="status" end="23">
 					<div class="listImg">
-						<a href="${ctx}/mip/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
+						<a href="${siteBaseUrl}/mip/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
 							<mip-img src="${shot.urlS}" data-original="${shot.urlS}" class="img-responsive imagelazy"></mip-img>
 							<div class="wordKeepLine">
 								<c:out value="${shot.animeInfo.fullName}" />
@@ -97,7 +98,7 @@
 		<div>
 			<c:forEach items="${ newestShotList }" var="shot" varStatus="status" end="11">
 				<div class="listImg">
-					<a href="${ctx}/mip/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
+					<a href="${siteBaseUrl}/mip/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
 						<mip-img src="${shot.urlS}" data-original="${shot.urlS}" class="img-responsive imagelazy"></mip-img>
 						<div class="wordKeepLine">
 							<c:out value="${shot.animeInfo.fullName}" />
@@ -120,9 +121,9 @@
 		<div>
 			<c:forEach items="${ animeInfoPage.content }" var="anime">
 				<div class="listImg">
-					<a href="${ctx}/mip/episode/list/${anime.id}" title="<c:out value='${anime.fullName}' /> <c:out value='${anime.secondName}' />">
+					<a href="${siteBaseUrl}/mip/episode/list/${anime.id}" title="<c:out value='${anime.fullName}' /> <c:out value='${anime.secondName}' />">
 						<mip-img src="${anime.titleUrl.urlS}" data-original="${anime.titleUrl.urlS}" class="img-responsive imagelazy"></mip-img>
-						<div class="wordKeepLine" style="margin-top: 5px;">
+						<div class="wordKeepLine margin-top-5px">
 							<c:out value='${anime.fullName}' />
 							<c:out value='${anime.secondName}' />
 						</div>
@@ -133,8 +134,8 @@
 	</div>
 
 	<div align="left">
-		<h1 style="font-size: 16px;"><spring:message code='动画截图网' /> <spring:message code='本站说明' /></h1>
-		<p style="font-size: 14px;">
+		<h1 class="font-size-16px"><spring:message code='动画截图网' /> <spring:message code='本站说明' /></h1>
+		<p class="font-size-14px">
 			<spring:message code='本站说明具体内容' />
 		</p>
 	</div>

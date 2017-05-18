@@ -14,13 +14,13 @@
 
 </head>
 
-<script>
-	<c:if test="${IS_MANAGER}">
-	function masterLike(id) {
-		home.masterLike("${MANAGE_URL_STR}/shot/masterLike", id, "#masterLike_" + id, "#publicLike_" + id);
-	}
-	</c:if>
-</script>
+<c:if test="${IS_MANAGER}">
+	<script>
+		function masterLike(id) {
+			home.masterLike("${MANAGE_URL_STR}/shot/masterLike", id, "#masterLike_" + id, "#publicLike_" + id);
+		}
+	</script>
+</c:if>
 
 <div>
 	<!-- 标题 -->
@@ -32,8 +32,8 @@
 	<!-- 截图一览 -->
 	<div>
 		<c:forEach items="${ shotInfoPage.content }" var="shotInfo">
-			<div style="min-height: 100px; font-size: 10px;" class="listImg">
-				<a href="${ctx}/shot/view/${shotInfo.id}" title="<c:out value='${shotInfo.animeEpisode.fullName}' /> <c:out value='${shotInfo.formatedTimeChina}' />">
+			<div class="listImg min-height-100px font-size-10px">
+				<a href="${siteBaseUrl}/mip/shot/view/${shotInfo.id}" title="<c:out value='${shotInfo.animeEpisode.fullName}' /> <c:out value='${shotInfo.formatedTimeChina}' />">
 					<mip-img src="${shotInfo.urlS}" data-original="${shotInfo.urlS}" class="img-responsive imagelazy"></mip-img>
 					<div class="wordKeepLine">
 						<c:out value="${shotInfo.animeInfo.fullName}" />
@@ -41,19 +41,19 @@
 					</div>
 					<div>
 						<c:out value="${shotInfo.animeEpisode.divisionName}" />
-						${shotInfo.formatedMinSec}<span style="color: lightgray;${shotInfo.formatedMicroSec > 0 ? '' : ' display: none;'}">:${shotInfo.formatedMicroSec}</span>
+						${shotInfo.formatedMinSec}<span class="color-lightgray ${shotInfo.formatedMicroSec > 0 ? '' : ' display-none'}">:${shotInfo.formatedMicroSec}</span>
 					</div>
 				</a>
 				<c:if test="${IS_MASTER}">
 					<div class="btn btn-primary btn-xs" onclick="home.publicLike('${shotInfo.id}');">
 						<span class="glyphicon glyphicon-star"></span>
 						<spring:message code='喜欢' />
-						<div id="publicLike_${shotInfo.id}" class="badge" style="padding-top: 0px;">${shotInfo.publicLikeCount}</div>
+						<div id="publicLike_${shotInfo.id}" class="badge padding-top-0px">${shotInfo.publicLikeCount}</div>
 					</div>
 					<div class="btn btn-primary btn-xs" onclick="home.masterLike('${MANAGE_URL_STR}/shot/masterLike', '${shotInfo.id}');">
 						<span class="glyphicon glyphicon-star"></span>
 						<spring:message code='推荐' />
-						<div id="masterLike_${shotInfo.id}" class="badge" style="padding-top: 0px;">${shotInfo.masterRecommendRank}</div>
+						<div id="masterLike_${shotInfo.id}" class="badge padding-top-0px">${shotInfo.masterRecommendRank}</div>
 					</div>
 				</c:if>
 			</div>
@@ -66,7 +66,7 @@
 </div>
 
 <div>
-	<a class="btn btn-primary" href="${ctx}/mip">
+	<a class="btn btn-primary" href="${siteBaseUrl}/mip">
 		<spring:message code='返回首页' />
 	</a>
 </div>

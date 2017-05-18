@@ -112,7 +112,7 @@ body {
 		</div>
 	</div>
 
-	<!-- <form action="${ctx}/shot/view/${gifInfo.id}" method="post"> -->
+	<!-- <form action="${siteBaseUrl}/shot/view/${gifInfo.id}" method="post"> -->
 	<input type="hidden" id="scorllTop" name="scorllTop" value="<c:out value="${scorllTop}" />">
 	<div align="center">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -135,10 +135,10 @@ body {
 
 		<map id="planetmap" name="planetmap">
 			<c:if test="${!empty previousGifInfo.id}">
-				<area id="areaPrev" class="postByFromXXX" shape="rect" coords="0,0,200,5000" href="${ctx}/gif/view/${previousGifInfo.id}" title="<spring:message code='上一张' />" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${previousGifInfo.formatedTimeChina}' />" />
+				<area id="areaPrev" class="postByFromXXX" shape="rect" coords="0,0,200,5000" href="${siteBaseUrl}/gif/view/${previousGifInfo.id}" title="<spring:message code='上一张' />" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${previousGifInfo.formatedTimeChina}' />" />
 			</c:if>
 			<c:if test="${!empty nextGifInfo.id}">
-				<area id="areaNext" class="postByFromXXX" shape="rect" coords="500,0,5000,5000" href="${ctx}/gif/view/${nextGifInfo.id}" title="<spring:message code='下一张' />" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${nextGifInfo.formatedTimeChina}' />" />
+				<area id="areaNext" class="postByFromXXX" shape="rect" coords="500,0,5000,5000" href="${siteBaseUrl}/gif/view/${nextGifInfo.id}" title="<spring:message code='下一张' />" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${nextGifInfo.formatedTimeChina}' />" />
 			</c:if>
 		</map>
 	</div>
@@ -166,12 +166,12 @@ body {
 
 <div style="padding: 5px;">
 	<c:if test="${!empty previousGifInfo.id}">
-		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/gif/view/${previousGifInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${previousGifInfo.formatedTimeChina}' />">
+		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${siteBaseUrl}/gif/view/${previousGifInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${previousGifInfo.formatedTimeChina}' />">
 			<spring:message code='上一张' />
 		</a>
 	</c:if>
 	<c:if test="${!empty nextGifInfo.id}">
-		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${ctx}/gif/view/${nextGifInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${nextGifInfo.formatedTimeChina}' />">
+		<a style="margin: 10px;" class="btn btn-primary btn-sm postByFromXXX" href="${siteBaseUrl}/gif/view/${nextGifInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${nextGifInfo.formatedTimeChina}' />">
 			<spring:message code='下一张' />
 		</a>
 	</c:if>
@@ -179,7 +179,7 @@ body {
 <!-- </form>  -->
 
 <div>
-	<a class="btn btn-primary btn-sm" href="${ctx}/gif/list" title="<spring:message code='返回动态图片一览' />">
+	<a class="btn btn-primary btn-sm" href="${siteBaseUrl}/gif/list" title="<spring:message code='返回动态图片一览' />">
 		<spring:message code='返回动态图片一览' />
 	</a>
 </div>

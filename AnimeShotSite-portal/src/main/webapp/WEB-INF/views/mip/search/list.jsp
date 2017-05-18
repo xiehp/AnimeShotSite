@@ -271,13 +271,13 @@
 				<c:set var="shotFullName" value="${subtitleLine.animeEpisode.fullName} ${shotInfoMap[subtitleLine.id].formatedTimeChina}" />
 				<div align="center" style="margin-bottom: 20px">
 					<div align="center" class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-						<a target="_blank" href="${ctx}/mip/shot/view/${shotInfoMap[subtitleLine.id].id}">
+						<a target="_blank" href="${siteBaseUrl}/mip/shot/view/${shotInfoMap[subtitleLine.id].id}">
 							<mip-img src="${shotInfoMap[subtitleLine.id].urlS}" style="max-height: 200px; display: inline;" class="img-responsive imagelazy" data-original="${shotInfoMap[subtitleLine.id].urlS}" alt="<c:out value="${shotFullName}" />"></mip-img>
 						</a>
 					</div>
 					<div align="left" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 						<div>
-							<a target="_blank" href="${ctx}/mip/shot/view/${shotInfoMap[subtitleLine.id].id}">
+							<a target="_blank" href="${siteBaseUrl}/mip/shot/view/${shotInfoMap[subtitleLine.id].id}">
 								<c:out value="${shotFullName}" />
 							</a>
 						</div>
@@ -290,8 +290,8 @@
 			<c:forEach items="${searchResultMap}" var="searchResult">
 				<c:set var="shotInfoData" value="${searchResult.value.shotInfoData}" />
 				<c:set var="subtitleListData" value="${searchResult.value.subtitleListData}" />
-				<c:set var="shotInfoUrl" value="${ctx}/mip/shot/view/${shotInfoData.id}" />
-				<c:set var="episodeUrl" value="${ctx}/mip/shot/list/${subtitleListData[0].animeEpisode.id}" />
+				<c:set var="shotInfoUrl" value="${siteBaseUrl}/mip/shot/view/${shotInfoData.id}" />
+				<c:set var="episodeUrl" value="${siteBaseUrl}/mip/shot/list/${subtitleListData[0].animeEpisode.id}" />
 				<c:set var="shotInfoFullName" value="${subtitleListData[0].animeEpisode.fullName} ${shotInfoData.formatedTimeChina}" />
 				<div align="center" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 20px">
 					<div align="center" class="col-lg-4 col-md-4 col-sm-12 col-xs-12">

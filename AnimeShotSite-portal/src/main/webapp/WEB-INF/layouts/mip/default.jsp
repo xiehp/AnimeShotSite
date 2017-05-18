@@ -1,3 +1,4 @@
+<%@page import="xie.common.web.util.ConstantsWeb"%>
 <%@ page language="java" contentType="text/html; UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator"%>
@@ -8,9 +9,9 @@
 <html mip>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="https://mipcache.bdstatic.com/static/v1/mip.css">
-<link rel="canonical" href="${canonicalUrl}">
+<link rel="canonical" href="${thisMipPageToOriginalUrl}">
 
 <title><decorator:title default="动画截图网" /></title>
 
@@ -44,7 +45,7 @@
 
 <decorator:head />
 
-<style type="text/css">
+<style mip-custom>
 
 /*******************
 覆盖mip用css 
@@ -63,6 +64,10 @@
 	}
 }
 
+#bs-navbar {
+	height: 0;
+}
+
 /* 左上角图标 */
 .navbar-brand {
 	white-space: nowrap;
@@ -71,41 +76,78 @@
 /*******************
 网站用css 
 *******************/
+.btn {
+	margin: 5px;
+	display: inline-block;
+}
 
 /* 图片根据尺寸自动改变大小 */
+/* 
+<c:set var="ImageAspectRatio" value="${(not empty animeEpisode.height and not empty animeEpisode.width) ? animeEpisode.height/animeEpisode.width : 9/16}" />
+<c:set var="shotImgHeight1" value="${ImageAspectRatio * 48}vw" />
+<c:set var="shotImgHeightStyle1" value="height: ${shotImgHeight1};" />
+<c:set var="shotImgHeight2" value="${ImageAspectRatio * 31}vw" />
+<c:set var="shotImgHeightStyle2" value="height: ${shotImgHeight2};" />
+<c:set var="shotImgHeight3" value="${ImageAspectRatio * 23.5}vw" />
+<c:set var="shotImgHeightStyle3" value="height: ${shotImgHeight3};" />
+<c:set var="shotImgHeight4" value="${ImageAspectRatio * 18.5}vw" />
+<c:set var="shotImgHeightStyle4" value="height: ${shotImgHeight4};" />
+<c:set var="shotImgHeight5" value="${ImageAspectRatio * 15}vw" />
+<c:set var="shotImgHeightStyle5" value="height: ${shotImgHeight5};" />
+ */
 @media ( min-width : 1px) {
 	.listImg {
-		width: 48%;
+		width: 48vw;
+	}
+	.listImg mip-img { ${shotImgHeightStyle1
+		
 	}
 }
 
+}
 @media ( min-width : 768px) {
 	.listImg {
-		width: 31%;
+		width: 31vw;
+	}
+	.listImg mip-img { ${shotImgHeightStyle2
+		
 	}
 }
 
+}
 @media ( min-width : 1024px) {
 	.listImg {
-		width: 23.5%;
+		width: 23.5vw;
+	}
+	.listImg mip-img { ${shotImgHeightStyle3
+		
 	}
 }
 
+}
 @media ( min-width : 1400px) {
 	.listImg {
-		width: 18.5%;
+		width: 18.5vw;
+	}
+	.listImg mip-img { ${shotImgHeightStyle4
+		
 	}
 }
 
+}
 @media ( min-width : 1800px) {
 	.listImg {
-		width: 15%;
+		width: 15vw;
+	}
+	.listImg mip-img { ${shotImgHeightStyle5
+		
 	}
 }
 
+}
 .listImg {
 	display: inline-block;
-	padding: 0.5%;
+	padding: 0.5vw;
 	padding-top: 20px;
 }
 
@@ -174,6 +216,16 @@
 	font-size: 12px;
 }
 
+.shotList-blockTitle h1 {
+	font-size: 20px;
+	display: inline;
+}
+
+.shotList-blockTitle h1 small {
+	font-weight: normal;
+	color: gray;
+}
+
 .subtitleTable {
 	padding-right: 5px;
 	font-size: 10px;
@@ -186,6 +238,45 @@
 }
 
 /* 截图详细页面的css */
+/* 
+<c:set var="shotImgHeight" value="${ImageAspectRatio * 98}vw" />
+<c:set var="shotImgHeightStyle" value="height: ${shotImgHeight};" />
+ */
+.shotImgDivStyle {
+	width: 98vw;
+	position: relative;
+	margin-bottom: 10px;
+}
+
+.shotImgDivStyle .shotImg { ${shotImgHeightStyle
+	
+}
+
+}
+.shotImgHotPoint {
+	height: 100%;
+	width: 40%;
+	position: absolute;
+	z-index: 2;
+}
+
+.shotSubtitle {
+	margin-top: 0px;
+	margin-bottom: 10px;
+}
+
+.shotSubtitle .subtitleText {
+	padding-left: 5px;
+}
+
+.left-0 {
+	left: 0;
+}
+
+.right-0 {
+	right: 0;
+}
+
 .ShareLinkDiv {
 	margin-top: 20px;
 	max-width: 800px;
@@ -198,6 +289,16 @@
 .ShareLinkItem>div {
 	padding-right: 3px;
 	padding-left: 3px;
+}
+
+.shotTitleInfo {
+	white-space: nowrap;
+	word-break: keep-all;
+}
+
+.shotTitleInfo .textLine {
+	display: inline-block;
+	margin: 5px;
 }
 
 @media ( min-width : 768px) {
@@ -237,25 +338,119 @@
 }
 
 .pagination>li {
-	position: relative;
-	float: left;
-	padding: 6px 12px;
-	margin-left: -1px;
-	line-height: 1.42857143;
-	border: 1px solid #ddd;
+	
 }
 
 .pagination>li>a, .pagination>li>span {
+	position: relative;
+	float: left;
+	margin-left: -1px;
+	line-height: 1.42857143;
+	border: 1px solid #ddd;
 	color: #337ab7;
 	text-decoration: none;
 	background-color: #fff;
+	padding: 6px 12px;
 }
+
+.pagination .disabled {
+	color: black;
+}
+
+.pagination .disabled a, .pagination .disabled span {
+	color: black;
+}
+
+.pageInfoLine {
+	margin-top: -20px;
+	margin-bottom: 20px;
+	font-size: 8px;
+}
+
+/* 各种自定义css */
+.text-align-left {
+	text-align: left;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.margin-0 {
+	margin: 0;
+}
+
+.margin-5px {
+	margin: 5px;
+}
+
+.margin-top-5px {
+	margin-top: 5px;
+}
+
+.margin-top-10px {
+	margin-top: 10px;
+}
+
+.margin-top-50px {
+	margin-top: 50px;
+}
+
+.margin-left-0px {
+	margin-left: 0px;
+}
+
+.margin-bottom-3px {
+	margin-bottom: 3px;
+}
+
+.padding-top-0px {
+	padding-top: 0px;
+}
+
+.min-height-100px {
+	min-height: 100px;
+}
+
+.font-size-10px {
+	font-size: 10px;
+}
+
+.font-size-14px {
+	font-size: 14px;
+}
+
+.font-size-16px {
+	font-size: 16px;
+}
+
+.font-size-28px {
+	font-size: 28px;
+}
+
+.bottomBlockLine {
+	height: 60px;
+	background-color: black;
+	margin-top: 20px;
+}
+
+.display-none {
+	display: none;
+}
+
+.color-lightgray {
+	color: lightgray;
 }
 </style>
 
 </head>
 
 <body class="<shiro:principal property="showSidebar"></shiro:principal>">
+	<div class="display-none">
+		<c:set var="canonicalUrl" value='<%=request.getAttribute("thisPageUrl").toString().replace(ConstantsWeb.MIP_URL_PREFIX_STR, "")%>' />
+		${canonicalUrl}
+	</div>
+	<div class="display-none">${thisMipPageToOriginalUrl}</div>
 	<div id="header">
 		<%@ include file="header.jsp"%>
 	</div>
@@ -279,6 +474,7 @@
 	<script src="https://mipcache.bdstatic.com/static/v1/mip.js"></script>
 	<script src="https://mipcache.bdstatic.com/static/v1/mip-nav-slidedown/mip-nav-slidedown.js"></script>
 	<script src="https://mipcache.bdstatic.com/static/v1/mip-gototop/mip-gototop.js"></script>
+	<script src="https://mipcache.bdstatic.com/static/v1/mip-stats-baidu/mip-stats-baidu.js"></script>
 
 </body>
 </html>

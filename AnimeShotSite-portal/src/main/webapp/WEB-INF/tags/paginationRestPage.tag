@@ -42,20 +42,10 @@
 			} else {
 		%>
 		<li class="disabled">
-			<c:if test="${isMipPage}">
-				&lt;&lt;
-			</c:if>
-			<c:if test="${not isMipPage}">
-				<a href="javascript:void(0);">&lt;&lt;</a>
-			</c:if>
+			<span>&lt;&lt;</span>
 		</li>
 		<li class="disabled">
-			<c:if test="${isMipPage}">
-				&lt;	
-			</c:if>
-			<c:if test="${not isMipPage}">
-				<a href="javascript:void(0);">&lt;</a>
-			</c:if>
+			<span>&lt;</span>
 		</li>
 		<%
 			}
@@ -65,12 +55,7 @@
 			<c:choose>
 				<c:when test="${i == current}">
 					<li class="active">
-						<c:if test="${isMipPage}">
-							${i}
-						</c:if>
-						<c:if test="${not isMipPage}">
-							<a class="disabled" href="javascript:void(0);">${i}</a>
-						</c:if>
+						<span class="disabled">${i}</span>
 					</li>
 				</c:when>
 				<c:otherwise>
@@ -99,27 +84,17 @@
 			} else {
 		%>
 		<li class="disabled">
-			<c:if test="${isMipPage}">
-				&gt;
-			</c:if>
-			<c:if test="${not isMipPage}">
-				<a href="javascript:void(0);">&gt;</a>
-			</c:if>
+			<span>&gt;</span>
 		</li>
 		<li class="disabled">
-			<c:if test="${isMipPage}">
-				&gt;&gt;
-			</c:if>
-			<c:if test="${not isMipPage}">
-				<a href="javascript:void(0);">&gt;&gt;</a>
-			</c:if>
+			<span>&gt;&gt;</span>
 		</li>
 		<%
 			}
 		%>
 	</ul>
 
-	<div style="margin-top: -20px; margin-bottom: 20px; font-size: 8px;">
+	<div class="pageInfoLine">
 		<span> ${current}/${page.totalPages}<spring:message code='页' /> <spring:message code='共' />${page.totalElements}<spring:message code='条' /></span>
 		<c:if test="${not isMipPage}">
 			<c:if test="${page.totalPages > 1}">

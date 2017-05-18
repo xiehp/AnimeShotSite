@@ -17,14 +17,14 @@
 	<!-- 截图一览 -->
 	<div>
 		<c:forEach items="${ shotInfoList }" var="shotInfo">
-			<div style="min-height: 100px;" class="listImg">
-				<a href="${ctx}/mip/shot/view/${shotInfo.id}">
+			<div class="listImg min-height-100px">
+				<a href="${siteBaseUrl}/mip/shot/view/${shotInfo.id}">
 					<mip-img src="${shotInfo.urlS}" data-original="${shotInfo.urlS}" class="img-responsive imagelazy"></mip-img>
-					<div style="margin-top: 5px;">
+					<div class="margin-top-5px">
 						<div class="wordKeepLine" title="<c:out value='${shotInfo.animeEpisode.fullName}' />">
 							<c:out value="${shotInfo.animeEpisode.fullName}" />
 						</div>
-						${shotInfo.formatedMinSec}<span style="color: lightgray;">:${shotInfo.formatedMicroSec}</span>
+						${shotInfo.formatedMinSec}<span class="color-lightgray">:${shotInfo.formatedMicroSec}</span>
 					</div>
 				</a>
 			</div>
@@ -33,5 +33,5 @@
 </div>
 
 <div>
-	<a class="btn btn-primary" href="${ctx}/mip">返回首页</a>
+	<a class="btn btn-primary" href="${siteBaseUrl}/mip">返回首页</a>
 </div>
