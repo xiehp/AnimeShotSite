@@ -8,7 +8,6 @@
 
 <head>
 <title>动画列表一览 - 动画截图网</title>
-<link rel="miphtml" href="${siteBaseUrl}/anime">
 </head>
 
 <div>

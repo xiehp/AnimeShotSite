@@ -11,7 +11,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="https://mipcache.bdstatic.com/static/v1/mip.css">
-<link rel="canonical" href="${thisMipPageToOriginalUrl}">
+<link rel="canonical" href="${thisPageOriginalUrl}">
 
 <title><decorator:title default="动画截图网" /></title>
 
@@ -446,11 +446,7 @@
 </head>
 
 <body class="<shiro:principal property="showSidebar"></shiro:principal>">
-	<div class="display-none">
-		<c:set var="canonicalUrl" value='<%=request.getAttribute("thisPageUrl").toString().replace(ConstantsWeb.MIP_URL_PREFIX_STR, "")%>' />
-		${canonicalUrl}
-	</div>
-	<div class="display-none">${thisMipPageToOriginalUrl}</div>
+	<div class="display-none1">${thisPageOriginalUrl}</div>
 	<div id="header">
 		<%@ include file="header.jsp"%>
 	</div>

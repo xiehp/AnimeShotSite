@@ -44,7 +44,6 @@
 }
 </script>
 
-<link rel="miphtml" href="${siteBaseUrl}/shot/view/${shotInfo.id}">
 </head>
 
 <div>

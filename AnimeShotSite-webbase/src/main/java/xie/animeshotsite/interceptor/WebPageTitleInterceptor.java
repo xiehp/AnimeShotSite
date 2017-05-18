@@ -250,13 +250,31 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 					portStr = "";
 				}
 
-				String siteBaseUrl = XSSHttpUtil.getForwardedRemoteProto(request) + "://" + serverName + portStr + request.getContextPath();
+				String mipPrefix = ConstantsWeb.MIP_URL_PREFIX_STR;
 				request.setAttribute("httpScheme", httpScheme);
-				request.setAttribute("siteBaseUrl", siteBaseUrl);
-				String thisPageUrl = siteBaseUrl + request.getServletPath() + (XStringUtils.isBlank(request.getQueryString()) ? "" : "?" + request.getQueryString());
-				request.setAttribute("thisPageUrl", thisPageUrl);
-				request.setAttribute("thisMipPageToOriginalUrl", thisPageUrl.replace(ConstantsWeb.MIP_URL_PREFIX_STR, ""));
 				request.setAttribute("isSecureHttp", "https".equals(httpScheme));
+
+				// 带contextPath的基本URL
+				String siteBaseUrl = XSSHttpUtil.getForwardedRemoteProto(request) + "://" + serverName + portStr + request.getContextPath();
+				request.setAttribute("siteBaseUrl", siteBaseUrl);
+
+				String thisPagePathWithoutParams = request.getServletPath();
+				String thisPageParams = request.getQueryString();
+				String thisPagePath = thisPagePathWithoutParams + (XStringUtils.isBlank(thisPageParams) ? "" : "?" + thisPageParams);
+				String thisPagePathOriginal = thisPagePath.startsWith(mipPrefix) ? thisPagePath.replaceFirst(mipPrefix, "") : thisPagePath;
+				// 此处thisPagePathOriginal继续删除其他可能的路径前缀
+				String thisPagePathWithMip = mipPrefix + thisPagePathOriginal;
+				String thisPageUrl = siteBaseUrl + thisPagePath;
+				String thisPageMipUrl = siteBaseUrl + thisPagePathWithMip;
+				String thisPageOriginalUrl = siteBaseUrl + thisPagePathOriginal;
+				request.setAttribute("thisPagePathWithoutParams", thisPagePathWithoutParams);
+				request.setAttribute("thisPageParams", thisPageParams);
+				request.setAttribute("thisPagePath", thisPagePath);
+				request.setAttribute("thisPagePathRemoveMip", thisPagePathOriginal);
+				request.setAttribute("thisPagePathWithMip", thisPagePathWithMip);
+				request.setAttribute("thisPageUrl", thisPageUrl);
+				request.setAttribute("thisPageMipUrl", thisPageMipUrl);
+				request.setAttribute("thisPageOriginalUrl", thisPageOriginalUrl);
 
 				// 告诉前台当前语言
 				String localeLanguage = XRequestUtils.getLocaleLanguageCountry(request).toLowerCase();
@@ -265,7 +283,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 				request.setAttribute("showAllSubtitleFlag", showAllSubtitleFlag);
 
 				// 告诉前台当前是否为mip页面
-				boolean isMipPage = request.getRequestURI().contains(ConstantsWeb.MIP_URL_PREFIX_STR);
+				boolean isMipPage = thisPagePath.startsWith(mipPrefix);
 				request.setAttribute("isMipPage", isMipPage);
 
 			}

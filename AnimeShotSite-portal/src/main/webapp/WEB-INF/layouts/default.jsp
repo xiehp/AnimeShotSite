@@ -13,6 +13,8 @@
 <meta http-equiv="Cache-Control" content="max-age=6" />
 <meta http-equiv="Content-Language" content="zh-cn" />
 <link rel="shortcut icon" type="image/x-icon" href="${ ctx }/static/img/logo.png" media="screen" />
+<link rel="miphtml" href="${thisPageMipUrl}">
+
 <decorator:head />
 
 <!-- 初始化所有参数 -->
@@ -92,6 +94,7 @@
 </head>
 
 <body class="<shiro:principal property="showSidebar"></shiro:principal>">
+	<div class="display-none1">${thisPageMipUrl}</div>
 	<div id="header">
 		<%@ include file="/WEB-INF/layouts/header.jsp"%>
 	</div>

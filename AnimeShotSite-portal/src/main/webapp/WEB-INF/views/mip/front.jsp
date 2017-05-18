@@ -12,8 +12,6 @@
 <meta name="description" content="本站提供动画完整的动漫图片，动画图片以及字幕台词。截图图片一般以5秒为间隔，图片尽量为1080P，不包含字幕台词。字幕台词尽量为中日双语字幕，可以简繁切换，并且以外挂的形式显示。同时本站提供获取Gif动态图片的功能。" />
 <meta name='yandex-verification' content='64ecf3910c1154ef' />
 <meta name="google-site-verification" content="xgQXjnyjdOEL3cepdnkjkgfsegefTyyOGKuSSSanTjI" />
-
-<link rel="miphtml" href="${siteBaseUrl}">
 </head>
 
 <div>
