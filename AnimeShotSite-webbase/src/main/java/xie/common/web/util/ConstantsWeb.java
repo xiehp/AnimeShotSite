@@ -23,4 +23,12 @@ public class ConstantsWeb {
 
 	/** 标识某个人的CookieUserName */
 	public static final String SITE_COOKIE_USER_NAME = "SiteCookieUserName";
+
+
+	/** 标识某个人的CookieUserName */
+	public static final String SITE_SESSION_LAST_VISIT_PATH = "lastVisitPath";
+	public static final String SITE_SESSION_LAST_VISIT_URL = "lastVisitUrl";
+	public static final String SITE_SESSION_PRE_VISIT_PATH = "preVisitPath";
+	public static final String SITE_SESSION_PRE_VISIT_URL = "preVisitUrl";
+	
 }

@@ -43,6 +43,57 @@
 				</a>
 				<hr class="hr-xs">
 			</li>
+			<li>
+				<a href="${thisPageOriginalUrl}">
+					<spring:message code='切换到原始页面' />
+				</a>
+				<hr class="hr-xs">
+			</li>
+			<li style="margin: auto;">
+				<table>
+					<tr>
+						<td style="vertical-align: top;">
+							<a href="#" style="margin-right: 10px;">Language</a>
+						</td>
+						<td>
+							<ul class="languageChangeLink">
+								<!-- <li>
+							<a href="${siteBaseUrl}/tool/changeShowAllSubtitle">
+								<spring:message code='显示所有字幕' />✔
+								${showAllSubtitleFlag eq '1' ? ' ✔' : ''}
+							</a>
+							</li> -->
+								<li>
+									<a href="${siteBaseUrl}/tool/changeLanguage/zh_CN">简体中文 ${localeLanguage eq 'zh_cn' ? ' ●' : ''}</a>
+								</li>
+								<li>
+									<a href="${siteBaseUrl}/tool/changeLanguage/zh_TW">繁體中文 ${localeLanguage eq 'zh_tw' ? ' ●' : ''}</a>
+								</li>
+								<li>
+									<a href="${siteBaseUrl}/tool/changeLanguage/ja">日本語 ${localeLanguage eq 'ja' ? ' ●' : ''}</a>
+								</li>
+								<li>
+									<a href="${siteBaseUrl}/tool/changeLanguage/en_US">English ${localeLanguage eq 'en_us' ? ' ●' : ''}</a>
+								</li>
+								<li>
+									<a href="${siteBaseUrl}/tool/changeLanguage/ar">عربي ${localeLanguage eq 'ar' ? ' ●' : ''}</a>
+								</li>
+								<li>
+									<a href="${siteBaseUrl}/tool/changeLanguage/clear">
+										<spring:message code='清除' />
+									</a>
+								</li>
+							</ul>
+						</td>
+					</tr>
+				</table>
+
+				<hr class="hr-xs">
+			</li>
+
+			<li></li>
+
+
 			<li class="navbar-wise-close">
 				<span id="navbar-wise-close-btn"></span>
 			</li>

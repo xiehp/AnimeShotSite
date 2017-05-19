@@ -44,14 +44,14 @@
 			if (page.hasPrevious()) {
 		%>
 		<li>
-			<a href="<c:out value='${searchStr}' />">&lt;&lt;</a>
+			<a href="${thisPageUrlWithoutParams}<c:out value='${searchStr}' />">&lt;&lt;</a>
 		</li>
 		<li>
 			<c:if test="${current - 1 eq 1}">
-				<a href="<c:out value='${searchStr}' />">&lt;</a>
+				<a href="${thisPageUrlWithoutParams}<c:out value='${searchStr}' />">&lt;</a>
 			</c:if>
 			<c:if test="${current - 1 ne 1}">
-				<a href="<c:out value='${searchStr}' />&page=${current - 1}">&lt;</a>
+				<a href="${thisPageUrlWithoutParams}<c:out value='${searchStr}' />&page=${current - 1}">&lt;</a>
 			</c:if>
 		</li>
 		<%
@@ -77,10 +77,10 @@
 				<c:otherwise>
 					<li>
 						<c:if test="${i eq 1}">
-							<a href="<c:out value='${searchStr}' />">${i}</a>
+							<a href="${thisPageUrlWithoutParams}<c:out value='${searchStr}' />">${i}</a>
 						</c:if>
 						<c:if test="${i ne 1}">
-							<a href="<c:out value='${searchStr}' />&page=${i}">${i}</a>
+							<a href="${thisPageUrlWithoutParams}<c:out value='${searchStr}' />&page=${i}">${i}</a>
 						</c:if>
 					</li>
 				</c:otherwise>
@@ -91,10 +91,10 @@
 			if (page.hasNext()) {
 		%>
 		<li>
-			<a href="<c:out value='${searchStr}' />&page=${current+1}">&gt;</a>
+			<a href="${thisPageUrlWithoutParams}<c:out value='${searchStr}' />&page=${current+1}">&gt;</a>
 		</li>
 		<li>
-			<a href="<c:out value='${searchStr}' />&page=${page.totalPages}">&gt;&gt;</a>
+			<a href="${thisPageUrlWithoutParams}<c:out value='${searchStr}' />&page=${page.totalPages}">&gt;&gt;</a>
 		</li>
 		<%
 			} else {

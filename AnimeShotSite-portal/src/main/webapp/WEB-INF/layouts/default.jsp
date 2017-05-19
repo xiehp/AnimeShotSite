@@ -94,7 +94,6 @@
 </head>
 
 <body class="<shiro:principal property="showSidebar"></shiro:principal>">
-	<div class="display-none1">${thisPageMipUrl}</div>
 	<div id="header">
 		<%@ include file="/WEB-INF/layouts/header.jsp"%>
 	</div>

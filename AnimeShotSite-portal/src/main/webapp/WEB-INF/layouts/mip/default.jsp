@@ -68,6 +68,24 @@
 	height: 0;
 }
 
+.languageChangeBlock {
+	display: inline-block;
+}
+
+.languageChangeLink {
+	
+}
+
+.languageChangeLink li {
+	
+}
+
+.languageChangeLink li a, .languageChangeLink li span {
+	line-height: 25px;
+	font-size: 14px !important;
+	text-align: left !important;
+}
+
 /* 左上角图标 */
 .navbar-brand {
 	white-space: nowrap;
@@ -84,7 +102,7 @@
 /* 图片根据尺寸自动改变大小 */
 /* 
 <c:set var="ImageAspectRatio" value="${(not empty animeEpisode.height and not empty animeEpisode.width) ? animeEpisode.height/animeEpisode.width : 9/16}" />
-<c:set var="shotImgHeight1" value="${ImageAspectRatio * 48}vw" />
+<c:set var="shotImgHeight1" value="${ImageAspectRatio * 46.5}vw" />
 <c:set var="shotImgHeightStyle1" value="height: ${shotImgHeight1};" />
 <c:set var="shotImgHeight2" value="${ImageAspectRatio * 31}vw" />
 <c:set var="shotImgHeightStyle2" value="height: ${shotImgHeight2};" />
@@ -97,7 +115,7 @@
  */
 @media ( min-width : 1px) {
 	.listImg {
-		width: 48vw;
+		width: 46.5vw;
 	}
 	.listImg mip-img { ${shotImgHeightStyle1
 		
@@ -446,7 +464,6 @@
 </head>
 
 <body class="<shiro:principal property="showSidebar"></shiro:principal>">
-	<div class="display-none1">${thisPageOriginalUrl}</div>
 	<div id="header">
 		<%@ include file="header.jsp"%>
 	</div>
@@ -471,6 +488,12 @@
 	<script src="https://mipcache.bdstatic.com/static/v1/mip-nav-slidedown/mip-nav-slidedown.js"></script>
 	<script src="https://mipcache.bdstatic.com/static/v1/mip-gototop/mip-gototop.js"></script>
 	<script src="https://mipcache.bdstatic.com/static/v1/mip-stats-baidu/mip-stats-baidu.js"></script>
+	<script src="https://mipcache.bdstatic.com/static/v1/mip-link/mip-link.js"></script>
+	<script src="https://mipcache.bdstatic.com/static/v1/mip-accordion/mip-accordion.js"></script>
+	<script src="http://mipcache.bdstatic.com/static/v1/mip-list/mip-list.js"></script>
+	<script src="https://mipcache.bdstatic.com/static/v1/mip-mustache/mip-mustache.js"></script>
+
+
 
 </body>
 </html>

@@ -231,8 +231,11 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 				// 生成远程访问本地的http或https地址
 				String httpScheme = XSSHttpUtil.getForwardedRemoteProto(request);
 				String portStr = XSSHttpUtil.getForwardedServerPort(request);
-				String serverName = shotSiteSetup.getAnimesiteServerHost();
-				if (XStringUtils.isBlank(serverName)) {
+				String serverName = XSSHttpUtil.getForwardedServerName(request);
+				if (!"localhost".equals(serverName)) {
+					serverName = shotSiteSetup.getAnimesiteServerHost();
+				}
+				if (XStringUtils.isBlank(serverName) || "localhost".equals(serverName)) {
 					// 获取访问host和port，主要用于本地调试
 					serverName = XSSHttpUtil.getForwardedServerName(request);
 
@@ -256,25 +259,41 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 
 				// 带contextPath的基本URL
 				String siteBaseUrl = XSSHttpUtil.getForwardedRemoteProto(request) + "://" + serverName + portStr + request.getContextPath();
+				String siteBaseUrlHttps = "https" + "://" + serverName + portStr + request.getContextPath();
 				request.setAttribute("siteBaseUrl", siteBaseUrl);
+				request.setAttribute("siteBaseUrlHttps", siteBaseUrlHttps);
+
+				// path：不带contextPath，带有参数的路径， url：完整的url
+				String thisPageParams = (XStringUtils.isBlank(request.getQueryString()) ? "" : "?" + request.getQueryString());
+				request.setAttribute("thisPageParams", thisPageParams);
 
 				String thisPagePathWithoutParams = request.getServletPath();
-				String thisPageParams = request.getQueryString();
-				String thisPagePath = thisPagePathWithoutParams + (XStringUtils.isBlank(thisPageParams) ? "" : "?" + thisPageParams);
-				String thisPagePathOriginal = thisPagePath.startsWith(mipPrefix) ? thisPagePath.replaceFirst(mipPrefix, "") : thisPagePath;
-				// 此处thisPagePathOriginal继续删除其他可能的路径前缀
-				String thisPagePathWithMip = mipPrefix + thisPagePathOriginal;
-				String thisPageUrl = siteBaseUrl + thisPagePath;
-				String thisPageMipUrl = siteBaseUrl + thisPagePathWithMip;
-				String thisPageOriginalUrl = siteBaseUrl + thisPagePathOriginal;
+				String thisPageOriginalPathWithoutParams = thisPagePathWithoutParams.startsWith(mipPrefix) ? thisPagePathWithoutParams.replaceFirst(mipPrefix, "") : thisPagePathWithoutParams;
+				String thisPageMipPathWithoutParams = mipPrefix + thisPageOriginalPathWithoutParams;
 				request.setAttribute("thisPagePathWithoutParams", thisPagePathWithoutParams);
-				request.setAttribute("thisPageParams", thisPageParams);
+				request.setAttribute("thisPageOriginalPathWithoutParams", thisPageOriginalPathWithoutParams);
+				request.setAttribute("thisPageMipPathWithoutParams", thisPageMipPathWithoutParams);
+
+				String thisPageUrlWithoutParams = siteBaseUrl + thisPagePathWithoutParams;
+				String thisPageMipUrlWithoutParams = siteBaseUrl + thisPageOriginalPathWithoutParams;
+				String thisPageOriginalUrlWithoutParams = siteBaseUrl + thisPageMipPathWithoutParams;
+				request.setAttribute("thisPageUrlWithoutParams", thisPageUrlWithoutParams);
+				request.setAttribute("thisPageMipUrlWithoutParams", thisPageMipUrlWithoutParams);
+				request.setAttribute("thisPageOriginalUrlWithoutParams", thisPageOriginalUrlWithoutParams);
+
+				String thisPagePath = thisPagePathWithoutParams + thisPageParams;
+				String thisPageOriginalPath = thisPageOriginalPathWithoutParams + thisPageParams;// 此处thisPagePathOriginal继续删除其他可能的路径前缀
+				String thisPageMipPath = thisPageMipPathWithoutParams + thisPageParams;
 				request.setAttribute("thisPagePath", thisPagePath);
-				request.setAttribute("thisPagePathRemoveMip", thisPagePathOriginal);
-				request.setAttribute("thisPagePathWithMip", thisPagePathWithMip);
+				request.setAttribute("thisPageOriginalPath", thisPageOriginalPath);
+				request.setAttribute("thisPageMipPath", thisPageMipPath);
+
+				String thisPageUrl = siteBaseUrl + thisPagePath;
+				String thisPageOriginalUrl = siteBaseUrl + thisPageOriginalPath;
+				String thisPageMipUrl = siteBaseUrl + thisPageMipPath;
 				request.setAttribute("thisPageUrl", thisPageUrl);
-				request.setAttribute("thisPageMipUrl", thisPageMipUrl);
 				request.setAttribute("thisPageOriginalUrl", thisPageOriginalUrl);
+				request.setAttribute("thisPageMipUrl", thisPageMipUrl);
 
 				// 告诉前台当前语言
 				String localeLanguage = XRequestUtils.getLocaleLanguageCountry(request).toLowerCase();
@@ -286,6 +305,13 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 				boolean isMipPage = thisPagePath.startsWith(mipPrefix);
 				request.setAttribute("isMipPage", isMipPage);
 
+				// 保存最后一次访问url
+				if (!thisPagePath.contains("/tool")) {
+					request.getSession().setAttribute(ConstantsWeb.SITE_SESSION_PRE_VISIT_PATH, request.getSession().getAttribute(ConstantsWeb.SITE_SESSION_LAST_VISIT_PATH));
+					request.getSession().setAttribute(ConstantsWeb.SITE_SESSION_PRE_VISIT_URL, request.getSession().getAttribute(ConstantsWeb.SITE_SESSION_LAST_VISIT_URL));
+					request.getSession().setAttribute(ConstantsWeb.SITE_SESSION_LAST_VISIT_PATH, thisPagePath);
+					request.getSession().setAttribute(ConstantsWeb.SITE_SESSION_LAST_VISIT_URL, thisPageUrl);
+				}
 			}
 		}
 	}

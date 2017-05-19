@@ -64,9 +64,18 @@
 	<div>
 		<!-- 图片 -->
 		<div id="shotImgDiv" class="thumbnail shotImgDivStyle" data-ImageAspectRatio="${ImageAspectRatio}">
-			<a class="shotImgHotPoint left-0" href="${siteBaseUrl}/mip/shot/view/${previousShotInfo.id}" title="<spring:message code='上一张' />"> </a>
-			<a class="shotImgHotPoint right-0" href="${siteBaseUrl}/mip/shot/view/${nextShotInfo.id}" title="<spring:message code='下一张' />"></a>
-
+			<c:if test="${not empty previousShotInfo.id}">
+				<a class="shotImgHotPoint left-0" href="${siteBaseUrl}/mip/shot/view/${previousShotInfo.id}" title="<spring:message code='上一张' />"> </a>
+			</c:if>
+			<c:if test="${empty previousShotInfo.id}">
+				<div class="shotImgHotPoint left-0" title="<spring:message code='没有上一张' />"> </div>
+			</c:if>
+			<c:if test="${not empty nextShotInfo.id}">
+				<a class="shotImgHotPoint right-0" href="${siteBaseUrl}/mip/shot/view/${nextShotInfo.id}" title="<spring:message code='下一张' />"></a>
+			</c:if>
+			<c:if test="${empty nextShotInfo.id}">
+				<div class="shotImgHotPoint right-0" title="<spring:message code='已经是最后一张了' />"> </div>
+			</c:if>
 			<mip-img id="shotImg" class="shotImg" src="${FullImageUrl}" alt="<c:out value='${EpisodeFullNameWithTime}' />" title="<c:out value='${EpisodeFullNameWithTime}' />"></mip-img>
 
 			<mip-img src="${PreFullImageUrl}" class="display-none"></mip-img>
@@ -112,12 +121,12 @@
 </div>
 
 <div class="buttonDiv">
-	<c:if test="${!empty previousShotInfo.id}">
+	<c:if test="${not empty previousShotInfo.id}">
 		<a class="btn btn-primary btn-md postByFromXXX" href="${siteBaseUrl}/mip/shot/view/${previousShotInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${previousShotInfo.formatedTimeChina}' />">
 			<spring:message code='上一张' />
 		</a>
 	</c:if>
-	<c:if test="${!empty nextShotInfo.id}">
+	<c:if test="${not empty nextShotInfo.id}">
 		<a class="btn btn-primary btn-md postByFromXXX" href="${siteBaseUrl}/mip/shot/view/${nextShotInfo.id}" title="<c:out value='${EpisodeFullName}' /> <c:out value='${nextShotInfo.formatedTimeChina}' />">
 			<spring:message code='下一张' />
 		</a>

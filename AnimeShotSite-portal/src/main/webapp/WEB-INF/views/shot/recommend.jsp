@@ -38,7 +38,10 @@
 
 <div>
 	<!-- 标题 -->
-	<div class="blockTitle"><spring:message code='推荐动漫截图' />${shotInfoPage.numberOfElements}张 共${shotInfoPage.totalElements}张图片</div>
+	<div class="blockTitle">
+		<spring:message code='推荐动漫截图' />${shotInfoPage.numberOfElements}张
+		共${shotInfoPage.totalElements}张图片
+	</div>
 
 	<!-- 截图一览 -->
 	<div class="row">
@@ -57,11 +60,13 @@
 				</a>
 				<c:if test="${IS_MASTER}">
 					<div class="btn btn-primary btn-xs" onclick="home.publicLike('${shotInfo.id}');">
-						<span class="glyphicon glyphicon-star"></span><spring:message code='喜欢' />
+						<span class="glyphicon glyphicon-star"></span>
+						<spring:message code='喜欢' />
 						<div id="publicLike_${shotInfo.id}" class="badge" style="padding-top: 0px;">${shotInfo.publicLikeCount}</div>
 					</div>
 					<div class="btn btn-primary btn-xs" onclick="home.masterLike('${MANAGE_URL_STR}/shot/masterLike', '${shotInfo.id}');">
-						<span class="glyphicon glyphicon-star"></span><spring:message code='推荐' />
+						<span class="glyphicon glyphicon-star"></span>
+						<spring:message code='推荐' />
 						<div id="masterLike_${shotInfo.id}" class="badge" style="padding-top: 0px;">${shotInfo.masterRecommendRank}</div>
 					</div>
 				</c:if>
@@ -75,6 +80,8 @@
 </div>
 
 <div>
-	<a class="btn btn-primary" href="${ctx}/"><spring:message code='返回首页' /></a>
+	<a class="btn btn-primary" href="${ctx}/">
+		<spring:message code='返回首页' />
+	</a>
 </div>
 

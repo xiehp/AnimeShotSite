@@ -28,14 +28,14 @@
 			if (page.hasPrevious()) {
 		%>
 		<li>
-			<a href="${requestURI}">&lt;&lt;</a>
+			<a href="${thisPageUrlWithoutParams}">&lt;&lt;</a>
 		</li>
 		<li>
 			<c:if test="${current - 1 eq 1}">
-				<a href="${requestURI}">&lt;</a>
+				<a href="${thisPageUrlWithoutParams}">&lt;</a>
 			</c:if>
 			<c:if test="${current - 1 ne 1}">
-				<a href="?page=${current - 1}">&lt;</a>
+				<a href="${thisPageUrlWithoutParams}?page=${current - 1}">&lt;</a>
 			</c:if>
 		</li>
 		<%
@@ -61,10 +61,10 @@
 				<c:otherwise>
 					<li>
 						<c:if test="${i eq 1}">
-							<a href="${requestURI}">${i}</a>
+							<a href="${thisPageUrlWithoutParams}">${i}</a>
 						</c:if>
 						<c:if test="${i ne 1}">
-							<a href="?page=${i}">${i}</a>
+							<a href="${thisPageUrlWithoutParams}?page=${i}">${i}</a>
 						</c:if>
 					</li>
 				</c:otherwise>
@@ -75,10 +75,10 @@
 			if (page.hasNext()) {
 		%>
 		<li>
-			<a href="?page=${current+1}">&gt;</a>
+			<a href="${thisPageUrlWithoutParams}?page=${current+1}">&gt;</a>
 		</li>
 		<li>
-			<a href="?page=${page.totalPages}">&gt;&gt;</a>
+			<a href="${thisPageUrlWithoutParams}?page=${page.totalPages}">&gt;&gt;</a>
 		</li>
 		<%
 			} else {

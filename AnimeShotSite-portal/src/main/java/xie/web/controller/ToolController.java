@@ -1,5 +1,6 @@
 package xie.web.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.springframework.beans.propertyeditors.LocaleEditor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,9 +29,14 @@ import xie.animeshotsite.setup.ShotSiteSetup;
 import xie.animeshotsite.setup.UserConfig;
 import xie.animeshotsite.utils.SiteUtils;
 import xie.base.controller.BaseController;
+import xie.common.Constants;
 import xie.common.string.XStringUtils;
+import xie.common.utils.JsonUtil;
+import xie.common.utils.XCookieUtils;
+import xie.common.web.util.ConstantsWeb;
 import xie.module.language.XELangLocal;
 import xie.module.language.translate.baidu.XELangBaidu;
+import xie.web.util.SiteConstants;
 
 @Controller
 @RequestMapping(value = "/tool")
@@ -95,6 +102,22 @@ public class ToolController extends BaseController {
 		return map;
 	}
 
+	/**
+	 * 切换是否显示所有字幕
+	 * 
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/changeShowAllSubtitle")
+	public String changeShowAllSubtitle(
+			HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+
+		String showAllSubtitleFlag = XCookieUtils.getCookieValue(request, SiteConstants.COOKIE_SHOW_ALL_SUBTITLE_FLAG);
+		String newFlag = Constants.FLAG_STR_YES.equals(showAllSubtitleFlag) ? Constants.FLAG_STR_NO : Constants.FLAG_STR_YES;
+		XCookieUtils.addCookieValue(response, SiteConstants.COOKIE_SHOW_ALL_SUBTITLE_FLAG, newFlag);
+
+		return "redirect:" + request.getSession().getAttribute(ConstantsWeb.SITE_SESSION_LAST_VISIT_PATH);
+	}
+
 	@RequestMapping(value = "/changeLanguage")
 	@ResponseBody
 	public ModelMap changeLanguage(
@@ -108,7 +131,10 @@ public class ToolController extends BaseController {
 				throw new IllegalStateException("No LocaleResolver found: not in a DispatcherServlet request?");
 			}
 
-			if (XStringUtils.isNotBlank(new_lang)) {
+			if ("clear".equals(new_lang)) {
+				localeResolver.setLocale(request, response, null);
+				map = getSuccessCode(messageSource.getMessage("清除语言成功", null, localeResolver.resolveLocale(request)));
+			} else if (XStringUtils.isNotBlank(new_lang)) {
 				LocaleEditor localeEditor = new LocaleEditor();
 				localeEditor.setAsText(new_lang);
 				localeResolver.setLocale(request, response, (Locale) localeEditor.getValue());
@@ -122,6 +148,16 @@ public class ToolController extends BaseController {
 			map = getFailCode("切换语言失败");
 		}
 		return new ModelMap(map);
+	}
+
+	@RequestMapping(value = "/changeLanguage/{new_lang}")
+	public String changeLanguageForm(
+			@PathVariable String new_lang,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		changeLanguage(new_lang, request, response);
+
+		return "redirect:" + request.getSession().getAttribute(ConstantsWeb.SITE_SESSION_LAST_VISIT_PATH);
 	}
 
 	/**
@@ -152,6 +188,16 @@ public class ToolController extends BaseController {
 		return new ModelMap(map);
 	}
 
+	@RequestMapping(value = "/changeTranLan/{newTranLan}")
+	public String changeTranLanForm(
+			@PathVariable String newTranLan,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		changeTranLan(newTranLan, request, response);
+
+		return "redirect:" + request.getSession().getAttribute(ConstantsWeb.SITE_SESSION_LAST_VISIT_PATH);
+	}
+
 	/**
 	 * 改变翻译颜色
 	 */
@@ -173,6 +219,16 @@ public class ToolController extends BaseController {
 		return new ModelMap(map);
 	}
 
+	@RequestMapping(value = "/changeTranLanColor/{newTranLanColor}")
+	public String changeTranLanColorForm(
+			@PathVariable String newTranLanColor,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		changeTranLanColor(newTranLanColor, request, response);
+
+		return "redirect:" + request.getSession().getAttribute(ConstantsWeb.SITE_SESSION_LAST_VISIT_PATH);
+	}
+
 	/**
 	 * 改变翻译字体大小
 	 */
@@ -192,6 +248,16 @@ public class ToolController extends BaseController {
 			map = getFailCode("切换翻译字体大小失败");
 		}
 		return new ModelMap(map);
+	}
+
+	@RequestMapping(value = "/changeTranLanFontsize/{newTranLanFonsize}")
+	public String changeTranLanFontsizeForm(
+			@PathVariable String newTranLanFonsize,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		changeTranLanFontsize(newTranLanFonsize, request, response);
+
+		return "redirect:" + request.getSession().getAttribute(ConstantsWeb.SITE_SESSION_LAST_VISIT_PATH);
 	}
 
 	@RequestMapping(value = "/getTranLanList")
@@ -246,6 +312,8 @@ public class ToolController extends BaseController {
 				}
 			});
 			data.put("tranLanList", tranLanList);
+			data.put("items", tranLanList);
+			data.put("isEnd", 1);
 
 			// 其他信息
 			if (userConfig.getTranLanguage() != null) {
@@ -257,10 +325,24 @@ public class ToolController extends BaseController {
 
 			result = getSuccessCode();
 			result.put("data", data);
+			result.put("status", 0); // mip用
 
 		} catch (Exception ex) {
 			result = getFailCode("切换语言失败");
+			result.put("status", 1); // mip用
 		}
 		return result;
+	}
+
+	@RequestMapping(value = "/getTranLanList.jsonp")
+	@ResponseBody
+	public String getTranLanList_jsonp(
+			@RequestParam String callback,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		Map<String, Object> map = getTranLanList(request, response);
+		String jsonData = JsonUtil.toJsonString(map);
+		String returnStr = callback + "(" + jsonData + ")";
+		return returnStr;
 	}
 }
