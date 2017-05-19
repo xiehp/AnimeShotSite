@@ -95,6 +95,22 @@ public class IndexController extends BaseController {
 			List<ShotInfo> masterRecommandShotList = entityCache.get("masterRecommandShotList" + "Index", () -> {
 				// 一周之内的
 				List<ShotInfo> list = shotInfoService.getMasterRecommandShotList(1, 7, 42);
+				// 二周之内的
+				if (list.size() == 0) {
+					list = shotInfoService.getMasterRecommandShotList(1, 14, 42);
+				}
+				// 三周之内的
+				if (list.size() == 0) {
+					list = shotInfoService.getMasterRecommandShotList(1, 21, 42);
+				}
+				// 一月之内的
+				if (list.size() == 0) {
+					list = shotInfoService.getMasterRecommandShotList(1, 31, 42);
+				}
+				// 半年之内的
+				if (list.size() == 0) {
+					list = shotInfoService.getMasterRecommandShotList(1, 180, 42);
+				}
 				// 一年之内的
 				if (list.size() == 0) {
 					list = shotInfoService.getMasterRecommandShotList(1, 365, 42);
