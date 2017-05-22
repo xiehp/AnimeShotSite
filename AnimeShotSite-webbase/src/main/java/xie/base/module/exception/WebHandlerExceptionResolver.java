@@ -1,5 +1,6 @@
-package xie.common.exception;
+package xie.base.module.exception;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,33 +13,63 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import xie.base.module.ajax.vo.GoPageResult;
 import xie.common.Constants;
-import xie.common.response.body.GoPageResult;
+import xie.common.string.XStringUtils;
+import xie.common.utils.HttpUtils;
 
 
-
-//@Component
-public class ExceptionHandler implements HandlerExceptionResolver {
+@Component
+public class WebHandlerExceptionResolver implements HandlerExceptionResolver {
 
 	private Logger _log = LoggerFactory.getLogger(this.getClass());
 
-	//private static boolean LogFlag = GetterUtil.getBoolean(PropsUtil.getProperty(PropsKeys.SYSTEM_ERROR_LOG_ENABLED), false);
+//	private static boolean LogFlag = GetterUtil.getBoolean(PropsUtil.getProperty(PropsKeys.SYSTEM_ERROR_LOG_ENABLED), false);
 
 	public ModelAndView resolveException(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex) {
 		String url = request.getRequestURL().toString();
-		_log.error("url: {} ,resolveException error: {}", url, ex);
+		String uri = request.getRequestURI();
+		String contextPath = request.getContextPath();
+		_log.error("请求发生错误：contextPath: {}", contextPath);
+		_log.error("请求url: {}", url);
+		try {
+			Map<String, String[]> map = request.getParameterMap();
+			Map<String, String> newMap = new HashMap<>();
+			for (String key : map.keySet()) {
+				String[] values = map.get(key);
+				String newValue = null;
+				if (values != null) {
+					newValue = "\"";
+					newValue += String.join("\", \"", values);
+					newValue += "\"";
+				}
+				newMap.put(key, newValue);
+			}
+			_log.error("请求参数: {}", newMap);
+		} catch (Exception e) {
+			_log.error("获取请求参数发生异常: {}", e);
+		}
+		_log.error("异常信息", ex);
 
 		// 非异步请求，直接跳转到错误页面
-		if (!(request.getHeader("accept").indexOf("application/json") > -1
-				|| (request.getHeader("X-Requested-With") != null && request.getHeader("X-Requested-With").indexOf("XMLHttpRequest") > -1))) {
+		boolean ajaxFlg = HttpUtils.needJsonResponse(request);
+
+		if (!ajaxFlg) {
 			ModelAndView modelAndView = new ModelAndView("error/500");
+			if (uri.startsWith(contextPath + "/portal")) {
+				modelAndView = new ModelAndView("portal/error/500");
+			}
 			modelAndView.addObject("exception", ex);
 			return modelAndView;
 		} else {
 			GoPageResult goPageResult = new GoPageResult();
 			goPageResult.setSuccess(false);
-			goPageResult.setAlertMessage(new String[] { ex.getMessage() });
+			String message = ex.getMessage();
+			if (XStringUtils.isBlank(message)) {
+				message = ex.toString();
+			}
+			goPageResult.setAlertMessage(new String[] { message });
 			goPageResult.setException(ex.getClass().toString());
 			goPageResult.setGoPage("");
 			goPageResult.setCode(Constants.FAIL_CODE);

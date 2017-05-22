@@ -1,6 +1,6 @@
-package xie.common.response.body;
+package xie.base.module.ajax.vo;
 
-import xie.common.utils.string.StringUtil;
+import xie.common.string.XStringUtils;
 
 /**
  * 
@@ -26,7 +26,7 @@ public class GoPageUtil {
 	}
 
 	private static GoPageResult getResult(String message, final String goPage, final String openerGoPage, final Object data) {
-		return getResultByMessage(new String[] { message }, null, goPage, openerGoPage, data);
+		return getResultByMessage(message == null ? null : new String[] { message }, null, goPage, openerGoPage, data);
 	}
 
 	public static GoPageResult getResultByMessage(final String[] alertMessage, final String exception, final String goPage, final String openerGoPage, final Object data) {
@@ -34,7 +34,7 @@ public class GoPageUtil {
 
 		goPageResult.setAlertMessage(alertMessage);
 		goPageResult.setData(data);
-		if (StringUtil.isNull(exception)) {
+		if (XStringUtils.isBlank(exception)) {
 			goPageResult.setException(null);
 		} else {
 			goPageResult.setException("server occur exception");

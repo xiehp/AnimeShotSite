@@ -1,4 +1,4 @@
-package xie.common.response.body;
+package xie.base.module.ajax.vo;
 
 import java.io.Serializable;
 
@@ -12,18 +12,45 @@ public class BaseResult<T extends Object> implements Serializable {
 	private static final long serialVersionUID = -5718084560573378145L;
 	// 提示信息
 	protected String[] alertMessage;
-	
+
 	// 异常信息
 	protected String exception;
 	// 返回的数据
 	protected T data;
 	// 请求是否成功
 	protected boolean success = true;
-	//要调整的页面
+	// 要调整的页面
 	protected String goPage;
+
+	/**
+	 * 标志位置为成功，并且弹出“操作成功”窗口
+	 */
+	public void success() {
+		this.setSuccess(true);
+		this.setAlertMessage(new String[] { "操作成功!" });
+	}
+
+	/**
+	 * 标志位置为失败，并且弹出“操作失败请联系管理员”窗口
+	 */
+	public void failed() {
+		this.setSuccess(false);
+		this.setAlertMessage(new String[] { "操作失败请联系管理员!" });
+	}
 
 	public String[] getAlertMessage() {
 		return alertMessage;
+	}
+
+	public void addAlertMessage(final String alertMessage) {
+		if (this.alertMessage == null) {
+			this.alertMessage = new String[] { alertMessage };
+		} else {
+			String[] newArray = new String[alertMessage.length() + 1];
+			System.arraycopy(alertMessage, 0, newArray, 0, alertMessage.length());
+			newArray[newArray.length - 1] = alertMessage;
+			this.alertMessage = newArray;
+		}
 	}
 
 	public void setAlertMessage(final String alertMessage[]) {

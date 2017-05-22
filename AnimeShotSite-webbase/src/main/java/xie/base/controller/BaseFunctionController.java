@@ -6,8 +6,6 @@ import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,9 +16,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import xie.common.utils.UploadUtil;
 
 public class BaseFunctionController<M, ID extends Serializable> extends BaseController {
-	
-	protected Logger _log = LoggerFactory.getLogger(BaseFunctionController.class);
-	
+
 	private final String PARAM_NAME = "param";
 
 	@RequestMapping(value="/uploadFile")

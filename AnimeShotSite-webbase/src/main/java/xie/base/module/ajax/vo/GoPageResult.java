@@ -1,10 +1,9 @@
-package xie.common.response.body;
+package xie.base.module.ajax.vo;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import xie.common.utils.JsonUtil;
-
 
 /**
  * 
@@ -63,6 +62,8 @@ public class GoPageResult extends BaseResult<Object> {
 	}
 
 	/**
+	 * PS：此方法不会让前台js弹出信息窗口，如需要，请使用addAlertMessage
+	 * 
 	 * @param message the message to set
 	 */
 	public void setMessage(String message) {

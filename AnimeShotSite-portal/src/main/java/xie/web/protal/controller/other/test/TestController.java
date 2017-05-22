@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.base.controller.BaseController;
-import xie.common.response.body.GoPageResult;
+import xie.base.module.ajax.vo.GoPageResult;
 import xie.other.ma.db.repository.CommonRecordDao;
 import xie.other.ma.db.repository.MaDamageDao;
 import xie.other.ma.db.service.CommentRecordService;

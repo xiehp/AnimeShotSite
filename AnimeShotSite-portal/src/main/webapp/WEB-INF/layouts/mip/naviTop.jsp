@@ -49,11 +49,11 @@
 				</a>
 				<hr class="hr-xs">
 			</li>
-			<li style="margin: auto;">
+			<li class="languageChangeLi" >
 				<table>
 					<tr>
-						<td style="vertical-align: top;">
-							<a href="#" style="margin-right: 10px;">Language</a>
+						<td >
+							<a href="#">Language</a>
 						</td>
 						<td>
 							<ul class="languageChangeLink">

@@ -1,4 +1,4 @@
-package xie.common.exception;
+package xie.base.module.exception;
 
 import java.util.Locale;
 
@@ -9,8 +9,8 @@ public class CodeApplicationException extends Exception {
 
 	private static final long serialVersionUID = -114729666217638379L;
 
-//	public final static CodeApplicationException SUCCESS = new CodeApplicationException(PropsKeys.TBRESOURCES_MESSAGE_ID_SUCCESS);
-//	public final static CodeApplicationException FAILURE = new CodeApplicationException(PropsKeys.TBRESOURCES_MESSAGE_ID_FAILURE);
+	// public final static CodeApplicationException SUCCESS = new CodeApplicationException(PropsKeys.TBRESOURCES_MESSAGE_ID_SUCCESS);
+	// public final static CodeApplicationException FAILURE = new CodeApplicationException(PropsKeys.TBRESOURCES_MESSAGE_ID_FAILURE);
 
 	// 代码
 	private String code;
@@ -26,7 +26,6 @@ public class CodeApplicationException extends Exception {
 	}
 
 	/**
-	 * 
 	 * 构造函数
 	 * 
 	 * @param code 代码
@@ -41,7 +40,6 @@ public class CodeApplicationException extends Exception {
 	}
 
 	/**
-	 * 
 	 * 构造函数
 	 * 
 	 * @param code 代码
@@ -52,7 +50,6 @@ public class CodeApplicationException extends Exception {
 	}
 
 	/**
-	 * 
 	 * 构造函数
 	 * 
 	 * @param code 代码
@@ -63,7 +60,6 @@ public class CodeApplicationException extends Exception {
 	}
 
 	/**
-	 * 
 	 * 构造函数
 	 * 
 	 * @param code 代码

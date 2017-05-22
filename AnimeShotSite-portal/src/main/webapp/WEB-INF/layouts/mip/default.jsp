@@ -68,6 +68,18 @@
 	height: 0;
 }
 
+.languageChangeLi {
+	margin: auto;
+}
+
+.languageChangeLi td:FIRST-CHILD {
+	vertical-align: top;
+}
+
+.languageChangeLi td:FIRST-CHILD a {
+	margin-right: 10px;
+}
+
 .languageChangeBlock {
 	display: inline-block;
 }

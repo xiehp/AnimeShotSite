@@ -33,6 +33,11 @@ body {
 	function ajax() {
 		home.post();
 	}
+	
+	
+	function post4() {
+		$.homePost("/testController/goPageResult4");
+	}
 </script>
 
 <div class="row">
@@ -43,10 +48,19 @@ body {
 	</form>
 
 	<form action="${ctx}/testController/goPageResult1" method="post">
-		<input type="submit" class="btn btn-sm btn-primary" value="goPageResult1" />
+		<a href="#" onclick="$.homePost('/testController/goPageResult1');" class="btn btn-sm btn-primary"  >goPageResult1</a>
 	</form>
 
 	<form action="${ctx}/testController/goPageResult2" method="post">
-		<input type="submit" class="btn btn-sm btn-primary" value="goPageResult2" />
+		<a href="#" onclick="$.homePost('/testController/goPageResult2');" class="btn btn-sm btn-primary" >goPageResult2</a>
+	</form>
+
+	<form action="${ctx}/testController/goPageResult3" method="post">
+		<a href="#" onclick="$.homePost('/testController/goPageResult3');" class="btn btn-sm btn-primary" >goPageResult3 异常抛出</a>
+	</form>
+
+	<form action="${ctx}/testController/goPageResult4" method="post">
+		<a href="#" onclick="$.homePost('/testController/goPageResult4');" class="btn btn-sm btn-primary">goPageResult4 异常抛出codeApplicationException</a>
+		
 	</form>
 </div>

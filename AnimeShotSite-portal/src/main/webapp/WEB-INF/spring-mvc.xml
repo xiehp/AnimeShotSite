@@ -106,7 +106,5 @@
 		</mvc:interceptor>
 	</mvc:interceptors>
 
-<!-- 
-	<bean id="exceptionHandler" class="xie.common.exception.ExceptionHandler"></bean>
- -->
+	<bean id="exceptionHandler" class="xie.base.module.exception.WebHandlerExceptionResolver"></bean>
 </beans>
