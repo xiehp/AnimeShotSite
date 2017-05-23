@@ -71,7 +71,7 @@
 	<jpa:auditing auditor-aware-ref="auditorAware" />
 
 	<!-- Spring Data Jpa配置, 扫描base-package下所有继承于Repository<T,ID>的接口 -->
-	<jpa:repositories base-package="xie" transaction-manager-ref="transactionManager" entity-manager-factory-ref="entityManagerFactory" />
+	<jpa:repositories base-package="xie.**.repository" transaction-manager-ref="transactionManager" entity-manager-factory-ref="entityManagerFactory" />
 	
 	<!-- 事务管理器配置, Jpa单数据源事务 -->
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">

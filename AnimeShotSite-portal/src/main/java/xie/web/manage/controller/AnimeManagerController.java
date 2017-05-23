@@ -25,6 +25,7 @@ import xie.animeshotsite.db.service.ImageUrlService;
 import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseManagerController;
+import xie.base.module.ajax.vo.GoPageResult;
 import xie.base.service.BaseService;
 import xie.common.Constants;
 import xie.common.date.DateUtil;
@@ -131,10 +132,15 @@ public class AnimeManagerController extends BaseManagerController<AnimeInfo, Str
 	}
 
 	@Override
-	public Map<String, Object> updateOneColumn(String id, String columnName, String columnValue) {
+	public GoPageResult updateOneColumn(String id, String columnName, String columnValue, HttpServletRequest request) {
+		GoPageResult goPageResult = null;
 		if ("showFlg".equals(columnName) && Constants.FLAG_STR_YES.equals(columnValue)) {
-			super.updateOneColumn(id, "showDate", DateUtil.convertToString(new Date()));
+			goPageResult = super.updateOneColumn(id, "showDate", DateUtil.convertToString(new Date()), request);
+			if (!goPageResult.isSuccess()) {
+				return goPageResult;
+			}
 		}
-		return super.updateOneColumn(id, columnName, columnValue);
+
+		return super.updateOneColumn(id, columnName, columnValue, request);
 	}
 }

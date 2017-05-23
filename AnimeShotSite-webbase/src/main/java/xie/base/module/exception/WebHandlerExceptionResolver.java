@@ -18,21 +18,32 @@ import xie.common.Constants;
 import xie.common.string.XStringUtils;
 import xie.common.utils.HttpUtils;
 
-
 @Component
 public class WebHandlerExceptionResolver implements HandlerExceptionResolver {
 
 	private Logger _log = LoggerFactory.getLogger(this.getClass());
 
-//	private static boolean LogFlag = GetterUtil.getBoolean(PropsUtil.getProperty(PropsKeys.SYSTEM_ERROR_LOG_ENABLED), false);
+	// private static boolean LogFlag = GetterUtil.getBoolean(PropsUtil.getProperty(PropsKeys.SYSTEM_ERROR_LOG_ENABLED), false);
 
 	public ModelAndView resolveException(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex) {
+		return processException(request, response, handler, ex, _log);
+	}
+
+	public static ModelAndView processException(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			Object handler,
+			Exception ex, Logger log) {
+
+		log.error(log.getName() + "截获住异常，开始处理");
+		log.error("handler: {}", handler);
+
 		String url = request.getRequestURL().toString();
 		String uri = request.getRequestURI();
 		String contextPath = request.getContextPath();
-		_log.error("请求发生错误：contextPath: {}", contextPath);
-		_log.error("请求url: {}", url);
+		log.error("请求发生错误：contextPath: {}", contextPath);
+		log.error("请求url: {}", url);
 		try {
 			Map<String, String[]> map = request.getParameterMap();
 			Map<String, String> newMap = new HashMap<>();
@@ -46,11 +57,11 @@ public class WebHandlerExceptionResolver implements HandlerExceptionResolver {
 				}
 				newMap.put(key, newValue);
 			}
-			_log.error("请求参数: {}", newMap);
+			log.error("请求参数: {}", newMap);
 		} catch (Exception e) {
-			_log.error("获取请求参数发生异常: {}", e);
+			log.error("获取请求参数发生异常: {}", e);
 		}
-		_log.error("异常信息", ex);
+		log.error("异常信息", ex);
 
 		// 非异步请求，直接跳转到错误页面
 		boolean ajaxFlg = HttpUtils.needJsonResponse(request);

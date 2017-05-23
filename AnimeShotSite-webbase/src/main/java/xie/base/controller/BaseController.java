@@ -3,6 +3,9 @@ package xie.base.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,13 +18,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.common.collect.Maps;
 
+import xie.base.module.ajax.vo.GoPageResult;
+import xie.base.module.ajax.vo.GoPageUtil;
 import xie.base.page.PageInfo;
 import xie.common.Constants;
+import xie.module.spring.utils.XMessageSourceUtils;
 import xie.sys.auth.service.realm.ShiroRDbRealm.ShiroUser;
 
 public abstract class BaseController {
 
 	protected Logger _log = LoggerFactory.getLogger(this.getClass());
+
+	@Resource
+	protected XMessageSourceUtils messageSourceUtils;
+
+	@Resource
+	protected GoPageUtil goPageUtil;
 
 	/**
 	 * 本Controll对应contextPath的root的url
@@ -141,5 +153,24 @@ public abstract class BaseController {
 		map.put(Constants.JSON_RESPONSE_KEY_SUCCESS, false);
 		map.put(Constants.JSON_RESPONSE_KEY_MESSAGE, message);
 		return map;
+	}
+
+	/**
+	 * 创建成功的返回json数据，带弹出”操作成功“提示框
+	 */
+	public GoPageResult createSuccess(HttpServletRequest request) {
+		return goPageUtil.createSuccess(request);
+	}
+
+	public GoPageResult createSuccess(HttpServletRequest request, String message) {
+		return goPageUtil.createSuccess(request, message);
+	}
+
+	public GoPageResult createFail(HttpServletRequest request) {
+		return goPageUtil.createFail(request);
+	}
+
+	public GoPageResult createFail(HttpServletRequest request, String message) {
+		return goPageUtil.createFail(request, message);
 	}
 }

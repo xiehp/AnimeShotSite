@@ -61,3 +61,13 @@ where exists (select * from subtitle_line where subtitle_line.SUBTITLE_INFO_ID =
 -- 删除繁体字幕
 delete from subtitle_line where SUBTITLE_INFO_ID in (select id from subtitle_info where ANIME_INFO_ID='f39c57f45580ccaf0155aff0c4410054' and LANGUAGE = 4)  ;
 delete  from subtitle_info where ANIME_INFO_ID='f39c57f45580ccaf0155aff0c4410054' and LANGUAGE = 4;
+
+
+
+-- 更新贴图库地址
+SELECT * FROM animeshotsiteinst1.shot_info where TIETUKU_URL_PREFIX like '%https://i2.muimg.com%';
+update shot_info set TIETUKU_URL_PREFIX='http://i2.muimg.com/541950/' where TIETUKU_URL_PREFIX = 'https://i2.muimg.com/541950/';
+update gif_info set TIETUKU_URL_PREFIX='http://i2.muimg.com/541950/' where TIETUKU_URL_PREFIX = 'https://i2.muimg.com/541950/';
+update image_url set TIETUKU_URL_PREFIX='http://i2.muimg.com/541950/' where TIETUKU_URL_PREFIX = 'https://i2.muimg.com/541950/';
+
+

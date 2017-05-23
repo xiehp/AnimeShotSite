@@ -1,5 +1,7 @@
 package xie.common.utils;
 
+import java.util.Locale;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -33,14 +35,16 @@ public class XRequestUtils {
 
 	/**
 	 * 从spring里获得locale
+	 * 
 	 * @param request
 	 * @return
 	 */
 	public static String getLocaleLanguageCountry(HttpServletRequest request) {
 		String localeLanguage = Constants.LANGUAGE_UNKNOW;
-		if (RequestContextUtils.getLocale(request) != null) {
-			String language = RequestContextUtils.getLocale(request).getLanguage();
-			String country = RequestContextUtils.getLocale(request).getCountry();
+		Locale locale = RequestContextUtils.getLocale(request);
+		if (locale != null) {
+			String language = locale.getLanguage();
+			String country = locale.getCountry();
 			localeLanguage = language + (XStringUtils.isBlank(country) ? "" : "_" + country);
 		}
 

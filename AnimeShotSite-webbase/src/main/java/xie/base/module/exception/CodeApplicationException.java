@@ -85,7 +85,10 @@ public class CodeApplicationException extends Exception {
 	}
 
 	public String getMessage(Locale locale) {
-		String message = messageSource.getMessage(getCode(), param, locale);
+		String message = getCode();
+		if (messageSource != null) {
+			message = messageSource.getMessage(getCode(), param, locale);
+		}
 		return message;
 	}
 }

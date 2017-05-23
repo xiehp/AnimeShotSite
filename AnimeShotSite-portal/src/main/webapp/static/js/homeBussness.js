@@ -69,11 +69,11 @@ function changeLanguage(language) {
     param = {};
     param.new_lang = language;
     $.homePost("/tool/changeLanguage", param, function (data) {
-        if (data.hashMap.success) {
-            $.showMessageModal(data.hashMap.message);
+        if (data.success) {
+            //$.showMessageModal(data.message);
             window.location.reload();
         } else {
-            $.showMessageModal(data.hashMap.message);
+            //$.showMessageModal(data.message);
         }
     });
 }
@@ -85,11 +85,11 @@ function changeTranLan(language) {
     param = {};
     param.newTranLan = language;
     $.homePost("/tool/changeTranLan", param, function (data) {
-        if (data.hashMap.success) {
-            $.showMessageModal(data.hashMap.message);
+        if (data.success) {
+            //$.showMessageModal(data.message);
             window.location.reload();
         } else {
-            $.showMessageModal(data.hashMap.message);
+            //$.showMessageModal(data.message);
         }
     });
 }
@@ -101,11 +101,11 @@ function changeTranLanColor(color) {
     param = {};
     param.newTranLanColor = color;
     $.homePost("/tool/changeTranLanColor", param, function (data) {
-        if (data.hashMap.success) {
-            $.showMessageModal(data.hashMap.message);
+        if (data.success) {
+            //$.showMessageModal(data.message);
             // window.location.reload();
         } else {
-            $.showMessageModal(data.hashMap.message);
+            //$.showMessageModal(data.message);
         }
     });
 }
@@ -117,11 +117,11 @@ function changeTranLanFontsize(thisObj) {
     param = {};
     param.newTranLanFonsize = $(thisObj).css("font-size");
     $.homePost("/tool/changeTranLanFontsize", param, function (data) {
-        if (data.hashMap.success) {
-            $.showMessageModal(data.hashMap.message);
+        if (data.success) {
+            //$.showMessageModal(data.message);
             window.location.reload();
         } else {
-            $.showMessageModal(data.hashMap.message);
+            //$.showMessageModal(data.message);
         }
     });
 }

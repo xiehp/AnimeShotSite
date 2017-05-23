@@ -52,7 +52,7 @@ body {
 	</form>
 
 	<form action="${ctx}/testController/goPageResult2" method="post">
-		<a href="#" onclick="$.homePost('/testController/goPageResult2');" class="btn btn-sm btn-primary" >goPageResult2</a>
+		<a href="#" onclick="$.homePost('/testController/goPageResult2');" class="btn btn-sm btn-primary" >goPageResult2 to /anime</a>
 	</form>
 
 	<form action="${ctx}/testController/goPageResult3" method="post">

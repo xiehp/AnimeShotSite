@@ -1,131 +1,176 @@
 /**
- * Doc: http://www.layui.com/doc/modules/layer.html#icon Created by zhao on 2016/10/27.
+ * Doc: http://www.layui.com/doc/modules/layer.html#icon<br>
+ * Doc: http://www.jeasyui.net/plugins/182.html 2016/10/27.<br>
  */
-
 var Message = function() {
 
-	// 默认带确认框
-	var baseStyle = {
-		shade : 0.4, // 遮罩透明度
-		moveType : 1, // 拖拽风格，0是默认，1是传统拖动
-		shift : 4, // 0-6的动画形式，-1不开启
-	}
-
-	function showMessageBase(title, html, buttenNameList, shift, argumentsList) {
-		var localStyle = baseStyle
-
-		localStyle.title = title
-		localStyle.content = html
-
-		if (shift != null) {
-			localStyle.shift = shift
+	/**
+	 * 提示框 <br>
+	 * 
+	 * @param content 内容
+	 * @param func 点击确定按钮后执行的方法(可空)
+	 */
+	var alert = function(content, title, func) {
+		if (title == null) {
+			title = "提示"
 		}
 
-		if (buttenNameList != null) {
-			// 增加按钮
-			if (buttenNameList.length != 0 && buttenNameList instanceof Array) {
-				localStyle.btn = buttenNameList
-
-				if (argumentsList != null) {
-					for (var i = 0; i < argumentsList.length; i++) {
-						var keyName = "yes"
-						if (i != 0) { // 如果是第四个参数 设置为yes
-							keyName = 'btn' + (i + 1)
-						}
-						localStyle[keyName] = (function(i) {
-							return function(index) {
-								argumentsList[i]()
-								layer.close(index)
-							}
-						})(i)
-					}
-				}
-			} else {
-				console.log("buttenNameList 参数错误")
-			}
-		}
-		// 生成弹出层
-		layer.open(localStyle);
-	}
-
-	// 对html增加样式
-	function modifyHtmlStyle(html) {
-		if (html.indexOf('style') < 0) {
-			html = '<div style="text-align: center;margin-top: 50px;">' + html + '</div>'
-		}
-		return html
-	}
-	closeLoad
-
-	function info(html, buttenNameList) {
-		var argumentsList = null
-		if (arguments.length > 2) {
-			argumentsList = Array.prototype.slice.call(arguments).splice(2)
-		}
-		showMessageBase("信息", html, buttenNameList, 4, argumentsList)
-	}
-
-	function waring(html, buttenNameList) {
-		var argumentsList = null
-		if (arguments.length > 2) {
-			argumentsList = Array.prototype.slice.call(arguments).splice(2)
-		}
-		showMessageBase("警告", html, buttenNameList, 6, argumentsList)
-	}
-
-	function doConfirm(content, icNum, title, func) {
-		layer.confirm(content, {
-			icon : icNum,
-			title : title
+		// layer
+		layer.alert(content, {
+			title : title,
+			move : false,
+			closeBtn : 0
 		}, function(index) {
-			if (func) {
-				func()
-			}
 			layer.close(index);
+
+			if (func != null) {
+				func();
+			}
+		})
+
+		// easyui
+		// $.messager.alert(title, content, "info", func);
+	}
+
+	/**
+	 * 确认框
+	 * 
+	 * @param content 内容
+	 * @param func 点击确定按钮后执行的方法(可空)
+	 */
+	var confirm = function(content, title, successCallback, failCallback) {
+		if (title == null) {
+			title = "确认"
+		}
+
+		// layer
+		layer.confirm(content, {
+			title : title,
+			move : false,
+			closeBtn : 0
+		}, function(index) {
+			layer.close(index);
+
+			if (func != null) {
+				func();
+			}
+		})
+
+		// easyui
+		// $.messager.confirm(title, content, function(okFlg) {
+		// if (okFlg) {
+		// if (successCallback) {
+		// successCallback();
+		// }
+		// } else {
+		// if (failCallback) {
+		// failCallback();
+		// }
+		// }
+		// });
+	}
+
+	/**
+	 * 消息框
+	 * 
+	 * @param content 内容
+	 * @param options 其他參數
+	 * @param callback 点击确定按钮后执行的方法(可空)
+	 */
+	var msg = function(content, options, callback) {
+		if (options == null) {
+			options = {};
+		}
+
+		// layer
+		layer.msg(content, options, function(index) {
+			layer.close(index)
+			if (callback != null) {
+				callback();
+			}
+		})
+
+		// easyui
+		// $.messager.confirm(title, content, function(okFlg) {
+		// if (okFlg) {
+		// if (successCallback) {
+		// successCallback();
+		// }
+		// } else {
+		// if (failCallback) {
+		// failCallback();
+		// }
+		// }
+		// });
+	}
+
+	/**
+	 * 自定义弹出层
+	 */
+	var custom = function() {
+		alert("还没开发!")
+	}
+
+	/**
+	 * 弹出页面
+	 * 
+	 * @param data 可以为jQuery对象
+	 * @param weight 弹出层的宽(可空 默认500px)
+	 * @param height 弹出层的高(可空 默认300px)
+	 * @param title 弹出层的标的(可空 默认为信息)
+	 */
+	var openPage = function(data, weight, height, title) {
+		if (weight == null) {
+			weight = "500"
+		}
+		if (height == null) {
+			height = "300"
+		}
+		if (title == null) {
+			title = "信息"
+		}
+		if (data instanceof jQuery) {
+			layer.open({
+				type : 1,
+				move : false,
+				title : title,
+				area : [ weight + 'px', height + 'px' ],
+				content : data
+			})
+		}
+	}
+
+	/**
+	 * 关闭所有窗口
+	 */
+	var closeAll = function() {
+		layer.closeAll()
+	}
+
+	/**
+	 * 显示加载层
+	 */
+	var ajaxLoadingIndex;
+	var ajaxLoading = function() {
+		ajaxLoadingIndex = layer.load(1, {
+			time : 10 * 1000
 		});
 	}
 
-	function message(content, func) {
-		layer.confirm(content, {
-			title : "提示"
-		}, function(index) {
-			if (func) {
-				func()
-			}
-			layer.close(index);
-		});
-	}
-
-	function successMessage(content, func) {
-		doConfirm(content, 1, "提示", func)
-	}
-
-	function failedMessage(content, func) {
-		doConfirm(content, 2, "提示", func)
-	}
-
-	function questionMessage(content, func) {
-		doConfirm(content, 3, "提示", func)
-	}
-
-	var loadStatus = null
-	function load() {
-		loadStatus = layer.load(1); // 风格1的加载
-	}
-
-	function closeLoad() {
-		layer.close(loadStatus)
+	/**
+	 * 关闭加载层
+	 */
+	var ajaxLoadEnd = function() {
+		layer.close(ajaxLoadingIndex);
 	}
 
 	return {
-		waring : waring,
-		info : info,
-		load : load,
-		message : message,
-		successMessage : successMessage,
-		failedMessage : failedMessage,
-		questionMessage : questionMessage,
-		closeLoad : closeLoad
+		alert : alert,
+		confirm : confirm,
+		custom : custom,
+		openPage : openPage,
+		closeAll : closeAll,
+		ajaxLoading : ajaxLoading,
+		ajaxLoadEnd : ajaxLoadEnd
 	}
-
 }()

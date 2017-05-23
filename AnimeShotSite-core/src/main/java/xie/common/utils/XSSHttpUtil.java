@@ -116,14 +116,22 @@ public class XSSHttpUtil {
 		if (url == null) {
 			return null;
 		}
-		return url.replaceFirst("https://", "http://");
+		if (url.startsWith("//")) {
+			return url.replaceFirst("//", "http://");
+		} else {
+			return url.replaceFirst("https://", "http://");
+		}
 	}
 
 	public static String changeToHttps(final String url) {
 		if (url == null) {
 			return null;
 		}
-		return url.replaceFirst("http://", "https://");
+		if (url.startsWith("//")) {
+			return url.replaceFirst("//", "https://");
+		} else {
+			return url.replaceFirst("http://", "https://");
+		}
 	}
 
 	private static String getPortByProtocol(final String protocol, final Map<String, String> portMap) {

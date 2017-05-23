@@ -25,6 +25,7 @@ import xie.animeshotsite.db.service.ShotTaskService;
 import xie.animeshotsite.utils.AutoCollectUtils;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseManagerController;
+import xie.base.module.ajax.vo.GoPageResult;
 import xie.base.service.BaseService;
 import xie.common.Constants;
 import xie.common.date.DateUtil;
@@ -177,8 +178,6 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 			@RequestParam(required = false) Boolean forceUpload,
 			HttpServletRequest request) {
 
-		Map<String, Object> map = null;
-
 		System.out.println(springUtils);
 		System.out.println(animeEpisodeService);
 
@@ -186,13 +185,10 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 			shotTaskService.addRunNormalEpisideTimeTask(id, scheduleTime, forceUpload, startTime, endTime, timeInterval);
 		} else if ("2".equals(taskType)) {
 			if (specifyTimes == null) {
-				map = getFailCode("type为2时，specifyTimes不能为空");
 				return getUrlRedirectPath("view/" + id);
 			}
 			shotTaskService.addRunSpecifyEpisideTimeTask(id, scheduleTime, forceUpload, specifyTimes, XSSHttpUtil.getForwardedRemoteIpAddr(request), SysConstants.ROLE_ADMIN);
 		}
-
-		map = getSuccessCode();
 
 		return getUrlRedirectPath("view/" + id);
 	}
@@ -231,11 +227,16 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 	}
 
 	@Override
-	public Map<String, Object> updateOneColumn(String id, String columnName, String columnValue) {
+	public GoPageResult updateOneColumn(String id, String columnName, String columnValue, HttpServletRequest request) {
+		GoPageResult goPageResult = null;
 		if ("showFlg".equals(columnName) && Constants.FLAG_STR_YES.equals(columnValue)) {
-			super.updateOneColumn(id, "showDate", DateUtil.convertToString(new Date()));
+			goPageResult = super.updateOneColumn(id, "showDate", DateUtil.convertToString(new Date()), request);
+			if (!goPageResult.isSuccess()) {
+				return goPageResult;
+			}
 		}
-		return super.updateOneColumn(id, columnName, columnValue);
+
+		return super.updateOneColumn(id, columnName, columnValue, request);
 	}
 
 	@RequiresPermissions(value = "userList:add")
@@ -251,7 +252,7 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 
 		AnimeInfo animeInfo = animeInfoService.findOne(animeInfoId);
 
-		autoCollectUtils.collectEpisodeSummary(animeInfoId, animeInfo.getSummaryCollectUrl(),animeInfo.getSummaryCollectTitleExp(), forceUpdate);
+		autoCollectUtils.collectEpisodeSummary(animeInfoId, animeInfo.getSummaryCollectUrl(), animeInfo.getSummaryCollectTitleExp(), forceUpdate);
 
 		map = getSuccessCode("操作成功");
 		return map;

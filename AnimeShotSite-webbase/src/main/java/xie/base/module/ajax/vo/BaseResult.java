@@ -13,6 +13,11 @@ public class BaseResult<T extends Object> implements Serializable {
 	// 提示信息
 	protected String[] alertMessage;
 
+	/** msg:简单弹框，时间到消失, alert：需要用户手动进行点击操作 */
+	protected String alertType;
+	/** 控制是否弹出信息 */
+	protected Boolean notAlertFlag;
+
 	// 异常信息
 	protected String exception;
 	// 返回的数据
@@ -55,6 +60,22 @@ public class BaseResult<T extends Object> implements Serializable {
 
 	public void setAlertMessage(final String alertMessage[]) {
 		this.alertMessage = alertMessage;
+	}
+
+	public String getAlertType() {
+		return alertType;
+	}
+
+	public void setAlertType(String alertType) {
+		this.alertType = alertType;
+	}
+
+	public Boolean getNotAlertFlag() {
+		return notAlertFlag;
+	}
+
+	public void setNotAlertFlag(Boolean notAlertFlag) {
+		this.notAlertFlag = notAlertFlag;
 	}
 
 	public String getException() {

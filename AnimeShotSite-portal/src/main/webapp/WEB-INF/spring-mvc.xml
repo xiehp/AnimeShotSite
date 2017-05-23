@@ -6,7 +6,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
 	<!-- 自动扫描且只扫描@Controller -->
-	<context:component-scan base-package="xie" use-default-filters="false">
+	<context:component-scan base-package="xie.**.controller" use-default-filters="false">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
 	</context:component-scan>
@@ -24,6 +24,7 @@
 			<!-- 将Jackson2HttpMessageConverter的默认格式化输出设为true -->
 			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 				<property name="prettyPrint" value="true" />
+				<property name="objectMapper" ref="xObjectMapper" />
 			</bean>
 			<bean class="xie.common.httpMessageConvert.FormToEntityHttpMessageConverter" />
 		</mvc:message-converters>

@@ -3,7 +3,7 @@ package xie.base.module.ajax.vo;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import xie.common.utils.JsonUtil;
+import xie.common.json.XJsonUtil;
 
 /**
  * 
@@ -70,11 +70,12 @@ public class GoPageResult extends BaseResult<Object> {
 		this.message = message;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Map<String, Object> convertToObjectMap() {
-		Map<String, Object> map = new LinkedHashMap<>();
+		LinkedHashMap<String, Object> map = new LinkedHashMap<>();
 		// BeanMapper.copy(this, map);
-		String jsonStr = JsonUtil.toJsonString(this);
-		map = JsonUtil.fromJsonString(jsonStr, LinkedHashMap.class);
+		String jsonStr = XJsonUtil.toJsonString(this);
+		map = XJsonUtil.fromJsonString(jsonStr, LinkedHashMap.class);
 		return map;
 	}
 }

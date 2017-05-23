@@ -38,7 +38,7 @@ body {
 	});
 
 	function createCommentRecord() {
-		$.homeAjaxSubmit("createCommentForm", function(data) {
+		$.homeAjaxSubmit("createCommentForm", null, function(data) {
 			if (data.success) {
 				$.showMessageModal(data.content);
 			} else {

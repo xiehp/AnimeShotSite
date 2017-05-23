@@ -1,3 +1,5 @@
+<%@page import="xie.common.utils.XSSHttpUtil"%>
+<%@page import="xie.animeshotsite.db.vo.ShotInfoVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -7,6 +9,10 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <c:set var="EpisodeFullName" value="${animeInfo.fullName} ${animeInfo.secondName} ${animeEpisode.divisionName}" />
 <c:set var="EpisodeFullNameWithTime" value="${EpisodeFullName} ${shotInfo.formatedTimeChina}" />
+<%
+//ShotInfoVO vo = request.getAttribute("shotInfo");
+//vo.setTietukuOUrlChangeDomain(XSSHttpUtil.changeToHttp(vo.getTietukuOUrlChangeDomain()));
+%>
 <c:set var="FullImageUrl" value="${shotInfo.tietukuOUrlChangeDomain}" />
 <c:set var="PreFullImageUrl" value="${previousShotInfo.tietukuOUrlChangeDomain}" />
 <c:set var="NextFullImageUrl" value="${nextShotInfo.tietukuOUrlChangeDomain}" />
