@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.base.controller.BaseController;
-import xie.common.response.body.GoPageResult;
+import xie.base.module.ajax.vo.GoPageResult;
+import xie.base.module.exception.CodeApplicationException;
 import xie.other.ma.db.repository.CommonRecordDao;
 import xie.other.ma.db.repository.MaDamageDao;
 import xie.other.ma.db.service.CommentRecordService;
@@ -85,5 +86,22 @@ public class TestController extends BaseController {
 		GoPageResult goPageResult = new GoPageResult();
 		goPageResult.setGoPage("anime");
 		return goPageResult;
+	}
+
+	@RequestMapping(value = "/goPageResult3")
+	@ResponseBody
+	public GoPageResult goPageResult3(
+			Model model, HttpServletRequest request, HttpServletResponse response)
+					throws Exception {
+		Thread.sleep(1000);
+		throw new RuntimeException("RuntimeException goPageResult3");
+	}
+
+	@RequestMapping(value = "/goPageResult4")
+	@ResponseBody
+	public GoPageResult goPageResult4(
+			Model model, HttpServletRequest request, HttpServletResponse response)
+					throws Exception {
+		throw new CodeApplicationException("login.incorrectcredentials.exception");
 	}
 }

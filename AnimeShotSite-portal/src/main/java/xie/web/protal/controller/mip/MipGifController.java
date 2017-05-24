@@ -36,7 +36,7 @@ import xie.animeshotsite.db.service.GifInfoService;
 import xie.animeshotsite.db.service.ShotTaskService;
 import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.db.service.SubtitleLineService;
-import xie.common.exception.CodeApplicationException;
+import xie.base.module.exception.CodeApplicationException;
 import xie.common.json.XJsonUtil;
 import xie.common.web.util.ConstantsWeb;
 import xie.web.protal.controller.GifController;

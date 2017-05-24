@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-import xie.common.exception.WebException;
 import xie.common.utils.props.PropsUtil;
 import xie.common.utils.string.StringUtil;
 import xie.web.util.SiteConstants;
@@ -130,7 +129,6 @@ public class EmailUtil {
 	 * @param emailAddress
 	 *            : such as a@b.com or a@b.com(name)
 	 * @return
-	 * @throws WebException
 	 */
 	private static InternetAddress translateEmailAddress(final String emailAddress) {
 		final InternetAddress internetAddress = new InternetAddress();

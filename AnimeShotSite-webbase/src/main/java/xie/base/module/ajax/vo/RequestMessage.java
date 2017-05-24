@@ -1,9 +1,11 @@
-package xie.common.response.body;
+package xie.base.module.ajax.vo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import xie.common.exception.CodeApplicationException;
+import javax.servlet.http.HttpServletRequest;
+
+import xie.base.module.exception.CodeApplicationException;
 
 /**
  * 异常信息处理
@@ -49,7 +51,7 @@ public class RequestMessage {
 		get().add(code);
 	}
 
-	public static void addMessage(CodeApplicationException e) {
+	public static void addMessage(HttpServletRequest request, CodeApplicationException e) {
 		addMessage(e.getMessage());
 	}
 

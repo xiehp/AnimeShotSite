@@ -15,13 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.LocaleEditor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springside.modules.mapper.BeanMapper;
 
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.db.service.ImageUrlService;
@@ -29,9 +29,10 @@ import xie.animeshotsite.setup.ShotSiteSetup;
 import xie.animeshotsite.setup.UserConfig;
 import xie.animeshotsite.utils.SiteUtils;
 import xie.base.controller.BaseController;
+import xie.base.module.ajax.vo.GoPageResult;
 import xie.common.Constants;
+import xie.common.json.XJsonUtil;
 import xie.common.string.XStringUtils;
-import xie.common.utils.JsonUtil;
 import xie.common.utils.XCookieUtils;
 import xie.common.web.util.ConstantsWeb;
 import xie.module.language.XELangLocal;
@@ -120,10 +121,10 @@ public class ToolController extends BaseController {
 
 	@RequestMapping(value = "/changeLanguage")
 	@ResponseBody
-	public ModelMap changeLanguage(
+	public GoPageResult changeLanguage(
 			@RequestParam String new_lang,
 			HttpServletRequest request, HttpServletResponse response) {
-		Map<String, Object> map;
+		GoPageResult goPageResult = null;
 
 		try {
 			LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
@@ -133,21 +134,27 @@ public class ToolController extends BaseController {
 
 			if ("clear".equals(new_lang)) {
 				localeResolver.setLocale(request, response, null);
-				map = getSuccessCode(messageSource.getMessage("清除语言成功", null, localeResolver.resolveLocale(request)));
+				// map = getSuccessCode(messageSource.getMessage("清除语言成功", null, localeResolver.resolveLocale(request)));
+				goPageResult = createSuccess(request, "清除语言成功");
 			} else if (XStringUtils.isNotBlank(new_lang)) {
 				LocaleEditor localeEditor = new LocaleEditor();
 				localeEditor.setAsText(new_lang);
 				localeResolver.setLocale(request, response, (Locale) localeEditor.getValue());
-				map = getSuccessCode(messageSource.getMessage("切换语言成功", null, localeResolver.resolveLocale(request)));
+				// map = getSuccessCode(messageSource.getMessage("切换语言成功", null, localeResolver.resolveLocale(request)));
+				goPageResult = createSuccess(request, "切换语言成功");
 			} else {
 				localeResolver.setLocale(request, response, null);
-				map = getSuccessCode(messageSource.getMessage("清除语言成功", null, localeResolver.resolveLocale(request)));
+				// map = getSuccessCode(messageSource.getMessage("清除语言成功", null, localeResolver.resolveLocale(request)));
+				goPageResult = createSuccess(request, "清除语言成功");
 			}
 
+			goPageResult.setNotAlertFlag(true);
 		} catch (Exception ex) {
-			map = getFailCode("切换语言失败");
+			// map = getFailCode("切换语言失败");
+			goPageResult = createFail(request, "切换语言失败");
 		}
-		return new ModelMap(map);
+
+		return goPageResult;
 	}
 
 	@RequestMapping(value = "/changeLanguage/{new_lang}")
@@ -165,10 +172,10 @@ public class ToolController extends BaseController {
 	 */
 	@RequestMapping(value = "/changeTranLan")
 	@ResponseBody
-	public ModelMap changeTranLan(
+	public GoPageResult changeTranLan(
 			@RequestParam String newTranLan,
 			HttpServletRequest request, HttpServletResponse response) {
-		Map<String, Object> map;
+		GoPageResult goPageResult = null;
 
 		try {
 			UserConfig userConfig = SiteUtils.getUserConfig(request);
@@ -180,12 +187,14 @@ public class ToolController extends BaseController {
 				userConfig.setTranLanguage(XELangLocal.parseValue(newTranLan));
 				userConfig.setNotTranFlag(false);
 			}
-			LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
-			map = getSuccessCode(messageSource.getMessage("切换翻译语言成功", null, localeResolver.resolveLocale(request)));
+			// map = getSuccessCode(messageSource.getMessage("切换翻译语言成功", null, localeResolver.resolveLocale(request)));
+			goPageResult = createSuccess(request, "切换翻译语言成功");
+			goPageResult.setNotAlertFlag(true);
 		} catch (Exception ex) {
-			map = getFailCode("切换翻译语言失败");
+			// map = getFailCode("切换翻译语言失败");
+			goPageResult = createFail(request, "切换翻译语言失败");
 		}
-		return new ModelMap(map);
+		return goPageResult;
 	}
 
 	@RequestMapping(value = "/changeTranLan/{newTranLan}")
@@ -203,20 +212,22 @@ public class ToolController extends BaseController {
 	 */
 	@RequestMapping(value = "/changeTranLanColor")
 	@ResponseBody
-	public ModelMap changeTranLanColor(
+	public GoPageResult changeTranLanColor(
 			@RequestParam String newTranLanColor,
 			HttpServletRequest request, HttpServletResponse response) {
-		Map<String, Object> map;
+		GoPageResult goPageResult = null;
 
-		LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
 		try {
 			UserConfig userConfig = SiteUtils.getUserConfig(request);
 			userConfig.setTranLanguageColor(newTranLanColor);
-			map = getSuccessCode(messageSource.getMessage("切换翻译颜色成功", null, localeResolver.resolveLocale(request)));
+			// map = getSuccessCode(messageSource.getMessage("切换翻译颜色成功", null, localeResolver.resolveLocale(request)));
+			goPageResult = createSuccess(request, "切换翻译颜色成功");
+			//goPageResult.setNotAlertFlag(true);
 		} catch (Exception ex) {
-			map = getFailCode(messageSource.getMessage("切换翻译颜色失败", null, localeResolver.resolveLocale(request)));
+			// map = getFailCode(messageSource.getMessage("切换翻译颜色失败", null, localeResolver.resolveLocale(request)));
+			goPageResult = createFail(request, "切换翻译颜色失败");
 		}
-		return new ModelMap(map);
+		return goPageResult;
 	}
 
 	@RequestMapping(value = "/changeTranLanColor/{newTranLanColor}")
@@ -234,20 +245,22 @@ public class ToolController extends BaseController {
 	 */
 	@RequestMapping(value = "/changeTranLanFontsize")
 	@ResponseBody
-	public ModelMap changeTranLanFontsize(
+	public GoPageResult changeTranLanFontsize(
 			@RequestParam String newTranLanFonsize,
 			HttpServletRequest request, HttpServletResponse response) {
-		Map<String, Object> map;
+		GoPageResult goPageResult = null;
 
 		try {
 			UserConfig userConfig = SiteUtils.getUserConfig(request);
 			userConfig.setTranLanFonsize(newTranLanFonsize);
-			LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
-			map = getSuccessCode(messageSource.getMessage("切换翻译字体大小成功", null, localeResolver.resolveLocale(request)));
+			// map = getSuccessCode(messageSource.getMessage("切换翻译字体大小成功", null, localeResolver.resolveLocale(request)));
+			goPageResult = createSuccess(request, "切换翻译字体大小成功");
+			goPageResult.setNotAlertFlag(true);
 		} catch (Exception ex) {
-			map = getFailCode("切换翻译字体大小失败");
+			// map = getFailCode("切换翻译字体大小失败");
+			goPageResult = createFail(request, "切换翻译字体大小失败");
 		}
-		return new ModelMap(map);
+		return goPageResult;
 	}
 
 	@RequestMapping(value = "/changeTranLanFontsize/{newTranLanFonsize}")
@@ -264,8 +277,9 @@ public class ToolController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> getTranLanList(
 			HttpServletRequest request, HttpServletResponse response) {
-		Map<String, Object> result;
+		Map<String, Object> result = new HashMap<>();
 		Map<String, Object> data = new HashMap<>();
+		GoPageResult goPageResult = null;
 
 		try {
 			LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
@@ -323,12 +337,18 @@ public class ToolController extends BaseController {
 			data.put("tranLanColor", userConfig.getTranLanguageColor());
 			data.put("tranLanFontsize", userConfig.getTranLanFonsize());
 
-			result = getSuccessCode();
+			// result = getSuccessCode();
+			goPageResult = createSuccess(request, null);
+			goPageResult.setData(data);
+			goPageResult.setNotAlertFlag(true);
+			BeanMapper.copy(goPageResult, result);
 			result.put("data", data);
 			result.put("status", 0); // mip用
 
 		} catch (Exception ex) {
-			result = getFailCode("切换语言失败");
+			// result = getFailCode("获得翻译列表失败");
+			goPageResult = createFail(request, "获得翻译列表失败");
+			BeanMapper.copy(goPageResult, result);
 			result.put("status", 1); // mip用
 		}
 		return result;
@@ -341,7 +361,7 @@ public class ToolController extends BaseController {
 			HttpServletRequest request, HttpServletResponse response) {
 
 		Map<String, Object> map = getTranLanList(request, response);
-		String jsonData = JsonUtil.toJsonString(map);
+		String jsonData = XJsonUtil.toJsonString(map);
 		String returnStr = callback + "(" + jsonData + ")";
 		return returnStr;
 	}

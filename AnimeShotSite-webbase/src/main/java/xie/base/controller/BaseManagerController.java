@@ -3,7 +3,8 @@ package xie.base.controller;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Date;
-import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import xie.base.entity.IdEntity;
+import xie.base.module.ajax.vo.GoPageResult;
 import xie.base.service.BaseService;
 import xie.common.java.XReflectionUtils;
 import xie.common.string.XStringUtils;
@@ -22,9 +24,9 @@ public abstract class BaseManagerController<M extends IdEntity, ID extends Seria
 	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/updateOneColumn")
 	@ResponseBody
-	public Map<String, Object> updateOneColumn(@RequestParam ID id, @RequestParam String columnName, @RequestParam String columnValue) {
+	public GoPageResult updateOneColumn(@RequestParam ID id, @RequestParam String columnName, @RequestParam String columnValue, HttpServletRequest request) {
 
-		Map<String, Object> map = null;
+		GoPageResult goPageResult = null;
 		try {
 			M baseEntity = getBaseService().findOne(id);
 
@@ -36,14 +38,15 @@ public abstract class BaseManagerController<M extends IdEntity, ID extends Seria
 			invokeMethod(baseEntity, methodName, columnValue);
 
 			baseEntity = getBaseService().save(baseEntity);
+			
+			goPageResult = goPageUtil.createSuccess(request);
 
-			map = getSuccessCode("操作成功");
 		} catch (Exception e) {
 			_log.error("updateOneColumn发生错误", e);
-			map = getFailCode("updateOneColumn发生错误：" + e);
+			goPageResult = goPageUtil.createFail(request);
 		}
 
-		return map;
+		return goPageResult;
 	}
 
 	private void invokeMethod(Object baseEntity, String methodName, String columnValue) {

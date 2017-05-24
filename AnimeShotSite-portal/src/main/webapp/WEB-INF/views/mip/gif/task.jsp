@@ -39,7 +39,7 @@
 		// check
 		
 		if ($("#episodeInfoId").val().trim() == "") {
-			Message.message("aaaa");
+			Message.alert("aaaa");
 			return;
 		}
 		

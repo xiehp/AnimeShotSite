@@ -12,31 +12,47 @@ function trim(s) {
 
 (function($) {
 
-	function processGoPageResult(data, callback) {
+	function processGoPageResult(data, callback, failCallback, options) {
 		// 显示信息
 		if (data.alertMessage != null && data.alertMessage.length > 0) {
-			// showMessageWithoutRefresh(obj);
-			// alert(data.alertMessage);
-
-			var message = data.alertMessage.join("\n");
-			if (data.success) {
-				Message.successMessage(message, function() {
-					processCallbackAndGoPage(data, callback);
-				});
+			if (options && (options.notAlertFlag || data.notAlertFlag)) {
+				processCallbackAndGoPage(data, callback, failCallback, options);
 			} else {
-				Message.failedMessage(message, function() {
-					processCallbackAndGoPage(data, callback);
-				});
+				// showMessageWithoutRefresh(obj);
+				// alert(data.alertMessage);
+				var message = data.alertMessage.join("\n");
+				/* message = '<span style="text-align:center;">'+message+'</span>'; */
+				if (data.success || data.code == "10000") {
+					Message.alert(message, null, function() {
+						processCallbackAndGoPage(data, callback, failCallback, options);
+					});
+				} else {
+					Message.alert(message, null, function() {
+						processCallbackAndGoPage(data, callback, failCallback, options);
+					});
+				}
 			}
+		} else if (data.code != null && data.message != null) {
+			// 原来的ajax 返回数据代码
+			processCallbackAndGoPage(data, callback, failCallback, options);
 		} else {
-			processCallbackAndGoPage(data, callback);
+			processCallbackAndGoPage(data, callback, failCallback, options);
 		}
 	}
+	$.processGoPageResult = processGoPageResult;
 
-	function processCallbackAndGoPage(data, callback) {
-		// 执行callback
-		if (callback) {
-			callback(data);
+	function processCallbackAndGoPage(data, callback, failCallback, options) {
+		// 未成功不调回调函数
+		if (data.success || data.code == "10000") {
+			// 执行成功callback
+			if (callback) {
+				callback(data);
+			}
+		} else {
+			// 执行失败callback
+			if (failCallback) {
+				failCallback(data);
+			}
 		}
 
 		// 跳转
@@ -44,152 +60,215 @@ function trim(s) {
 			if (data.goPage.indexOf("/") != 0) {
 				data.goPage = "/" + data.goPage;
 			}
-			window.location.href = baseUrl + data.goPage;
+			window.location.href = ctx + data.goPage;
 		}
+	}
+
+	function validateForm(options) {
+		var isValid = true;
+		/**
+		 * easyui功能 if (options != null && options.validFormId != null) { isValid = $("#" + options.validFormId).form("validate"); // if (!isValid) { // Message.alert("提示", "输入内容有误，请修改后重新提交"); // } }
+		 */
+		return isValid;
 	}
 
 	function getDocumentCharset() {
 		return document.characterSet ? document.characterSet : document.charset;
 	}
 
+	// 定义提交options参数
+	/**
+	 * res validFormId: 需要验证的form的ID，如果不为空，则验证<br>
+	 * notAlertFlag: 是否对返回的数据进行alert操作，如果指定为true，则不进行alert操作<br>
+	 * notLoading: 如果指定为true，则不显示loading进度条
+	 */
+
+	/** 提交前根据options做的事情 */
+	function doSomethingBeforeSubmit(options) {
+		if (options && !options.notLoading) {
+			Message.ajaxLoading();
+		}
+	}
+	/** 提交后成功返回信息后，根据options做的事情,(PS:成功还是失败要根据data中数据判断) */
+	function doSomethingOnSuccess(options, data) {
+		if (options && !options.notLoading) {
+			Message.ajaxLoadEnd();
+		}
+	}
+	/** 未能成功提交到服务器时，根据options做的事情 */
+	function doSomethingOnError(options, XMLHttpRequest, textStatus, errorThrown, callback) {
+
+		// 关闭加载层
+		if (options && !options.notLoading) {
+			Message.ajaxLoadEnd();
+		}
+
+		// 处理返回的信息
+		if (XMLHttpRequest) {
+			if (XMLHttpRequest.responseJSON) {
+				// 判断是否有回调的json信息，说明是服务器返回了信息
+				processGoPageResult(XMLHttpRequest.responseJSON, callback, options.failCallback, options);
+			} else {
+				// 控制台打印日志
+				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
+
+				// 弹出错误信息
+				if (!options || !options.notAlertFlag) {
+					alertErrorMsg(XMLHttpRequest, ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
+				}
+			}
+		}
+	}
+
 	/** ajax提交form表单 */
-	$.homeAjaxSubmit = function(formId, callback, otherParam) {
+	$.homeAjaxSubmit = function(formId, otherParam, callback, options) {
+		if (options == null) {
+			options = {};
+		}
+
+		var easyUIForm = false;
 		var ajaxParam = {};
 		$.extend(ajaxParam, {
 			async : true,
-			contentType : "application/x-www-form-urlencoded; charset=" + getDocumentCharset(),
+			contentType : "application/x-www-form-urlencoded; charset=utf-8",
 			dataType : "json",
 			type : "post",
 			data : otherParam,
-			success : function(data) {
-				if (callback) {
-					callback(data);
+			accept : "application/json",
+			onSubmit : function(param) {
+				if (easyUIForm) {
+					var isValid = $(this).form("validate");
+					if (!isValid) {
+						// $.messager.progress('close'); // hide progress bar while the form is invalid
+						return isValid; // return false will stop the form submission
+					}
 				}
+
+				// 没有错误
+				if (otherParam != null) {
+					// easyui
+					$.extend(param, otherParam);
+				}
+				param.extend_param_josn_response = true;
+
+				doSomethingBeforeSubmit(options);
+			},
+			success : function(data) {
+				if (easyUIForm) {
+					data = jQuery.parseJSON(data);
+				}
+				doSomethingOnSuccess(options, data);
+				processGoPageResult(data, callback, options.failCallback, options);
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
-				alertErrorMsg(XMLHttpRequest, ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
+				doSomethingOnError(options, XMLHttpRequest, textStatus, errorThrown, callback);
+			},
+			complete : function(data) {
+				// complete code
 			}
 		});
 
-		$('#' + formId).ajaxSubmit(ajaxParam);
+		if (easyUIForm) {
+			ajaxParam.ajax = true;
+			ajaxParam.iframe = false;
+			ajaxParam.url = $("#" + formId).attr("action");
+			ajaxParam.accept = "application/json";
+			$('#' + formId).form("submit", ajaxParam);
+		} else {
+			// alert("need jquery.form.3.51.0.js ajaxSubmit")
+			// jquery.form.3.51.0.js
+			$('#' + formId).ajaxSubmit(ajaxParam);
+		}
+
 	}
 
-	$.homePost = function(url, param, callback) {
+	$.homePost = function(url, param, callback, options) {
+		if (options == null) {
+			options = {};
+		}
+
+		if (!validateForm(options)) {
+			return;
+		}
+
+		doSomethingBeforeSubmit(options);
+
 		$.ajax({
-			url : global.ctx + url,
+			url : global.baseUrl + url,
 			contentType : 'application/x-www-form-urlencoded',
 			dataType : "json",
 			type : "post",
 			data : param,
 			success : function(data) {
-				if (callback) {
-					callback(data);
-				}
+				doSomethingOnSuccess(options, data);
+				processGoPageResult(data, callback, options.failCallback, options);
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
-				alertErrorMsg(XMLHttpRequest, ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
+				doSomethingOnError(options, XMLHttpRequest, textStatus, errorThrown, callback);
 			}
 		});
 	}
 
-	$.homeGet = function(url, callback) {
+	$.homeGet = function(url, callback, options, runCallBackFlag) {
+		if (options == null) {
+			options = {};
+		}
+
+		if (!validateForm(options)) {
+			return;
+		}
+
+		doSomethingBeforeSubmit(options);
+
 		$.ajax({
-			url : global.ctx + url,
-			contentType : 'application/json',
+			url : global.baseUrl + url,
+			contentType : 'application/x-www-form-urlencoded',
 			dataType : "json",
 			type : "get",
 			success : function(data) {
-				if (callback) {
-					callback(data);
+				doSomethingOnSuccess(options, data);
+				if (runCallBackFlag == 1) {
+					callback(data)
+				} else {
+					processGoPageResult(data, callback, options.failCallback, options);
 				}
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
-				alertErrorMsg(XMLHttpRequest);
+				doSomethingOnError(options, XMLHttpRequest, textStatus, errorThrown, callback);
 			}
 		});
 	}
 
-	$.homeJsonPost = function(url, param, callback) {
-		$.ajax({
-			url : global.ctx + url,
-			contentType : 'application/json',
-			dataType : "json",
-			type : "post",
-			data : JSON.stringify(param),
-			success : function(data) {
-				if (callback) {
-					callback(data);
-				}
-			},
-			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
-				alertErrorMsg(XMLHttpRequest);
-			}
-		});
-	}
+	$.homePostNotAsync = function(url, param, callback, options) {
+		if (options == null) {
+			options = {};
+		}
 
-	$.homeJsonGet = function(url, callback) {
-		$.ajax({
-			url : global.ctx + url,
-			contentType : 'application/json',
-			dataType : "json",
-			type : "get",
-			success : function(data) {
-				if (callback) {
-					callback(data);
-				}
-			},
-			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
-				alertErrorMsg(XMLHttpRequest);
-			}
-		});
-	}
+		if (!validateForm(options)) {
+			return;
+		}
 
-	$.homePostNotAsync = function(url, param, callback) {
+		doSomethingBeforeSubmit(options);
+
 		$.ajax({
-			url : global.ctx + url,
+			url : global.baseUrl + url,
 			contentType : 'application/json',
 			dataType : "json",
 			type : "post",
 			data : JSON.stringify(param),
 			async : false,
 			success : function(data) {
-				if (callback) {
-					callback(data);
-				}
+				doSomethingOnSuccess(options, data);
+				processGoPageResult(data, callback, options.failCallback, options);
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
-				alertErrorMsg(XMLHttpRequest);
-			}
-		});
-	}
-
-	$.homeGetNotAsync = function(url, callback) {
-		$.ajax({
-			url : global.ctx + url,
-			contentType : 'application/json',
-			dataType : "json",
-			type : "GET",
-			async : false,
-			success : function(data) {
-				if (callback) {
-					callback(data);
-				}
-			},
-			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				console.log('XMLHttpRequest: ' + XMLHttpRequest + ',textStatus:' + textStatus + ',errorThrown:' + errorThrown);
-				alertErrorMsg(XMLHttpRequest, msg);
+				doSomethingOnError(options, XMLHttpRequest, textStatus, errorThrown, callback);
 			}
 		});
 	}
 
 	function alertErrorMsg(XMLHttpRequest, msg) {
-		if (XMLHttpRequest.responseText.indexOf('login page do not delete') != -1) {
+		if (XMLHttpRequest && XMLHttpRequest.responseText.indexOf('login page do not delete') != -1) {
 			// 跳转到登录页
 			$('#globalSessionInvalidAlert').modal({
 				show : true,
@@ -872,7 +951,11 @@ function lazyRun(fun, timeout) {
 				fun();
 			}, timeout);
 		} else {
-			fun();
+			try {
+				fun();
+			} catch (err) {
+				console.error(err);
+			}
 		}
-	})
+	});
 }

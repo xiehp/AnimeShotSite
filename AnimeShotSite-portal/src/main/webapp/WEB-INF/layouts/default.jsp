@@ -118,18 +118,22 @@
 
 		<!-- jquery -->
 		<script src="${ staticResourceUrl }${jqueryLazyloadVersion}/jquery.lazyload.min.js" type="text/javascript"></script>
+
 		<!-- bootstrap -->
 		<script src="${ staticResourceUrl }bootstrap/${bootstrapVersion}/js/bootstrap.min.js" type="text/javascript"></script>
+
 		<!-- other -->
 		<!-- <script src="${ staticResourceUrl }zeroclipboard/${zeroClipboardVersion}/ZeroClipboard.min.js" type="text/javascript"></script> -->
+
 		<!-- local js -->
 		<script src="${ ctx }/static/js/template/jsrender.min.js" type="text/javascript"></script>
 		<script src="${ ctx }/static/js/layui/layui.js" type="text/javascript"></script>
 		<script src="${ ctx }/static/js/layui/lay/dest/layui.all.js" type="text/javascript"></script>
+
 		<!-- self js -->
+		<script src="${ ctx }/static/js/message.js" type="text/javascript"></script>
 		<script src="${ ctx }/static/js/homeBussness.js" type="text/javascript"></script>
 		<script src="${ ctx }/static/js/homeInit.js" type="text/javascript"></script>
-		<script src="${ ctx }/static/js/message.js" type="text/javascript"></script>
 	</div>
 </body>
 

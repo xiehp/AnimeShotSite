@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<bean id="xObjectMapper" class="xie.common.json.XObjectMapperFactoryBean">
+	</bean>
 
 	<!-- spring 工具类 -->
 	<bean id="springUtils" class="xie.common.utils.SpringUtils"></bean>
 
-	 <!-- 国际化的消息资源文件（本系统中主要用于显示/错误消息定制） -->
+	<!-- 国际化的消息资源文件（本系统中主要用于显示/错误消息定制） -->
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basenames">
 			<list>
-				<!-- 在web环境中一定要定位到classpath 否则默认到当前web应用下找  -->
+				<!-- 在web环境中一定要定位到classpath 否则默认到当前web应用下找 -->
 				<value>resources/languageMessages/messages</value>
 				<value>resources/languageMessages/ValidationMessages</value>
 			</list>
