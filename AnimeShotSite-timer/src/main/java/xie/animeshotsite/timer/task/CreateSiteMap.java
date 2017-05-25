@@ -24,12 +24,12 @@ import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.db.service.SubtitleLineService;
-import xie.animeshotsite.spring.SpringUtil;
 import xie.base.entity.BaseEntity;
 import xie.common.Constants;
 import xie.common.date.DateUtil;
 import xie.module.baidu.XPostBaiduUrls;
 import xie.module.sitemap.XSiteMap;
+import xie.module.spring.SpringUtil;
 
 @Component
 public class CreateSiteMap {

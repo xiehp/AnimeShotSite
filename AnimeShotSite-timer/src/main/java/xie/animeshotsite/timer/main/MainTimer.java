@@ -9,8 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import xie.animeshotsite.db.entity.ShotTask;
-import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.timer.timer.ShotTaskTimer;
+import xie.module.spring.SpringUtil;
 
 //@SpringBootApplication
 //@Configuration

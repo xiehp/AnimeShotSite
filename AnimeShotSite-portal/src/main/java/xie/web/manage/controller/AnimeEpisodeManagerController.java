@@ -30,10 +30,10 @@ import xie.base.service.BaseService;
 import xie.common.Constants;
 import xie.common.date.DateUtil;
 import xie.common.string.XStringUtils;
-import xie.common.utils.SpringUtils;
 import xie.common.utils.XSSHttpUtil;
 import xie.common.web.util.ConstantsWeb;
 import xie.common.web.util.RequestUtil;
+import xie.module.spring.SpringUtils;
 
 @Controller
 @RequestMapping(value = ConstantsWeb.MANAGE_URL_PREFIX_STR + "/animeEpisode")

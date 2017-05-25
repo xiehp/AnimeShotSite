@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
-import xie.animeshotsite.spring.SpringUtil;
+import xie.module.spring.SpringUtil;
 
 @Component
 public class AutoCollectUtils {

@@ -14,9 +14,9 @@ import xie.animeshotsite.db.repository.SubtitleInfoDao;
 import xie.animeshotsite.db.repository.SubtitleLineDao;
 import xie.animeshotsite.db.service.SubtitleInfoService;
 import xie.animeshotsite.db.service.SubtitleLineService;
-import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.timer.base.XBaseTask;
 import xie.common.string.XStringUtils;
+import xie.module.spring.SpringUtil;
 import xie.v2i.config.Video2ImageProperties;
 
 @Component
