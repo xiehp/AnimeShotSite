@@ -6,9 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.service.ShotInfoService;
-import xie.animeshotsite.spring.SpringUtil;
 import xie.common.json.XJsonUtil;
 import xie.common.json.XObjectMapperFactoryBean;
+import xie.module.spring.SpringUtil;
 
 public class DataTest {
 	public static void main(String[] args) throws Exception {

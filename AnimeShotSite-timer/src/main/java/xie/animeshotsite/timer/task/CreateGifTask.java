@@ -23,7 +23,6 @@ import xie.animeshotsite.db.entity.GifInfo;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.GifInfoService;
-import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.timer.base.XBaseTask;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.common.date.DateUtil;
@@ -31,6 +30,7 @@ import xie.common.number.XNumberUtils;
 import xie.common.utils.XWaitTime;
 import xie.module.command.XCommandFactory;
 import xie.module.command.impl.XWindowsCommand;
+import xie.module.spring.SpringUtil;
 import xie.tietuku.spring.TietukuConfig;
 import xie.v2i.config.Video2ImageProperties;
 

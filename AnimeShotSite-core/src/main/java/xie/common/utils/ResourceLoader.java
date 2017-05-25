@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Maps;
 
+import xie.module.spring.SpringUtils;
 import xie.sys.auth.entity.Resource;
 import xie.sys.auth.repository.ResourceRepository;
 

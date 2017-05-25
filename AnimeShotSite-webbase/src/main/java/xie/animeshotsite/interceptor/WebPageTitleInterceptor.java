@@ -23,11 +23,11 @@ import xie.animeshotsite.utils.SiteUtils;
 import xie.base.module.exception.CodeApplicationException;
 import xie.common.Constants;
 import xie.common.string.XStringUtils;
-import xie.common.utils.SpringUtils;
 import xie.common.utils.XCookieUtils;
 import xie.common.utils.XRequestUtils;
 import xie.common.utils.XSSHttpUtil;
 import xie.common.web.util.ConstantsWeb;
+import xie.module.spring.SpringUtils;
 import xie.sys.auth.service.realm.ShiroRDbRealm.ShiroUser;
 import xie.web.util.SiteConstants;
 

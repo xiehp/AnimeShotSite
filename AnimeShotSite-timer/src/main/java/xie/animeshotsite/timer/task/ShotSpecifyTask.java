@@ -15,11 +15,11 @@ import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
-import xie.animeshotsite.spring.SpringUtil;
 import xie.animeshotsite.timer.a2i.listener.SaveImageListener;
 import xie.animeshotsite.timer.base.XBaseTask;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.common.number.XNumberUtils;
+import xie.module.spring.SpringUtil;
 import xie.v2i.app.Video2Image;
 import xie.v2i.config.Video2ImageProperties;
 
