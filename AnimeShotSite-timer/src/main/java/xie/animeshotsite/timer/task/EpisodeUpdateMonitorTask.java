@@ -13,7 +13,7 @@ import xie.module.httpclient.XHttpClientUtils;
 public class EpisodeUpdateMonitorTask extends XBaseTask {
 
 	@Resource
-	XHttpClientUtils httpClientUtils;
+	private XHttpClientUtils httpClientUtils;
 	
 	
 	@Override
@@ -21,7 +21,6 @@ public class EpisodeUpdateMonitorTask extends XBaseTask {
 //		httpClientUtils.getHtml(url);
 	}
 
-	
 	public static void main(String[] args) {
 //		SpringUtils
 	}
