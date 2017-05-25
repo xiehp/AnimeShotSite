@@ -1,4 +1,4 @@
-package xie.animeshotsite.timer.task;
+package xie.animeshotsite.timer.task.beforeshot;
 
 import java.util.Map;
 
