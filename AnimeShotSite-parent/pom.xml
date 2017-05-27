@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xie</groupId>
 	<artifactId>AnimeShotSite-parent</artifactId>
@@ -13,28 +12,28 @@
 			<url>http://repo.maven.apache.org/maven2</url>
 			<layout>default</layout>
 			<releases>
-				<updatePolicy>daily</updatePolicy>
-				<enabled>true</enabled>
-				<checksumPolicy>warn</checksumPolicy>
+			<updatePolicy>daily</updatePolicy>
+			<enabled>true</enabled>
+			<checksumPolicy>warn</checksumPolicy>
 			</releases>
 			<snapshots>
-				<enabled>false</enabled>
+			<enabled>false</enabled>
 			</snapshots>
-		</repository>
+			</repository>
 		-->
 
 	</repositories>
 
-	<!-- 
-	<modules>
+	<!--
+		<modules>
 		<module>../AnimeShotSite-core</module>
 		<module>../AnimeShotSite-webbase</module>
 		<module>../AnimeShotSite-portal</module>
 		<module>../AnimeShotSite-timer</module>
-	</modules>
+		</modules>
 	-->
-	<!-- 
-	<module>../AnimeShotSite-manage</module>
+	<!--
+		<module>../AnimeShotSite-manage</module>
 	-->
 
 	<profiles>
@@ -92,7 +91,6 @@
 		<httpclient.version>4.3.6</httpclient.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
 		<commons-io.version>2.4</commons-io.version>
-		<guava.version>18.0</guava.version>
 		<joda-time.version>2.3</joda-time.version>
 		<dozer.version>5.5.1</dozer.version>
 		<freemarker.version>2.3.21</freemarker.version>
@@ -161,15 +159,15 @@
 			</dependency>
 
 			<!-- *********************************************************** -->
-			<!-- Spring IO Platform  -->
+			<!-- Spring IO Platform -->
+			<!-- 版本管理 -->
 			<dependency>
-				<groupId>io.spring.platform</groupId>
-				<artifactId>platform-bom</artifactId>
-				<version>2.0.7.RELEASE</version>
+				<groupId>xie</groupId>
+				<artifactId>XImportPom</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-
 
 			<!-- *********************************************************** -->
 			<!-- SPRINGSIDE MODULES begin -->
@@ -226,50 +224,50 @@
 				<groupId>aopalliance</groupId>
 				<artifactId>aopalliance</artifactId>
 				<version>1.0</version>
-			</dependency>-->
+				</dependency> -->
 			<!-- <dependency>
-            	<groupId>org.springframework</groupId>
-	            <artifactId>spring-aspects</artifactId>
-	            <version>${spring.version}</version>
-	        </dependency>-->
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aspects</artifactId>
+				<version>${spring.version}</version>
+				</dependency> -->
 
 			<!-- PERSISTENCE begin -->
 			<!-- hibernate
-			<dependency>
+				<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
 				<version>${hibernate.version}</version>
-			</dependency>
-			<dependency>
+				</dependency>
+				<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-entitymanager</artifactId>
 				<version>${hibernate.version}</version>
-			</dependency>
-			<dependency>
+				</dependency>
+				<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-ehcache</artifactId>
 				<version>${hibernate.version}</version>
-			</dependency> -->
+				</dependency> -->
 
 			<!-- spring data jpa
-			<dependency>
+				<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-jpa</artifactId>
 				<version>${spring-data-jpa.version}</version>
-			</dependency> -->
+				</dependency> -->
 
 			<!-- aop -->
 			<!--<dependency>
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjrt</artifactId>
 				<version>${aspectj.version}</version>
-			</dependency>
-			<dependency>
+				</dependency>
+				<dependency>
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjweaver</artifactId>
 				<version>${aspectj.version}</version>
 				<scope>runtime</scope>
-			</dependency> -->
+				</dependency> -->
 
 			<!-- oracle -->
 			<dependency>
@@ -279,21 +277,21 @@
 			</dependency>
 
 			<!-- connection pool
-			<dependency>
+				<dependency>
 				<groupId>org.apache.tomcat</groupId>
 				<artifactId>tomcat-jdbc</artifactId>
 				<version>${tomcat-jdbc.version}</version>
 				<scope>runtime</scope>
-			</dependency> -->
+				</dependency> -->
 			<!-- PERSISTENCE end -->
 
 			<!-- WEB begin -->
 			<!-- spring
-			<dependency>
+				<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
 				<version>${spring.version}</version>
-			</dependency> -->
+				</dependency> -->
 
 			<!-- sitemesh -->
 			<dependency>
@@ -310,23 +308,23 @@
 				<artifactId>javax.servlet-api</artifactId>
 				<version>3.0.1</version>
 				<scope>provided</scope>
-			</dependency>
-			<dependency>
+				</dependency>
+				<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>jstl</artifactId>
 				<version>1.2</version>
-			</dependency>
-			<dependency>
+				</dependency>
+				<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>jsp-api</artifactId>
 				<version>2.0</version>
 				<exclusions>
-					<exclusion>
-						<groupId>javax.servlet</groupId>
-						<artifactId>javax.servlet-api</artifactId>
-					</exclusion>
+				<exclusion>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				</exclusion>
 				</exclusions>
-			</dependency> -->
+				</dependency> -->
 			<!-- WEB end -->
 
 			<!-- SECURITY begin -->
@@ -404,7 +402,7 @@
 				<artifactId>jackson-jaxrs-json-provider</artifactId>
 				<version>${jackson.version}</version>
 				<scope>runtime</scope>
-			</dependency>-->
+				</dependency> -->
 			<!-- JAX-RS end -->
 
 			<!-- JMS begin -->
@@ -438,18 +436,18 @@
 			<!-- JMS end -->
 
 			<!-- TIMER
-			<dependency>
+				<dependency>
 				<groupId>org.quartz-scheduler</groupId>
 				<artifactId>quartz</artifactId>
 				<version>${quartz.version}</version>
-			</dependency> -->
+				</dependency> -->
 
 			<!-- NOSQL begin
-			<dependency>
+				<dependency>
 				<groupId>redis.clients</groupId>
 				<artifactId>jedis</artifactId>
 				<version>${jedis.version}</version>
-			</dependency> -->
+				</dependency> -->
 			<!-- NOSQL end -->
 
 			<!-- CACHE begin -->
@@ -469,11 +467,11 @@
 			<!-- CACHE end -->
 
 			<!-- jolokia Restful JMX begin
-			<dependency>
+				<dependency>
 				<groupId>org.jolokia</groupId>
 				<artifactId>jolokia-core</artifactId>
 				<version>${jolokia.version}</version>
-			</dependency> -->
+				</dependency> -->
 			<!-- jolokia end -->
 
 			<!-- hystrix begin -->
@@ -511,54 +509,54 @@
 
 			<!-- JSR303 Bean Validator -->
 
-			<!-- JSON begin 
-			<dependency>
+			<!-- JSON begin
+				<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-core</artifactId>
 				<version>${jackson.version}</version>
-			</dependency>
-			<dependency>
+				</dependency>
+				<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
 				<version>${jackson.version}</version>
-			</dependency>
-			<dependency>
+				</dependency>
+				<dependency>
 				<groupId>com.fasterxml.jackson.module</groupId>
 				<artifactId>jackson-module-jaxb-annotations</artifactId>
 				<version>${jackson.version}</version>
-			</dependency>
-			<dependency>
-			  <groupId>fakepath</groupId>
-			  <artifactId>json-lib</artifactId>
-			  <version>2.4</version>
-			  <classifier>jdk15</classifier>
-			</dependency>
-			<dependency>
+				</dependency>
+				<dependency>
+				<groupId>fakepath</groupId>
+				<artifactId>json-lib</artifactId>
+				<version>2.4</version>
+				<classifier>jdk15</classifier>
+				</dependency>
+				<dependency>
 				<groupId>net.sf.ezmorph</groupId>
 				<artifactId>ezmorph</artifactId>
 				<version>1.0.6</version>
-			</dependency>-->
+				</dependency> -->
 
 			<!-- JSON end -->
 
 			<!-- XML begin
-			<dependency>
+				<dependency>
 				<groupId>dom4j</groupId>
 				<artifactId>dom4j</artifactId>
 				<exclusions>
-					<exclusion>
-						<groupId>xml-apis</groupId>
-						<artifactId>xml-apis</artifactId>
-					</exclusion>
+				<exclusion>
+				<groupId>xml-apis</groupId>
+				<artifactId>xml-apis</artifactId>
+				</exclusion>
 				</exclusions>
-			</dependency> -->
+				</dependency> -->
 
 			<!-- 重新定义Java XPath Engine到最新版，避免旧版那些不必要的依赖
-			<dependency>
+				<dependency>
 				<groupId>jaxen</groupId>
 				<artifactId>jaxen</artifactId>
 				<version>1.1.4</version>
-			</dependency> -->
+				</dependency> -->
 			<!-- XML end -->
 
 			<!-- LOGGING begin -->
@@ -585,53 +583,53 @@
 			<!-- google java library -->
 
 			<!-- joda
-			<dependency>
+				<dependency>
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time</artifactId>
 				<version>${joda-time.version}</version>
-			</dependency>
-			<dependency>
+				</dependency>
+				<dependency>
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time-jsptags</artifactId>
 				<version>1.1.1</version>
-			</dependency> -->
+				</dependency> -->
 			<!-- joda for jackson
-			<dependency>
+				<dependency>
 				<groupId>com.fasterxml.jackson.datatype</groupId>
 				<artifactId>jackson-datatype-joda</artifactId>
 				<version>${jackson.version}</version>
-			</dependency> -->
+				</dependency> -->
 			<!-- apache poi
-			<dependency>
+				<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi</artifactId>
 				<version>${apache.poi.version}</version>
-			</dependency>
-			<dependency>
+				</dependency>
+				<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi-scratchpad</artifactId>
 				<version>${apache.poi.version}</version>
-			</dependency>
-			<dependency>
+				</dependency>
+				<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi-ooxml</artifactId>
 				<version>${apache.poi.version}</version>
-			</dependency>
-			<dependency>
+				</dependency>
+				<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi-ooxml-schemas</artifactId>
 				<version>${apache.poi.version}</version>
-			</dependency>
-			<dependency>
+				</dependency>
+				<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi-excelant</artifactId>
 				<version>${apache.poi.version}</version>
-			</dependency>
-			<dependency>
+				</dependency>
+				<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi-examples</artifactId>
 				<version>${apache.poi.version}</version>
-			</dependency> -->
+				</dependency> -->
 
 			<!-- GENERAL UTILS end -->
 
@@ -650,48 +648,48 @@
 			</dependency>
 
 			<!-- httpclient
-			<dependency>
+				<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>
 				<version>${httpclient.version}</version>
 				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
+				<exclusion>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				</exclusion>
 				</exclusions>
-			</dependency>
+				</dependency>
 
-			<dependency>
+				<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>fluent-hc</artifactId>
 				<version>${httpclient.version}</version>
 				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
+				<exclusion>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				</exclusion>
 				</exclusions>
-			</dependency>
+				</dependency>
 
-			<dependency>
+				<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpcore</artifactId>
 				<version>${httpclient.version}</version>
 				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
+				<exclusion>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				</exclusion>
 				</exclusions>
-			</dependency> -->
+				</dependency> -->
 
 			<!-- template engine
-			<dependency>
+				<dependency>
 				<groupId>org.freemarker</groupId>
 				<artifactId>freemarker</artifactId>
 				<version>${freemarker.version}</version>
-			</dependency> -->
+				</dependency> -->
 
 			<dependency>
 				<groupId>com.liferay</groupId>
@@ -710,17 +708,17 @@
 				<groupId>javax.activation</groupId>
 				<artifactId>activation</artifactId>
 				<version>1.1.1</version>
-			</dependency>-->
+				</dependency> -->
 			<!-- OTHER TOOLS end -->
 
 			<!-- TEST begin -->
-			<!-- junit 
-			<dependency>
+			<!-- junit
+				<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
 				<scope>test</scope>
-			</dependency>-->
+				</dependency> -->
 
 			<!-- assertj -->
 			<dependency>
@@ -729,13 +727,13 @@
 				<version>${assertj.version}</version>
 			</dependency>
 
-			<!-- mockito 
-			<dependency>
+			<!-- mockito
+				<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
 				<version>${mockito.version}</version>
 				<scope>test</scope>
-			</dependency>-->
+				</dependency> -->
 			<dependency>
 				<groupId>org.powermock</groupId>
 				<artifactId>powermock-module-junit4</artifactId>
@@ -772,12 +770,12 @@
 			</dependency>
 
 			<!-- spring
-			<dependency>
+				<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-test</artifactId>
 				<version>${spring.version}</version>
 				<scope>test</scope>
-			</dependency> -->
+				</dependency> -->
 
 			<!-- selenium 2.0 -->
 			<dependency>
@@ -839,7 +837,7 @@
 				<scope>test</scope>
 			</dependency>
 
-			<!-- data source 相关jar包-->
+			<!-- data source 相关jar包 -->
 			<dependency>
 				<groupId>com.alibaba</groupId>
 				<artifactId>druid</artifactId>
@@ -877,11 +875,11 @@
 			</dependency>
 
 			<!-- sftp
-			<dependency>
-			    <groupId>com.jcraft</groupId>
-			    <artifactId>jsch</artifactId>
-			    <version>0.1.53</version>
-			</dependency> -->
+				<dependency>
+				<groupId>com.jcraft</groupId>
+				<artifactId>jsch</artifactId>
+				<version>0.1.53</version>
+				</dependency> -->
 		</dependencies>
 	</dependencyManagement>
 
@@ -900,47 +898,47 @@
 			</plugin>
 
 			<!-- 打包前删除lib/MavenDependencies
-			<plugin>
+				<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>2.5</version>
 				<executions>
-					<execution>
-						<id>ID_delete-MavenDependencies</id>
-						<phase>clean</phase>
-						<goals>
-							<goal>clean</goal>
-						</goals>
-						<configuration>
-							<filesets>
-								<fileset>
-									<directory>lib/MavenDependencies</directory>
-								</fileset>
-							</filesets>
-							<excludeDefaultDirectories>true</excludeDefaultDirectories>
-						</configuration>
-					</execution>
+				<execution>
+				<id>ID_delete-MavenDependencies</id>
+				<phase>clean</phase>
+				<goals>
+				<goal>clean</goal>
+				</goals>
+				<configuration>
+				<filesets>
+				<fileset>
+				<directory>lib/MavenDependencies</directory>
+				</fileset>
+				</filesets>
+				<excludeDefaultDirectories>true</excludeDefaultDirectories>
+				</configuration>
+				</execution>
 				</executions>
-			</plugin> -->
+				</plugin> -->
 
 			<!-- 打包前向lib/MavenDependencies拷贝依赖包
-			<plugin>
+				<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
-					<execution>
-						<id>ID_copy-MavenDependencies</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>lib/MavenDependencies</outputDirectory>
-							<excludeGroupIds>${project.groupId}</excludeGroupIds>
-							<excludeArtifactIds>${project.artifactId}</excludeArtifactIds>
-							<includeScope>runtime</includeScope>
-						</configuration>
-					</execution>
+				<execution>
+				<id>ID_copy-MavenDependencies</id>
+				<phase>generate-sources</phase>
+				<goals>
+				<goal>copy-dependencies</goal>
+				</goals>
+				<configuration>
+				<outputDirectory>lib/MavenDependencies</outputDirectory>
+				<excludeGroupIds>${project.groupId}</excludeGroupIds>
+				<excludeArtifactIds>${project.artifactId}</excludeArtifactIds>
+				<includeScope>runtime</includeScope>
+				</configuration>
+				</execution>
 				</executions>
-			</plugin> -->
+				</plugin> -->
 		</plugins>
 	</build>
 </project>
