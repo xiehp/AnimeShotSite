@@ -8,11 +8,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang.math.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -34,7 +36,7 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 
 	protected Logger logging = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
+	@Resource
 	protected EntityCache entityCache;
 
 	public abstract BaseRepository<M, ID> getBaseRepository();
@@ -77,6 +79,10 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 
 	public Page<M> findAll(Pageable pageable) {
 		return getBaseRepository().findAll(pageable);
+	}
+
+	public Page<M> searchPageByParams(Map<String, Object> searchParams, Class<M> c) {
+		return searchPageByParams(searchParams, null, c);
 	}
 
 	/**
@@ -147,9 +153,15 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 		// Specification<ShotInfo> spec = DynamicSpecifications.bySearchFilter(filters.values(), ShotInfo.class);
 		Map<String, BaseSearchFilter> filters = BaseSearchFilter.parse(searchParams);
 		Specification<M> spec = BaseSpecifications.bySearchFilter(filters.values(), c);
-		Page<M> userPage = getBaseRepository().findAll(spec, pageRequest);
+		Page<M> page = null;
+		if (pageRequest == null) {
+			List<M> list = getBaseRepository().findAll(spec);
+			page = new PageImpl<>(list);
+		} else {
+			page = getBaseRepository().findAll(spec, pageRequest);
+		}
 
-		return userPage;
+		return page;
 	}
 
 	/**

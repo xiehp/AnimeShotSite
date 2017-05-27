@@ -1,9 +1,11 @@
 package xie.web.manage.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -11,12 +13,14 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
+import xie.animeshotsite.db.entity.AutoRunParam;
 import xie.animeshotsite.db.entity.SubtitleInfo;
 import xie.animeshotsite.db.repository.ShotInfoDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
@@ -80,7 +84,7 @@ public class AnimeManagerController extends BaseManagerController<AnimeInfo, Str
 		// 获得剧集 列表
 		List<AnimeEpisode> animeEpisodeList = animeEpisodeService.findByAnimeInfoId(animeInfoId);
 		request.setAttribute("animeEpisodeList", animeEpisodeList);
-		List<Map<String, Object>> list = shotInfoDao.countRowNumberGroupByAnimeEpisodeId(animeInfoId);
+		List<Object[]> list = shotInfoDao.countRowNumberGroupByAnimeEpisodeId(animeInfoId);
 		Map<String, Long> shotCountMap = new LinkedHashMap<>();
 		Map<String, Long> maxTimestampMap = new LinkedHashMap<>();
 		for (Object ob : list) {
@@ -95,6 +99,26 @@ public class AnimeManagerController extends BaseManagerController<AnimeInfo, Str
 		List<SubtitleInfo> subtitleInfoList = subtitleInfoService.findByAnimeInfoId(animeInfoId);
 		subtitleInfoList = subtitleInfoService.fillParentData(subtitleInfoList);
 		request.setAttribute("subtitleInfoList", subtitleInfoList);
+
+		// 自动运行参数表
+		Map<String, Object> searchParams = new HashMap<>();
+		searchParams.put("EQ_animeInfoId", "anime_templet");
+		Page<AutoRunParam> autoRunParamTempletPage = autoRunParamService.searchPageByParams(searchParams, AutoRunParam.class);
+		List<AutoRunParam> autoRunParamTempletList = autoRunParamTempletPage.getContent();
+		autoRunParamTempletPage.forEach(templetParam -> {
+			templetParam.setId(null);
+		});
+		Map<String, AutoRunParam> templetMap = autoRunParamTempletList
+				.stream()
+				.collect(Collectors.toMap(AutoRunParam::getKey, (p) -> p));
+
+		searchParams.put("EQ_animeInfoId", animeInfoId);
+		Page<AutoRunParam> autoRunParamPage = autoRunParamService.searchPageByParams(searchParams, AutoRunParam.class);
+		List<AutoRunParam> autoRunParamList = autoRunParamPage.getContent();
+		Map<String, AutoRunParam> map = autoRunParamList.stream().collect(Collectors.toMap(AutoRunParam::getAnimeInfoId, (p) -> p));
+
+		templetMap.putAll(map);
+		request.setAttribute("autoRunParamList", templetMap.values());
 
 		return getJspFilePath("new");
 	}

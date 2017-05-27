@@ -110,6 +110,10 @@
 	<logger name="org.hibernate" level="WARN" />
 	<logger name="org.hibernate.engine.internal" level="WARN" />
 	<logger name="xie.common.exception.ExceptionHandler" level="WARN" />
+	
+	
+	<logger name="org.hibernate.engine.QueryParameters" level="TRACE" />
+	<logger name="org.hibernate.engine.query.HQLQueryPlan" level="TRACE" />
 
 	<!-- root -->
 	<root level="INFO">

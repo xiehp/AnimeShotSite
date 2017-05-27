@@ -7,15 +7,14 @@
 
 <title>动画详情 <c:out value='${animeInfo.fullName}' /></title>
 
-
 <script type="text/javascript">
-    $(function () {
+lazyRun(function () {
         $("#mainForm").find("input[name]").each(function () {
             var params = {};
             params.name = $(this).attr("name");
             var buttonHtml = $("#updateOneColumnButtonTemplate").render(params);
             $(this).parent().after(buttonHtml);
-        });
+        }, -1);
 
         // 编辑器
         var changesCount = 0;
@@ -106,7 +105,6 @@
 <div class="col-md-1">
 	<a class="btn btn-primary" value="更新" onclick="updateOneColumn('{{>name}}');">更新</a>
 </div>
-
 </script>
 
 <script src="//cdn.ckeditor.com/4.5.8/full/ckeditor.js"></script>
@@ -325,3 +323,90 @@
 <div>
 	<a href="${ctx}${MANAGE_URL_STR}/subtitle/new?animeInfoId=${animeInfo.id}"> 增加字幕信息 </a>
 </div>
+
+<div style="height: 100px;"></div>
+
+
+
+<div>
+	<div style="font-size: 24px;">自动化配置</div>
+	<script id="autoRunRow" type="text/x-jsrender">
+		<div class="form-group">
+			<label class="col-sm-2 control-label">{{>name}}({{>key}})</label>
+			<div class="col-sm-5">
+				<input class="form-control" name="id" value="{{>value}}" />
+			</div>
+		</div>
+	</script>
+	<script id="updateOneAutoRunParamButtonTemplate" type="text/x-jsrender">
+		<div class="col-md-1">
+			<a class="btn btn-primary" value="更新" onclick="updateOneAutoRunParam('{{>key}}');">更新</a>
+		</div>
+	</script>
+
+	<script type="text/javascript">
+    	lazyRun(function () {
+	        $("#autoRunForm").find("input[name=key]").each(function () {
+	            var params = {};
+	            params.key = $(this).val();
+	            var buttonHtml = $("#updateOneAutoRunParamButtonTemplate").render(params);
+	            $(this).parent().parent().append(buttonHtml);
+	        });
+        });
+	
+		function addAutoRunParam() {
+			var paramsTemplate = {};
+			paramsTemplate.name = "";
+			paramsTemplate.key = "";
+			paramsTemplate.value = "";
+			var htmlStr = $("#autoRunRow").render(paramsTemplate);
+			$("#autoRunFormInputDiv").after(htmlStr);
+		}
+
+	    function updateOneAutoRunParam(key) {
+	    	let $auto_param_div = $("#auto_param_"+key);
+	        var param = {};
+	        param.id = $auto_param_div.find("[name=id]").val();
+	        param.name = $auto_param_div.find("[name=name]").val();
+	        param.key = key;
+	        param.value = $auto_param_div.find("[name=value]").val();;
+	        param.animeInfoId = $auto_param_div.find("[name=animeInfoId]").val();
+	        param.animeEpisodeId = $auto_param_div.find("[name=animeEpisodeId]").val();
+	        param.refId = $auto_param_div.find("[name=refId]").val();;
+	        param.refType = $auto_param_div.find("[name=refType]").val();;
+	        $.homePost("${MANAGE_URL_STR}/anime/updateOneAutoRunParam", param);
+	    }
+	</script>
+	<div>
+		<input type="button" id="addAutoRunBtn" value="增加一行">
+	</div>
+	<form id="autoRunForm" class="form-horizontal" action="${ctx}${MANAGE_URL_STR}/anime/submit" method="post">
+		<div id="autoRunFormInputDiv">
+			<c:forEach items="${autoRunParamList}" var="autoRunParam">
+				<div id="auto_param_${autoRunParam.key}" class="form-group">
+					<div class="col-sm-3">
+						<input class="form-control" name="id" value="${autoRunParam.id}">
+						<br>
+						<input class="form-control" name="animeInfoId" value="${animeInfo.id}">
+						<br>
+						<input class="form-control" name="name" value="${autoRunParam.name}">
+						<br>
+						<input class="form-control" name="key" value="${autoRunParam.key}">
+						<br>
+					</div>
+					<div class="col-sm-5">
+						<input class="form-control" name="value" value="${autoRunParam.value}" />
+					</div>
+				</div>
+				<hr />
+			</c:forEach>
+		</div>
+		<input type="submit" />
+
+		<a href="${ctx}${MANAGE_URL_STR}/anime/list" class="btn btn-primary">返回上层</a>
+	</form>
+</div>
+
+
+
+
