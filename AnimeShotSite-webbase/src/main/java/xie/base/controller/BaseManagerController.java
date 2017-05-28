@@ -37,24 +37,19 @@ public abstract class BaseManagerController<M extends IdEntity, ID extends Seria
 	public GoPageResult updateOneColumn(@RequestParam ID id, @RequestParam String columnName, @RequestParam String columnValue, HttpServletRequest request) {
 
 		GoPageResult goPageResult = null;
-		try {
-			M baseEntity = getBaseService().findOne(id);
 
-			String methodName = "set" + XStringUtils.upperFirstLetter(columnName);
+		M baseEntity = getBaseService().findOne(id);
 
-			if (XStringUtils.isEmpty(columnValue)) {
-				columnValue = null;
-			}
-			invokeMethod(baseEntity, methodName, columnValue);
+		String methodName = "set" + XStringUtils.upperFirstLetter(columnName);
 
-			baseEntity = getBaseService().save(baseEntity);
-
-			goPageResult = goPageUtil.createSuccess(request);
-
-		} catch (Exception e) {
-			_log.error("updateOneColumn发生错误", e);
-			goPageResult = goPageUtil.createFail(request);
+		if (XStringUtils.isEmpty(columnValue)) {
+			columnValue = null;
 		}
+		invokeMethod(baseEntity, methodName, columnValue);
+
+		baseEntity = getBaseService().save(baseEntity);
+
+		goPageResult = goPageUtil.createSuccess(request, null);
 
 		return goPageResult;
 	}
@@ -110,7 +105,7 @@ public abstract class BaseManagerController<M extends IdEntity, ID extends Seria
 			@RequestParam String id,
 			HttpServletRequest request) {
 
-		GoPageResult goPageResult = null;
+		GoPageResult goPageResult;
 		try {
 			autoRunParamService.delete(id);
 			goPageResult = goPageUtil.createSuccess(request);
