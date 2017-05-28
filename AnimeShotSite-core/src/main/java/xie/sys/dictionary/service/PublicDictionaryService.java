@@ -1,12 +1,9 @@
 package xie.sys.dictionary.service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
@@ -19,7 +16,7 @@ public class PublicDictionaryService {
 	
 	private volatile  Map<String,List<PublicDictionary>> dictionaryMap;
 
-	@Autowired
+	@Resource
 	private PublicDictionaryDao publicDictionaryDao;
 	
 	public Map<String, List<PublicDictionary>> getAllDictionaryMap(){

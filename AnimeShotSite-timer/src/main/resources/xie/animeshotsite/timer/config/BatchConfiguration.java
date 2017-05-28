@@ -1,19 +1,17 @@
 package xie.animeshotsite.timer.config;
 
+import javax.annotation.Resource;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import xie.animeshotsite.db.entity.AnimeInfo;
 
@@ -22,10 +20,10 @@ import xie.animeshotsite.db.entity.AnimeInfo;
 //@EnableAutoConfiguration
 public class BatchConfiguration {
 
-	@Autowired
+	@Resource
 	private JobBuilderFactory jobs;
 
-	@Autowired
+	@Resource
 	private StepBuilderFactory steps;
 
 	@Bean

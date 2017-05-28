@@ -4,12 +4,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +21,7 @@ import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.entity.SubtitleInfo;
 import xie.animeshotsite.db.entity.SubtitleLine;
 import xie.animeshotsite.db.repository.SubtitleInfoDao;
-import xie.animeshotsite.db.service.AnimeEpisodeService;
-import xie.animeshotsite.db.service.AnimeInfoService;
-import xie.animeshotsite.db.service.ShotTaskService;
-import xie.animeshotsite.db.service.SubtitleInfoService;
-import xie.animeshotsite.db.service.SubtitleLineService;
+import xie.animeshotsite.db.service.*;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseManagerController;
 import xie.base.service.BaseService;
@@ -37,19 +33,19 @@ import xie.common.web.util.RequestUtil;
 @RequestMapping(value = ConstantsWeb.MANAGE_URL_PREFIX_STR + "/subtitle")
 public class SubtitleManagerController extends BaseManagerController<SubtitleInfo, String> {
 
-	@Autowired
+	@Resource
 	private SubtitleInfoService subtitleInfoService;
-	@Autowired
+	@Resource
 	private SubtitleLineService subtitleLineService;
-	@Autowired
+	@Resource
 	private SubtitleInfoDao subtitleInfoDao;
-	@Autowired
+	@Resource
 	private AnimeInfoService animeInfoService;
-	@Autowired
+	@Resource
 	private AnimeEpisodeService animeEpisodeService;
-	@Autowired
+	@Resource
 	private ShotTaskService shotTaskService;
-	@Autowired
+	@Resource
 	private AnimeManagerController animeController;
 
 	@Override

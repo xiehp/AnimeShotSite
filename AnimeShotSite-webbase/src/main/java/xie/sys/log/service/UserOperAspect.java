@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.JoinPoint;
@@ -12,7 +13,6 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -49,7 +49,7 @@ public class UserOperAspect {
 	
 	
 	
-	@Autowired
+	@Resource
 	private UserOperService userOperService;
 	
 	@Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping)")

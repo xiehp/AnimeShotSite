@@ -9,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Lists;
 import org.assertj.core.util.Maps;
 import org.assertj.core.util.Sets;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -21,31 +20,22 @@ import xie.base.page.PageRequestUtil;
 import xie.base.repository.BaseRepository;
 import xie.base.service.BaseService;
 import xie.common.Constants;
-import xie.common.utils.Validator;
-import xie.sys.auth.entity.Permission;
-import xie.sys.auth.entity.Resource;
-import xie.sys.auth.entity.Role;
-import xie.sys.auth.entity.RoleResourcePermission;
-import xie.sys.auth.entity.User;
-import xie.sys.auth.repository.PermissionRepository;
-import xie.sys.auth.repository.ResourceRepository;
-import xie.sys.auth.repository.RoleRepository;
-import xie.sys.auth.repository.RoleResourcePermissionRepository;
-import xie.sys.auth.repository.UserRoleRepository;
+import xie.sys.auth.entity.*;
+import xie.sys.auth.repository.*;
 import xie.sys.role.vo.RoleVo;
 
 @Service
 public class RoleService extends BaseService<Role,String> {
 
-	@Autowired
+	@javax.annotation.Resource
 	private RoleRepository roleRepository;
-	@Autowired
+	@javax.annotation.Resource
 	private PermissionRepository permissionRepository;
-	@Autowired
+	@javax.annotation.Resource
 	private ResourceRepository resourceRepository;
-	@Autowired
+	@javax.annotation.Resource
 	private RoleResourcePermissionRepository roleResourcePermissionRepository;
-	@Autowired
+	@javax.annotation.Resource
 	private UserRoleRepository userRoleRepository;
 	@Override
 	public BaseRepository<Role, String> getBaseRepository() {

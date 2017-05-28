@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.annotation.DirtiesContext;
@@ -21,7 +20,7 @@ import com.yjysh.framework.spring.SpringContextTestCase;
 @ContextConfiguration(locations = { "/applicationContext.xml","/applicationContext-framework.xml","/projectContext.xml","/deployContext.xml" })
 public class SampleRepositoryTest  extends SpringContextTestCase {
 	
-	@Autowired 
+	@Resource
 	SampleRepository sampleRepository;
 	
 	@Test

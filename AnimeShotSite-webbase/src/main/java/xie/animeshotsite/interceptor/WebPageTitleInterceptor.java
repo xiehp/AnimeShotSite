@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -45,7 +46,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 	@Autowired(required = true)
 	private ShotSiteSetup shotSiteSetup;
 
-	@Autowired
+	@Resource
 	private MessageSource messageSource;
 
 	private final Map<String, Integer> excludeIpsCount = new HashMap<>();

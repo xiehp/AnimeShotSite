@@ -3,9 +3,9 @@ package xie.sys.auth.service;
 import java.util.Calendar;
 import java.util.Collection;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import xie.base.repository.BaseRepository;
 import xie.base.service.BaseService;
@@ -15,7 +15,7 @@ import xie.sys.auth.repository.PermissionRepository;
 @Service
 public class PermissionService extends BaseService<Permission, String>{
 
-	@Autowired
+	@Resource
 	private PermissionRepository permissionRepository;
 	
 	@Override

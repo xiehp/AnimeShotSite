@@ -7,7 +7,6 @@ import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.assertj.core.util.Lists;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -26,18 +25,8 @@ import xie.base.repository.BaseRepository;
 import xie.base.service.BaseService;
 import xie.common.Constants;
 import xie.common.utils.Validator;
-import xie.sys.auth.entity.Resource;
-import xie.sys.auth.entity.Role;
-import xie.sys.auth.entity.RoleResourcePermission;
-import xie.sys.auth.entity.User;
-import xie.sys.auth.entity.UserRole;
-import xie.sys.auth.entity.UserSetting;
-import xie.sys.auth.repository.ResourceRepository;
-import xie.sys.auth.repository.RoleRepository;
-import xie.sys.auth.repository.RoleResourcePermissionRepository;
-import xie.sys.auth.repository.UserRepository;
-import xie.sys.auth.repository.UserRoleRepository;
-import xie.sys.auth.repository.UserSettingRepository;
+import xie.sys.auth.entity.*;
+import xie.sys.auth.repository.*;
 import xie.sys.auth.service.realm.ShiroRDbRealm.ShiroUser;
 import xie.sys.role.vo.RoleVo;
 import xie.sys.user.vo.UserVo;
@@ -50,17 +39,17 @@ public class UserService extends BaseService<User, String> {
 	public static final int HASH_INTERATIONS = 1024;
 	private static final int SALT_SIZE = 8;
 	
-	@Autowired
+	@javax.annotation.Resource
 	private UserRepository userRepository;
-	@Autowired
+	@javax.annotation.Resource
 	private RoleRepository roleRepository;
-	@Autowired 
+	@javax.annotation.Resource
 	private ResourceRepository resourceRepository;
-	@Autowired
+	@javax.annotation.Resource
 	private UserRoleRepository userRoleRepository;
-	@Autowired
+	@javax.annotation.Resource
 	private RoleResourcePermissionRepository roleResourcePermissionRepository;
-	@Autowired
+	@javax.annotation.Resource
 	private UserSettingRepository userSettingRepository;
 	
 	@Override

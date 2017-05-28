@@ -6,20 +6,21 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.module.spring.SpringUtil;
 
+import javax.annotation.Resource;
+
 @Component
 public class AutoCollectUtils {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
+	@Resource
 	private AnimeEpisodeService animeEpisodeService;
-	@Autowired
+	@Resource
 	private ResourceCollectUtils resourceCollectUtils;
 
 	public static void main(String[] args) throws Exception {

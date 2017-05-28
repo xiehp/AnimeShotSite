@@ -1,12 +1,9 @@
 package xie.animeshotsite.db.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -33,15 +30,15 @@ import xie.common.utils.XSSHttpUtil;
 @Service
 public class ShotInfoService extends BaseService<ShotInfo, String> {
 
-	@Autowired
+	@Resource
 	private ShotInfoDao shotInfoDao;
-	@Autowired
+	@Resource
 	private AnimeInfoDao animeInfoDao;
-	@Autowired
+	@Resource
 	private AnimeEpisodeDao animeEpisodeDao;
-	@Autowired
+	@Resource
 	private EntityCache entityCache;
-	@Autowired
+	@Resource
 	private ShotSiteSetup shotSiteSetup;
 
 	public ShotInfoVO convertToVO(ShotInfo shotInfo) {

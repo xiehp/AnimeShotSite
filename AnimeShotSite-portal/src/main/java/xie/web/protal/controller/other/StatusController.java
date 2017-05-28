@@ -1,9 +1,9 @@
 package xie.web.protal.controller.other;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,17 +20,17 @@ import xie.other.ma.db.service.MaDamageService;
 @RequestMapping(value = "/site-status")
 public class StatusController extends BaseController {
 
-	@Autowired
+	@Resource
 	CommonRecordDao commonRecordDao;
-	@Autowired
+	@Resource
 	MaDamageDao maDamageDao;
-	@Autowired
+	@Resource
 	CommonRecordService commonRecordService;
-	@Autowired
+	@Resource
 	MaDamageService maDamageService;
-	@Autowired
+	@Resource
 	CommentRecordService commentRecordService;
-	@Autowired
+	@Resource
 	EntityCache entityCache;
 
 	protected String getJspFileRootPath() {

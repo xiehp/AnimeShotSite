@@ -1,18 +1,14 @@
 package xie.web.protal.controller.mip;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,12 +26,7 @@ import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.repository.GifInfoDao;
-import xie.animeshotsite.db.service.AnimeEpisodeService;
-import xie.animeshotsite.db.service.AnimeInfoService;
-import xie.animeshotsite.db.service.GifInfoService;
-import xie.animeshotsite.db.service.ShotTaskService;
-import xie.animeshotsite.db.service.SubtitleInfoService;
-import xie.animeshotsite.db.service.SubtitleLineService;
+import xie.animeshotsite.db.service.*;
 import xie.base.module.exception.CodeApplicationException;
 import xie.common.json.XJsonUtil;
 import xie.common.web.util.ConstantsWeb;
@@ -45,25 +36,25 @@ import xie.web.protal.controller.GifController;
 @RequestMapping(value = ConstantsWeb.MIP_URL_PREFIX_STR + "/gif")
 public class MipGifController extends GifController {
 
-	@Autowired
+	@Resource
 	private AnimeInfoService animeInfoService;
-	@Autowired
+	@Resource
 	private AnimeInfoDao animeInfoDao;
-	@Autowired
+	@Resource
 	private AnimeEpisodeService animeEpisodeService;
-	@Autowired
+	@Resource
 	private AnimeEpisodeDao animeEpisodeDao;
-	@Autowired
+	@Resource
 	private GifInfoService gifInfoService;
-	@Autowired
+	@Resource
 	private GifInfoDao gifInfoDao;
-	@Autowired
+	@Resource
 	private SubtitleInfoService subtitleInfoService;
-	@Autowired
+	@Resource
 	private SubtitleLineService subtitleLineService;
-	@Autowired
+	@Resource
 	private EntityCache entityCache;
-	@Autowired
+	@Resource
 	private ShotTaskService shotTaskService;
 
 	protected String getJspFileRootPath() {

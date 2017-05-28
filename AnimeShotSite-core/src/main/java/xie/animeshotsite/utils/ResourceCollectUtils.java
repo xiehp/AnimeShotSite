@@ -6,13 +6,14 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.Resource;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import xie.common.string.XStringUtils;
@@ -28,7 +29,7 @@ public class ResourceCollectUtils {
 
 	Logger Logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
+	@Resource
 	XHttpClientUtils xHttpClientUtils;
 
 	/**

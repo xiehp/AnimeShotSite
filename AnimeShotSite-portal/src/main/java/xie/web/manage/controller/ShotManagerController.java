@@ -3,10 +3,10 @@ package xie.web.manage.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,12 +29,12 @@ import xie.common.web.util.ConstantsWeb;
 @Controller
 @RequestMapping(value = ConstantsWeb.MANAGE_URL_PREFIX_STR + "/shot")
 public class ShotManagerController extends BaseManagerController<ShotInfo, String> {
-
-	private @Autowired AnimeInfoService animeInfoService;
-
-	private @Autowired AnimeEpisodeService animeEpisodeService;
-
-	private @Autowired ShotInfoService shotInfoService;
+	@Resource
+	private AnimeInfoService animeInfoService;
+	@Resource
+	private AnimeEpisodeService animeEpisodeService;
+	@Resource
+	private ShotInfoService shotInfoService;
 
 	@Override
 	protected BaseService<ShotInfo, String> getBaseService() {
@@ -51,7 +51,7 @@ public class ShotManagerController extends BaseManagerController<ShotInfo, Strin
 			@RequestParam(value = "sortType", defaultValue = "timeStamp") String sortType,
 			@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			Model model, ServletRequest request)
-					throws Exception {
+			throws Exception {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		// 增加删除过滤
 		searchParams.put("EQ_animeEpisodeId", animeEpisodeId);

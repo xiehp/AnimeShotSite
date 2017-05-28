@@ -6,19 +6,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.utils.SiteUtils;
@@ -42,17 +38,17 @@ import xie.other.ma.db.service.MaDamageService;
 @Controller
 public class MaDamageCalcController extends BaseController {
 
-	@Autowired
+	@Resource
 	CommonRecordDao commonRecordDao;
-	@Autowired
+	@Resource
 	MaDamageDao maDamageDao;
-	@Autowired
+	@Resource
 	CommonRecordService commonRecordService;
-	@Autowired
+	@Resource
 	MaDamageService maDamageService;
-	@Autowired
+	@Resource
 	CommentRecordService commentRecordService;
-	@Autowired
+	@Resource
 	EntityCache entityCache;
 
 	protected String getJspFileRootPath() {

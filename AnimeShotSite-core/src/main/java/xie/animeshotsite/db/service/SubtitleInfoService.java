@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springside.modules.mapper.BeanMapper;
 
@@ -26,13 +27,13 @@ import xie.common.utils.XListUtils;
 @Service
 public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 
-	@Autowired
+	@Resource
 	private SubtitleInfoDao subtitleInfoDao;
-	@Autowired
+	@Resource
 	private AnimeInfoDao animeInfoDao;
-	@Autowired
+	@Resource
 	private AnimeEpisodeDao animeEpisodeDao;
-	@Autowired
+	@Resource
 	private EntityCache entityCache;
 
 	@Override

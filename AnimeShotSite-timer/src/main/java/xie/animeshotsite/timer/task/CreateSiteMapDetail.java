@@ -5,25 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.xml.transform.TransformerException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import xie.animeshotsite.db.entity.ShotInfo;
-import xie.animeshotsite.db.repository.AnimeEpisodeDao;
-import xie.animeshotsite.db.repository.AnimeInfoDao;
-import xie.animeshotsite.db.repository.ShotInfoDao;
-import xie.animeshotsite.db.repository.SubtitleInfoDao;
-import xie.animeshotsite.db.repository.SubtitleLineDao;
-import xie.animeshotsite.db.service.AnimeEpisodeService;
-import xie.animeshotsite.db.service.AnimeInfoService;
-import xie.animeshotsite.db.service.ShotInfoService;
-import xie.animeshotsite.db.service.SubtitleInfoService;
-import xie.animeshotsite.db.service.SubtitleLineService;
+import xie.animeshotsite.db.repository.*;
+import xie.animeshotsite.db.service.*;
 import xie.base.entity.BaseEntity;
 import xie.common.Constants;
 import xie.common.date.DateUtil;
@@ -38,25 +30,25 @@ public class CreateSiteMapDetail {
 
 	XSiteMap xSiteMap = null;
 
-	@Autowired
+	@Resource
 	AnimeInfoService animeInfoService;
-	@Autowired
+	@Resource
 	AnimeInfoDao animeInfoDao;
-	@Autowired
+	@Resource
 	AnimeEpisodeService animeEpisodeService;
-	@Autowired
+	@Resource
 	AnimeEpisodeDao animeEpisodeDao;
-	@Autowired
+	@Resource
 	SubtitleInfoService subtitleInfoService;
-	@Autowired
+	@Resource
 	SubtitleInfoDao subtitleInfoDao;
-	@Autowired
+	@Resource
 	SubtitleLineService subtitleLineService;
-	@Autowired
+	@Resource
 	ShotInfoService shotInfoService;
-	@Autowired
+	@Resource
 	SubtitleLineDao subtitleLineDao;
-	@Autowired
+	@Resource
 	ShotInfoDao shotInfoDao;
 
 	private int urlCount = 0;

@@ -5,9 +5,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -29,9 +29,9 @@ import xie.module.language.XLanguageUtils;
 @Controller
 public class SearchController extends BaseController {
 
-	@Autowired
+	@Resource
 	private SubtitleLineService subtitleLineService;
-	@Autowired
+	@Resource
 	private EntityCache entityCache;
 
 	protected String getJspFileRootPath() {

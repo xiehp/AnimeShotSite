@@ -2,10 +2,10 @@ package xie.web.protal.controller;
 
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,9 +25,9 @@ import xie.common.Constants;
 @RequestMapping(value = "/episode")
 public class AnimeEpisodeController extends BaseFunctionController<AnimeEpisode, String> {
 
-	@Autowired
+	@Resource
 	private AnimeInfoService animeInfoService;
-	@Autowired
+	@Resource
 	private AnimeEpisodeService animeEpisodeService;
 
 	protected String getJspFileRootPath() {

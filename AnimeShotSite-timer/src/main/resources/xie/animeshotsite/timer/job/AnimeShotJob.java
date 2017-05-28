@@ -6,7 +6,6 @@ import java.util.TimerTask;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.annotation.AfterJob;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
@@ -14,7 +13,7 @@ import xie.animeshotsite.spring.SpringUtil;
 
 public class AnimeShotJob extends TimerTask {
 
-	@Autowired
+	@Resource
 	AnimeInfoDao animeInfoDao;
 
 	public AnimeShotJob() {

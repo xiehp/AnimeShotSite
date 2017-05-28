@@ -5,9 +5,10 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -27,11 +28,11 @@ import xie.v2i.config.Video2ImageProperties;
 public class ShotSpecifyTask extends XBaseTask {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
+	@Resource
 	AnimeInfoService animeInfoService;
-	@Autowired
+	@Resource
 	AnimeEpisodeService animeEpisodeService;
-	@Autowired
+	@Resource
 	ApplicationContext applicationContext;
 
 	public static void main(String[] args) throws Exception {

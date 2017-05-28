@@ -1,15 +1,10 @@
 package xie.web.ajax.controller;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +27,9 @@ import xie.common.string.XStringUtils;
 @RequestMapping(value = "/ajaxAutoComplete")
 public class AutoCompleteController extends BaseController {
 
-	@Autowired
+	@Resource
 	private AnimeInfoService animeInfoService;
-	@Autowired
+	@Resource
 	private AnimeEpisodeService animeEpisodeService;
 
 	/**

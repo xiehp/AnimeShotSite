@@ -1,17 +1,11 @@
 package xie.sys.auth.service;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.shiro.authz.permission.WildcardPermission;
 import org.assertj.core.util.Lists;
 import org.assertj.core.util.Maps;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -26,37 +20,31 @@ import com.google.common.collect.Sets;
 import xie.base.repository.BaseRepository;
 import xie.base.service.BaseService;
 import xie.common.Constants;
-import xie.sys.auth.entity.Permission;
-import xie.sys.auth.entity.Resource;
-import xie.sys.auth.entity.Role;
-import xie.sys.auth.entity.RoleResourcePermission;
-import xie.sys.auth.entity.User;
+import xie.sys.auth.entity.*;
 import xie.sys.auth.entity.tmp.Menu;
-import xie.sys.auth.repository.PermissionRepository;
-import xie.sys.auth.repository.ResourceRepository;
-import xie.sys.auth.repository.RoleRepository;
-import xie.sys.auth.repository.RoleResourcePermissionRepository;
-import xie.sys.auth.repository.UserRepository;
-import xie.sys.auth.repository.UserRoleRepository;
+import xie.sys.auth.repository.*;
 import xie.sys.role.vo.PermissionVo;
 import xie.sys.role.vo.ResourceVo;
 
 @Service
 public class ResourceService extends BaseService<Resource, String> {
 
-	@Autowired
+	@javax.annotation.Resource
 	private ResourceRepository resourceRepository;
-	@Autowired
+	@javax.annotation.Resource
 	private UserRepository userRepository;
-	@Autowired
+	@javax.annotation.Resource
 	private PermissionRepository permissionRepository;
-	@Autowired
+	@javax.annotation.Resource
 	private RoleRepository roleRepository;
-	@Autowired
+	@javax.annotation.Resource
 	private RoleResourcePermissionRepository roleResourcePermissionRepository;
-	@Autowired
+	@javax.annotation.Resource
 	private UserRoleRepository userRoleRepository;
-	
+
+	public ResourceService() {
+	}
+
 	@Override
 	public BaseRepository<Resource, String> getBaseRepository() {
 		return resourceRepository;

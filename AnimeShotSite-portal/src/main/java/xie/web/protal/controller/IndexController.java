@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -20,11 +20,7 @@ import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.repository.ShotInfoDao;
-import xie.animeshotsite.db.service.AnimeEpisodeService;
-import xie.animeshotsite.db.service.AnimeInfoService;
-import xie.animeshotsite.db.service.ShotInfoService;
-import xie.animeshotsite.db.service.SubtitleInfoService;
-import xie.animeshotsite.db.service.SubtitleLineService;
+import xie.animeshotsite.db.service.*;
 import xie.base.controller.BaseController;
 import xie.common.Constants;
 import xie.common.constant.XConst;
@@ -32,23 +28,23 @@ import xie.common.constant.XConst;
 @Controller
 public class IndexController extends BaseController {
 
-	@Autowired
+	@Resource
 	AnimeInfoDao animeInfoDao;
-	@Autowired
+	@Resource
 	AnimeInfoService animeInfoService;
-	@Autowired
+	@Resource
 	AnimeEpisodeDao animeEpisodeDao;
-	@Autowired
+	@Resource
 	AnimeEpisodeService animeEpisodeService;
-	@Autowired
+	@Resource
 	ShotInfoDao shotInfoDao;
-	@Autowired
+	@Resource
 	ShotInfoService shotInfoService;
-	@Autowired
+	@Resource
 	SubtitleInfoService subtitleInfoService;
-	@Autowired
+	@Resource
 	SubtitleLineService subtitleLineService;
-	@Autowired
+	@Resource
 	EntityCache entityCache;
 
 	@RequestMapping(value = "/index")

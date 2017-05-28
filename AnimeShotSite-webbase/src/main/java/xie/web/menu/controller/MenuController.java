@@ -2,9 +2,9 @@ package xie.web.menu.controller;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ import xie.sys.auth.service.ResourceService;
 public class MenuController extends BaseController {
 	
 
-	@Autowired 
+	@Resource
 	private ResourceService resourceService;
 
 	@SuppressWarnings("unchecked")

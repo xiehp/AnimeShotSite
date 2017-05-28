@@ -1,6 +1,7 @@
 package xie.other.ma.db.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import xie.base.repository.BaseRepository;
@@ -11,9 +12,9 @@ import xie.other.ma.db.repository.MaDamageDao;
 @Service
 public class MaDamageService extends CommonRecordDetailService<MaDamage, String> {
 
-	@Autowired
+	@Resource
 	private MaDamageDao maDamageDao;
-	@Autowired
+	@Resource
 	private CommonRecordDao commonRecordDao;
 
 	@Override

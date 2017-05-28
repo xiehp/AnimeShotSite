@@ -2,13 +2,10 @@ package xie.animeshotsite.db.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -38,17 +35,17 @@ import xie.subtitle.line.XSubtitleLine;
 @Service
 public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 
-	@Autowired
+	@Resource
 	private SubtitleLineDao subtitleLineDao;
-	@Autowired
+	@Resource
 	private SubtitleInfoDao subtitleInfoDao;
-	@Autowired
+	@Resource
 	private AnimeInfoDao animeInfoDao;
-	@Autowired
+	@Resource
 	private AnimeEpisodeDao animeEpisodeDao;
-	@Autowired
+	@Resource
 	private EntityCache entityCache;
-	@Autowired
+	@Resource
 	private SubtitleLineDaoImpl subtitleInfoDaoImpl;
 
 	@Override

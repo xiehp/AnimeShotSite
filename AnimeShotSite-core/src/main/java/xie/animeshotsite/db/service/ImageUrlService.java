@@ -1,6 +1,7 @@
 package xie.animeshotsite.db.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
@@ -18,13 +19,13 @@ import xie.common.exception.XException;
 @Service
 public class ImageUrlService extends BaseService<ImageUrl, String> {
 
-	@Autowired
+	@Resource
 	private ImageUrlDao imageUrlDao;
-	@Autowired
+	@Resource
 	private ShotInfoDao shotInfoDao;
-	@Autowired
+	@Resource
 	private AnimeInfoDao animeInfoDao;
-	@Autowired
+	@Resource
 	private AnimeEpisodeDao animeEpisodeDao;
 
 	@Override

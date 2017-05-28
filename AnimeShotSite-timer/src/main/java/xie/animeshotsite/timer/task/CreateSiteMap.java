@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.xml.transform.TransformerException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -41,21 +41,21 @@ public class CreateSiteMap {
 	XSiteMap xSiteMap = null;
 	List<String> urls = new ArrayList<>();
 
-	@Autowired
+	@Resource
 	AnimeInfoService animeInfoService;
-	@Autowired
+	@Resource
 	AnimeInfoDao animeInfoDao;
-	@Autowired
+	@Resource
 	AnimeEpisodeService animeEpisodeService;
-	@Autowired
+	@Resource
 	AnimeEpisodeDao animeEpisodeDao;
-	@Autowired
+	@Resource
 	SubtitleInfoService subtitleInfoService;
-	@Autowired
+	@Resource
 	SubtitleInfoDao subtitleInfoDao;
-	@Autowired
+	@Resource
 	SubtitleLineService subtitleLineService;
-	@Autowired
+	@Resource
 	SubtitleLineDao subtitleLineDao;
 
 	private int urlCount = 0;

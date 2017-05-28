@@ -2,29 +2,26 @@ package com.yjysh.framework.rest;
 
 import java.util.List;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springside.modules.mapper.JsonMapper;
 
 import com.google.common.collect.Lists;
-import com.yjysh.framework.sample.vo.Temp;
 import com.yjysh.framework.spring.SpringContextTestCase;
 import com.yjysh.framework.sys.restful.service.BaseRest;
 import com.yjysh.framework.web.sqider.service.ReplieUrlService;
+
+import net.sf.json.JSONObject;
 
 @DirtiesContext
 @ContextConfiguration(locations = { "/applicationContext.xml","/applicationContext-framework.xml","/projectContext.xml","/deployContext.xml" })
 public class RestTest  extends SpringContextTestCase {
 
-	@Autowired
+	@javax.annotation.Resource
 	BaseRest baseRest;
-	
-	@Autowired
+
+	@javax.annotation.Resource
 	ReplieUrlService replieUrlService;
 	
 	protected JsonMapper mapper = new JsonMapper();

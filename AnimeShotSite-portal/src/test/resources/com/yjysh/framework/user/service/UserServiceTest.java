@@ -3,7 +3,6 @@ package com.yjysh.framework.user.service;
 import java.util.List;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -17,9 +16,9 @@ import com.yjysh.framework.sys.auth.repository.UserSettingRepository;
 @ContextConfiguration(locations = { "/applicationContext.xml","/applicationContext-framework.xml","/projectContext.xml","/deployContext.xml" })
 public class UserServiceTest  extends SpringContextTestCase {
 
-	@Autowired
+	@javax.annotation.Resource
 	private UserRepository userRepository;
-	@Autowired
+	@javax.annotation.Resource
 	private UserSettingRepository userSettingRepository;
 	
 	@Test

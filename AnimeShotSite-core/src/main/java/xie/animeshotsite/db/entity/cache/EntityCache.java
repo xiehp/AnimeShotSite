@@ -1,16 +1,13 @@
 package xie.animeshotsite.db.entity.cache;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Supplier;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import xie.animeshotsite.db.entity.GifInfo;
@@ -33,9 +30,9 @@ public class EntityCache {
 	public static final String CACHE_ID_Previous_GifInfo = "Previous_GifInfo_";
 	public static final String CACHE_ID_Next_GifInfo = "Next_GifInfo_";
 
-	@Autowired
+	@Resource
 	private ShotInfoDao shotInfoDao;
-	@Autowired
+	@Resource
 	private GifInfoDao gifInfoDao;
 
 	private Map<String, Object> cacheMap = new HashMap<String, Object>();

@@ -1,20 +1,14 @@
 package xie.web.protal.controller;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,23 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springside.modules.web.Servlets;
 
 import xie.animeshotsite.constants.SysConstants;
-import xie.animeshotsite.db.entity.AnimeEpisode;
-import xie.animeshotsite.db.entity.AnimeInfo;
-import xie.animeshotsite.db.entity.ShotInfo;
-import xie.animeshotsite.db.entity.ShotTask;
-import xie.animeshotsite.db.entity.SubtitleInfo;
-import xie.animeshotsite.db.entity.SubtitleLine;
+import xie.animeshotsite.db.entity.*;
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.repository.ShotInfoDao;
 import xie.animeshotsite.db.repository.SubtitleLineDao;
-import xie.animeshotsite.db.service.AnimeEpisodeService;
-import xie.animeshotsite.db.service.AnimeInfoService;
-import xie.animeshotsite.db.service.ShotInfoService;
-import xie.animeshotsite.db.service.ShotTaskService;
-import xie.animeshotsite.db.service.SubtitleInfoService;
-import xie.animeshotsite.db.service.SubtitleLineService;
+import xie.animeshotsite.db.service.*;
 import xie.animeshotsite.setup.ShotSiteSetup;
 import xie.animeshotsite.setup.UserConfig;
 import xie.animeshotsite.utils.SiteUtils;
@@ -62,29 +46,29 @@ import xie.web.util.SiteConstants;
 @RequestMapping(value = "/shot")
 public class AnimeShotController extends BaseFunctionController<ShotInfo, String> {
 
-	@Autowired
+	@Resource
 	private AnimeInfoService animeInfoService;
-	@Autowired
+	@Resource
 	private AnimeInfoDao animeInfoDao;
-	@Autowired
+	@Resource
 	private AnimeEpisodeService animeEpisodeService;
-	@Autowired
+	@Resource
 	private AnimeEpisodeDao animeEpisodeDao;
-	@Autowired
+	@Resource
 	private ShotInfoService shotInfoService;
-	@Autowired
+	@Resource
 	private ShotInfoDao shotInfoDao;
-	@Autowired
+	@Resource
 	private SubtitleInfoService subtitleInfoService;
-	@Autowired
+	@Resource
 	private SubtitleLineService subtitleLineService;
-	@Autowired
+	@Resource
 	private SubtitleLineDao subtitleLineDao;
-	@Autowired
+	@Resource
 	private EntityCache entityCache;
-	@Autowired
+	@Resource
 	private ShotTaskService shotTaskService;
-	@Autowired
+	@Resource
 	private ShotSiteSetup shotSiteSetup;
 
 	protected String getJspFileRootPath() {

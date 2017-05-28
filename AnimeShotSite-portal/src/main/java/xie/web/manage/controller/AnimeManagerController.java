@@ -1,18 +1,14 @@
 package xie.web.manage.controller;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,19 +35,19 @@ import xie.common.web.util.ConstantsWeb;
 @RequestMapping(value = ConstantsWeb.MANAGE_URL_PREFIX_STR + "/anime")
 public class AnimeManagerController extends BaseManagerController<AnimeInfo, String> {
 
-	@Autowired
+	@Resource
 	private AnimeInfoService animeInfoService;
 
-	@Autowired
+	@Resource
 	private AnimeEpisodeService animeEpisodeService;
 
-	@Autowired
+	@Resource
 	private SubtitleInfoService subtitleInfoService;
 
-	@Autowired
+	@Resource
 	private ShotInfoDao shotInfoDao;
 
-	@Autowired
+	@Resource
 	private ImageUrlService imageUrlService;
 
 	@Override

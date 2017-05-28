@@ -1,6 +1,7 @@
 package xie.animeshotsite.db.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import xie.animeshotsite.db.entity.AutoRunParam;
@@ -11,7 +12,7 @@ import xie.base.service.BaseService;
 @Service
 public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 
-	@Autowired
+	@Resource
 	private AutoRunParamDao autoRunParamDao;
 
 	@Override

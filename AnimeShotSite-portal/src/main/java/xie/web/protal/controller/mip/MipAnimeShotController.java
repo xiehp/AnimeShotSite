@@ -3,12 +3,12 @@ package xie.web.protal.controller.mip;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +21,7 @@ import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.repository.ShotInfoDao;
 import xie.animeshotsite.db.repository.SubtitleLineDao;
-import xie.animeshotsite.db.service.AnimeEpisodeService;
-import xie.animeshotsite.db.service.AnimeInfoService;
-import xie.animeshotsite.db.service.ShotInfoService;
-import xie.animeshotsite.db.service.ShotTaskService;
-import xie.animeshotsite.db.service.SubtitleInfoService;
-import xie.animeshotsite.db.service.SubtitleLineService;
+import xie.animeshotsite.db.service.*;
 import xie.animeshotsite.setup.ShotSiteSetup;
 import xie.common.web.util.ConstantsWeb;
 import xie.web.protal.controller.AnimeShotController;
@@ -35,29 +30,29 @@ import xie.web.protal.controller.AnimeShotController;
 @RequestMapping(value = ConstantsWeb.MIP_URL_PREFIX_STR + "/shot")
 public class MipAnimeShotController extends AnimeShotController {
 
-	@Autowired
+	@Resource
 	private AnimeInfoService animeInfoService;
-	@Autowired
+	@Resource
 	private AnimeInfoDao animeInfoDao;
-	@Autowired
+	@Resource
 	private AnimeEpisodeService animeEpisodeService;
-	@Autowired
+	@Resource
 	private AnimeEpisodeDao animeEpisodeDao;
-	@Autowired
+	@Resource
 	private ShotInfoService shotInfoService;
-	@Autowired
+	@Resource
 	private ShotInfoDao shotInfoDao;
-	@Autowired
+	@Resource
 	private SubtitleInfoService subtitleInfoService;
-	@Autowired
+	@Resource
 	private SubtitleLineService subtitleLineService;
-	@Autowired
+	@Resource
 	private SubtitleLineDao subtitleLineDao;
-	@Autowired
+	@Resource
 	private EntityCache entityCache;
-	@Autowired
+	@Resource
 	private ShotTaskService shotTaskService;
-	@Autowired
+	@Resource
 	private ShotSiteSetup shotSiteSetup;
 
 	protected String getJspFileRootPath() {

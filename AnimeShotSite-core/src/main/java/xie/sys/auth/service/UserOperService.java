@@ -1,6 +1,7 @@
 package xie.sys.auth.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import xie.base.repository.BaseRepository;
@@ -11,7 +12,7 @@ import xie.sys.auth.repository.UserOperRepository;
 @Service
 public class UserOperService extends BaseService<UserOper, String> {
 	
-	@Autowired
+	@Resource
 	private UserOperRepository userOperRepository;
 
 	@Override

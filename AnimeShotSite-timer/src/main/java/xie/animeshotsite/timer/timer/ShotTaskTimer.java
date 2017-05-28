@@ -1,13 +1,19 @@
 package xie.animeshotsite.timer.timer;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimerTask;
+
+import javax.annotation.Resource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+
 import xie.animeshotsite.db.entity.ShotTask;
 import xie.animeshotsite.db.repository.ShotTaskDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
@@ -18,26 +24,21 @@ import xie.common.constant.XConst;
 import xie.common.json.XJsonUtil;
 import xie.common.string.XStringUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimerTask;
-
 @Component
 @Scope("prototype")
 public class ShotTaskTimer extends TimerTask {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
+	@Resource
 	private AnimeInfoService animeInfoService;
-	@Autowired
+	@Resource
 	private AnimeEpisodeService animeEpisodeService;
-	@Autowired
+	@Resource
 	private ShotTaskService shotTaskService;
-	@Autowired
+	@Resource
 	private ShotTaskDao shotTaskDao;
-	@Autowired
+	@Resource
 	private ApplicationContext applicationContext;
 
 	String taskType;

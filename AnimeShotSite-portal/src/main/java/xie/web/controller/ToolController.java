@@ -1,17 +1,13 @@
 package xie.web.controller;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.LocaleEditor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -43,13 +39,13 @@ import xie.web.util.SiteConstants;
 @RequestMapping(value = "/tool")
 public class ToolController extends BaseController {
 
-	@Autowired
+	@Resource
 	EntityCache entityCache;
-	@Autowired
+	@Resource
 	ImageUrlService imageUrlService;
-	@Autowired
+	@Resource
 	ShotSiteSetup shotSiteSetup;
-	@Autowired
+	@Resource
 	protected MessageSource messageSource;
 
 	@RequiresPermissions(value = "userList:add")

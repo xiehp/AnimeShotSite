@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import xie.animeshotsite.db.entity.AnimeInfo;
@@ -18,9 +19,9 @@ import xie.common.Constants;
 @Service
 public class AnimeInfoService extends BaseService<AnimeInfo, String> {
 
-	@Autowired
+	@Resource
 	private AnimeInfoDao animeInfoDao;
-	@Autowired
+	@Resource
 	private ImageUrlService imageUrlService;
 
 	@Override

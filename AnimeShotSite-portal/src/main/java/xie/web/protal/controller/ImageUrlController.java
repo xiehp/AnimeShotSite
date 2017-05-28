@@ -5,9 +5,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,11 +27,11 @@ import xie.base.controller.BaseFunctionController;
 @RequestMapping(value = "/image")
 public class ImageUrlController extends BaseFunctionController<ImageUrl, String> {
 
-	@Autowired
+	@Resource
 	AnimeInfoService animeInfoService;
-	@Autowired
+	@Resource
 	AnimeEpisodeService animeEpisodeService;
-	@Autowired
+	@Resource
 	ShotInfoService shotInfoService;
 
 	@RequestMapping(value = "/{type}/{id}")

@@ -4,12 +4,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,15 +39,15 @@ import xie.module.spring.SpringUtils;
 @RequestMapping(value = ConstantsWeb.MANAGE_URL_PREFIX_STR + "/animeEpisode")
 public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEpisode, String> {
 
-	@Autowired
+	@Resource
 	private AnimeEpisodeService animeEpisodeService;
-	@Autowired
+	@Resource
 	private AnimeInfoService animeInfoService;
-	@Autowired
+	@Resource
 	private ShotTaskService shotTaskService;
-	@Autowired
+	@Resource
 	private SpringUtils springUtils;
-	@Autowired
+	@Resource
 	private AutoCollectUtils autoCollectUtils;
 
 	@Override

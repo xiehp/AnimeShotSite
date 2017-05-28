@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import xie.animeshotsite.constants.SysConstants;
@@ -24,7 +25,7 @@ import xie.v2i.config.Video2ImageProperties;
 @Service
 public class ShotTaskService extends BaseService<ShotTask, String> {
 
-	@Autowired
+	@Resource
 	private ShotTaskDao shotTaskDao;
 
 	@Override

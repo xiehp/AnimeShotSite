@@ -8,7 +8,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.MessageFormatter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -34,19 +33,21 @@ import xie.module.spring.SpringUtil;
 import xie.tietuku.spring.TietukuConfig;
 import xie.v2i.config.Video2ImageProperties;
 
+import javax.annotation.Resource;
+
 @Component(value = "CreateGifTask")
 public class CreateGifTask extends XBaseTask {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
+	@Resource
 	private AnimeInfoService animeInfoService;
-	@Autowired
+	@Resource
 	private AnimeEpisodeService animeEpisodeService;
-	@Autowired
+	@Resource
 	private GifInfoService gifInfoService;
-	@Autowired
+	@Resource
 	private ApplicationContext applicationContext;
-	@Autowired
+	@Resource
 	TietukuConfig tietukuConfig;
 
 	// private String gifCmdStr = "ffmpeg -ss 25 -t 10 -i E:\\AnimeShotSIte\\anime\\J\\吉卜力\\听到涛声\\Umi.ga.Kikoeru.2015.BluRay.1080p.FLAC.x265-MGRT.mkv -s 384x216 -f gif -r 12 D:\b.gif";

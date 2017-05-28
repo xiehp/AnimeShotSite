@@ -1,14 +1,10 @@
 package xie.animeshotsite.db.service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.lang.math.RandomUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -34,15 +30,15 @@ import xie.common.utils.XSSHttpUtil;
 @Service
 public class GifInfoService extends BaseService<GifInfo, String> {
 
-	@Autowired
+	@Resource
 	private GifInfoDao gifInfoDao;
-	@Autowired
+	@Resource
 	private AnimeInfoDao animeInfoDao;
-	@Autowired
+	@Resource
 	private AnimeEpisodeDao animeEpisodeDao;
-	@Autowired
+	@Resource
 	private EntityCache entityCache;
-	@Autowired
+	@Resource
 	private ShotSiteSetup shotSiteSetup;
 
 	public GifInfoVO convertToVO(GifInfo gifInfo) {

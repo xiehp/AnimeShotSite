@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -29,10 +29,10 @@ public class SubtitleLineDaoImpl extends BaseRepositoryPlus<SubtitleLine> {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	@Autowired
+	@Resource
 	private SubtitleLineDao subtitleLineDao;
 
-	@Autowired
+	@Resource
 	private AnimeEpisodeDaoImpl animeEpisodeDaoImpl;
 
 	@Override

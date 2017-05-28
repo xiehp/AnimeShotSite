@@ -1,6 +1,5 @@
 package xie.sys.auth.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import xie.base.repository.BaseRepository;
@@ -8,10 +7,12 @@ import xie.base.service.BaseService;
 import xie.sys.auth.entity.UserSetting;
 import xie.sys.auth.repository.UserSettingRepository;
 
+import javax.annotation.Resource;
+
 @Service
 public class UserSettingService extends BaseService<UserSetting, String> {
 
-	@Autowired
+	@Resource
 	private UserSettingRepository userSettingRepository;
 	
 	@Override

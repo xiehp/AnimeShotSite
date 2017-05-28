@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import xie.animeshotsite.db.entity.SubtitleInfo;
@@ -19,17 +18,19 @@ import xie.common.string.XStringUtils;
 import xie.module.spring.SpringUtil;
 import xie.v2i.config.Video2ImageProperties;
 
+import javax.annotation.Resource;
+
 @Component
 public class CreateSubtitleTask extends XBaseTask {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
+	@Resource
 	SubtitleInfoService subtitleInfoService;
-	@Autowired
+	@Resource
 	SubtitleInfoDao subtitleInfoDao;
-	@Autowired
+	@Resource
 	SubtitleLineService subtitleLineService;
-	@Autowired
+	@Resource
 	SubtitleLineDao subtitleLineDao;
 
 	public static void main(String[] args) throws Exception {

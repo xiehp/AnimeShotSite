@@ -1,6 +1,7 @@
 package xie.other.ma.db.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import xie.base.repository.BaseRepository;
@@ -11,7 +12,7 @@ import xie.other.ma.db.repository.CommentRecordDao;
 @Service
 public class CommentRecordService extends BaseService<CommentRecord, String> {
 
-	@Autowired
+	@Resource
 	private CommentRecordDao commentRecordDao;
 
 	@Override
