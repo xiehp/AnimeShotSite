@@ -126,6 +126,7 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 	 */
 	public AutoRunParam beginEpisodeMonitor(String animeInfoId, String animeEpisodeId, boolean beginNewOnly) {
 		Assert.hasText(animeEpisodeId, "animeInfoId不能为空");
+		Assert.hasText(animeEpisodeId, "animeEpisodeId不能为空");
 
 		AutoRunParam autoRunParam = autoRunParamDao.findByAnimeEpisodeIdAndKey(animeEpisodeId, "video_download_monitor_do_flag");
 		if (autoRunParam == null) {
@@ -152,7 +153,7 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 
 	/**
 	 * 停止监视，不自动下载视频
-	 * 
+	 *
 	 * @param id
 	 */
 	public void stopMonitor(String id) {
@@ -170,10 +171,10 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 	/**
 	 * 获取自动运行参数， 如果数据不存在，则用模板数据代替
 	 * 
-	 * @param animeOrEpisodeId
-	 * @param isAnime
-	 * @param isEpisode
-	 * @return
+	 * @param animeOrEpisodeId animeOrEpisodeId
+	 * @param isAnime isAnime
+	 * @param isEpisode isEpisode
+	 * @return Map
 	 */
 	public Map<String, AutoRunParam> getStringAutoRunParamMap(String animeOrEpisodeId, boolean isAnime, boolean isEpisode) {
 		Map<String, Object> searchParams = new HashMap<>();
@@ -192,6 +193,7 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 
 		if (isAnime) {
 			searchParams.put("EQ_animeInfoId", animeOrEpisodeId);
+			searchParams.put("ISNULL_animeEpisodeId", 1);
 		}
 		if (isEpisode) {
 			searchParams.put("EQ_animeEpisodeId", animeOrEpisodeId);
@@ -213,8 +215,12 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 
 	}
 
+	/**
+	 * 获得视频下载地址监视中的动画列表
+	 */
 	public List<AutoRunParam> findAnimeMonitorDownloadLUrlList() {
 		Map<String, Object> searchParams = new HashMap<>();
+		searchParams.put("ISNULL_type", 1);
 		searchParams.put("EQ_key", "video_download_monitor_do_flag");
 		searchParams.put("EQ_value", Constants.FLAG_INT_YES);
 		searchParams.put("ISNULL_animeEpisodeId", 1);
@@ -223,10 +229,17 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 		return list;
 	}
 
-	public List<AutoRunParam> findEpisodeMonitorDonloadLUrlist() {
+	/**
+	 * 获得视频下载地址监视中的剧集列表
+	 * 
+	 * @param animeInfoId animeInfoId
+	 */
+	public List<AutoRunParam> findEpisodeMonitorDownloadLUrlist(String animeInfoId) {
 		Map<String, Object> searchParams = new HashMap<>();
+		searchParams.put("ISNULL_type", 1);
 		searchParams.put("EQ_key", "video_download_monitor_do_flag");
 		searchParams.put("EQ_value", Constants.FLAG_INT_YES);
+		searchParams.put("EQ_animeInfoId", animeInfoId);
 		searchParams.put("ISNOTNULL_animeEpisodeId", 1);
 		Page<AutoRunParam> page = searchPageByParams(searchParams, 1, Integer.MAX_VALUE, AutoRunParam.COLUMN_SORT, AutoRunParam.class);
 		List<AutoRunParam> list = page.getContent();

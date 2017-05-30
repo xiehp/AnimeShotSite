@@ -27,6 +27,8 @@ public class BaseSearchFilter {
 	public enum BaseOperator {
 		/** 等于（= value） */
 		EQ,
+		/** 不等于（= value） */
+		NE,
 		/** 相似（like %value%） */
 		LIKE,
 		/** 大于（> value） */

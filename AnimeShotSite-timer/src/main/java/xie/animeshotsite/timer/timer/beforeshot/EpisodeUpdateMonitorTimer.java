@@ -1,11 +1,21 @@
 package xie.animeshotsite.timer.timer.beforeshot;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.annotation.Resource;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import org.springframework.util.Assert;
+import sun.applet.Main;
+import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AutoRunParam;
 import xie.animeshotsite.db.repository.AutoRunParamDao;
 import xie.animeshotsite.db.repository.ShotTaskDao;
@@ -14,9 +24,10 @@ import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.AutoRunParamService;
 import xie.animeshotsite.db.service.ShotTaskService;
 import xie.animeshotsite.timer.timer.BaseTaskTimer;
+import xie.common.string.XStringUtils;
+import xie.common.utils.XRegularUtils;
 import xie.function.collection.CollectKamigami;
-
-import java.util.List;
+import xie.module.spring.SpringUtil;
 
 @Component
 @Scope("prototype")
@@ -26,6 +37,8 @@ public class EpisodeUpdateMonitorTimer extends BaseTaskTimer {
 	private AnimeInfoService animeInfoService;
 	@Resource
 	private AnimeEpisodeService animeEpisodeService;
+	@Resource
+	private AnimeEpisodeDao animeEpisodeDao;
 	@Resource
 	private ShotTaskService shotTaskService;
 	@Resource
@@ -40,17 +53,74 @@ public class EpisodeUpdateMonitorTimer extends BaseTaskTimer {
 	AutoRunParamDao autoRunParamDao;
 
 	@Override
-	protected void taskTimer() {
+	protected void taskTimer() throws Exception {
+		List<AutoRunParam> animeMonitorFlagList = autoRunParamService.findAnimeMonitorDownloadLUrlList();
 
-		List<AutoRunParam> listAnime = autoRunParamService.findAnimeMonitorDownloadLUrlList();
-		listAnime.forEach(animeParam -> {
-			String animeInfoId = animeParam.getAnimeInfoId();
-			String url =animeParam.getValue();
-			CollectKamigami.getTorrentUrlList();
-		});
+		for (AutoRunParam monitorFlagParam : animeMonitorFlagList) {
+			String animeInfoId = monitorFlagParam.getAnimeInfoId();
+			Map<String, AutoRunParam> animeAutoRunParamMap = autoRunParamService.getStringAutoRunParamMap(animeInfoId, true, false);
+
+			String url = animeAutoRunParamMap.get("video_download_monitor_page_url").getValue();
+			String reg = animeAutoRunParamMap.get("video_download_monitor_torrent_url_reg").getValue();
+			Assert.hasText(url, "自动运行参数video_download_monitor_page_url不能为空, animeInfoId:" + animeInfoId);
+
+			List<String> urlList;
+			if (XStringUtils.isNotBlank(reg)) {
+				urlList = CollectKamigami.getTorrentUrlList(url, reg);
+			} else {
+				urlList = CollectKamigami.getTorrentUrlList(url);
+			}
+
+			updateEpisodeParamByUrlList(animeInfoId, reg, urlList);
+		}
+	}
+
+	public void updateEpisodeParamByUrlList(String animeInfoId, String reg, List<String> urlList) {
+		List<AutoRunParam> episodeMonitorFlagList = autoRunParamService.findEpisodeMonitorDownloadLUrlist(animeInfoId);
+
+		// 根据reg获得集数，作为key放入map
+		Pattern pattern = Pattern.compile(reg);
+		Map<String, String> urlMap = new HashMap<>();
+		for (String str : urlList) {
+			Matcher matcher = pattern.matcher(str);
+			if (matcher.find()) {
+				String findStr = matcher.group(1);
+				System.out.println(findStr);
+				urlMap.put(findStr, str);
+			} else {
+				_log.error("没有在下载链接中找到需要的信息, url:{}, reg:{}", str, reg);
+			}
+
+			// XRegularUtils.find()
+			// AutoRunParam autoRunParam = new AutoRunParam();
+			// autoRunParam.setAnimeInfoId(animeInfoId);
+			// autoRunParam.setAnimeEpisodeId();
+			// autoRunParamService.saveOrUpdateOneAutoRunParam();
+		}
+
+		for(String number : urlMap.keySet()) {
+			animeEpisodeDao.findByAnimeEpisodeIdAndNumber();
+		}
 
 
+		for (AutoRunParam episodeMonitorParam : episodeMonitorFlagList) {
+			String animeEpisodeId = episodeMonitorParam.getAnimeEpisodeId();
+
+//			AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
 
 
+			if (animeEpisode.getNumber() != null) {
+
+			}
+
+		}
+
+	}
+
+	public static void main(String[] arg) {
+		System.setProperty("spring.profiles.default", "development");
+		System.setProperty("spring.profiles.default", "productRemote");
+		EpisodeUpdateMonitorTimer episodeUpdateMonitorTimer = SpringUtil.getBean(EpisodeUpdateMonitorTimer.class);
+		episodeUpdateMonitorTimer.run();
 	}
 }

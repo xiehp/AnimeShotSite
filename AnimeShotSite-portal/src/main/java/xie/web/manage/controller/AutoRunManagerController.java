@@ -56,7 +56,7 @@ public class AutoRunManagerController extends BaseManagerController<ShotInfo, St
 			HttpServletRequest request) {
 
 		if (animeEpisodeId != null) {
-			autoRunParamService.beginEpisodeMonitor(animeEpisodeId, false);
+			autoRunParamService.beginEpisodeMonitor(animeEpisodeService.findOne(animeEpisodeId).getAnimeInfoId(), animeEpisodeId, false);
 		} else {
 			autoRunParamService.beginMonitor(animeInfoId);
 		}
@@ -64,6 +64,7 @@ public class AutoRunManagerController extends BaseManagerController<ShotInfo, St
 		GoPageResult goPageResult = goPageUtil.createSuccess(request);
 		return goPageResult;
 	}
+
 	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/stopMonitor")
 	@ResponseBody

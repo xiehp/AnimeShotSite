@@ -9,14 +9,14 @@ import xie.common.constant.XConst;
 
 public class BaseTaskTimer extends TimerTask {
 
-	Logger _log = LoggerFactory.getLogger(this.getClass());
+	protected Logger _log = LoggerFactory.getLogger(this.getClass());
 
 	@Override
 	public void run() {
 		try {
 			taskTimer();
 		} catch (Exception e) {
-			_log.error("执行发生异常，暂停10分钟。");
+			_log.error("执行发生异常，暂停10分钟。", e);
 			try {
 				Thread.sleep(XConst.SECOND_10_MIN * 1000);
 			} catch (InterruptedException e1) {
@@ -25,7 +25,7 @@ public class BaseTaskTimer extends TimerTask {
 		}
 	}
 
-	protected void taskTimer() {
+	protected void taskTimer() throws Exception {
 
 	}
 }

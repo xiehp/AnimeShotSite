@@ -64,6 +64,9 @@ public class BaseSpecifications {
 							case EQ:
 								predicates.add(builder.equal(expression, value));
 								break;
+							case NE:
+								predicates.add(builder.notEqual(expression, value));
+								break;
 							case LIKE:
 								predicates.add(builder.like(expression, "%" + value + "%"));
 								break;

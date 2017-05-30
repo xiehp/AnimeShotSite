@@ -24,6 +24,12 @@ public class AutoRunParam extends BaseEntity {
 	public static final String COLUMN_VALUE = "value";
 	public static final String COLUMN_SORT = "sort";
 
+	/** 模板类型 */
+	public static final String TYPE_TEMPLET = "templet";
+
+	/** 类型 templet:模板 其他:通常数据 */
+	private String type;
+
 	/** 参数表示名 */
 	private String name;
 
@@ -51,6 +57,14 @@ public class AutoRunParam extends BaseEntity {
 
 	/** 备注 */
 	private String remark;
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	public String getName() {
 		return name;
