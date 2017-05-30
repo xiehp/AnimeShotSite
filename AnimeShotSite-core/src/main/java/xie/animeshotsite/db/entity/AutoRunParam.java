@@ -1,11 +1,13 @@
 package xie.animeshotsite.db.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import xie.base.XEnum;
 import xie.base.entity.BaseEntity;
 
 @Entity
@@ -18,12 +20,15 @@ public class AutoRunParam extends BaseEntity {
 	public static final String TABLE_NAME = "auto_run_param";
 	public static final String ENTITY_NAME = AutoRunParam.class.getSimpleName();
 
-	public static final String COLUMN_XXXX = "XXXXX";
+	public static final String COLUMN_KEY = "key";
+	public static final String COLUMN_VALUE = "value";
+	public static final String COLUMN_SORT = "sort";
 
 	/** 参数表示名 */
 	private String name;
 
 	/** key */
+	@Column(name = "PARAM_KEY")
 	private String key;
 
 	/** 值 */
@@ -40,6 +45,12 @@ public class AutoRunParam extends BaseEntity {
 
 	/** 所属对象类型，用于表示REF_ID是哪种对象 */
 	private String refType;
+
+	/** 排序 */
+	private String sort;
+
+	/** 备注 */
+	private String remark;
 
 	public String getName() {
 		return name;
@@ -97,4 +108,19 @@ public class AutoRunParam extends BaseEntity {
 		this.refType = refType;
 	}
 
+	public String getSort() {
+		return sort;
+	}
+
+	public void setSort(String sort) {
+		this.sort = sort;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 }

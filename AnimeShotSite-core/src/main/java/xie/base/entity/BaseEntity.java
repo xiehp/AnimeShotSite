@@ -44,7 +44,7 @@ public class BaseEntity extends IdEntity implements IBaseEntity {
 	@LastModifiedDate
 	private Date updateDate;
 	@Version
-	private Long version;
+	private Long version = 0L;
 
 	private Integer deleteFlag = 0;
 

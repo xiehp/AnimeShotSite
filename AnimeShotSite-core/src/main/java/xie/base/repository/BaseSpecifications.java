@@ -81,6 +81,12 @@ public class BaseSpecifications {
 								break;
 							case IN:
 								break;
+							case ISNULL:
+								predicates.add(builder.isNull(expression));
+								break;
+							case ISNOTNULL:
+								predicates.add(builder.isNotNull(expression));
+								break;
 							}
 						}
 

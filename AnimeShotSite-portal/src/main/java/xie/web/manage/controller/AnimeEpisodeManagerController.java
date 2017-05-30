@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import xie.animeshotsite.constants.SysConstants;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
+import xie.animeshotsite.db.entity.AutoRunParam;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotTaskService;
@@ -79,6 +80,10 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 
 		AnimeInfo animeInfo = animeInfoService.findOne(animeEpisodeInfo.getAnimeInfoId());
 		request.setAttribute("animeInfo", animeInfo);
+
+		// 自动运行参数表
+		Map<String, AutoRunParam> autoRunParamList = autoRunParamService.getStringAutoRunParamMap(animeEpisodeId, true, false);
+		request.setAttribute("autoRunParamList", autoRunParamList.values());
 
 		return getJspFilePath("new");
 	}

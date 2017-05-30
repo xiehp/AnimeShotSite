@@ -97,24 +97,8 @@ public class AnimeManagerController extends BaseManagerController<AnimeInfo, Str
 		request.setAttribute("subtitleInfoList", subtitleInfoList);
 
 		// 自动运行参数表
-		Map<String, Object> searchParams = new HashMap<>();
-		searchParams.put("EQ_animeInfoId", "anime_templet");
-		Page<AutoRunParam> autoRunParamTempletPage = autoRunParamService.searchPageByParams(searchParams, AutoRunParam.class);
-		List<AutoRunParam> autoRunParamTempletList = autoRunParamTempletPage.getContent();
-		autoRunParamTempletPage.forEach(templetParam -> {
-			templetParam.setId(null);
-		});
-		Map<String, AutoRunParam> templetMap = autoRunParamTempletList
-				.stream()
-				.collect(Collectors.toMap(AutoRunParam::getKey, (p) -> p));
-
-		searchParams.put("EQ_animeInfoId", animeInfoId);
-		Page<AutoRunParam> autoRunParamPage = autoRunParamService.searchPageByParams(searchParams, AutoRunParam.class);
-		List<AutoRunParam> autoRunParamList = autoRunParamPage.getContent();
-		Map<String, AutoRunParam> map = autoRunParamList.stream().collect(Collectors.toMap(AutoRunParam::getAnimeInfoId, (p) -> p));
-
-		templetMap.putAll(map);
-		request.setAttribute("autoRunParamList", templetMap.values());
+		Map<String, AutoRunParam> autoRunParamList = autoRunParamService.getStringAutoRunParamMap(animeInfoId, true, false);
+		request.setAttribute("autoRunParamList", autoRunParamList.values());
 
 		return getJspFilePath("new");
 	}
@@ -145,7 +129,14 @@ public class AnimeManagerController extends BaseManagerController<AnimeInfo, Str
 	@RequestMapping(value = "/submit")
 	public String submit(AnimeInfo animeInfo, ServletRequest request) throws Exception {
 
-		AnimeInfo newAnimeInfo = animeInfoService.save(animeInfo);
+		AnimeInfo db = animeInfoService.findOne(animeInfo.getId());
+		AnimeInfo newAnimeInfo = new AnimeInfo();
+		if (db != null) {
+			db.copyTo(newAnimeInfo);
+		}
+		animeInfo.copyToWithOutBaseInfo(newAnimeInfo);
+		newAnimeInfo.setVersion(animeInfo.getVersion());
+		newAnimeInfo = animeInfoService.save(newAnimeInfo);
 		request.setAttribute("animeInfo", newAnimeInfo);
 
 		return getUrlRedirectPath("view/" + newAnimeInfo.getId());
@@ -153,7 +144,7 @@ public class AnimeManagerController extends BaseManagerController<AnimeInfo, Str
 
 	@Override
 	public GoPageResult updateOneColumn(String id, String columnName, String columnValue, HttpServletRequest request) {
-		GoPageResult goPageResult = null;
+		GoPageResult goPageResult;
 		if ("showFlg".equals(columnName) && Constants.FLAG_STR_YES.equals(columnValue)) {
 			goPageResult = super.updateOneColumn(id, "showDate", DateUtil.convertToString(new Date()), request);
 			if (!goPageResult.isSuccess()) {
