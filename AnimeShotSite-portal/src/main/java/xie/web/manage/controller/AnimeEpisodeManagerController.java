@@ -82,7 +82,7 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 		request.setAttribute("animeInfo", animeInfo);
 
 		// 自动运行参数表
-		Map<String, AutoRunParam> autoRunParamList = autoRunParamService.getStringAutoRunParamMap(animeEpisodeId, true, false);
+		Map<String, AutoRunParam> autoRunParamList = autoRunParamService.getStringAutoRunParamMap(animeEpisodeId, false, true);
 		request.setAttribute("autoRunParamList", autoRunParamList.values());
 
 		return getJspFilePath("new");

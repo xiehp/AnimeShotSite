@@ -83,6 +83,19 @@ public class BaseSpecifications {
 								predicates.add(builder.lessThanOrEqualTo(expression, (Comparable) value));
 								break;
 							case IN:
+								if (filter.value instanceof Collection) {
+									Collection<?> collectoin = (Collection<?>) filter.value;
+									predicates.add(expression.in(collectoin));
+								} else if (filter.value instanceof Object[]) {
+									Object[] array = (Object[]) filter.value;
+									predicates.add(expression.in(array));
+								} else if (filter.value instanceof String) {
+									String str = (String) filter.value;
+									Object[] array = str.split(",");
+									predicates.add(expression.in(array));
+								} else {
+									throw new IllegalArgumentException("IN 操作对应的值无法认识，请传入Collection或者Object[]数组或者逗号分隔字符串");
+								}
 								break;
 							case ISNULL:
 								predicates.add(builder.isNull(expression));
@@ -92,26 +105,6 @@ public class BaseSpecifications {
 								break;
 							}
 						}
-
-						if (BaseOperator.IN.equals(filter.operator)) {
-							if (filter.value instanceof Collection) {
-								Collection<?> collectoin = (Collection<?>) filter.value;
-								predicates.add(expression.in(collectoin));
-							} else if (filter.value instanceof Object[]) {
-								Object[] array = (Object[]) filter.value;
-								List<Object> list = Arrays.asList(array);
-								predicates.add(expression.in(list));
-							} else if (filter.value instanceof String) {
-								String str = (String) filter.value;
-								Object[] array = str.split(str);
-								List<Object> list = Arrays.asList(array);
-								predicates.add(expression.in(list));
-							} else {
-								throw new IllegalArgumentException("IN 操作对应的值无法认识，请传入Collection或者Object[]数组或者逗号分隔字符串");
-							}
-							break;
-						}
-
 					}
 
 					if (!predicates.isEmpty()) {

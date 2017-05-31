@@ -1,5 +1,10 @@
 package xie.animeshotsite.db.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import javax.annotation.Resource;
 
 import org.springframework.data.domain.Page;
@@ -12,13 +17,10 @@ import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.repository.AutoRunParamDao;
 import xie.base.repository.BaseRepository;
+import xie.base.repository.BaseSearchFilter.BaseOperator;
 import xie.base.service.BaseService;
 import xie.common.Constants;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import xie.common.utils.XAssert;
 
 @Service
 public class AutoRunParamService extends BaseService<AutoRunParam, String> {
@@ -38,6 +40,61 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 	}
 
 	/**
+	 * 找到一个剧集模板数据
+	 */
+	public AutoRunParam findEpisodeTemplet(String key) {
+		Map<String, Object> searchParams = new HashMap<>();
+		searchParams.put(BaseOperator.EQ.getStr("type"), AutoRunParam.TYPE_TEMPLET);
+		searchParams.put(BaseOperator.EQ.getStr("animeEpisodeId"), AutoRunParam.TEMPLET_EPISODE);
+		searchParams.put(BaseOperator.EQ.getStr("key"), key);
+		Page<AutoRunParam> page = searchPageByParams(searchParams, 1, Integer.MAX_VALUE, AutoRunParam.COLUMN_SORT, AutoRunParam.class);
+		List<AutoRunParam> list = page.getContent();
+		XAssert.maxSize(list, 1);
+		if (list.size() > 0) {
+			return list.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * 找到一个动画模板数据
+	 */
+	public AutoRunParam findAnimeTemplet(String key) {
+		Map<String, Object> searchParams = new HashMap<>();
+		searchParams.put(BaseOperator.EQ.getStr("type"), AutoRunParam.TYPE_TEMPLET);
+		searchParams.put(BaseOperator.EQ.getStr("animeInfoId"), AutoRunParam.TEMPLET_ANIME);
+		searchParams.put(BaseOperator.EQ.getStr("key"), key);
+		Page<AutoRunParam> page = searchPageByParams(searchParams, null, AutoRunParam.class);
+		List<AutoRunParam> list = page.getContent();
+		XAssert.maxSize(list, 1);
+		if (list.size() > 0) {
+			return list.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * 找到一个剧集模板数据
+	 */
+	public AutoRunParam findEpisodeParam(String animeEpisodeId, String key) {
+		Map<String, Object> searchParams = new HashMap<>();
+		searchParams.put(BaseOperator.EQ.getStr("animeEpisodeId"), animeEpisodeId);
+		searchParams.put(BaseOperator.EQ.getStr("key"), key);
+		Page<AutoRunParam> page = searchPageByParams(searchParams, null, AutoRunParam.class);
+		List<AutoRunParam> list = page.getContent();
+
+		XAssert.maxSize(list, 1);
+
+		if (list.size() > 0) {
+			return list.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	/**
 	 * 新增或者更新一个自动化参数
 	 *
 	 * @param id id
@@ -48,6 +105,7 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 	 * @param name name
 	 * @param key key
 	 * @param value value
+	 * 
 	 * @return 动化参数
 	 */
 	public AutoRunParam saveOrUpdateOneAutoRunParam(String id, String animeInfoId, String animeEpisodeId, String refId, String refType, String name, String key, String value) {
@@ -57,17 +115,52 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 		}
 
 		if (autoRunParam == null) {
-			autoRunParam = new AutoRunParam();
-			autoRunParam.setAnimeInfoId(animeInfoId);
-			autoRunParam.setAnimeEpisodeId(animeEpisodeId);
-			autoRunParam.setRefId(refId);
-			autoRunParam.setRefType(refType);
+			AutoRunParam keyTemplet = findEpisodeTemplet(key);
+			if (keyTemplet != null) {
+				autoRunParam = copyFromTemplet(keyTemplet);
+			} else {
+				autoRunParam = new AutoRunParam();
+			}
 		}
+		autoRunParam.setAnimeInfoId(animeInfoId);
+		autoRunParam.setAnimeEpisodeId(animeEpisodeId);
+		autoRunParam.setRefId(refId);
+		autoRunParam.setRefType(refType);
 		autoRunParam.setName(name);
 		autoRunParam.setKey(key);
 		autoRunParam.setValue(value);
 
-		save(autoRunParam);
+		autoRunParam = save(autoRunParam);
+		return autoRunParam;
+	}
+
+	public AutoRunParam copyFromTemplet(AutoRunParam keyTemplet) {
+		AutoRunParam newAutoRunParam = new AutoRunParam();
+		newAutoRunParam.copyFromWithOutBaseInfo(keyTemplet);
+		newAutoRunParam.setId(null);
+		newAutoRunParam.setType(null);
+		newAutoRunParam.setAnimeInfoId(null);
+		newAutoRunParam.setAnimeEpisodeId(null);
+		return newAutoRunParam;
+	}
+
+	public AutoRunParam saveEpisodeByTemplet(String animeEpisodeId, String key, String value) {
+
+		AutoRunParam autoRunParam = findEpisodeParam(animeEpisodeId, key);
+		if (autoRunParam == null) {
+			AutoRunParam keyTemplet = findEpisodeTemplet(key);
+			if (keyTemplet != null) {
+				autoRunParam = copyFromTemplet(keyTemplet);
+			} else {
+				autoRunParam = new AutoRunParam();
+			}
+			autoRunParam.setAnimeInfoId(animeEpisodeDao.findOne(animeEpisodeId).getAnimeInfoId());
+			autoRunParam.setAnimeEpisodeId(animeEpisodeId);
+			autoRunParam.setKey(key);
+		}
+
+		autoRunParam.setValue(value);
+		autoRunParam = save(autoRunParam);
 		return autoRunParam;
 	}
 
@@ -157,6 +250,9 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 	 * @param id
 	 */
 	public void stopMonitor(String id) {
+
+		Assert.hasText(id, "id不能为空");
+
 		AutoRunParam autoRunParam = autoRunParamDao.findByAnimeInfoIdAndKey(id, "video_download_monitor_do_flag");
 		if (autoRunParam == null) {
 			autoRunParam = autoRunParamDao.findByAnimeEpisodeIdAndKey(id, "video_download_monitor_do_flag");
@@ -236,11 +332,11 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 	 */
 	public List<AutoRunParam> findEpisodeMonitorDownloadLUrlist(String animeInfoId) {
 		Map<String, Object> searchParams = new HashMap<>();
-		searchParams.put("ISNULL_type", 1);
+		// searchParams.put("ISNULL_type", 1);
+		searchParams.put("EQ_animeInfoId", animeInfoId);
 		searchParams.put("EQ_key", "video_download_monitor_do_flag");
 		searchParams.put("EQ_value", Constants.FLAG_INT_YES);
-		searchParams.put("EQ_animeInfoId", animeInfoId);
-		searchParams.put("ISNOTNULL_animeEpisodeId", 1);
+		// searchParams.put("ISNOTNULL_animeEpisodeId", 1);
 		Page<AutoRunParam> page = searchPageByParams(searchParams, 1, Integer.MAX_VALUE, AutoRunParam.COLUMN_SORT, AutoRunParam.class);
 		List<AutoRunParam> list = page.getContent();
 		return list;

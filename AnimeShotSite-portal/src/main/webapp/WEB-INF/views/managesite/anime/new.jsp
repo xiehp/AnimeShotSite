@@ -289,7 +289,7 @@
 									${empty shotCountMap[animeEpisode.id] ? 0 : shotCountMap[animeEpisode.id]}张
 							</div>
 							<div>
-								<input type="button" class="stopEpisodeMonitor" data-animeepidoeid="${animeEpisode.id}" value="停止监视">
+								<input type="button" class="stopEpisodeMonitor" data-animeepisodeid="${animeEpisode.id}" value="停止监视">
 							</div>
 						</a>
 					</div>
@@ -380,7 +380,7 @@
 
 			$(".stopEpisodeMonitor").on("click", function () {
 				var param = {};
-				param.animeEpisodeid = $(this).data("animeepisodeid");
+				param.animeEpisodeId = $(this).data("animeepisodeid");
 				$.homePost("${MANAGE_URL_STR}/autorun/stopMonitor", param);
 			})
 		});

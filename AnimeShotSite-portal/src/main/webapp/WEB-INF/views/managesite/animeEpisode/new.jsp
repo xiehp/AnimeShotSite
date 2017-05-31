@@ -397,3 +397,116 @@
 <br />
 <br />
 <br />
+
+
+<div>
+	<div style="font-size: 24px;">自动化配置</div>
+	<script id="autoRunRow" type="text/x-jsrender">
+		<div class="form-group">
+			<label class="col-sm-2 control-label">{{>name}}({{>key}})</label>
+			<div class="col-sm-5">
+				<input class="form-control" name="id" value="{{>value}}" />
+			</div>
+		</div>
+	</script>
+
+	<script id="updateOneAutoRunParamButtonTemplate" type="text/x-jsrender">
+		<div class="col-md-1">
+			<a class="btn btn-primary updateOneAutoRunParam" data-key="{{>key}}">更新</a>
+		</div>
+	</script>
+
+	<script type="text/javascript">
+		lazyRun(function() {
+			// 创建更新按钮
+			$("#autoRunForm").find("input[name=key]").each(function() {
+				var params = {};
+				params.key = $(this).val();
+				var buttonHtml = $("#updateOneAutoRunParamButtonTemplate").render(params);
+				$(this).parent().parent().append(buttonHtml);
+			});
+
+			//绑定点击事件
+			$("a.updateOneAutoRunParam").on("click", function() {
+				var key = $(this).data("key");
+				updateOneAutoRunParam(key);
+			})
+
+			$("#beginMonitor").on("click", function() {
+				var param = {};
+				param.animeInfoId = $(this).data("animeinfoid");
+				$.homePost("${MANAGE_URL_STR}/autorun/beginMonitor", param);
+			})
+
+			$("#stopMonitor").on("click", function() {
+				var param = {};
+				param.animeInfoId = $(this).data("animeinfoid");
+				$.homePost("${MANAGE_URL_STR}/autorun/stopMonitor", param);
+			})
+
+			$(".stopEpisodeMonitor").on("click", function() {
+				var param = {};
+				param.animeEpisodeid = $(this).data("animeepisodeid");
+				$.homePost("${MANAGE_URL_STR}/autorun/stopMonitor", param);
+			})
+		});
+
+		function addAutoRunParam() {
+			var paramsTemplate = {};
+			paramsTemplate.name = "";
+			paramsTemplate.key = "";
+			paramsTemplate.value = "";
+			var htmlStr = $("#autoRunRow").render(paramsTemplate);
+			$("#autoRunFormInputDiv").after(htmlStr);
+		}
+
+		function updateOneAutoRunParam(key) {
+			var $auto_param_div = $("#auto_param_" + key);
+			var param = {};
+			param.id = $auto_param_div.find("[name=id]").val();
+			param.name = $auto_param_div.find("[name=name]").val();
+			param.key = key;
+			param.value = $auto_param_div.find("[name=value]").val();
+			param.animeInfoId = $auto_param_div.find("[name=animeInfoId]").val();
+			param.animeEpisodeId = $auto_param_div.find("[name=animeEpisodeId]").val();
+			param.refId = $auto_param_div.find("[name=refId]").val();
+			param.refType = $auto_param_div.find("[name=refType]").val();
+			$.homePost("${MANAGE_URL_STR}/autorun/updateOneAutoRunParam", param);
+		}
+	</script>
+	<div style="margin: 20px;">
+		<input type="button" id="addAutoRunBtn" value="增加一行">
+		<input type="button" id="beginMonitor" data-animeinfoid="${animeInfo.id}" value="开始监视">
+		<input type="button" id="stopMonitor" data-animeinfoid="${animeInfo.id}" value="停止监视">
+	</div>
+	<form id="autoRunForm" class="form-horizontal" action="${ctx}${MANAGE_URL_STR}/anime/submit" method="post">
+		<div id="autoRunFormInputDiv">
+			<c:forEach items="${autoRunParamList}" var="autoRunParam">
+				<div id="auto_param_${autoRunParam.key}" class="form-group">
+					<div class="col-sm-3">
+						id<input class="form-control" name="id" value="${autoRunParam.id}">
+						<br>
+						animeInfoId<input class="form-control" name="animeInfoId" value="${animeEpisodeInfo.animeInfoId}">
+						<br>
+						animeEpisodeId<input class="form-control" name="animeEpisodeId" value="${animeEpisodeInfo.id}">
+						<br>
+						name<input class="form-control" name="name" value="${autoRunParam.name}">
+						<br>
+						key<input class="form-control" name="key" value="${autoRunParam.key}">
+						<br>
+					</div>
+					<div class="col-sm-5">
+						<input class="form-control" name="value" value="${autoRunParam.value}" />
+					</div>
+				</div>
+				<hr />
+			</c:forEach>
+		</div>
+		<input type="submit" />
+
+		<a href="${ctx}${MANAGE_URL_STR}/anime/view/${animeEpisodeInfo.animeInfoId}" class="btn btn-primary">返回上层</a>
+	</form>
+</div>
+
+
+

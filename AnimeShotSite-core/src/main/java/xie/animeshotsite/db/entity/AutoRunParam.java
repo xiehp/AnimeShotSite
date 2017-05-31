@@ -24,8 +24,15 @@ public class AutoRunParam extends BaseEntity {
 	public static final String COLUMN_VALUE = "value";
 	public static final String COLUMN_SORT = "sort";
 
-	/** 模板类型 */
+	/** 类型:模板 */
 	public static final String TYPE_TEMPLET = "templet";
+
+	/** 动画模板 */
+	public static final String TEMPLET_ANIME = "anime_templet";
+	/** 剧集模板 */
+	public static final String TEMPLET_EPISODE = "episode_templet";
+	
+	
 
 	/** 类型 templet:模板 其他:通常数据 */
 	private String type;

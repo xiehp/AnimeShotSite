@@ -1,22 +1,22 @@
 package xie.animeshotsite.timer.timer.beforeshot;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
 import org.springframework.util.Assert;
-import sun.applet.Main;
+
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AutoRunParam;
+import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.animeshotsite.db.repository.AutoRunParamDao;
 import xie.animeshotsite.db.repository.ShotTaskDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
@@ -24,8 +24,8 @@ import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.AutoRunParamService;
 import xie.animeshotsite.db.service.ShotTaskService;
 import xie.animeshotsite.timer.timer.BaseTaskTimer;
+import xie.common.Constants;
 import xie.common.string.XStringUtils;
-import xie.common.utils.XRegularUtils;
 import xie.function.collection.CollectKamigami;
 import xie.module.spring.SpringUtil;
 
@@ -75,8 +75,13 @@ public class EpisodeUpdateMonitorTimer extends BaseTaskTimer {
 		}
 	}
 
+	/**
+	 * 根据搜索到的下载地址列表，将下载地址更新到动画剧集的自动化参数中
+	 */
 	public void updateEpisodeParamByUrlList(String animeInfoId, String reg, List<String> urlList) {
+
 		List<AutoRunParam> episodeMonitorFlagList = autoRunParamService.findEpisodeMonitorDownloadLUrlist(animeInfoId);
+		Map<String, AutoRunParam> episodeMonitorFlagMap = episodeMonitorFlagList.stream().collect(Collectors.toMap(AutoRunParam::getAnimeEpisodeId, (p) -> p));
 
 		// 根据reg获得集数，作为key放入map
 		Pattern pattern = Pattern.compile(reg);
@@ -90,29 +95,31 @@ public class EpisodeUpdateMonitorTimer extends BaseTaskTimer {
 			} else {
 				_log.error("没有在下载链接中找到需要的信息, url:{}, reg:{}", str, reg);
 			}
-
-			// XRegularUtils.find()
-			// AutoRunParam autoRunParam = new AutoRunParam();
-			// autoRunParam.setAnimeInfoId(animeInfoId);
-			// autoRunParam.setAnimeEpisodeId();
-			// autoRunParamService.saveOrUpdateOneAutoRunParam();
 		}
 
-		for(String number : urlMap.keySet()) {
-			animeEpisodeDao.findByAnimeEpisodeIdAndNumber();
-		}
+		// 遍历下载url列表，获得每个url对应的剧集信息
+		for (String number : urlMap.keySet()) {
+			AnimeEpisode animeEpisode = animeEpisodeDao.findByAnimeInfoIdAndNumber(animeInfoId, number);
+			if (animeEpisode != null) {
+				String animeEpisodeId = animeEpisode.getId();
 
+				AutoRunParam episodeMonitorFlagParam = episodeMonitorFlagMap.get(animeEpisodeId);
+				// 剧集的下载地址监视状态为1的情况下，更新数据
+				if (episodeMonitorFlagParam != null && Constants.FLAG_STR_YES.equals(episodeMonitorFlagParam.getValue())) {
+					autoRunParamService.getStringAutoRunParamMap(animeEpisodeId, false, true);
 
-		for (AutoRunParam episodeMonitorParam : episodeMonitorFlagList) {
-			String animeEpisodeId = episodeMonitorParam.getAnimeEpisodeId();
+					// 将种子下载url地址放入自动运行参数，
+					autoRunParamService.saveEpisodeByTemplet(animeEpisodeId, "video_download_do_download_url", urlMap.get(number));
 
-//			AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
+					// 开始下载状态(video_download_do_download_flag)更新为0
+					autoRunParamService.saveEpisodeByTemplet(animeEpisodeId, "video_download_do_download_flag", "0");
 
-
-			if (animeEpisode.getNumber() != null) {
-
+					// 同时将监视状态(video_download_monitor_do_flag)更新为2，
+					autoRunParamService.saveEpisodeByTemplet(animeEpisodeId, "video_download_monitor_do_flag", "2");
+				}
+			} else {
+				_log.info("没有找到剧集, animeInfoId:{}, number:{}", animeInfoId, number);
 			}
-
 		}
 
 	}

@@ -9,7 +9,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import xie.animeshotsite.db.entity.ShotTask;
+import xie.animeshotsite.timer.timer.BaseTaskTimer;
 import xie.animeshotsite.timer.timer.ShotTaskTimer;
+import xie.animeshotsite.timer.timer.beforeshot.EpisodeUpdateMonitorTimer;
+import xie.common.Constants;
 import xie.module.spring.SpringUtil;
 
 //@SpringBootApplication
@@ -27,13 +30,15 @@ public class MainTimer {
 		// SpringApplication.run(MainTimer.class, args);
 
 		// createTimer(AnimeShotTimer.class);
-		System.setProperty("spring.profiles.default", "development");
-		// System.setProperty("spring.profiles.default", "productRemote");
+		// System.setProperty("spring.profiles.default", "development");
+		System.setProperty("spring.profiles.default", "productRemote");
 
-		createTimer(ShotTaskTimer.class, 20000, ShotTask.TASK_TYPE_SHOT);
-		createTimer(ShotTaskTimer.class, 5000, ShotTask.TASK_TYPE_SPECIAL_SHOT);
-		createTimer(ShotTaskTimer.class, 20000, ShotTask.TASK_TYPE_SUBTITLE);
-		createTimer(ShotTaskTimer.class, 20000, ShotTask.TASK_TYPE_GIF);
+		createTimer(ShotTaskTimer.class, 20 * 1000, ShotTask.TASK_TYPE_SHOT);
+		createTimer(ShotTaskTimer.class, 5 * 1000, ShotTask.TASK_TYPE_SPECIAL_SHOT);
+		createTimer(ShotTaskTimer.class, 20 * 1000, ShotTask.TASK_TYPE_SUBTITLE);
+		createTimer(ShotTaskTimer.class, 20 * 1000, ShotTask.TASK_TYPE_GIF);
+
+		createTimer(EpisodeUpdateMonitorTimer.class, 3600 * 1000);
 
 		printProfile();
 
@@ -82,6 +87,19 @@ public class MainTimer {
 		Timer timer = new Timer();
 		timer.schedule(shotTaskTimer, 1000, period);
 		logger.info("创建定时器成功：{} {} {}", period, taskType, classTimerTask);
+	}
+
+	/***
+	 * 
+	 * @param classTimerTask
+	 * @param period 执行间隔
+	 */
+	public static void createTimer(Class<? extends TimerTask> classTimerTask, long period) {
+		BaseTaskTimer shotTaskTimer = (BaseTaskTimer) SpringUtil.getBean(classTimerTask);
+
+		Timer timer = new Timer();
+		timer.schedule(shotTaskTimer, 1000, period);
+		logger.info("创建定时器成功：{} {}", period, classTimerTask);
 	}
 
 	private static void printProfile() {
