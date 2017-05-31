@@ -33,11 +33,13 @@ public class MainTimer {
 		// System.setProperty("spring.profiles.default", "development");
 		System.setProperty("spring.profiles.default", "productRemote");
 
+		// 截图
 		createTimer(ShotTaskTimer.class, 20 * 1000, ShotTask.TASK_TYPE_SHOT);
 		createTimer(ShotTaskTimer.class, 5 * 1000, ShotTask.TASK_TYPE_SPECIAL_SHOT);
 		createTimer(ShotTaskTimer.class, 20 * 1000, ShotTask.TASK_TYPE_SUBTITLE);
 		createTimer(ShotTaskTimer.class, 20 * 1000, ShotTask.TASK_TYPE_GIF);
 
+		// 自动化处理，监视下载url地址
 		createTimer(EpisodeUpdateMonitorTimer.class, 3600 * 1000);
 
 		printProfile();

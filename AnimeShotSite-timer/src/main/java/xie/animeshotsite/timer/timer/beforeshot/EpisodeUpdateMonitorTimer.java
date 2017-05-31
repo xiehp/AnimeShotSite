@@ -55,6 +55,7 @@ public class EpisodeUpdateMonitorTimer extends BaseTaskTimer {
 	@Override
 	protected void taskTimer() throws Exception {
 		List<AutoRunParam> animeMonitorFlagList = autoRunParamService.findAnimeMonitorDownloadLUrlList();
+		_log.info("获取到当前监视中的动画数量：{}", animeMonitorFlagList.size());
 
 		for (AutoRunParam monitorFlagParam : animeMonitorFlagList) {
 			String animeInfoId = monitorFlagParam.getAnimeInfoId();
@@ -102,12 +103,11 @@ public class EpisodeUpdateMonitorTimer extends BaseTaskTimer {
 			AnimeEpisode animeEpisode = animeEpisodeDao.findByAnimeInfoIdAndNumber(animeInfoId, number);
 			if (animeEpisode != null) {
 				String animeEpisodeId = animeEpisode.getId();
+				_log.info("找到剧集，开始更新, animeInfoId:{}, animeEpisodeId:{}, number:{}, url:{}", animeInfoId, animeEpisodeId, number, urlMap.get(number));
 
 				AutoRunParam episodeMonitorFlagParam = episodeMonitorFlagMap.get(animeEpisodeId);
 				// 剧集的下载地址监视状态为1的情况下，更新数据
 				if (episodeMonitorFlagParam != null && Constants.FLAG_STR_YES.equals(episodeMonitorFlagParam.getValue())) {
-					autoRunParamService.getStringAutoRunParamMap(animeEpisodeId, false, true);
-
 					// 将种子下载url地址放入自动运行参数，
 					autoRunParamService.saveEpisodeByTemplet(animeEpisodeId, "video_download_do_download_url", urlMap.get(number));
 
@@ -116,6 +116,8 @@ public class EpisodeUpdateMonitorTimer extends BaseTaskTimer {
 
 					// 同时将监视状态(video_download_monitor_do_flag)更新为2，
 					autoRunParamService.saveEpisodeByTemplet(animeEpisodeId, "video_download_monitor_do_flag", "2");
+				} else {
+					_log.warn("当前剧集为不监视下载地址，跳过更新。");
 				}
 			} else {
 				_log.info("没有找到剧集, animeInfoId:{}, number:{}", animeInfoId, number);

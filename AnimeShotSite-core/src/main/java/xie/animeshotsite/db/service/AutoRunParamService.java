@@ -325,6 +325,7 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 		return list;
 	}
 
+
 	/**
 	 * 获得视频下载地址监视中的剧集列表
 	 * 
@@ -338,6 +339,23 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 		searchParams.put("EQ_value", Constants.FLAG_INT_YES);
 		// searchParams.put("ISNOTNULL_animeEpisodeId", 1);
 		Page<AutoRunParam> page = searchPageByParams(searchParams, 1, Integer.MAX_VALUE, AutoRunParam.COLUMN_SORT, AutoRunParam.class);
+		List<AutoRunParam> list = page.getContent();
+		return list;
+	}
+
+
+	/**
+	 * 获得等待下载的剧集列表
+	 * 
+	 * @param animeInfoId animeInfoId
+	 */
+	public List<AutoRunParam> findEpisodeWaitDownloadList() {
+		Map<String, Object> searchParams = new HashMap<>();
+		searchParams.put("EQ_key", "video_download_do_download_flag");
+		searchParams.put("EQ_value", 0);
+		searchParams.put("ISNULL_type", 1);
+		searchParams.put("ISNOTNULL_animeEpisodeId", 1);
+		Page<AutoRunParam> page = searchPageByParams(searchParams, null, AutoRunParam.class);
 		List<AutoRunParam> list = page.getContent();
 		return list;
 	}
