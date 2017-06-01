@@ -50,6 +50,13 @@ mark {
 label {
 	font-weight: normal;
 }
+
+.btn {
+	-webkit-user-select: initial;
+	-moz-user-select: initial;
+	-ms-user-select: initial;
+	user-select: initial;
+}
 /*对bootrap样式调整 结束 */
 
 /* 截图下方的字幕式样 */
