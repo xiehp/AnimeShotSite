@@ -1,7 +1,6 @@
 package xie.animeshotsite.interceptor;
 
 import java.io.IOException;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,9 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-import org.springframework.web.servlet.support.RequestContextUtils;
-
-import xie.common.utils.XCookieUtils;
 
 /**
  * 多语言处理

@@ -66,13 +66,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 
-		<!-- Plugin的属性 -->
-		<!-- <tomcat-jdbc.version>7.0.57</tomcat-jdbc.version> -->
-
 		<!-- 主要依赖库的版本定义 -->
 		<springside.version>4.3.0-SNAPSHOT</springside.version>
 		<mybatis.version>3.2.7</mybatis.version>
-		<tomcat-jdbc.version>7.0.57</tomcat-jdbc.version>
 		<sitemesh.version>2.4.2</sitemesh.version>
 		<shiro.version>1.2.5</shiro.version>
 		<cxf.version>2.7.11</cxf.version>
@@ -88,7 +84,6 @@
 		<jackson.version>2.4.4</jackson.version>
 		<slf4j.version>1.7.8</slf4j.version>
 		<logback.version>1.1.2</logback.version>
-		<httpclient.version>4.3.6</httpclient.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
 		<commons-io.version>2.4</commons-io.version>
 		<joda-time.version>2.3</joda-time.version>
@@ -199,7 +194,7 @@
 			<!-- SPRINGSIDE MODULES end -->
 
 			<!-- spring -->
-			<!-- 纯粹为了exclude commons-loging -->
+			<!-- 纯粹为了exclude commons-loging
 			<dependency>
 				<groupId>cn.org.springframework</groupId>
 				<artifactId>spring-core</artifactId>
@@ -219,7 +214,8 @@
 						<artifactId>commons-logging</artifactId>
 					</exclusion>
 				</exclusions>
-			</dependency>
+			</dependency> -->
+			
 			<!--<dependency>
 				<groupId>aopalliance</groupId>
 				<artifactId>aopalliance</artifactId>
@@ -232,42 +228,6 @@
 				</dependency> -->
 
 			<!-- PERSISTENCE begin -->
-			<!-- hibernate
-				<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-core</artifactId>
-				<version>${hibernate.version}</version>
-				</dependency>
-				<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-entitymanager</artifactId>
-				<version>${hibernate.version}</version>
-				</dependency>
-				<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-ehcache</artifactId>
-				<version>${hibernate.version}</version>
-				</dependency> -->
-
-			<!-- spring data jpa
-				<dependency>
-				<groupId>org.springframework.data</groupId>
-				<artifactId>spring-data-jpa</artifactId>
-				<version>${spring-data-jpa.version}</version>
-				</dependency> -->
-
-			<!-- aop -->
-			<!--<dependency>
-				<groupId>org.aspectj</groupId>
-				<artifactId>aspectjrt</artifactId>
-				<version>${aspectj.version}</version>
-				</dependency>
-				<dependency>
-				<groupId>org.aspectj</groupId>
-				<artifactId>aspectjweaver</artifactId>
-				<version>${aspectj.version}</version>
-				<scope>runtime</scope>
-				</dependency> -->
 
 			<!-- oracle -->
 			<dependency>
@@ -276,22 +236,9 @@
 				<version>${oracle.version}</version>
 			</dependency>
 
-			<!-- connection pool
-				<dependency>
-				<groupId>org.apache.tomcat</groupId>
-				<artifactId>tomcat-jdbc</artifactId>
-				<version>${tomcat-jdbc.version}</version>
-				<scope>runtime</scope>
-				</dependency> -->
 			<!-- PERSISTENCE end -->
 
 			<!-- WEB begin -->
-			<!-- spring
-				<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-webmvc</artifactId>
-				<version>${spring.version}</version>
-				</dependency> -->
 
 			<!-- sitemesh -->
 			<dependency>
@@ -300,32 +247,6 @@
 				<version>${sitemesh.version}</version>
 				<scope>runtime</scope>
 			</dependency>
-
-			<!-- j2ee web spec -->
-			<!-- update to servlet 3.0 for spring 4.0 MockHttpServletRequest -->
-			<!-- <dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>javax.servlet-api</artifactId>
-				<version>3.0.1</version>
-				<scope>provided</scope>
-				</dependency>
-				<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>jstl</artifactId>
-				<version>1.2</version>
-				</dependency>
-				<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>jsp-api</artifactId>
-				<version>2.0</version>
-				<exclusions>
-				<exclusion>
-				<groupId>javax.servlet</groupId>
-				<artifactId>javax.servlet-api</artifactId>
-				</exclusion>
-				</exclusions>
-				</dependency> -->
-			<!-- WEB end -->
 
 			<!-- SECURITY begin -->
 			<dependency>
@@ -435,21 +356,6 @@
 			</dependency>
 			<!-- JMS end -->
 
-			<!-- TIMER
-				<dependency>
-				<groupId>org.quartz-scheduler</groupId>
-				<artifactId>quartz</artifactId>
-				<version>${quartz.version}</version>
-				</dependency> -->
-
-			<!-- NOSQL begin
-				<dependency>
-				<groupId>redis.clients</groupId>
-				<artifactId>jedis</artifactId>
-				<version>${jedis.version}</version>
-				</dependency> -->
-			<!-- NOSQL end -->
-
 			<!-- CACHE begin -->
 			<!-- memcached -->
 			<dependency>
@@ -509,47 +415,7 @@
 
 			<!-- JSR303 Bean Validator -->
 
-			<!-- JSON begin
-				<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-core</artifactId>
-				<version>${jackson.version}</version>
-				</dependency>
-				<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-databind</artifactId>
-				<version>${jackson.version}</version>
-				</dependency>
-				<dependency>
-				<groupId>com.fasterxml.jackson.module</groupId>
-				<artifactId>jackson-module-jaxb-annotations</artifactId>
-				<version>${jackson.version}</version>
-				</dependency>
-				<dependency>
-				<groupId>fakepath</groupId>
-				<artifactId>json-lib</artifactId>
-				<version>2.4</version>
-				<classifier>jdk15</classifier>
-				</dependency>
-				<dependency>
-				<groupId>net.sf.ezmorph</groupId>
-				<artifactId>ezmorph</artifactId>
-				<version>1.0.6</version>
-				</dependency> -->
-
 			<!-- JSON end -->
-
-			<!-- XML begin
-				<dependency>
-				<groupId>dom4j</groupId>
-				<artifactId>dom4j</artifactId>
-				<exclusions>
-				<exclusion>
-				<groupId>xml-apis</groupId>
-				<artifactId>xml-apis</artifactId>
-				</exclusion>
-				</exclusions>
-				</dependency> -->
 
 			<!-- 重新定义Java XPath Engine到最新版，避免旧版那些不必要的依赖
 				<dependency>
@@ -582,54 +448,6 @@
 
 			<!-- google java library -->
 
-			<!-- joda
-				<dependency>
-				<groupId>joda-time</groupId>
-				<artifactId>joda-time</artifactId>
-				<version>${joda-time.version}</version>
-				</dependency>
-				<dependency>
-				<groupId>joda-time</groupId>
-				<artifactId>joda-time-jsptags</artifactId>
-				<version>1.1.1</version>
-				</dependency> -->
-			<!-- joda for jackson
-				<dependency>
-				<groupId>com.fasterxml.jackson.datatype</groupId>
-				<artifactId>jackson-datatype-joda</artifactId>
-				<version>${jackson.version}</version>
-				</dependency> -->
-			<!-- apache poi
-				<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi</artifactId>
-				<version>${apache.poi.version}</version>
-				</dependency>
-				<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi-scratchpad</artifactId>
-				<version>${apache.poi.version}</version>
-				</dependency>
-				<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi-ooxml</artifactId>
-				<version>${apache.poi.version}</version>
-				</dependency>
-				<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi-ooxml-schemas</artifactId>
-				<version>${apache.poi.version}</version>
-				</dependency>
-				<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi-excelant</artifactId>
-				<version>${apache.poi.version}</version>
-				</dependency>
-				<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi-examples</artifactId>
-				<version>${apache.poi.version}</version>
-				</dependency> -->
 
 			<!-- GENERAL UTILS end -->
 
@@ -646,43 +464,6 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-
-			<!-- httpclient
-				<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>${httpclient.version}</version>
-				<exclusions>
-				<exclusion>
-				<groupId>commons-logging</groupId>
-				<artifactId>commons-logging</artifactId>
-				</exclusion>
-				</exclusions>
-				</dependency>
-
-				<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>fluent-hc</artifactId>
-				<version>${httpclient.version}</version>
-				<exclusions>
-				<exclusion>
-				<groupId>commons-logging</groupId>
-				<artifactId>commons-logging</artifactId>
-				</exclusion>
-				</exclusions>
-				</dependency>
-
-				<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpcore</artifactId>
-				<version>${httpclient.version}</version>
-				<exclusions>
-				<exclusion>
-				<groupId>commons-logging</groupId>
-				<artifactId>commons-logging</artifactId>
-				</exclusion>
-				</exclusions>
-				</dependency> -->
 
 			<!-- template engine
 				<dependency>
@@ -711,15 +492,6 @@
 				</dependency> -->
 			<!-- OTHER TOOLS end -->
 
-			<!-- TEST begin -->
-			<!-- junit
-				<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-				<scope>test</scope>
-				</dependency> -->
-
 			<!-- assertj -->
 			<dependency>
 				<groupId>org.assertj</groupId>
@@ -727,13 +499,6 @@
 				<version>${assertj.version}</version>
 			</dependency>
 
-			<!-- mockito
-				<dependency>
-				<groupId>org.mockito</groupId>
-				<artifactId>mockito-core</artifactId>
-				<version>${mockito.version}</version>
-				<scope>test</scope>
-				</dependency> -->
 			<dependency>
 				<groupId>org.powermock</groupId>
 				<artifactId>powermock-module-junit4</artifactId>
@@ -768,14 +533,6 @@
 				<classifier>tests</classifier>
 				<scope>test</scope>
 			</dependency>
-
-			<!-- spring
-				<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-test</artifactId>
-				<version>${spring.version}</version>
-				<scope>test</scope>
-				</dependency> -->
 
 			<!-- selenium 2.0 -->
 			<dependency>

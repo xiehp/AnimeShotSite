@@ -19,9 +19,12 @@
 			</activation>
 			<properties>
 				<tomcat.deploy.active.spring.profile>development</tomcat.deploy.active.spring.profile>
-				<tomcat.deploy.server> </tomcat.deploy.server>
-				<tomcat.deploy.url> </tomcat.deploy.url>
-				<tomcat.deploy.war.exclude.jar> </tomcat.deploy.war.exclude.jar>
+				<tomcat.deploy.server>
+				</tomcat.deploy.server>
+				<tomcat.deploy.url>
+				</tomcat.deploy.url>
+				<tomcat.deploy.war.exclude.jar>
+				</tomcat.deploy.war.exclude.jar>
 			</properties>
 		</profile>
 		<profile>
@@ -51,6 +54,10 @@
 		<!-- 本项目 -->
 		<dependency>
 			<groupId>xie</groupId>
+			<artifactId>AnimeShotSite-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>xie</groupId>
 			<artifactId>AnimeShotSite-webbase</artifactId>
 		</dependency>
 		<dependency>
@@ -60,85 +67,13 @@
 		</dependency>
 
 		<!-- spring-boot -->
-		<!--  <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
 		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>-->
-
-		<!-- spring-boot-tomcat
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tomcat.embed</groupId>
-			<artifactId>tomcat-embed-jasper</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-		</dependency> -->
-		
-
-		<!-- WEB begin -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-		</dependency>
-		
-		<!-- spring data access
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-           	<groupId>org.springframework</groupId>
-            <artifactId>spring-aspects</artifactId>
-        </dependency> -->
-		
-		<!-- connection pool -->
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-jdbc</artifactId>
-		</dependency>
-		
-		<!-- SPRINGSIDE begin
-		<dependency>
-			<groupId>io.springside</groupId>
-			<artifactId>springside-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.springside</groupId>
-			<artifactId>springside-extension</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.springside</groupId>
-			<artifactId>springside-metrics</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.springside</groupId>
-			<artifactId>springside-redis</artifactId>
-		</dependency> -->
-		<!-- SPRINGSIDE end -->
+			</dependency> -->
 
 		<!-- SPRING basic begin -->
 		<!-- email/scheduler/freemarker -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>aopalliance</groupId>
-			<artifactId>aopalliance</artifactId>
-		</dependency>
 		<!-- SPRING basic end -->
 		<!-- SPRING end -->
 
@@ -146,24 +81,7 @@
 		<!-- AOP end -->
 
 		<!-- PERSISTENCE begin -->
-		<!-- hibernate -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-ehcache</artifactId>
-		</dependency>
-		
-		<!-- oracle
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-		</dependency> -->
-		
-		<!-- mysql -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-		</dependency>
-		
+
 
 		<!-- PERSISTENCE end -->
 
@@ -172,14 +90,6 @@
 			<artifactId>sitemesh</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-		</dependency>
 		<!-- WEB end -->
 
 		<!-- SECURITY begin -->
@@ -270,25 +180,7 @@
 		</dependency>
 		<!-- MONITOR end -->
 
-		<!-- JSR303 BeanValidator -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-		</dependency>
-
 		<!-- JSON -->
-		<!--<dependency>
-			<groupId>com.fasterxml.jackson.module</groupId>
-			<artifactId>jackson-module-jaxb-annotations</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-joda</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.ezmorph</groupId>
-			<artifactId>ezmorph</artifactId>
-		</dependency>-->
 
 		<!-- XML begin -->
 		<dependency>
@@ -302,30 +194,6 @@
 		</dependency>
 		<!-- XML end -->
 
-		<!-- LOGGING begin -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>log4j-over-slf4j</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jul-to-slf4j</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>com.googlecode.log4jdbc</groupId>
 			<artifactId>log4jdbc</artifactId>
@@ -333,32 +201,6 @@
 		<!-- LOGGING end -->
 
 		<!-- GENERAL UTILS begin -->
-		
-		<!-- apache poi
-		<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi</artifactId>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi-scratchpad</artifactId>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi-ooxml</artifactId>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi-ooxml-schemas</artifactId>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi-excelant</artifactId>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.xmlbeans</groupId>
-				<artifactId>xmlbeans</artifactId>
-			</dependency> -->
 		<!-- GENERAL UTILS end -->
 
 		<!-- OTHER TOOLS begin -->
@@ -404,7 +246,7 @@
 		<!--<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-		</dependency>
+			</dependency>
 		-->
 
 		<dependency>
@@ -413,49 +255,28 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- selenium 2.0 
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-remote-driver</artifactId>
-		</dependency>-->
 
-		<!-- jetty for functional test and executable war 
-		<dependency>
-			<groupId>org.eclipse.jetty.aggregate</groupId>
-			<artifactId>jetty-webapp</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-jsp</artifactId>
-			<scope>provided</scope>
-		</dependency>-->
-		
 		<!-- h2 如果生产数据库不是H2，解开下面的注释
-		<dependency>
+			<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-		</dependency>
+			</dependency>
 		-->
 
-		<!-- mail server simulator 
-		<dependency>
+		<!-- mail server simulator
+			<dependency>
 			<groupId>com.icegreen</groupId>
 			<artifactId>greenmail</artifactId>
-		</dependency>-->
+			</dependency> -->
 
 		<!--<dependency>
 			<groupId>org.scalatest</groupId>
 			<artifactId>scalatest_2.10</artifactId>
 			<version>2.0</version>
 			<scope>test</scope>
-		</dependency>-->
+			</dependency> -->
 		<!-- TEST end -->
-			
+
 		<!-- sftp -->
 		<dependency>
 			<groupId>com.jcraft</groupId>
@@ -497,11 +318,11 @@
 					<url>${tomcat.deploy.url}</url>
 					<server>${tomcat.deploy.server}</server>
 					<path>/</path>
-					<!-- 
-					<path>/${project.artifactId}</path>
-					<port>8680</port>
-					 -->
-					<!-- spring profile  -->
+					<!--
+						<path>/${project.artifactId}</path>
+						<port>8680</port>
+					-->
+					<!-- spring profile -->
 					<systemProperties>
 						<systemProperty>
 							<name>spring.profiles.active</name>
