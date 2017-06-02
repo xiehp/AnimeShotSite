@@ -37,7 +37,7 @@ import xie.web.util.SiteConstants;
  */
 @Component
 public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
-	private final static String CHANGE_PAGE_DATA_FALG_NAME = "CHANGE_PAGE_DATA_FALG_NAME";
+
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired(required = false)

@@ -1,6 +1,5 @@
 package xie.animeshotsite.timer.task.beforeshot;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -8,7 +7,6 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import xie.animeshotsite.timer.base.XBaseTask;
-import xie.function.collection.CollectKamigami;
 import xie.module.httpclient.XHttpClientUtils;
 
 @Component

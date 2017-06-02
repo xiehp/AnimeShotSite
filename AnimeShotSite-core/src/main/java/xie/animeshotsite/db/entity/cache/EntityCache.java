@@ -181,6 +181,7 @@ public class EntityCache {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> T get(String cacheId) {
 		XWaitTime xWaitTime = timeoutMap.get(cacheId);
 		if (xWaitTime == null) {

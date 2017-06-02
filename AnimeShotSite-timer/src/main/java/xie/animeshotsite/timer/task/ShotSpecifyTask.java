@@ -66,7 +66,7 @@ public class ShotSpecifyTask extends XBaseTask {
 
 			AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
 			AnimeInfo animeInfo = animeInfoService.findOne(animeEpisode.getAnimeInfoId());
-			logger.info("begin process : " + animeInfo.getName() + ", " + animeEpisode.getName());
+			logger.info("begin process : " + animeInfo.getName() + ", " + animeEpisode.getFullName());
 			File animeEpisodeFile = FilePathUtils.getAnimeFullFilePath(animeInfo, animeEpisode, animeEpisode.getLocalFileName());
 
 			logger.info("begin process : " + animeEpisodeFile.getAbsolutePath());
@@ -95,7 +95,7 @@ public class ShotSpecifyTask extends XBaseTask {
 			}
 
 			if (video2Image.isProcessSuccess()) {
-				logger.info("process 成功 : " + animeEpisode.getName());
+				logger.info("process 成功 : " + animeEpisode.getFullName());
 			} else {
 				logger.error("process 失败");
 			}

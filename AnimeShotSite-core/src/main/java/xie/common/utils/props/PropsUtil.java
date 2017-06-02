@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springside.modules.utils.PropertiesLoader;
 
 import xie.common.Constants;
-import xie.module.spring.SpringUtils;
 
 public class PropsUtil {
 

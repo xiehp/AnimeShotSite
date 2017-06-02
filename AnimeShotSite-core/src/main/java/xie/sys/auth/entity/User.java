@@ -13,7 +13,9 @@ import xie.base.entity.BaseEntity;
 @Table(name = "sys_user")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User extends BaseEntity {
-	
+
+	private static final long serialVersionUID = -3025292751834625484L;
+
 	private String loginName;
 	@Transient
 	private String plainPassword;

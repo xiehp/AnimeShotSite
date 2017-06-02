@@ -7,7 +7,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import xie.base.XEnum;
 import xie.base.entity.BaseEntity;
 
 @Entity

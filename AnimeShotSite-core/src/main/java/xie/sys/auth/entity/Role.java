@@ -13,6 +13,7 @@ import xie.base.entity.BaseEntity;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Role extends BaseEntity {
 
+	private static final long serialVersionUID = 2159480901801074481L;
 	private String name;
 	private String role;
 	private String description;

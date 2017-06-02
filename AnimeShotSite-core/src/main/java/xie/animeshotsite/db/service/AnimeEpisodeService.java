@@ -98,7 +98,7 @@ public class AnimeEpisodeService extends BaseService<AnimeEpisode, String> {
 		}
 
 		// 获得待删除剧集数据
-		List<AnimeEpisode> list = findByAnimeInfoId((String) requestMap.get("animeInfoId"));
+		// List<AnimeEpisode> list = findByAnimeInfoId((String) requestMap.get("animeInfoId"));
 
 		// 新建数据
 		DecimalFormat decimalFormat = new DecimalFormat(pattern);

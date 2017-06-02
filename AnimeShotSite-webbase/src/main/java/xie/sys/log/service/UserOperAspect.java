@@ -57,6 +57,7 @@ public class UserOperAspect {
 		
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Before("controllerAspect()")
 	public void doBefore(JoinPoint joinPoint) throws ClassNotFoundException{
 		
@@ -71,7 +72,6 @@ public class UserOperAspect {
 			Class targetClass = Class.forName(className);
 			Method[] methods = targetClass.getMethods();
 	        String url = "";
-	        String resourceName="";
 	         for (Method method : methods) {
 	             if (method.getName().equals(methodName)) {
 	                Class[] clazzs = method.getParameterTypes();

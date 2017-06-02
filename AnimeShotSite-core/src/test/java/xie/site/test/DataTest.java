@@ -2,13 +2,9 @@ package xie.site.test;
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.repository.ShotInfoDao;
 import xie.animeshotsite.db.service.ShotInfoService;
-import xie.common.json.XJsonUtil;
-import xie.common.json.XObjectMapperFactoryBean;
 import xie.module.spring.SpringUtil;
 
 public class DataTest {

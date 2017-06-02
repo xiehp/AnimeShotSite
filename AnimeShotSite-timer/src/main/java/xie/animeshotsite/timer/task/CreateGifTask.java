@@ -100,7 +100,6 @@ public class CreateGifTask extends XBaseTask {
 			// 生成gif存放路径
 			String detailPath = FilePathUtils.getDetailPath(null, animeEpisode, animeInfo);
 			detailPath = detailPath.replaceFirst(ShotCoreConstants.LOCAL_ROOT_SHOT_PATH, ShotCoreConstants.LOCAL_ROOT_GIF_PATH);
-			File detailPathWithNumber = new File(detailPath, animeEpisode.getNumber());
 			File fullDetailPath = FilePathUtils.getShotDetailFolder(null, animeEpisode, animeInfo);
 			fullDetailPath = new File(fullDetailPath.getAbsolutePath().replaceFirst("\\" + ShotCoreConstants.LOCAL_ROOT_SHOT_PATH, "\\" + ShotCoreConstants.LOCAL_ROOT_GIF_PATH));
 			if (!fullDetailPath.exists()) {

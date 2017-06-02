@@ -12,7 +12,8 @@ import xie.base.entity.IdEntity;
 @Table(name = "sys_user_setting")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class UserSetting extends IdEntity {
-	
+
+	private static final long serialVersionUID = -5270456664804667406L;
 	private Integer showSidebar;
 	private String skinPath;
 	private String userId;

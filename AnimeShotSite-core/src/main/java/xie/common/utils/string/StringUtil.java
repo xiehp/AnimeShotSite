@@ -1,6 +1,5 @@
 package xie.common.utils.string;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import xie.common.utils.Validator;
-
 
 public class StringUtil {
 
@@ -24,7 +22,7 @@ public class StringUtil {
 	}
 
 	public static String add(
-		String s, String add, String delimiter, boolean allowDuplicates) {
+			String s, String add, String delimiter, boolean allowDuplicates) {
 
 		if ((add == null) || (delimiter == null)) {
 			return null;
@@ -42,8 +40,7 @@ public class StringUtil {
 			if (Validator.isNull(s) || s.endsWith(delimiter)) {
 				sb.append(add);
 				sb.append(delimiter);
-			}
-			else {
+			} else {
 				sb.append(delimiter);
 				sb.append(add);
 				sb.append(delimiter);
@@ -60,7 +57,7 @@ public class StringUtil {
 
 		for (int i = 0; i < bytes.length; i++) {
 			String hex = Integer.toHexString(
-				0x0100 + (bytes[i] & 0x00FF)).substring(1);
+					0x0100 + (bytes[i] & 0x00FF)).substring(1);
 
 			if (hex.length() < 2) {
 				sb.append("0");
@@ -137,31 +134,30 @@ public class StringUtil {
 
 		if (temp.equalsIgnoreCase(end)) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
-	
-	public static String[] extractStrs(String s, String begin, String end){
+
+	public static String[] extractStrs(String s, String begin, String end) {
 		if ((s == null) || (begin == null) || (end == null)) {
 			return new String[0];
 		}
 
 		int pos = s.indexOf(begin);
 		int pos2 = s.indexOf(end);
-		
+
 		int pos1l = begin.length();
 		int pos2l = end.length();
-		
-		if(pos >= pos2)
+
+		if (pos >= pos2)
 			return new String[0];
 
 		List<String> strs = new ArrayList<String>();
 		while (pos != -1 && pos2 != -1) {
-			strs.add(s.substring(pos+pos1l, pos2));			
+			strs.add(s.substring(pos + pos1l, pos2));
 			pos = s.indexOf(begin, pos2);
-			pos2 = s.indexOf(end, pos2+pos2l);
+			pos2 = s.indexOf(end, pos2 + pos2l);
 		}
 
 		return strs.toArray(new String[strs.size()]);
@@ -203,8 +199,6 @@ public class StringUtil {
 		return sb.toString();
 	}
 
-
-
 	/**
 	 * @deprecated
 	 */
@@ -216,25 +210,25 @@ public class StringUtil {
 	 * @deprecated
 	 */
 	public static String highlight(
-		String s, String keywords, String highlight1, String highlight2) {
+			String s, String keywords, String highlight1, String highlight2) {
 
 		if (Validator.isNull(s) || Validator.isNull(keywords)) {
 			return s;
 		}
 
 		Pattern pattern = Pattern.compile(
-			Pattern.quote(keywords), Pattern.CASE_INSENSITIVE);
+				Pattern.quote(keywords), Pattern.CASE_INSENSITIVE);
 
 		return _highlight(s, pattern, highlight1, highlight2);
 	}
 
 	public static String highlight(String s, String[] queryTerms) {
 		return highlight(
-			s, queryTerms, "<span class=\"highlight\">", "</span>");
+				s, queryTerms, "<span class=\"highlight\">", "</span>");
 	}
 
 	public static String highlight(
-		String s, String[] queryTerms, String highlight1, String highlight2) {
+			String s, String[] queryTerms, String highlight1, String highlight2) {
 
 		if (Validator.isNull(s) || Validator.isNull(queryTerms)) {
 			return s;
@@ -244,8 +238,7 @@ public class StringUtil {
 
 		if (queryTerms.length == 0) {
 			sb = new StringBundler();
-		}
-		else {
+		} else {
 			sb = new StringBundler(2 * queryTerms.length - 1);
 		}
 
@@ -257,8 +250,7 @@ public class StringUtil {
 			}
 		}
 
-		int flags =
-			Pattern.CANON_EQ | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
+		int flags = Pattern.CANON_EQ | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 
 		Pattern pattern = Pattern.compile(sb.toString(), flags);
 
@@ -288,8 +280,7 @@ public class StringUtil {
 	public static String lowerCase(String s) {
 		if (s == null) {
 			return null;
-		}
-		else {
+		} else {
 			return s.toLowerCase();
 		}
 	}
@@ -323,8 +314,7 @@ public class StringUtil {
 
 		if (array.length == 0) {
 			sb = new StringBundler();
-		}
-		else {
+		} else {
 			sb = new StringBundler(2 * array.length - 1);
 		}
 
@@ -364,8 +354,7 @@ public class StringUtil {
 
 		if (array.length == 0) {
 			sb = new StringBundler();
-		}
-		else {
+		} else {
 			sb = new StringBundler(2 * array.length - 1);
 		}
 
@@ -393,8 +382,7 @@ public class StringUtil {
 
 		if (array.length == 0) {
 			sb = new StringBundler();
-		}
-		else {
+		} else {
 			sb = new StringBundler(2 * array.length - 1);
 		}
 
@@ -420,10 +408,9 @@ public class StringUtil {
 
 		StringBundler sb = null;
 
-		if (array.length == 0){
+		if (array.length == 0) {
 			sb = new StringBundler();
-		}
-		else {
+		} else {
 			sb = new StringBundler(2 * array.length - 1);
 		}
 
@@ -451,8 +438,7 @@ public class StringUtil {
 
 		if (array.length == 0) {
 			sb = new StringBundler();
-		}
-		else {
+		} else {
 			sb = new StringBundler(2 * array.length - 1);
 		}
 
@@ -480,8 +466,7 @@ public class StringUtil {
 
 		if (array.length == 0) {
 			sb = new StringBundler();
-		}
-		else {
+		} else {
 			sb = new StringBundler(2 * array.length - 1);
 		}
 
@@ -509,8 +494,7 @@ public class StringUtil {
 
 		if (array.length == 0) {
 			sb = new StringBundler();
-		}
-		else {
+		} else {
 			sb = new StringBundler(2 * array.length - 1);
 		}
 
@@ -525,26 +509,23 @@ public class StringUtil {
 		return sb.toString();
 	}
 
-
-
-
-//	public static String read(InputStream is) throws IOException {
-//		StringBundler sb = new StringBundler();
-//
-//		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
-//			new InputStreamReader(is));
-//
-//		String line = null;
-//
-//		while ((line = unsyncBufferedReader.readLine()) != null) {
-//			sb.append(line);
-//			sb.append(CharPool.NEW_LINE);
-//		}
-//
-//		unsyncBufferedReader.close();
-//
-//		return sb.toString().trim();
-//	}
+	// public static String read(InputStream is) throws IOException {
+	// StringBundler sb = new StringBundler();
+	//
+	// UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
+	// new InputStreamReader(is));
+	//
+	// String line = null;
+	//
+	// while ((line = unsyncBufferedReader.readLine()) != null) {
+	// sb.append(line);
+	// sb.append(CharPool.NEW_LINE);
+	// }
+	//
+	// unsyncBufferedReader.close();
+	//
+	// return sb.toString().trim();
+	// }
 
 	public static String remove(String s, String remove) {
 		return remove(s, remove, StringPool.COMMA);
@@ -573,8 +554,7 @@ public class StringUtil {
 
 					s = s.substring(x, y);
 				}
-			}
-			else {
+			} else {
 				int x = pos + remove.length() + delimiter.length();
 				int y = s.length();
 
@@ -610,8 +590,7 @@ public class StringUtil {
 		for (char c : charArray) {
 			if (c == oldSub) {
 				sb.append(newSub);
-			}
-			else {
+			} else {
 				sb.append(c);
 			}
 		}
@@ -624,7 +603,7 @@ public class StringUtil {
 	}
 
 	public static String replace(
-		String s, String oldSub, String newSub, int fromIndex) {
+			String s, String oldSub, String newSub, int fromIndex) {
 
 		if ((s == null) || (oldSub == null) || (newSub == null)) {
 			return null;
@@ -638,7 +617,7 @@ public class StringUtil {
 			// buffer expansion
 
 			StringBuilder sb = new StringBuilder(
-				s.length() + 5 * newSub.length());
+					s.length() + 5 * newSub.length());
 
 			int length = oldSub.length();
 			int x = 0;
@@ -654,8 +633,7 @@ public class StringUtil {
 			sb.append(s.substring(x));
 
 			return sb.toString();
-		}
-		else {
+		} else {
 			return s;
 		}
 	}
@@ -677,7 +655,7 @@ public class StringUtil {
 	}
 
 	public static String replace(
-		String s, String[] oldSubs, String[] newSubs, boolean exactMatch) {
+			String s, String[] oldSubs, String[] newSubs, boolean exactMatch) {
 
 		if ((s == null) || (oldSubs == null) || (newSubs == null)) {
 			return null;
@@ -689,10 +667,9 @@ public class StringUtil {
 
 		if (!exactMatch) {
 			replace(s, oldSubs, newSubs);
-		}
-		else {
+		} else {
 			for (int i = 0; i < oldSubs.length; i++) {
-				s = s.replaceAll("\\b" + oldSubs[i] + "\\b" , newSubs[i]);
+				s = s.replaceAll("\\b" + oldSubs[i] + "\\b", newSubs[i]);
 			}
 		}
 
@@ -724,7 +701,7 @@ public class StringUtil {
 	}
 
 	public static String replaceFirst(
-		String s, String[] oldSubs, String[] newSubs) {
+			String s, String[] oldSubs, String[] newSubs) {
 
 		if ((s == null) || (oldSubs == null) || (newSubs == null)) {
 			return null;
@@ -762,9 +739,9 @@ public class StringUtil {
 			return null;
 		}
 
-		if(oldSub.equals(StringPool.BLANK))
+		if (oldSub.equals(StringPool.BLANK))
 			return s;
-		
+
 		int y = s.lastIndexOf(oldSub);
 
 		if (y >= 0) {
@@ -773,7 +750,7 @@ public class StringUtil {
 			// buffer expansion
 
 			StringBuilder sb = new StringBuilder(
-				s.length() + 5 * newSub.length());
+					s.length() + 5 * newSub.length());
 
 			int length = oldSub.length();
 			int x = 0;
@@ -789,14 +766,13 @@ public class StringUtil {
 			sb.append(s.substring(x));
 
 			return sb.toString();
-		}
-		else {
+		} else {
 			return s;
 		}
 	}
 
 	public static String replaceLast(
-		String s, String[] oldSubs, String[] newSubs) {
+			String s, String[] oldSubs, String[] newSubs) {
 
 		if ((s == null) || (oldSubs == null) || (newSubs == null)) {
 			return null;
@@ -814,22 +790,16 @@ public class StringUtil {
 	}
 
 	/**
-	 * Returns a string with replaced values. This method will replace all text
-	 * in the given string, between the beginning and ending delimiter, with new
-	 * values found in the given map. For example, if the string contained the
-	 * text <code>[$HELLO$]</code>, and the beginning delimiter was
-	 * <code>[$]</code>, and the ending delimiter was <code>$]</code>, and the
-	 * values map had a key of <code>HELLO</code> that mapped to
-	 * <code>WORLD</code>, then the replaced string will contain the text
-	 * <code>[$WORLD$]</code>.
+	 * Returns a string with replaced values. This method will replace all text in the given string, between the beginning and ending delimiter, with new values found in the given map. For example, if the string contained the text <code>[$HELLO$]</code>, and the beginning delimiter was
+	 * <code>[$]</code>, and the ending delimiter was <code>$]</code>, and the values map had a key of <code>HELLO</code> that mapped to <code>WORLD</code>, then the replaced string will contain the text <code>[$WORLD$]</code>.
 	 *
 	 * @return a string with replaced values
 	 */
 	public static String replaceValues(
-		String s, String begin, String end, Map<String, String> values) {
+			String s, String begin, String end, Map<String, String> values) {
 
 		if ((s == null) || (begin == null) || (end == null) ||
-			(values == null) || (values.size() == 0)) {
+				(values == null) || (values.size() == 0)) {
 
 			return s;
 		}
@@ -846,8 +816,7 @@ public class StringUtil {
 				sb.append(s.substring(pos, s.length()));
 
 				break;
-			}
-			else {
+			} else {
 				sb.append(s.substring(pos, x + begin.length()));
 
 				String oldValue = s.substring(x + begin.length(), y);
@@ -920,9 +889,6 @@ public class StringUtil {
 		return shorten(s, 20, suffix);
 	}
 
-
-
-
 	public static boolean startsWith(String s, char begin) {
 		return startsWith(s, (new Character(begin)).toString());
 	}
@@ -940,18 +906,15 @@ public class StringUtil {
 
 		if (temp.equalsIgnoreCase(start)) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
 
 	/**
-	 * Return the number of starting letters that s1 and s2 have in common
-	 * before they deviate.
+	 * Return the number of starting letters that s1 and s2 have in common before they deviate.
 	 *
-	 * @return the number of starting letters that s1 and s2 have in common
-	 *		   before they deviate
+	 * @return the number of starting letters that s1 and s2 have in common before they deviate
 	 */
 	public static int startsWithWeight(String s1, String s2) {
 		if ((s1 == null) || (s2 == null)) {
@@ -989,8 +952,7 @@ public class StringUtil {
 				sb.append(s.substring(pos, s.length()));
 
 				break;
-			}
-			else {
+			} else {
 				sb.append(s.substring(pos, x));
 
 				pos = y + end.length();
@@ -1019,7 +981,7 @@ public class StringUtil {
 	}
 
 	public static String trim(String s, char c) {
-		return trim(s, new char[] {c});
+		return trim(s, new char[] { c });
 	}
 
 	public static String trim(String s, char[] exceptions) {
@@ -1039,8 +1001,7 @@ public class StringUtil {
 
 			if (_isTrimable(c, exceptions)) {
 				x = i + 1;
-			}
-			else {
+			} else {
 				break;
 			}
 		}
@@ -1050,16 +1011,14 @@ public class StringUtil {
 
 			if (_isTrimable(c, exceptions)) {
 				y = i;
-			}
-			else {
+			} else {
 				break;
 			}
 		}
 
 		if ((x != 0) || (y != len)) {
 			return s.substring(x, y);
-		}
-		else {
+		} else {
 			return s;
 		}
 	}
@@ -1069,7 +1028,7 @@ public class StringUtil {
 	}
 
 	public static String trimLeading(String s, char c) {
-		return trimLeading(s, new char[] {c});
+		return trimLeading(s, new char[] { c });
 	}
 
 	public static String trimLeading(String s, char[] exceptions) {
@@ -1089,16 +1048,14 @@ public class StringUtil {
 
 			if (_isTrimable(c, exceptions)) {
 				x = i + 1;
-			}
-			else {
+			} else {
 				break;
 			}
 		}
 
 		if ((x != 0) || (y != len)) {
 			return s.substring(x, y);
-		}
-		else {
+		} else {
 			return s;
 		}
 	}
@@ -1108,7 +1065,7 @@ public class StringUtil {
 	}
 
 	public static String trimTrailing(String s, char c) {
-		return trimTrailing(s, new char[] {c});
+		return trimTrailing(s, new char[] { c });
 	}
 
 	public static String trimTrailing(String s, char[] exceptions) {
@@ -1128,16 +1085,14 @@ public class StringUtil {
 
 			if (_isTrimable(c, exceptions)) {
 				y = i;
-			}
-			else {
+			} else {
 				break;
 			}
 		}
 
 		if ((x != 0) || (y != len)) {
 			return s.substring(x, y);
-		}
-		else {
+		} else {
 			return s;
 		}
 	}
@@ -1145,8 +1100,7 @@ public class StringUtil {
 	public static String upperCase(String s) {
 		if (s == null) {
 			return null;
-		}
-		else {
+		} else {
 			return s.toUpperCase();
 		}
 	}
@@ -1155,7 +1109,7 @@ public class StringUtil {
 		char[] charArray = s.toCharArray();
 
 		if ((charArray[0] >= 97) && (charArray[0] <= 122)) {
-			charArray[0] = (char)(charArray[0] - 32);
+			charArray[0] = (char) (charArray[0] - 32);
 		}
 
 		return new String(charArray);
@@ -1165,11 +1119,8 @@ public class StringUtil {
 		return String.valueOf(obj);
 	}
 
-
-
-
 	private static String _highlight(
-		String s, Pattern pattern, String highlight1, String highlight2) {
+			String s, Pattern pattern, String highlight1, String highlight2) {
 
 		StringTokenizer st = new StringTokenizer(s);
 
@@ -1177,8 +1128,7 @@ public class StringUtil {
 
 		if (st.countTokens() == 0) {
 			sb = new StringBundler();
-		}
-		else {
+		} else {
 			sb = new StringBundler(2 * st.countTokens() - 1);
 		}
 
@@ -1189,11 +1139,10 @@ public class StringUtil {
 
 			if (matcher.find()) {
 				String highlightedToken = matcher.replaceAll(
-					highlight1 + matcher.group() + highlight2);
+						highlight1 + matcher.group() + highlight2);
 
 				sb.append(highlightedToken);
-			}
-			else {
+			} else {
 				sb.append(token);
 			}
 
@@ -1218,84 +1167,86 @@ public class StringUtil {
 	}
 
 	/**
-	  * 生成随即密码
-	  * @param pwd_len 生成的密码的总长度
-	  * @return  密码的字符串
-	  */
-	public static String genRandomNum(int pwd_len){
+	 * 生成随即密码
+	 * 
+	 * @param pwd_len 生成的密码的总长度
+	 * @return 密码的字符串
+	 */
+	public static String genRandomNum(int pwd_len) {
 		Random rm = new Random();
-		//len为0时设定密码长度8-16位
+		// len为0时设定密码长度8-16位
 		if (pwd_len == 0) {
 			pwd_len = rm.nextInt(16) % 8 + 8;
 		}
 
-		 //35是因为数组是从0开始的，26个字母+10个数字
-		 final int  maxNum = 36;
-		 int i;  //生成的随机数
-		 int count = 0; //生成的密码的长度
-		 char[] str = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-		    'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w',
-		    'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-	  
-		 StringBuffer pwd = new StringBuffer("");
-		 
-		 while(count < pwd_len){
-			 //生成随机数，取绝对值，防止生成负数，
-	   
-			 i = Math.abs(rm.nextInt(maxNum));  //生成的数最大为36-1
-	   
-			 if (i >= 0 && i < str.length) {
-				 pwd.append(str[i]);
-				 count ++;
-			 }
-		 }
-	  
-		 return pwd.toString();
-	 	
-	}
-	
-	public static int getRandomNumber(int len){
-		Random random = new Random();
-		return random.nextInt(len)+1;
-	}
-	
+		// 35是因为数组是从0开始的，26个字母+10个数字
+		final int maxNum = 36;
+		int i; // 生成的随机数
+		int count = 0; // 生成的密码的长度
+		char[] str = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+				'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w',
+				'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
-	@SuppressWarnings("unchecked")
-	public static <T> List<T> toList(String str,String split,Class<T> destinationClass){
-		if(str==null||str.isEmpty()) return null;
-		
+		StringBuffer pwd = new StringBuffer("");
+
+		while (count < pwd_len) {
+			// 生成随机数，取绝对值，防止生成负数，
+
+			i = Math.abs(rm.nextInt(maxNum)); // 生成的数最大为36-1
+
+			if (i >= 0 && i < str.length) {
+				pwd.append(str[i]);
+				count++;
+			}
+		}
+
+		return pwd.toString();
+
+	}
+
+	public static int getRandomNumber(int len) {
+		Random random = new Random();
+		return random.nextInt(len) + 1;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static <T> List<T> toList(String str, String split, Class<T> destinationClass) {
+		if (str == null || str.isEmpty())
+			return null;
+
 		List list = null;
-		if(destinationClass == Long.class){
-			list = new ArrayList<Long>();
-		}else if(destinationClass == Integer.class){
+		if (destinationClass == Long.class) {
+			list = new ArrayList<T>();
+		} else if (destinationClass == Integer.class) {
 			list = new ArrayList<Integer>();
-		}else{
+		} else {
 			list = new ArrayList<String>();
 		}
 		String[] array = str.split(split);
-		for(String temp:array){
-			if(destinationClass == Long.class){
+		for (String temp : array) {
+			if (destinationClass == Long.class) {
 				list.add(Long.parseLong(temp));
-			}else if(destinationClass == Integer.class){
+			} else if (destinationClass == Integer.class) {
 				list.add(Integer.parseInt(temp));
-			}else{
+			} else {
 				list.add(temp);
 			}
-			
+
 		}
 		return list;
 	}
 
-	public static List<String> toList(String str,String split){
-		return (List<String>)toList(str,split,String.class);
+	public static List<String> toList(String str, String split) {
+		return (List<String>) toList(str, split, String.class);
 	}
-	
+
 	/**
-	  * support Integer format:<br>
-	  * "33" "003300" "+33" " -0000 "
-	  * @param str String
-	  * @return boolean
-	  */
+	 * support Integer format:<br>
+	 * "33" "003300" "+33" " -0000 "
+	 * 
+	 * @param str String
+	 * @return boolean
+	 */
 	public static boolean isInteger(String str) {
 		int begin = 0;
 		if (str == null || str.trim().equals("")) {
@@ -1316,14 +1267,14 @@ public class StringUtil {
 		}
 		return true;
 	}
-	
+
 	public static boolean isNumber(String str) {
 		int begin = 0;
 		if (str == null || str.trim().equals("")) {
 			return false;
 		}
 		str = str.trim();
-		
+
 		for (int i = begin; i < str.length(); i++) {
 			if (!Character.isDigit(str.charAt(i))) {
 				return false;
@@ -1331,8 +1282,8 @@ public class StringUtil {
 		}
 		return true;
 	}
-	
-	public static void CheckIllegalCharacter(String content) throws Exception{
+
+	public static void CheckIllegalCharacter(String content) throws Exception {
 		for (int i = 0; i < content.length(); i++) {
 			char ch = content.charAt(i);
 
@@ -1341,29 +1292,28 @@ public class StringUtil {
 			}
 		}
 	}
-	
-	public static String HiddenPhoneNumber(String phoneNumber){
+
+	public static String HiddenPhoneNumber(String phoneNumber) {
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < phoneNumber.length(); i++) {
-			if(i>=3 && i <=7){
+			if (i >= 3 && i <= 7) {
 				sb.append(StringPool.STAR);
-			}else{
+			} else {
 				sb.append(phoneNumber.charAt(i));
 			}
 		}
 		return sb.toString();
 	}
-	
-	
-  /**
+
+	/**
 	 * 检验输入值是否为空或NUL.
 	 * 
 	 * @param value 输入检验值
-	 *           
+	 * 
 	 * @return 如果输入值为真返回true,否则返回false
 	 */
 	public static boolean isNull(final String value) {
 		return (null == value || value.trim().equals(""));
 	}
-	
+
 }

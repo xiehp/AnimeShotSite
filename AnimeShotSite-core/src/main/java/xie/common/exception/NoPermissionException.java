@@ -4,7 +4,9 @@ import org.apache.shiro.authc.AuthenticationException;
 
 public class NoPermissionException extends AuthenticationException {
 
-    /**
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Creates a new NoPermissionException.
      */
     public NoPermissionException() {

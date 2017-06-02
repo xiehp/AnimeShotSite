@@ -16,8 +16,6 @@ import xie.base.controller.BaseFunctionController;
 @RequestMapping(value="/ajaxUpload")
 public class UploadController extends BaseFunctionController {
 	
-	private Logger _log = LoggerFactory.getLogger(UploadController.class);
-	
 	@Override
 	public Map<String, Object> getProcessResult(File file, String[] params) {
 		

@@ -14,6 +14,8 @@ import xie.base.entity.BaseEntity;
 @Table(name="sys_user_oper")
 public class UserOper extends BaseEntity{
 
+	private static final long serialVersionUID = -4445661101286589537L;
+
 	private String className;
 	private String methodName;
 	private String url;

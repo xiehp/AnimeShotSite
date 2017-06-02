@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import xie.animeshotsite.db.entity.AutoRunParam;
 import xie.animeshotsite.db.repository.AutoRunParamDao;
 import xie.animeshotsite.db.service.AutoRunParamService;
 import xie.base.entity.IdEntity;

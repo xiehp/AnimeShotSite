@@ -13,6 +13,7 @@ import xie.base.entity.BaseEntity;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Permission extends BaseEntity{
 
+	private static final long serialVersionUID = 4314738151344311006L;
 	private String name;
 	private String permission;
 	private String description;

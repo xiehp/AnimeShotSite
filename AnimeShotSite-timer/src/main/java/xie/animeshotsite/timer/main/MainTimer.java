@@ -5,14 +5,11 @@ import java.util.TimerTask;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 
 import xie.animeshotsite.db.entity.ShotTask;
 import xie.animeshotsite.timer.timer.BaseTaskTimer;
 import xie.animeshotsite.timer.timer.ShotTaskTimer;
 import xie.animeshotsite.timer.timer.beforeshot.EpisodeUpdateMonitorTimer;
-import xie.common.Constants;
 import xie.module.spring.SpringUtil;
 
 //@SpringBootApplication

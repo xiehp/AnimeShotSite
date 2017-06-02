@@ -18,7 +18,6 @@ import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.repository.ShotInfoDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
-import xie.animeshotsite.db.service.ImageUrlService;
 import xie.animeshotsite.db.service.ShotInfoService;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.common.date.DateUtil;
@@ -62,7 +61,6 @@ public class SaveImageListener extends Video2ImageAdapter {
 	private ShotInfoDao shotInfoDao;
 	private AnimeEpisodeService animeEpisodeService;
 	private AnimeInfoService animeInfoService;
-	private ImageUrlService imageUrlService;
 
 	private PostImage postImage;
 
@@ -84,7 +82,6 @@ public class SaveImageListener extends Video2ImageAdapter {
 		shotInfoDao = SpringUtil.getBean(ShotInfoDao.class);
 		animeEpisodeService = SpringUtil.getBean(AnimeEpisodeService.class);
 		animeInfoService = SpringUtil.getBean(AnimeInfoService.class);
-		imageUrlService = SpringUtil.getBean(ImageUrlService.class);
 		uploadPerHourCouter = SpringUtil.getBean(UploadPerHourCouter.class);
 
 		this.animeEpisode = animeEpisode;
@@ -106,7 +103,6 @@ public class SaveImageListener extends Video2ImageAdapter {
 		shotInfoDao = SpringUtil.getBean(ShotInfoDao.class);
 		animeEpisodeService = SpringUtil.getBean(AnimeEpisodeService.class);
 		animeInfoService = SpringUtil.getBean(AnimeInfoService.class);
-		imageUrlService = SpringUtil.getBean(ImageUrlService.class);
 		uploadPerHourCouter = SpringUtil.getBean(UploadPerHourCouter.class);
 
 		this.animeInfoId = animeInfoId;

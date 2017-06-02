@@ -11,7 +11,8 @@ import xie.base.entity.BaseEntity;
 @Table(name = "sys_resource")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Resource extends BaseEntity{
-	
+
+	private static final long serialVersionUID = 4586913208805261255L;
 	private String name;
 	private String identity;
 	private String url;

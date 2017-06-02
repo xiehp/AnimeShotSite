@@ -6,7 +6,6 @@
 package xie.base.repository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,8 +20,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springside.modules.utils.Collections3;
 
 import com.google.common.collect.Lists;
-
-import xie.base.repository.BaseSearchFilter.BaseOperator;
 
 /**
  * 转换检索数据
@@ -39,7 +36,7 @@ public class BaseSpecifications {
 	public static <T> Specification<T> bySearchFilter(final Collection<BaseSearchFilter> filters, final Class<T> entityClazz) {
 
 		return new Specification<T>() {
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 				if (Collections3.isNotEmpty(filters)) {
 

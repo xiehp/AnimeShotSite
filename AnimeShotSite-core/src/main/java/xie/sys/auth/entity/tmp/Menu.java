@@ -7,6 +7,8 @@ import com.google.common.collect.Lists;
 
 public class Menu implements Serializable {
 
+	private static final long serialVersionUID = -7025252477399936159L;
+
 	public Menu(String id, String name, String url, String menuIcon, String identity, Integer menuLevel) {
 		super();
 		this.id = id;

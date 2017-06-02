@@ -114,7 +114,7 @@ public class ShotEpisodeTask extends XBaseTask {
 			}
 
 			if (video2Image.isProcessSuccess()) {
-				logger.info("process 成功 : " + animeEpisode.getName());
+				logger.info("process 成功 : " + animeEpisode.getFullName());
 			} else {
 				logger.error("process 失败");
 			}

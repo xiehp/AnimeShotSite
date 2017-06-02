@@ -1,25 +1,14 @@
 package xie.web.manage.controller;
 
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.Resource;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springside.modules.web.Servlets;
 
-import xie.animeshotsite.db.entity.AnimeEpisode;
-import xie.animeshotsite.db.entity.AnimeInfo;
-import xie.animeshotsite.db.entity.AutoRunParam;
 import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
