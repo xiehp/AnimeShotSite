@@ -240,6 +240,17 @@ public class FilePathUtils {
 	}
 
 	/**
+	 * 获取带动画文件夹的完整detail路径<br>
+	 * root path/anime/detail path<br>
+	 */
+	public static File getAnimeDetailFolderWithTorrent(AnimeInfo animeInfo, AnimeEpisode animeEpisode, String torrenName) {
+		File detailPath = getAnimeDetailFolder(animeInfo, animeEpisode);
+		File torrentFile = new File(detailPath, "自动下载资源");
+		torrentFile = new File(torrentFile, torrenName);
+		return torrentFile;
+	}
+
+	/**
 	 * 获取带截图文件夹的完整detail路径<br>
 	 * root path/shot/detail path/number<br>
 	 */
