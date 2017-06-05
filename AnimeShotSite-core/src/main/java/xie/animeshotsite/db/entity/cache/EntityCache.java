@@ -157,6 +157,7 @@ public class EntityCache {
 
 	/**
 	 * 根据传入的cacheId获取缓存，如果缓存不存在，则调用回调函数
+	 * 
 	 * @param cacheId
 	 * @param fun
 	 * @return
@@ -167,16 +168,18 @@ public class EntityCache {
 
 	/**
 	 * 根据传入的cacheId获取缓存，如果缓存不存在，则调用回调函数
-	 * @param cacheId
-	 * @param fun
+	 * 
+	 * @param cacheId cacheId
+	 * @param fun 回调函数
+	 * @param timeoutMili 微妙
 	 * @return
 	 */
-	public <RR> RR get(String cacheId, Supplier<RR> fun, long timeout) {
+	public <RR> RR get(String cacheId, Supplier<RR> fun, long timeoutMili) {
 		if (contain(cacheId)) {
 			return get(cacheId);
 		} else {
 			RR rr = fun.get();
-			put(cacheId, rr, timeout);
+			put(cacheId, rr, timeoutMili);
 			return rr;
 		}
 	}
