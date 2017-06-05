@@ -1,6 +1,8 @@
 /**
  * Doc: http://www.layui.com/doc/modules/layer.html#icon<br>
  * Doc: http://www.jeasyui.net/plugins/182.html 2016/10/27.<br>
+ * 
+ * 关于options， options.notEscapeHtml 不对内容进行转换（为了安全，默认文本会将html关键字转换掉）
  */
 var Message = function() {
 
@@ -10,17 +12,23 @@ var Message = function() {
 	 * @param content 内容
 	 * @param func 点击确定按钮后执行的方法(可空)
 	 */
-	var alert = function(content, title, func) {
+	var alert = function(content, title, func, options) {
 		if (title == null) {
 			title = "提示"
 		}
 
-		// layer
-		layer.alert(content, {
+		var escapeContent = escapeContentByOption(content, options);
+
+		var layerOptions = {
 			title : title,
 			move : false,
 			closeBtn : 0
-		}, function(index) {
+		};
+		if (options != null) {
+			$.extend(layerOptions, options);
+		}
+
+		layer.alert(escapeContent, layerOptions, function(index) {
 			layer.close(index);
 
 			if (func != null) {
@@ -38,17 +46,24 @@ var Message = function() {
 	 * @param content 内容
 	 * @param func 点击确定按钮后执行的方法(可空)
 	 */
-	var confirm = function(content, title, successCallback, failCallback) {
+	var confirm = function(content, title, successCallback, failCallback, options) {
 		if (title == null) {
 			title = "确认"
 		}
 
-		// layer
-		layer.confirm(content, {
+		var escapeContent = escapeContentByOption(content, options);
+
+		var layerOptions = {
 			title : title,
 			move : false,
 			closeBtn : 0
-		}, function(index) {
+		};
+		if (options != null) {
+			$.extend(layerOptions, options);
+		}
+
+		// layer
+		layer.confirm(escapeContent, layerOptions, function(index) {
 			layer.close(index);
 
 			if (func != null) {
@@ -82,8 +97,19 @@ var Message = function() {
 			options = {};
 		}
 
+		var escapeContent = escapeContentByOption(content, options);
+
+		var layerOptions = {
+			title : title,
+			move : false,
+			closeBtn : 0
+		};
+		if (options != null) {
+			$.extend(layerOptions, options);
+		}
+
 		// layer
-		layer.msg(content, options, function(index) {
+		layer.msg(escapeContent, layerOptions, function(index) {
 			layer.close(index)
 			if (callback != null) {
 				callback();
@@ -102,6 +128,15 @@ var Message = function() {
 		// }
 		// }
 		// });
+	}
+	
+	function escapeContentByOption(content, options) {
+		var escapeContent = content;
+		if(options == null || !options.notEscapeHtml) {
+			// 对content进行转义
+			escapeContent = $.escapeHtml(content);
+		}
+		return escapeContent;
 	}
 
 	/**
