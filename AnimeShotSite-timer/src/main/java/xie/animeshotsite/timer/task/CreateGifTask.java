@@ -111,7 +111,7 @@ public class CreateGifTask extends XBaseTask {
 			File gifFilePath = new File(fullDetailPath, gifFileName);
 			logger.info("文件路径：" + gifFilePath);
 
-			XWindowsCommand xWindowsCommand = (XWindowsCommand) XCommandFactory.createInstance();
+			XWindowsCommand xWindowsCommand = XCommandFactory.createWindowsInstance();
 			Object[] cmdParams = new Object[] { startTime, continueTime, animeEpisodeFile.getAbsolutePath(), gifFilePath };
 			gifCmdStr = "ffmpeg -ss {} -t {} -i \"{}\" -s 384x216 -f gif -r 8 \"{}\"";
 

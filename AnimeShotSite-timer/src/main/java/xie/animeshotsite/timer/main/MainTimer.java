@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import xie.animeshotsite.db.entity.ShotTask;
 import xie.animeshotsite.timer.timer.BaseTaskTimer;
 import xie.animeshotsite.timer.timer.ShotTaskTimer;
+import xie.animeshotsite.timer.timer.beforeshot.EpisodeFileDownloadTimer;
 import xie.animeshotsite.timer.timer.beforeshot.EpisodeUpdateMonitorTimer;
 import xie.module.spring.SpringUtil;
 
@@ -37,7 +38,8 @@ public class MainTimer {
 		createTimer(ShotTaskTimer.class, 20 * 1000, ShotTask.TASK_TYPE_GIF);
 
 		// 自动化处理，监视下载url地址
-		createTimer(EpisodeUpdateMonitorTimer.class, 3600 * 1000);
+		createTimer(EpisodeUpdateMonitorTimer.class, 36000 * 1000);
+		createTimer(EpisodeFileDownloadTimer.class, 60 * 1000);
 
 		printProfile();
 

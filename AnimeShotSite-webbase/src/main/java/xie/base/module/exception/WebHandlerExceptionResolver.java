@@ -1,6 +1,7 @@
 package xie.base.module.exception;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,19 +10,31 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import xie.base.module.ajax.vo.GoPageResult;
 import xie.common.Constants;
 import xie.common.string.XStringUtils;
 import xie.common.utils.HttpUtils;
+import xie.module.spring.SpringUtils;
 
 @Component
 public class WebHandlerExceptionResolver implements HandlerExceptionResolver {
 
 	private Logger _log = LoggerFactory.getLogger(this.getClass());
+
+	// @Autowired
+	// private RequestMappingHandlerMapping requestMappingHandlerMapping;
+
+	private Map<String, HandlerMethod> path2HandlerMethodMap;
+	private Map<String, Boolean> pathIsResponseBodyMap;
 
 	// private static boolean LogFlag = GetterUtil.getBoolean(PropsUtil.getProperty(PropsKeys.SYSTEM_ERROR_LOG_ENABLED), false);
 
@@ -30,16 +43,19 @@ public class WebHandlerExceptionResolver implements HandlerExceptionResolver {
 		return processException(request, response, handler, ex, _log);
 	}
 
-	public static ModelAndView processException(
+	public ModelAndView processException(
 			HttpServletRequest request,
 			HttpServletResponse response,
 			Object handler,
 			Exception ex, Logger log) {
 
+		if (handler == null) {
+			handler = request.getAttribute("ControllerMethodHandler");
+		}
 		log.error(log.getName() + "截获住异常，开始处理");
 		log.error("handler: {}", handler);
 
-		String url = request.getRequestURL().toString();
+		String url = request.getRequestURL().toString() + "?" + request.getQueryString();
 		String uri = request.getRequestURI();
 		String contextPath = request.getContextPath();
 		log.error("请求发生错误：contextPath: {}", contextPath);
@@ -67,6 +83,13 @@ public class WebHandlerExceptionResolver implements HandlerExceptionResolver {
 		boolean ajaxFlg = HttpUtils.needJsonResponse(request);
 
 		if (!ajaxFlg) {
+			// Controller中的RequestMapping中明确返回ResponseBody
+			if (isResponseBodyRequest(request, handler)) {
+				ajaxFlg = true;
+			}
+		}
+
+		if (!ajaxFlg) {
 			ModelAndView modelAndView = new ModelAndView("error/500");
 			if (uri.startsWith(contextPath + "/portal")) {
 				modelAndView = new ModelAndView("portal/error/500");
@@ -80,11 +103,12 @@ public class WebHandlerExceptionResolver implements HandlerExceptionResolver {
 			if (XStringUtils.isBlank(message)) {
 				message = ex.toString();
 			}
+			message = ex.toString();
 			goPageResult.setAlertMessage(new String[] { message });
 			goPageResult.setException(ex.getClass().toString());
 			goPageResult.setGoPage("");
 			goPageResult.setCode(Constants.FAIL_CODE);
-			goPageResult.setMessage(ex.getMessage());
+			goPageResult.setMessage(message);
 
 			MappingJackson2JsonView mappingJackson2JsonView = new MappingJackson2JsonView();
 			ModelAndView modelAndView = new ModelAndView(mappingJackson2JsonView);
@@ -113,6 +137,68 @@ public class WebHandlerExceptionResolver implements HandlerExceptionResolver {
 		//
 		// _log.error("url: {} ,resolveException error: {}", ex);
 
+	}
+
+	public synchronized Map<String, HandlerMethod> getPath2HandlerMethodMap() {
+		if (path2HandlerMethodMap == null) {
+			path2HandlerMethodMap = new LinkedHashMap<>();
+			pathIsResponseBodyMap = new LinkedHashMap<>();
+			RequestMappingHandlerMapping requestMappingHandlerMapping = null;
+			try {
+				requestMappingHandlerMapping = ContextLoader.getCurrentWebApplicationContext().getBean(RequestMappingHandlerMapping.class);
+			} catch (Exception e) {
+				_log.error("获取RequestMappingHandlerMapping错误", e);
+			}
+			if (requestMappingHandlerMapping == null) {
+				try {
+					requestMappingHandlerMapping = SpringUtils.getBean(RequestMappingHandlerMapping.class);
+				} catch (Exception e) {
+					_log.error("获取RequestMappingHandlerMapping错误", e);
+				}
+			}
+			if (requestMappingHandlerMapping != null) {
+				Map<RequestMappingInfo, HandlerMethod> handlerMethodsMap = requestMappingHandlerMapping.getHandlerMethods();
+
+				handlerMethodsMap.keySet().forEach(requestMappingInfo -> {
+					HandlerMethod handlerMethod = handlerMethodsMap.get(requestMappingInfo);
+					requestMappingInfo.getPatternsCondition().getPatterns().forEach(s -> {
+						path2HandlerMethodMap.put(s, handlerMethod);
+						pathIsResponseBodyMap.put(s, isResponseBodyHandlerMethod(handlerMethod));
+					});
+				});
+
+			}
+		}
+
+		return path2HandlerMethodMap;
+	}
+
+	public boolean isResponseBodyRequest(HttpServletRequest request, Object handler) {
+		Boolean isResponseBody = getPathIsResponseBodyMap().get(request.getServletPath());
+		if (isResponseBody != null) {
+			return isResponseBody;
+		} else {
+			if (handler != null && handler instanceof HandlerMethod) {
+				return isResponseBodyHandlerMethod((HandlerMethod) handler);
+			}
+		}
+
+		// 默认
+		return false;
+	}
+
+	public boolean isResponseBodyHandlerMethod(HandlerMethod handlerMethod) {
+		ResponseBody[] responseBodyArray = handlerMethod.getMethod().getAnnotationsByType(ResponseBody.class);
+		if (responseBodyArray != null && responseBodyArray.length > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public synchronized Map<String, Boolean> getPathIsResponseBodyMap() {
+		getPath2HandlerMethodMap();
+		return pathIsResponseBodyMap;
 	}
 
 }

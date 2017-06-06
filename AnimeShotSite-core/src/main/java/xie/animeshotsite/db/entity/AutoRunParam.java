@@ -39,6 +39,9 @@ public class AutoRunParam extends BaseEntity {
 	/** 参数表示名 */
 	private String name;
 
+	/** 参数备注 */
+	private String remark;
+
 	/** key */
 	@Column(name = "PARAM_KEY")
 	private String key;
@@ -61,8 +64,8 @@ public class AutoRunParam extends BaseEntity {
 	/** 排序 */
 	private String sort;
 
-	/** 备注 */
-	private String remark;
+	/** 信息 */
+	private String message;
 
 	public String getType() {
 		return type;
@@ -142,5 +145,13 @@ public class AutoRunParam extends BaseEntity {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

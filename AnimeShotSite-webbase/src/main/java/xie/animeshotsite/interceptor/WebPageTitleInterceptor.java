@@ -65,6 +65,8 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response,
 			final Object handler) throws IOException {
 
+		request.setAttribute("ControllerMethodHandler", handler);
+
 		// 检查访问地址是否正确
 		if (XStringUtils.isNotBlank(shotSiteSetup.getAnimesiteServerHost())) {
 			String hostName = XSSHttpUtil.getForwardedServerName(request);

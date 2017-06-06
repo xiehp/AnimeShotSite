@@ -134,6 +134,40 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 		return autoRunParam;
 	}
 
+	public AutoRunParam updateValue(String id, String value) {
+		AutoRunParam autoRunParam = findOne(id);
+		Assert.notNull(autoRunParam, "不存在的id:" + id);
+
+		autoRunParam.setValue(value);
+		autoRunParam = save(autoRunParam);
+		return autoRunParam;
+	}
+
+	public AutoRunParam updateAnimeValue(String animeInfoId, String key, String value) {
+		AutoRunParam autoRunParam = autoRunParamDao.findByAnimeInfoIdAndKey(animeInfoId, key);
+		Assert.notNull(autoRunParam, "不存在的animeInfoId:" + animeInfoId);
+
+		autoRunParam.setValue(value);
+		autoRunParam = save(autoRunParam);
+		return autoRunParam;
+	}
+
+	public AutoRunParam updateEpisodeValue(String animeEpisodeId, String key, String value) {
+		return updateEpisodeValue(animeEpisodeId, key, value, null);
+	}
+
+	public AutoRunParam updateEpisodeValue(String animeEpisodeId, String key, String value, String message) {
+		AutoRunParam autoRunParam = autoRunParamDao.findByAnimeEpisodeIdAndKey(animeEpisodeId, key);
+		Assert.notNull(autoRunParam, "不存在的animeEpisodeId:" + animeEpisodeId);
+
+		autoRunParam.setValue(value);
+		if (message != null) {
+			autoRunParam.setMessage(message);
+		}
+		autoRunParam = save(autoRunParam);
+		return autoRunParam;
+	}
+
 	public AutoRunParam copyFromTemplet(AutoRunParam keyTemplet) {
 		AutoRunParam newAutoRunParam = new AutoRunParam();
 		newAutoRunParam.copyFromWithOutBaseInfo(keyTemplet);
@@ -262,6 +296,12 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 			autoRunParam.setValue(Constants.FLAG_STR_NO);
 			save(autoRunParam);
 		}
+
+		// 视频下载状态
+		AutoRunParam doDownloadAutoRunParam = autoRunParamDao.findByAnimeEpisodeIdAndKey(id, "video_download_do_download_flag");
+		if (doDownloadAutoRunParam != null) {
+			updateEpisodeValue(id, "video_download_do_download_flag", "4", "后台web页面手动终止");
+		}
 	}
 
 	/**
@@ -325,7 +365,6 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 		return list;
 	}
 
-
 	/**
 	 * 获得视频下载地址监视中的剧集列表
 	 * 
@@ -343,16 +382,15 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 		return list;
 	}
 
-
 	/**
-	 * 获得等待下载的剧集列表
+	 * 获得等待下载和下载中或下载完成的剧集列表
 	 * 
 	 * @param animeInfoId animeInfoId
 	 */
-	public List<AutoRunParam> findEpisodeWaitDownloadList() {
+	public List<AutoRunParam> findEpisodeDownloadList() {
 		Map<String, Object> searchParams = new HashMap<>();
 		searchParams.put("EQ_key", "video_download_do_download_flag");
-		searchParams.put("EQ_value", 0);
+		searchParams.put("IN_value", new String[]{"0", "1", "2"}); // 等待下载，下载中，下载完成
 		searchParams.put("ISNULL_type", 1);
 		searchParams.put("ISNOTNULL_animeEpisodeId", 1);
 		Page<AutoRunParam> page = searchPageByParams(searchParams, null, AutoRunParam.class);

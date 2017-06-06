@@ -156,6 +156,20 @@
 			<artifactId>spring-boot-starter-batch</artifactId>
 		</dependency>
 		 -->
+		 		<dependency>
+			<groupId>xie</groupId>
+			<artifactId>Vuze_custom</artifactId>
+			<version>5750</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/Vuze_custom-5750.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>xie</groupId>
+			<artifactId>swt64</artifactId>
+			<version>5750</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/swt64-5750.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 </project>

@@ -72,6 +72,7 @@ public class EpisodeUpdateMonitorTimer extends BaseTaskTimer {
 				urlList = CollectKamigami.getTorrentUrlList(url);
 			}
 
+			_log.info("获取到url：{}", urlList);
 			updateEpisodeParamByUrlList(animeInfoId, reg, urlList);
 		}
 	}
@@ -103,7 +104,7 @@ public class EpisodeUpdateMonitorTimer extends BaseTaskTimer {
 			AnimeEpisode animeEpisode = animeEpisodeDao.findByAnimeInfoIdAndNumber(animeInfoId, number);
 			if (animeEpisode != null) {
 				String animeEpisodeId = animeEpisode.getId();
-				_log.info("找到剧集，开始更新, animeInfoId:{}, animeEpisodeId:{}, number:{}, url:{}", animeInfoId, animeEpisodeId, number, urlMap.get(number));
+				_log.debug("找到剧集[{}]，开始更新, animeInfoId:{}, animeEpisodeId:{}, number:{}, url:{}", animeEpisode.getFullName(), animeInfoId, animeEpisodeId, number, urlMap.get(number));
 
 				AutoRunParam episodeMonitorFlagParam = episodeMonitorFlagMap.get(animeEpisodeId);
 				// 剧集的下载地址监视状态为1的情况下，更新数据
@@ -117,7 +118,7 @@ public class EpisodeUpdateMonitorTimer extends BaseTaskTimer {
 					// 同时将监视状态(video_download_monitor_do_flag)更新为2，
 					autoRunParamService.saveEpisodeByTemplet(animeEpisodeId, "video_download_monitor_do_flag", "2");
 				} else {
-					_log.warn("当前剧集为不监视下载地址，跳过更新。");
+					_log.debug("当前剧集[{}]为不监视下载地址，跳过更新。", animeEpisode.getFullName());
 				}
 			} else {
 				_log.info("没有找到剧集, animeInfoId:{}, number:{}", animeInfoId, number);

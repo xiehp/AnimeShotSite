@@ -117,13 +117,13 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 	/**
 	 * 增加指定时间间隔截图任务
 	 */
-	public ShotTask addRunNormalEpisideTimeTask(String id, Date scheduleTime, Boolean forceUpload, Long startTime, Long endTime, Long timeInterval) {
-		if (XStringUtils.isBlank(id)) {
+	public ShotTask addRunNormalEpisideTimeTask(String animeEpisodeId, Date scheduleTime, Boolean forceUpload, Long startTime, Long endTime, Long timeInterval) {
+		if (XStringUtils.isBlank(animeEpisodeId)) {
 			return null;
 		}
 
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put(Video2ImageProperties.KEY_id, id);
+		paramMap.put(Video2ImageProperties.KEY_id, animeEpisodeId);
 		if (startTime != null) {
 			paramMap.put(Video2ImageProperties.KEY_startTime, startTime);
 		}
@@ -142,7 +142,15 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 	}
 
 	/**
-	 * 创建字幕任务
+	 * 创建字幕任务<br>
+	 * 字幕信息ID和动画信息ID不能同时为空<br>
+	 * 
+	 * @param subtitleInfoId 字幕信息ID为空时，则处理动画所有字幕
+	 * @param animeInfoId
+	 * @param scheduleTime
+	 * @param forceUpdate
+	 * @param forceDelete
+	 * @return
 	 */
 	public ShotTask addCreateSubtitleTask(String subtitleInfoId, String animeInfoId, Date scheduleTime, Boolean forceUpdate, Boolean forceDelete) {
 		if (XStringUtils.isBlank(subtitleInfoId) && XStringUtils.isBlank(animeInfoId)) {

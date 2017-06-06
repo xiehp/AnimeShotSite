@@ -240,8 +240,8 @@ public class FilePathUtils {
 	}
 
 	/**
-	 * 获取带动画文件夹的完整detail路径<br>
-	 * root path/anime/detail path<br>
+	 * 获取带动画文件夹的完整detail路径,添加[自动下载资源]目录用于下载bt和视频文件<br>
+	 * root path/anime/detail/自动下载资源 path<br>
 	 */
 	public static File getAnimeDetailFolderWithTorrent(AnimeInfo animeInfo, AnimeEpisode animeEpisode, String torrenName) {
 		File detailPath = getAnimeDetailFolder(animeInfo, animeEpisode);
@@ -306,11 +306,19 @@ public class FilePathUtils {
 	}
 
 	/**
+	 * 获取普通文件夹的路径
+	 */
+	public static File getCommonFolder(String rootPath, String detailPath) {
+		File folder = new File(rootPath, detailPath);
+		return folder;
+	}
+
+	/**
 	 * 获取普通文件的路径
 	 */
-	public static File getCommonFilePath(String rootPath, String detailPath, String fileName) {
-		File file = new File(rootPath, detailPath);
-		file = new File(file, fileName);
+	public static File getCommonFile(String rootPath, String detailPath, String fileName) {
+		File folder = new File(rootPath, detailPath);
+		File file = new File(folder, fileName);
 		return file;
 	}
 

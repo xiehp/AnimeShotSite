@@ -1,5 +1,6 @@
 package xie.base.controller;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,14 +18,17 @@ import xie.base.module.exception.WebHandlerExceptionResolver;
 public class YjyControllerAdvice {
 	protected static Logger _log = LoggerFactory.getLogger(YjyControllerAdvice.class);
 
+	@Resource
+	WebHandlerExceptionResolver webHandlerExceptionResolver;
+
 	// 当前使用WebHandlerExceptionResolver
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ModelAndView processUnauthenticatedException(
+	public ModelAndView processException(
 			HttpServletRequest request,
 			HttpServletResponse response,
 			Exception ex) {
 
-		return WebHandlerExceptionResolver.processException(request, response, null, ex, _log);
+		return webHandlerExceptionResolver.processException(request, response, null, ex, _log);
 	}
 }

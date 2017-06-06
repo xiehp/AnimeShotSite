@@ -92,6 +92,6 @@ public abstract class BaseImageUrl extends BaseTietukuUrl {
 	 * @return local full file path
 	 */
 	public File getLocalFullFilePath() {
-		return FilePathUtils.getCommonFilePath(getLocalRootPath(), getLocalDetailPath(), getLocalFileName());
+		return FilePathUtils.getCommonFile(getLocalRootPath(), getLocalDetailPath(), getLocalFileName());
 	}
 }
