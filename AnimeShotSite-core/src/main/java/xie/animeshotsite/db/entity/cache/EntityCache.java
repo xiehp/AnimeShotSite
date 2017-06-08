@@ -191,7 +191,7 @@ public class EntityCache {
 			return null;
 		}
 
-		if (timeoutMap.get(cacheId).isTimeout()) {
+		if (xWaitTime.isTimeout()) {
 			remove(cacheId);
 			return null;
 		}

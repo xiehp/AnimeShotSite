@@ -76,9 +76,6 @@ public class EpisodeFileDownloadTimer extends BaseTaskTimer {
 	 * 
 	 * @see xie.animeshotsite.timer.timer.BaseTaskTimer#taskTimer()
 	 */
-	/* (non-Javadoc)
-	 * @see xie.animeshotsite.timer.timer.BaseTaskTimer#taskTimer()
-	 */
 	@Override
 	protected void taskTimer() throws Exception {
 		List<AutoRunParam> doDownloadFlagList = autoRunParamService.findEpisodeDownloadList();
@@ -144,13 +141,14 @@ public class EpisodeFileDownloadTimer extends BaseTaskTimer {
 					_log.info("开始处理剧集，animeEpisode：{}， 下载状态：{}", animeEpisode.getFullName(), doDownloadFlagValue);
 
 					// 获得视频文件地址
-					File torrentFile = entityCache.get("video_download_do_download_url" + animeEpisodeId, () -> {
-						AutoRunParam _torrentFileParam = autoRunParamService.findEpisodeParam(animeEpisodeId, "video_download_torrent_file_path");
-						return new File(_torrentFileParam.getValue());
-					}, 3600000);
 					File videoFile = null;
 					AutoRunParam videoFilePathParam = autoRunParamService.findEpisodeParam(animeEpisodeId, "video_download_video_file_path");
 					if (videoFilePathParam == null || XStringUtils.isBlank(videoFilePathParam.getValue())) {
+						File torrentFile = entityCache.get("video_download_do_download_url" + animeEpisodeId, () -> {
+							AutoRunParam _torrentFileParam = autoRunParamService.findEpisodeParam(animeEpisodeId, "video_download_torrent_file_path");
+							return new File(_torrentFileParam.getValue());
+						}, 3600000);
+
 						videoFile = VuzeDownload.getInstance().getVideoFile(torrentFile);
 						if (videoFile == null) {
 							throw new XException("未在DM中找到" + torrentFile + "对应的下载文件");
@@ -206,7 +204,7 @@ public class EpisodeFileDownloadTimer extends BaseTaskTimer {
 							throw new XException("移动字幕文件失败：" + file.getAbsolutePath() + " -> " + target.getAbsolutePath());
 						}
 						_log.info("移动了字幕：{} -> {}", file.getAbsoluteFile(), target.getAbsolutePath());
-						}
+					}
 
 					// 添加字幕任务
 					ShotTask shotSubtitleTask = shotTaskService.addCreateSubtitleTask(null, animeEpisode.getAnimeInfoId(), new Date(), false, false);
@@ -224,7 +222,7 @@ public class EpisodeFileDownloadTimer extends BaseTaskTimer {
 					_log.info("添加截图任务：", shotEpisodeTask);
 
 					// 更新自动运行参数
-					_log.info("视频处理完成，准备更新状态到4，torrentFile:{}, videoFile:{}", torrentFile.getAbsolutePath(), videoFile.getAbsolutePath());
+					_log.info("视频处理完成，准备更新状态到4");
 					autoRunParamService.updateEpisodeValue(animeEpisodeId, "video_download_do_download_flag", "4", "处理完成");
 				}
 

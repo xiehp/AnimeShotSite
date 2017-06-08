@@ -7,6 +7,8 @@ import com.tietuku.entity.util.TietukuUtils;
 import xie.animeshotsite.constants.ShotCoreConstants;
 import xie.animeshotsite.setup.ShotSiteSetup;
 import xie.base.entity.BaseEntity;
+import xie.common.utils.XSSHttpUtil;
+import xie.module.spring.SpringUtils;
 
 @MappedSuperclass
 public abstract class BaseTietukuUrl extends BaseEntity {
@@ -68,25 +70,7 @@ public abstract class BaseTietukuUrl extends BaseEntity {
 	}
 
 	/**
-	 * 获得tietuku O url.
-	 *
-	 * @return tietuku O url
-	 */
-	public String getTietukuOUrl() {
-		return TietukuUtils.getImageOriginalUrl(getTietukuUrlPrefix(), getTietukuUrlId());
-	}
-
-	/**
-	 * 获得tietuku S url.
-	 *
-	 * @return tietuku S url
-	 */
-	public String getTietukuSUrl() {
-		return TietukuUtils.getImageShowUrl(getTietukuUrlPrefix(), getTietukuUrlId());
-	}
-
-	/**
-	 * 获得tietuku T url.
+	 * 获得小图片（缩略图，URL中附加T标识）
 	 *
 	 * @return tietuku T url
 	 */
@@ -95,41 +79,65 @@ public abstract class BaseTietukuUrl extends BaseEntity {
 	}
 
 	/**
-	 * 获得小图URL.
+	 * 获得中图片（显示用图片，URL中附加S标识）
+	 *
+	 * @return tietuku S url
+	 */
+	public String getTietukuSUrl() {
+		return TietukuUtils.getImageShowUrl(getTietukuUrlPrefix(), getTietukuUrlId());
+	}
+
+	/**
+	 * 获得大图片（原始图片，URL中无附加标识）
+	 *
+	 * @return tietuku O url
+	 */
+	public String getTietukuOUrl() {
+		return TietukuUtils.getImageOriginalUrl(getTietukuUrlPrefix(), getTietukuUrlId());
+	}
+
+	/**
+	 * 获得小图片（缩略图，URL中附加T标识）
 	 *
 	 * @return url S
 	 */
 	public String getUrlS() {
 		if (ShotCoreConstants.IMAGE_URL_GET_MODE_TIETUKU.equals(ShotSiteSetup.IMAGE_URL_GET_MODE)) {
-			return TietukuUtils.getImageThumbnailUrl(getTietukuUrlPrefix(), getTietukuUrlId());
+			return changeTietukuDomain(getTietukuTUrl());
 		} else {
 			return "\\image\\type\\id"; // TODO 本地图片获取方式
 		}
 	}
 
 	/**
-	 * 获得中图URL.
+	 * 获得中图片（显示用图片，URL中附加S标识）
 	 *
 	 * @return url M
 	 */
 	public String getUrlM() {
 		if (ShotCoreConstants.IMAGE_URL_GET_MODE_TIETUKU.equals(ShotSiteSetup.IMAGE_URL_GET_MODE)) {
-			return TietukuUtils.getImageShowUrl(getTietukuUrlPrefix(), getTietukuUrlId());
+			return changeTietukuDomain(getTietukuSUrl());
 		} else {
 			return "\\image\\image\\id"; // TODO 本地图片获取方式
 		}
 	}
 
 	/**
-	 * 获得大图URL.
+	 * 获得大图片（原始图片，URL中无附加标识）
 	 *
 	 * @return url L
 	 */
 	public String getUrlL() {
 		if (ShotCoreConstants.IMAGE_URL_GET_MODE_TIETUKU.equals(ShotSiteSetup.IMAGE_URL_GET_MODE)) {
-			return TietukuUtils.getImageOriginalUrl(getTietukuUrlPrefix(), getTietukuUrlId());
+			return changeTietukuDomain(getTietukuOUrl());
 		} else {
 			return "\\image\\type\\id"; // TODO 本地图片获取方式
 		}
+	}
+
+	private String changeTietukuDomain(String url) {
+		ShotSiteSetup shotSiteSetup = SpringUtils.getBean(ShotSiteSetup.class);
+		String newUrl = XSSHttpUtil.changeTietukuDomain(url, shotSiteSetup.getSiteDomain(), shotSiteSetup.getTietukuChangeDoman());
+		return newUrl;
 	}
 }

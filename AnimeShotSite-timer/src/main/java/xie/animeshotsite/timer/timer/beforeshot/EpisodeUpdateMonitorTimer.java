@@ -1,5 +1,6 @@
 package xie.animeshotsite.timer.timer.beforeshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,11 +66,16 @@ public class EpisodeUpdateMonitorTimer extends BaseTaskTimer {
 			String reg = animeAutoRunParamMap.get("video_download_monitor_torrent_url_reg").getValue();
 			Assert.hasText(url, "自动运行参数video_download_monitor_page_url不能为空, animeInfoId:" + animeInfoId);
 
-			List<String> urlList;
-			if (XStringUtils.isNotBlank(reg)) {
-				urlList = CollectKamigami.getTorrentUrlList(url, reg);
-			} else {
-				urlList = CollectKamigami.getTorrentUrlList(url);
+			List<String> urlList = new ArrayList<>();
+			if (url.contains("kamigami.org")) {
+				// 诸神
+				if (XStringUtils.isNotBlank(reg)) {
+					urlList = CollectKamigami.getTorrentUrlList(url, reg);
+				} else {
+					urlList = CollectKamigami.getTorrentUrlList(url);
+				}
+			} else if (url.contains("comicat.org")) {
+				// TODO comicat.org
 			}
 
 			_log.info("获取到url：{}", urlList);

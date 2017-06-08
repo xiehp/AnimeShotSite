@@ -25,6 +25,8 @@
 	var ctx;
 	if (global.ctx == null) {
 		global.baseUrl = '${siteBaseUrl}';
+		global.baseUrl = global.baseUrl.replace("http://", "//");
+		global.baseUrl = global.baseUrl.replace("https://", "//");
 		global.ctx = '${ctx}';
 		baseUrl = '${siteBaseUrl}';
 		ctx = '${ctx}';

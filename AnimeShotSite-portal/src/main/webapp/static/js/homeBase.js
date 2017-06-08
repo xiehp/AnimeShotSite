@@ -268,7 +268,7 @@ function trim(s) {
 	}
 
 	function alertErrorMsg(XMLHttpRequest, msg) {
-		if (XMLHttpRequest && XMLHttpRequest.responseText.indexOf('login page do not delete') != -1) {
+		if (XMLHttpRequest && XMLHttpRequest.responseText && XMLHttpRequest.responseText.indexOf('login page do not delete') != -1) {
 			// 跳转到登录页
 			$('#globalSessionInvalidAlert').modal({
 				show : true,

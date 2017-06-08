@@ -2,7 +2,7 @@
 SELECT 
 episode.FULL_NAME, episode.id
 
-, a.name, a.remark, a.param_key, a.value
+, a.name, a.remark, a.param_key, a.value, a.message
 
 , c.name, c.remark, c.param_key, c.value
 

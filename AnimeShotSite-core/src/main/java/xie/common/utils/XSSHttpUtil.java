@@ -134,6 +134,36 @@ public class XSSHttpUtil {
 		}
 	}
 
+	/**
+	 * 将贴图库的url改为本站url
+	 * 
+	 * @param url
+	 * @param newDomain
+	 * @param canChangeDomain
+	 * @return
+	 */
+	public static String changeTietukuDomain(String url, String newDomain, String[] canChangeDomain) {
+		if (XStringUtils.isBlank(url)) {
+			return url;
+		}
+
+		if (XStringUtils.isBlank(newDomain)) {
+			return url;
+		}
+
+		// 可以替换的贴图库图片服务器，新加的由于对应域名需要ca证书，并且几个图片服务器之间不能互通，因此不转换直接使用原地址
+		if (!XStringUtils.containWith(url.toLowerCase(), canChangeDomain)) {
+			return url;
+		}
+
+		// 改变域名
+		url = url.replaceAll("\\.[a-z0-9]+\\.[a-z]+", "." + newDomain);
+		// 由于cdn的https收费，图片链接改为http
+		url = XSSHttpUtil.changeToHttp(url);
+
+		return url;
+	}
+
 	private static String getPortByProtocol(final String protocol, final Map<String, String> portMap) {
 		final String rtn;
 		String port = portMap.get(protocol);
@@ -146,10 +176,11 @@ public class XSSHttpUtil {
 	}
 
 	/**
-	 * 
 	 * @param 修改 url 中的domain name
+	 * 
 	 * @param newdomain
 	 * @return
+	 * @deprecated 未完成
 	 */
 	public static String changeDomain(final String url, final String newdomain) {
 		final Pattern p = Pattern.compile("^(https?://)([\\.\\w\\-_]+)(:?\\d*/?.*)$");
@@ -158,6 +189,43 @@ public class XSSHttpUtil {
 		String rtn = url;
 		if (m.find()) {
 			rtn = m.replaceAll("$1" + newdomain + "$3");
+		}
+
+		return rtn;
+	}
+
+	/**
+	 * @param 修改 url 中的host name
+	 * 
+	 * @param newdomain
+	 * @return
+	 */
+	public static String changeHost(final String url, final String newHost) {
+		final Pattern p = Pattern.compile("^(https?://)([\\.\\w\\-_]+)(:?\\d*/?.*)$");
+		final Matcher m = p.matcher(url);
+
+		String rtn = url;
+		if (m.find()) {
+			rtn = m.replaceAll("$1" + newHost + "$3");
+		}
+
+		return rtn;
+	}
+
+	/**
+	 * @param 修改 url 中的domain name
+	 * 
+	 * @param newdomain
+	 * @return
+	 * @deprecated 未完成
+	 */
+	public static String changeHostAndPort(final String url, final String newHostAndPort) {
+		final Pattern p = Pattern.compile("^(https?://)([\\.\\w\\-_]+)(:?\\d*/?.*)$");
+		final Matcher m = p.matcher(url);
+
+		String rtn = url;
+		if (m.find()) {
+			rtn = m.replaceAll("$1" + newHostAndPort + "$3");
 		}
 
 		return rtn;
@@ -206,7 +274,7 @@ public class XSSHttpUtil {
 	 */
 	public static void sendForward(final HttpServletRequest request,
 			final HttpServletResponse response, final String location)
-					throws Exception {
+			throws Exception {
 		final String loc = StringUtil.removeNullTrim(location);
 		if (loc.indexOf("WEB-INF") == 0) {
 			LOG.error("Forward failed: Bad forward location: " + loc);

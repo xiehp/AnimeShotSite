@@ -91,6 +91,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 			// 剧集不存在，重定向到动画列表
 			return "redirect:/anime";
 		}
+
 		AnimeInfo animeInfo = animeInfoService.findOne(animeEpisode.getAnimeInfoId());
 		Page<ShotInfo> shotInfoPage = shotInfoService.searchPageByParams(searchParams, pageNumber, ConstantsWeb.SHOT_LIST_PAGE_NUMBER, sortType, ShotInfo.class);
 		if (pageNumber > shotInfoPage.getTotalPages() && shotInfoPage.getTotalPages() > 0) {
