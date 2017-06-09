@@ -13,7 +13,7 @@
 
 	<div class="logo">
 
-		<img src="${ctx }/static/img/logo.png" alt="" />
+		<!-- <img src="${ctx }/static/img/logo.png" alt="" /> -->
 		<!-- <div style="font-weight: 25px; color: #fff;"><h4>Warehouse Manage System</h4></div> -->
 	</div>
 
