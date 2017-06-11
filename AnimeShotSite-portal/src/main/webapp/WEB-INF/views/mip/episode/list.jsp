@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="xie.animeshotsite.db.entity.AnimeInfo" %><%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -33,6 +33,14 @@
 					<div class="bold">
 						<spring:message code='动画简介' />
 					</div>
+						<%
+							AnimeInfo info = ((AnimeInfo)request.getAttribute("animeInfo"));
+							String sumary = info.getSummary();
+							if (sumary != null) {
+							sumary = sumary.replaceAll("(style=\".*?\")", "");
+								info.setSummary(sumary);
+							}
+						%>
 					<div>${animeInfo.summary}</div>
 				</div>
 			</c:if>
