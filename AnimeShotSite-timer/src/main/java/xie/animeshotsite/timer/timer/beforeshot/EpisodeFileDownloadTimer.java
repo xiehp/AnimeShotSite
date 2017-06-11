@@ -158,8 +158,9 @@ public class EpisodeFileDownloadTimer extends BaseTaskTimer {
 						autoRunParamService.saveEpisodeByTemplet(animeEpisodeId, "video_download_video_file_path", videoFile.getAbsolutePath());
 
 						// 从vuze中删除下载
+						_log.info("准备从vuze中删除bt下载，torrentFile：{}", torrentFile.getAbsolutePath());
 						VuzeDownload.getInstance().removeDownloadManager(torrentFile);
-						_log.info("bt下载已删除，torrentFile：{}", torrentFile.getAbsolutePath());
+						_log.info("已从vuze中删除bt下载，torrentFile：{}", torrentFile.getAbsolutePath());
 					} else {
 						videoFile = new File(videoFilePathParam.getValue());
 					}
@@ -215,7 +216,7 @@ public class EpisodeFileDownloadTimer extends BaseTaskTimer {
 					if (!success) {
 						throw new XException("移动视频文件失败：" + videoFile.getAbsolutePath() + " -> " + newVideoFile.getAbsolutePath());
 					}
-					_log.info("移动了字幕：{} -> {}", videoFile.getAbsoluteFile(), newVideoFile.getAbsolutePath());
+					_log.info("移动了视频：{} -> {}", videoFile.getAbsoluteFile(), newVideoFile.getAbsolutePath());
 
 					// 添加视频截图任务
 					ShotTask shotEpisodeTask = shotTaskService.addRunNormalEpisideTimeTask(animeEpisodeId, new Date(), false, null, null, 5000L);
@@ -250,7 +251,7 @@ public class EpisodeFileDownloadTimer extends BaseTaskTimer {
 	 */
 	public void addBtTask(File torrentFile, File videoPath) {
 		VuzeDownload.getInstance().addTask(torrentFile, videoPath);
-		_log.info("增加bt任务到buze，torrentFile:{}， videoPath:{}", torrentFile.getAbsolutePath(), videoPath.getAbsolutePath());
+		_log.info("增加bt任务到vuze，torrentFile:{}， videoPath:{}", torrentFile.getAbsolutePath(), videoPath.getAbsolutePath());
 	}
 
 	public void downloadVideo(String url) {
