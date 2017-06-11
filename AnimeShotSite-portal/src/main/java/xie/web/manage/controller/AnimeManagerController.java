@@ -130,9 +130,9 @@ public class AnimeManagerController extends BaseManagerController<AnimeInfo, Str
 	@RequestMapping(value = "/submit")
 	public String submit(AnimeInfo animeInfo, ServletRequest request) throws Exception {
 
-		AnimeInfo db = animeInfoService.findOne(animeInfo.getId());
 		AnimeInfo newAnimeInfo = new AnimeInfo();
-		if (db != null) {
+		if (animeInfo.getId() != null) {
+			AnimeInfo db = animeInfoService.findOne(animeInfo.getId());
 			db.copyTo(newAnimeInfo);
 		}
 		animeInfo.copyToWithOutBaseInfo(newAnimeInfo);
