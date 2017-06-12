@@ -1,3 +1,9 @@
+<%@page import="java.util.List"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
+<%@page import="xie.animeshotsite.db.entity.AnimeInfo"%>
+<%@page import="org.springframework.data.domain.Page"%>
+<%@page import="com.hankcs.hanlp.HanLP"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -36,7 +42,12 @@
 			var $this = $(this);
 			var thisAnimeName = $this.text().toLocaleLowerCase();
 			for (i = 0; i < searchAnimeName.length; i++) {
-				if (thisAnimeName.indexOf(searchAnimeName.charAt(i)) == -1) {
+				var c = searchAnimeName.charAt(i);
+				if (c == " " || c == "　") {
+					continue;
+				}
+
+				if (thisAnimeName.indexOf(c) == -1) {
 					$this.hide();
 					return;
 				}
@@ -60,13 +71,27 @@
 			</div>
 		</div>
 		<div class="row">
-			<c:forEach items="${ animeInfoPage.content }" var="anime">
+			aaa
+			<%
+				Map<Integer, String> pinyinMap = new HashMap<>();
+	
+				Page<AnimeInfo> animeInfopage = (Page<AnimeInfo>) request.getAttribute("animeInfoPage");
+				List<AnimeInfo> animeInfoList = animeInfopage.getContent();
+				for (int i = 0; i < animeInfoList.size(); i++) {
+					AnimeInfo info = animeInfoList.get(i);
+					String name = info.getFullName() + " " + info.getSecondName();
+					pinyinMap.put(i, name);
+					request.setAttribute("pinyinMap", pinyinMap);
+				}
+			%>
+			<c:forEach items="${ animeInfoPage.content }" var="anime" varStatus="status">
 				<div class="col-lg-3 col-sm-4 col-xs-6 thumbnail animeInfoDiv">
 					<a href="${ctx}/episode/list/${anime.id}" title="<c:out value='${anime.fullName}' /> <c:out value='${anime.secondName}' />">
 						<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${anime.titleUrl.urlS}" class="img-responsive imagelazy">
 						<div class="wordKeepLine" style="margin-top: 5px;">
 							<c:out value='${anime.fullName}' />
 							<c:out value='${anime.secondName}' />
+							<input class="hiddenPinyin" type="hidden" value="<c:out value='${pinyinMap[status.index]}' />">
 						</div>
 					</a>
 				</div>
