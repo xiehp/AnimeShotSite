@@ -287,6 +287,11 @@ if (canBaiduRecord) {
 		document.write(unescape("%3Cspan id='cnzz_stat_icon_1259030003'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol
 				+ "s95.cnzz.com/z_stat.php%3Fid%3D1259030003%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
 
+		//声明_czc对象:
+		var _czc = _czc || [];
+		//绑定siteid，请用您的siteid替换下方"XXXXXXXX"部分
+		_czc.push(["_setAccount", "1259030003"]);
+
 		/*
 		// 改为加载后运行
 		var span = document.createElement('span');
