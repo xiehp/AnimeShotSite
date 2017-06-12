@@ -15,6 +15,7 @@
 <title>动画列表一览 - 动画截图网</title>
 
 <script>
+	var startTime = 0;
 	var timeMark = 0;
 	var $animeList;
 	var $searchAnimeName;
@@ -25,6 +26,9 @@
 		$searchAnimeName.on("input", function() {
 			timeMark = new Date().getTime();
 			var newTimeMark = timeMark;
+			if (startTime == 0) {
+				startTime = timeMark;
+			}
 			setTimeout(function() {
 				doSearch(newTimeMark);
 			}, 500);
@@ -36,13 +40,24 @@
 			return;
 		}
 
-		var searchAnimeName = $searchAnimeName.val().toLocaleLowerCase();
+		var searchAnimeNameS = $searchAnimeName.val();
+		var searchAnimeName = searchAnimeNameS.toLocaleLowerCase();
 
 		$animeList.each(function() {
 			var $this = $(this);
+
+			// 拼音检查，整个输入是否包含在拼音名字中存在
+			var thisAnimeNamePinyin = $this.find(".hiddenPinyin").val();
+			if (thisAnimeNamePinyin.indexOf(searchAnimeName) > -1) {
+				$this.show();
+				return;
+			}
+
+			// 完整名字检查，输入的每个字是否存在于名字中
 			var thisAnimeName = $this.text().toLocaleLowerCase();
 			for (i = 0; i < searchAnimeName.length; i++) {
 				var c = searchAnimeName.charAt(i);
+				
 				if (c == " " || c == "　") {
 					continue;
 				}
@@ -57,6 +72,10 @@
 
 		//$("body").trigger("scroll");
 		$("body").scroll();
+
+		// 进行统计
+		_czc.push([ "_trackEvent", "动画", "搜索", searchAnimeNameS, timeMark - startTime, "enter-search-event" ]);
+		startTime = 0;
 	}
 </script>
 <div class="container-fluid">
@@ -67,22 +86,23 @@
 			</div>
 			<div class="col-sm-6">
 				<span style="font-size: smaller;"><spring:message code='请输入要搜索的动画名' /></span>
-				<input class="input-sm enter-search-event">
+				<input id="enter-search-event" class="input-sm enter-search-event">
 			</div>
 		</div>
 		<div class="row">
-			aaa
 			<%
 				Map<Integer, String> pinyinMap = new HashMap<>();
-	
+
 				Page<AnimeInfo> animeInfopage = (Page<AnimeInfo>) request.getAttribute("animeInfoPage");
 				List<AnimeInfo> animeInfoList = animeInfopage.getContent();
 				for (int i = 0; i < animeInfoList.size(); i++) {
 					AnimeInfo info = animeInfoList.get(i);
 					String name = info.getFullName() + " " + info.getSecondName();
-					pinyinMap.put(i, name);
-					request.setAttribute("pinyinMap", pinyinMap);
+					String pinyin = HanLP.convertToPinyinString(name, "", false);
+					pinyinMap.put(i, pinyin);
 				}
+
+				request.setAttribute("pinyinMap", pinyinMap);
 			%>
 			<c:forEach items="${ animeInfoPage.content }" var="anime" varStatus="status">
 				<div class="col-lg-3 col-sm-4 col-xs-6 thumbnail animeInfoDiv">
