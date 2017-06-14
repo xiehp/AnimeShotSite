@@ -118,6 +118,9 @@
 	<a class="btn btn-primary btn-sm" href="${FullImageUrl}" target="_blank">
 		<spring:message code='查看原图' />
 	</a>
+	<a class="btn btn-primary btn-sm" href="https://whatanime.ga/?loop&url=${FullImageUrl}" target="_blank">
+		<spring:message code='查看短视频' />
+	</a>
 </div>
 
 <div class="buttonDiv">

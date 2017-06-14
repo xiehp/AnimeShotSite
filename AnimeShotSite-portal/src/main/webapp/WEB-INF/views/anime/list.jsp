@@ -57,7 +57,7 @@
 			var thisAnimeName = $this.text().toLocaleLowerCase();
 			for (i = 0; i < searchAnimeName.length; i++) {
 				var c = searchAnimeName.charAt(i);
-				
+
 				if (c == " " || c == "　") {
 					continue;
 				}
@@ -74,7 +74,12 @@
 		$("body").scroll();
 
 		// 进行统计
-		_czc.push([ "_trackEvent", "动画", "搜索", searchAnimeNameS, timeMark - startTime, "enter-search-event" ]);
+		if (isDefinedVariable("_czc") && _czc != null) {
+			_czc.push([ "_trackEvent", "动画", "搜索", searchAnimeNameS, timeMark - startTime, "enter-search-event" ]);
+		}
+		if (isDefinedVariable("_hmt") && _hmt != null) {
+			_hmt.push([ '_trackEvent', '动画', '搜索', searchAnimeNameS, timeMark - startTime ]);
+		}
 		startTime = 0;
 	}
 </script>

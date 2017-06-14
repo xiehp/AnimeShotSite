@@ -960,3 +960,20 @@ function lazyRun(fun, timeout) {
 		}
 	});
 }
+
+/**
+ * 判断变量是否被定义过，参数必须是字符串
+ * 
+ * @param variableName 必须是字符串
+ */
+function isDefinedVariable(variableName) {
+	try {
+		if (eval("typeof (" + variableName + ")") == "undefined") {
+			return false;
+		} else {
+			return true;
+		}
+	} catch (e) {
+	}
+	return false;
+}

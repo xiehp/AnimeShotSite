@@ -28,8 +28,8 @@ public class MainTimer {
 		// SpringApplication.run(MainTimer.class, args);
 
 		// createTimer(AnimeShotTimer.class);
-		// System.setProperty("spring.profiles.default", "development");
-		System.setProperty("spring.profiles.default", "productRemote");
+		 System.setProperty("spring.profiles.default", "development");
+		 //System.setProperty("spring.profiles.default", "productRemote");
 
 		// 截图
 		createTimer(ShotTaskTimer.class, 20 * 1000, ShotTask.TASK_TYPE_SHOT);
@@ -85,7 +85,7 @@ public class MainTimer {
 		ShotTaskTimer shotTaskTimer = (ShotTaskTimer) SpringUtil.getBean(classTimerTask);
 		shotTaskTimer.setTaskType(taskType);
 
-		Timer timer = new Timer();
+		Timer timer = new Timer("timer-" + classTimerTask.getSimpleName() + "_" + taskType + "-" + period);
 		timer.schedule(shotTaskTimer, 1000, period);
 		logger.info("创建定时器成功：{} {} {}", period, taskType, classTimerTask);
 	}

@@ -215,7 +215,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		List<String> actualShowLanage = subtitleInfoService.findActualShowLanguage(animeEpisode.getId(), localeLanguage, showLanage, showAllSubtitleFlag);
 		Long startTime = shotInfo.getTimeStamp();
 		Long endTime = nextShotInfo == null ? startTime + 5000 : nextShotInfo.getTimeStamp();
-		actualShowLanage.addAll(toTranLanguage);
+		actualShowLanage.addAll(toTranLanguage); // TODO  有错误
 		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), actualShowLanage, startTime, endTime);
 		// 如果显示语言在搜索到的字幕中不存在，则删除掉
 		deleteNoSubtitleLanguage(actualShowLanage, subtitleLineList);
