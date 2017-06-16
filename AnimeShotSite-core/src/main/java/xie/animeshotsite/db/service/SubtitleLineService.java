@@ -135,11 +135,14 @@ public class SubtitleLineService extends BaseService<SubtitleLine, String> {
 
 		subtitleLine.setLanguage(subtitleInfo.getLanguage());
 		subtitleLine.setLineIndex(xSubtitleLine.getLineIndex());
-		try {
-			subtitleLine.setLayer(Integer.valueOf(xSubtitleLine.getLayer()));
-		} catch (Exception e) {
-			subtitleLine.setLayer(0);
-			e.printStackTrace();
+		if (xSubtitleLine.getLayer() != null) {
+			try {
+				subtitleLine.setLayer(Integer.valueOf(xSubtitleLine.getLayer()));
+			} catch (Exception e) {
+				subtitleLine.setLayer(0);
+				System.out.println(xSubtitleLine.getLayer());
+				e.printStackTrace();
+			}
 		}
 		if (subtitleInfo.getOffsetTime() == null) {
 			subtitleLine.setStartTime(xSubtitleLine.getStartTime());
