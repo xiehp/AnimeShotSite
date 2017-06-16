@@ -9,7 +9,7 @@
 <c:set var="EpisodeFullNameWithTime" value="${EpisodeFullName} ${shotInfo.formatedTimeChina}" />
 <c:set var="DivPaddingBorderWidth" value="10" />
 <c:set var="DivPaddingBorderHeight" value="10" />
-<c:set var="FullImageUrl" value="${gifInfo.tietukuOUrlChangeDomain}" />
+<c:set var="FullImageUrl" value="${gifInfo.urlL}" />
 <c:set var="ThisPageUrl" value="${siteBaseUrl}/gif/view/${gifInfo.id}" />
 
 <head>

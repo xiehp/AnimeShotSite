@@ -10,12 +10,12 @@
 <c:set var="EpisodeFullName" value="${animeInfo.fullName} ${animeInfo.secondName} ${animeEpisode.divisionName}" />
 <c:set var="EpisodeFullNameWithTime" value="${EpisodeFullName} ${shotInfo.formatedTimeChina}" />
 <%
-//ShotInfoVO vo = request.getAttribute("shotInfo");
-//vo.setTietukuOUrlChangeDomain(XSSHttpUtil.changeToHttp(vo.getTietukuOUrlChangeDomain()));
+	//ShotInfoVO vo = request.getAttribute("shotInfo");
+	//vo.setTietukuOUrlChangeDomain(XSSHttpUtil.changeToHttp(vo.getTietukuOUrlChangeDomain()));
 %>
-<c:set var="FullImageUrl" value="${shotInfo.tietukuOUrlChangeDomain}" />
-<c:set var="PreFullImageUrl" value="${previousShotInfo.tietukuOUrlChangeDomain}" />
-<c:set var="NextFullImageUrl" value="${nextShotInfo.tietukuOUrlChangeDomain}" />
+<c:set var="FullImageUrl" value="${shotInfo.urlL}" />
+<c:set var="PreFullImageUrl" value="${previousShotInfo.urlL}" />
+<c:set var="NextFullImageUrl" value="${nextShotInfo.urlL}" />
 <c:set var="ThisPageUrl" value="${siteBaseUrl}/shot/view/${shotInfo.id}" />
 <c:set var="DivPaddingBorderWidth" value="10" />
 <c:set var="DivPaddingBorderHeight" value="10" />
@@ -95,6 +95,18 @@ body {
 </style>
 
 <script src="${ ctx }/static/js/shotView.js" type="text/javascript"></script>
+<script src="${ ctx }/static/plugins/subtitle/ass.js" type="text/javascript"></script>
+<script src="${ ctx }/static/plugins/subtitle/[Kamigami] Sailor Moon Crystal - 01 [1920x1080 x264 AAC Sub(Chs,Cht,Jap)]_track3_und.ass" type="text/javascript"></script>
+
+<script type="text/javascript">
+	
+	
+	
+	
+	
+</script>
+
+
 
 </head>
 
@@ -190,11 +202,11 @@ body {
 		<map id="planetmap" name="planetmap">
 			<c:if test="${!empty previousShotInfo.id}">
 				<area id="areaPrev" class="postByFromXXX" shape="rect" coords="0,0,${coordsWidth/3},${coordsHeight}" href="${ctx}/shot/view/${previousShotInfo.id}" title="<spring:message code='上一张' />" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${previousShotInfo.formatedTimeChina}' />" />
-				<img alt="" src="${PreFullImageUrl}" style="display: none;">
+				<img style="display: none;" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${previousShotInfo.formatedTimeChina}' />" src="${PreFullImageUrl}">
 			</c:if>
 			<c:if test="${!empty nextShotInfo.id}">
 				<area id="areaNext" class="postByFromXXX" shape="rect" coords="${coordsWidth/3*2},0,${coordsWidth},${coordsHeight}" href="${ctx}/shot/view/${nextShotInfo.id}" title="<spring:message code='下一张' />" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${nextShotInfo.formatedTimeChina}' />" />
-				<img alt="" src="${NextFullImageUrl}" style="display: none;">
+				<img src="${NextFullImageUrl}" style="display: none;" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${nextShotInfo.formatedTimeChina}' />">
 			</c:if>
 		</map>
 	</div>

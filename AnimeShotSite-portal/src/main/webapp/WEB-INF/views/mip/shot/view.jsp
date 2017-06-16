@@ -7,9 +7,9 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <c:set var="EpisodeFullName" value="${animeInfo.fullName} ${animeInfo.secondName} ${animeEpisode.divisionName}" />
 <c:set var="EpisodeFullNameWithTime" value="${EpisodeFullName} ${shotInfo.formatedTimeChina}" />
-<c:set var="FullImageUrl" value="${shotInfo.tietukuOUrlChangeDomain}" />
-<c:set var="PreFullImageUrl" value="${previousShotInfo.tietukuOUrlChangeDomain}" />
-<c:set var="NextFullImageUrl" value="${nextShotInfo.tietukuOUrlChangeDomain}" />
+<c:set var="FullImageUrl" value="${shotInfo.urlL}" />
+<c:set var="PreFullImageUrl" value="${previousShotInfo.urlL}" />
+<c:set var="NextFullImageUrl" value="${nextShotInfo.urlL}" />
 <c:set var="ThisPageUrl" value="${siteBaseUrl}/mip/shot/view/${shotInfo.id}" />
 <c:set var="DivPaddingBorderWidth" value="10" />
 <c:set var="DivPaddingBorderHeight" value="10" />
