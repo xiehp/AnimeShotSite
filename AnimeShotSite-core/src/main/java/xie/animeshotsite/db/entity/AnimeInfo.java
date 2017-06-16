@@ -50,7 +50,7 @@ public class AnimeInfo extends BaseEntity {
 	/** 第几季名称 */
 	private String divisionName;
 
-	/** 动画全称=NAME+空格+DIVISION_NAME */
+	/** 动画全称 = name + 空格 + divisionName */
 	private String fullName;
 
 	private Integer type;
