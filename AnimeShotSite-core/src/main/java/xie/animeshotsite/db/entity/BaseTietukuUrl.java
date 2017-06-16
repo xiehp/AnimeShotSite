@@ -136,8 +136,9 @@ public abstract class BaseTietukuUrl extends BaseEntity {
 	}
 
 	private String changeTietukuDomain(String url) {
-		ShotSiteSetup shotSiteSetup = SpringUtils.getBean(ShotSiteSetup.class);
-		String newUrl = XSSHttpUtil.changeTietukuDomain(url, shotSiteSetup.getSiteDomain(), shotSiteSetup.getTietukuChangeDoman());
+		ShotSiteSetup shotSiteSetup = SpringUtils.getBean(ShotSiteSetup.class); // TODO entity中如何引入spring bean？
+		//String newUrl = XSSHttpUtil.changeTietukuDomain(url, shotSiteSetup.getSiteDomain(), shotSiteSetup.getTietukuChangeDoman());
+		String newUrl = XSSHttpUtil.convertTietukuDomain(url, shotSiteSetup.getTietukuDomainConvert());
 		return newUrl;
 	}
 }

@@ -2,7 +2,9 @@ package xie.animeshotsite.setup;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,12 +43,15 @@ public class ShotSiteSetup {
 	private String animesiteJsDebug;
 
 	/** 不需要进行网站访问统计的IP，一般为一些爬虫或漏洞检测IP */
-	private List<String> excludeIpsRuleList;
+	private List<String> excludeIpsRuleList = new ArrayList<>();;
 
 	/** 指定哪些贴图库网址转成自己的域名 */
 	private String[] tietukuChangeDoman = new String[] {
 			"i1.piimg.com", "i2.piimg.com", "i3.piimg.com", "i4.piimg.com",
 			"i1.buimg.com", "i2.buimg.com", "i3.buimg.com", "i4.buimg.com" };
+
+	/** 指定哪些贴图库网址转换方式 */
+	private Map<String, String> tietukuDomainConvert = new LinkedHashMap<>();
 
 	/** 百度翻译appid */
 	// @Value("#{" + XSpringConstants.SPRING_PROPERTIES_ID + "['baidu.translate.appid']}")
@@ -81,7 +86,7 @@ public class ShotSiteSetup {
 		return animesiteJsDebug;
 	}
 
-	public List<String> getExcludeIpsRuleList() {
+	public final List<String> getExcludeIpsRuleList() {
 		return excludeIpsRuleList;
 	}
 
@@ -102,6 +107,45 @@ public class ShotSiteSetup {
 
 	public void setTietukuChangeDoman(String[] tietukuChangeDoman) {
 		this.tietukuChangeDoman = tietukuChangeDoman;
+	}
+
+	public final Map<String, String> getTietukuDomainConvert() {
+		return tietukuDomainConvert;
+	}
+
+	public void setTietukuDomainConvert(Map<String, String> tietukuDomainConvert) {
+		this.tietukuDomainConvert = tietukuDomainConvert;
+	}
+
+	/**
+	 * 读取贴图库网址转换方式文件
+	 */
+	public void resetTietukuDomainConvert(HttpServletRequest httpServletRequest) {
+		tietukuDomainConvert.clear();
+
+		try {
+			String filePath = httpServletRequest.getServletContext().getRealPath("/WEB-INF/resources/tietukuDomainConvert.conf");
+			List<String> strList = XFileWriter.readList(filePath);
+			logger.info("读取贴图库网址转换方式文件[{}]成功，当前行数：{}", filePath, strList.size());
+			logger.info("开始重新生成数据");
+
+			for (String domainConvert : strList) {
+				if (domainConvert == null) {
+					continue;
+				}
+
+				String[] domainConvertArray = domainConvert.split("-->");
+				if (domainConvertArray.length != 2) {
+					continue;
+				}
+
+				tietukuDomainConvert.put(domainConvertArray[0], domainConvertArray[1]);
+			}
+
+			logger.info("生成成功");
+		} catch (IOException e) {
+			logger.error("读取排除文件发生异常", e);
+		}
 	}
 
 	public String getBaiduTranslateAppid() {

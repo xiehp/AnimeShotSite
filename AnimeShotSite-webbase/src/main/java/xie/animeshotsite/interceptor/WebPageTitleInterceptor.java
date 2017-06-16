@@ -332,6 +332,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 		// 读取排除文件内容
 		if (shotSiteSetup.getExcludeIpsRuleList() == null) {
 			shotSiteSetup.resetExcludeIpsRuleList(request);
+			shotSiteSetup.resetTietukuDomainConvert(request);
 		}
 
 		// 查询是否排除
