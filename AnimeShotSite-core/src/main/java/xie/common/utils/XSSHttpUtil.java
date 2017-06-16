@@ -1,6 +1,8 @@
 package xie.common.utils;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -135,6 +137,21 @@ public class XSSHttpUtil {
 	}
 
 	/**
+	 * 获得url中的主机名
+	 * 
+	 * @param url
+	 * @return null，未找到或格式不正确
+	 */
+	public static String getHost(final String urlStr) {
+		try {
+			URL url = new URL(urlStr);
+			return url.getHost();
+		} catch (MalformedURLException e) {
+			return null;
+		}
+	}
+
+	/**
 	 * 将贴图库的url改为本站url
 	 * 
 	 * @param url
@@ -162,6 +179,43 @@ public class XSSHttpUtil {
 		url = XSSHttpUtil.changeToHttp(url);
 
 		return url;
+	}
+
+	/**
+	 * 将贴图库url中的domain改为指定domain
+	 * 
+	 * @param url
+	 * @param newDomain
+	 * @param domainConvertMap
+	 * @return
+	 */
+	public static String convertTietukuDomain(final String url, final Map<String, String> domainConvertMap) {
+		if (XStringUtils.isBlank(url)) {
+			return url;
+		}
+
+		if (domainConvertMap == null || domainConvertMap.size() == 0) {
+			return url;
+		}
+
+		String host = getHost(url);
+		if (host == null) {
+			return url;
+		}
+
+		String toHost = domainConvertMap.get(host);
+		if (XStringUtils.isBlank(toHost)) {
+			return url;
+		}
+		toHost = toHost.trim();
+
+		// 改变域名
+		String newUrl = url.replaceFirst("[a-z0-9]+\\.[a-z0-9]+\\.[a-z]+", toHost);
+
+		// 由于cdn的https收费，图片链接改为http
+		newUrl = XSSHttpUtil.changeToHttp(newUrl);
+
+		return newUrl;
 	}
 
 	private static String getPortByProtocol(final String protocol, final Map<String, String> portMap) {

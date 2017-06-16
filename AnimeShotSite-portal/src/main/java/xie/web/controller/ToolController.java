@@ -63,6 +63,9 @@ public class ToolController extends BaseController {
 		// 重新获取排除IP地址
 		shotSiteSetup.resetExcludeIpsRuleList(request);
 
+		// 重新读取贴图库网址转换方式文件
+		shotSiteSetup.resetTietukuDomainConvert(request);
+
 		return map;
 	}
 
