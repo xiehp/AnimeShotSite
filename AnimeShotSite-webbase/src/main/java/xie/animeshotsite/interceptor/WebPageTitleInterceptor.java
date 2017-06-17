@@ -235,10 +235,10 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 				String httpScheme = XSSHttpUtil.getForwardedRemoteProto(request);
 				String portStr = XSSHttpUtil.getForwardedServerPort(request);
 				String serverName = XSSHttpUtil.getForwardedServerName(request);
-				if (!"localhost".equals(serverName)) {
+				if (!"127.0.0.1".equals(serverName) && !"localhost".equals(serverName) && !serverName.startsWith("192.168.4.")) {
 					serverName = shotSiteSetup.getAnimesiteServerHost();
 				}
-				if (XStringUtils.isBlank(serverName) || "localhost".equals(serverName)) {
+				if (XStringUtils.isBlank(serverName) || "127.0.0.1".equals(serverName) || "localhost".equals(serverName) || serverName.startsWith("192.168.4.")) {
 					// 获取访问host和port，主要用于本地调试
 					serverName = XSSHttpUtil.getForwardedServerName(request);
 
