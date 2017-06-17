@@ -96,18 +96,9 @@ body {
 
 <script src="${ ctx }/static/js/shotView.js" type="text/javascript"></script>
 <script src="${ ctx }/static/plugins/subtitle/ass.js" type="text/javascript"></script>
+<!-- 
 <script src="${ ctx }/static/plugins/subtitle/[Kamigami] Sailor Moon Crystal - 01 [1920x1080 x264 AAC Sub(Chs,Cht,Jap)]_track3_und.ass" type="text/javascript"></script>
-
-<script type="text/javascript">
-	
-	
-	
-	
-	
-</script>
-
-
-
+ -->
 </head>
 
 <script type="text/javascript">
