@@ -25,8 +25,17 @@
 	//request.setAttribute("paramStr", paramStr);
 
 	String searchName = request.getParameter("name");
+	if (searchName == null) {
+		searchName = "";
+	}
 	String searchKeyword = request.getParameter("keyword");
+	if (searchKeyword == null) {
+		searchKeyword = "";
+	}
 	String searchKey1Value = request.getParameter(searchKey1);
+	if (searchKey1Value == null) {
+		searchKey1Value = "";
+	}
 
 	StringBuilder searchStr = new StringBuilder(200);
 	searchStr.append("?");

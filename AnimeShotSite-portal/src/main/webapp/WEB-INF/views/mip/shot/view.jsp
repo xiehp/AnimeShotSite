@@ -61,7 +61,7 @@
 		</div>
 	</div>
 
-	<div>
+	<div class="width-98">
 		<!-- 图片 -->
 		<div id="shotImgDiv" class="thumbnail shotImgDivStyle" data-ImageAspectRatio="${ImageAspectRatio}">
 			<c:if test="${not empty previousShotInfo.id}">

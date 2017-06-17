@@ -68,6 +68,11 @@
 	height: 0;
 }
 
+/* 菜单高度 */
+.mip-nav-wrapper #bs-navbar .navbar-nav li {
+	line-height: 30px !important;
+}
+
 .languageChangeLi {
 	margin: auto;
 }
@@ -193,7 +198,7 @@
 	margin-top: 50px;
 }
 
-.blockTitle>.count {
+.blockTitle .count {
 	margin-left: 10px;
 	font-size: 12px;
 }
@@ -273,7 +278,6 @@
 <c:set var="shotImgHeightStyle" value="height: ${shotImgHeight};" />
  */
 .shotImgDivStyle {
-	width: 98vw;
 	position: relative;
 	margin-bottom: 10px;
 }
@@ -471,6 +475,18 @@
 .color-lightgray {
 	color: lightgray;
 }
+
+.width-95 {
+	width: 95%;
+}
+
+.width-96 {
+	width: 96%;
+}
+
+.width-98 {
+	width: 98%;
+}
 </style>
 
 </head>
@@ -504,8 +520,6 @@
 	<script src="https://mipcache.bdstatic.com/static/v1/mip-accordion/mip-accordion.js"></script>
 	<script src="http://mipcache.bdstatic.com/static/v1/mip-list/mip-list.js"></script>
 	<script src="https://mipcache.bdstatic.com/static/v1/mip-mustache/mip-mustache.js"></script>
-
-
-
+	<script src="https://mipcache.bdstatic.com/static/v1/mip-form/mip-form.js"></script>
 </body>
 </html>

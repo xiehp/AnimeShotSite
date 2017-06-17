@@ -30,7 +30,12 @@
 <div>
 	<!-- 标题 -->
 	<div class="shotList-blockTitle">
-		<h1><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <small ><c:out value='${animeEpisode.title}' /></small></h1>
+		<h1>
+			<c:out value='${animeInfo.fullName}' />
+			<c:out value='${animeInfo.secondName}' />
+			<c:out value='${animeEpisode.divisionName}' />
+			<small><c:out value='${animeEpisode.title}' /></small>
+		</h1>
 		<c:if test="${1 != 1 and not empty animeEpisode.summary and shotInfoPage.number == 0}">
 			<button type="button" class="btn btn-rimary btn-xs" data-toggle="collapse" data-target="#episodeSmmary">
 				<spring:message code='显示剧集简介' />
@@ -38,15 +43,13 @@
 		</c:if>
 	</div>
 
-	<div class="text-align-left">
+	<div class="text-align-left width-95">
 		<!-- 剧集简介 -->
-		<div class="col-md-12">
-			<div id="episodeSmmary" class="collapse">
-				<c:if test="${not empty animeEpisode.summary and shotInfoPage.number == 0}">
-					<spring:message code='剧情介绍' />：
+		<div id="episodeSmmary" class="collapse">
+			<c:if test="${not empty animeEpisode.summary and shotInfoPage.number == 0}">
+				<spring:message code='剧情介绍' />：
 					${animeEpisode.summary}
 				</c:if>
-			</div>
 		</div>
 	</div>
 
@@ -87,7 +90,7 @@
 	</a>
 </div>
 
-<div class="margin-top-50px">
+<div class="margin-top-50px width-98">
 	<c:if test="${!empty subtitleLineList}">
 		<div class="blod">
 			<spring:message code='动画字幕台词一览' />

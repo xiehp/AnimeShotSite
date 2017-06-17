@@ -14,7 +14,7 @@
 
 
 <div class="row-fluid">
-	<div class="row">
+	<div class="row width-95">
 		<!-- 图片 -->
 		<div class="col-sm-4 col-xs-12">
 			<mip-img src="${animeInfo.titleUrl.urlL}" width="98%" alt="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' />" /></mip-img>

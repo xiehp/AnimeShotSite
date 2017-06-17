@@ -17,10 +17,10 @@
 <div>
 	<div id="最新动画剧集一览">
 		<div class="blockTitle">
-			<span><spring:message code='最新动画剧集一览' /></span> <span class="count"> <a href="${siteBaseUrl}/anime">
-					<spring:message code='当前剧集总数' />
-					：${animeEpisodeCount}
-				</a></span>
+			<a href="${siteBaseUrl}/mip/anime">
+				<span><spring:message code='最新动画剧集一览' /></span> <span class="count"> <spring:message code='当前剧集总数' /> ：${animeEpisodeCount}
+				</span>
+			</a>
 		</div>
 		<div>
 			<c:forEach items="${ animeEpisodeList }" var="animeEpisode" end="35">
@@ -43,7 +43,9 @@
 
 	<div id="推荐动漫图片">
 		<div class="blockTitle">
-			<span><spring:message code='推荐动漫图片' /></span>
+			<a href="${siteBaseUrl}/mip/shot/recommend">
+				<span><spring:message code='推荐动漫图片' /></span>
+			</a>
 		</div>
 		<div>
 			<c:forEach items="${ masterRecommandShotList }" var="shot" varStatus="status" end="29">
@@ -114,7 +116,9 @@
 
 	<div id="最新截图展示">
 		<div class="blockTitle">
-			<span><spring:message code='动画列表一览' /></span>
+			<a href="${siteBaseUrl}/mip/anime">
+				<span><spring:message code='动画列表一览' /></span>
+			</a>
 		</div>
 		<div>
 			<c:forEach items="${ animeInfoPage.content }" var="anime">
@@ -132,7 +136,10 @@
 	</div>
 
 	<div align="left">
-		<h1 class="font-size-16px"><spring:message code='动画截图网' /> <spring:message code='本站说明' /></h1>
+		<h1 class="font-size-16px">
+			<spring:message code='动画截图网' />
+			<spring:message code='本站说明' />
+		</h1>
 		<p class="font-size-14px">
 			<spring:message code='本站说明具体内容' />
 		</p>
