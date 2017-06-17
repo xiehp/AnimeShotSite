@@ -72,13 +72,13 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 			String hostName = XSSHttpUtil.getForwardedServerName(request);
 			String remoteIp = XSSHttpUtil.getForwardedRemoteIpAddr(request);
 
-			if ("127.0.0.1".equals(hostName) || "localhost".equals(hostName)) {
+			if ("127.0.0.1".equals(hostName) || "localhost".equals(hostName) || hostName.startsWith("192.168.4.")) {
 				// 来自本地，则不做跳转
 			} else if ("XXXXX".equals(hostName)) {
 				// 其他不需要跳转的host
 			} else {
 				if (!shotSiteSetup.getAnimesiteServerHost().startsWith(hostName)) {
-					if (hostName.contains("acgimage.cn") || hostName.contains("acgimage.com")) {
+					if (hostName.endsWith("acgimage.cn") || hostName.endsWith("acgimage.com")) {
 						// serverName不符合配置文件设定的值，进行跳转
 						logger.warn("当前主机地址不符合访问规则，跳转到www域名。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
 						System.err.println("当前主机地址不符合访问规则，跳转到www域名。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
