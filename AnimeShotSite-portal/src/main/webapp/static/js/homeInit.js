@@ -210,7 +210,7 @@ lazyRun(function() {
 	} else {
 		$(".quickShareDivClass").hide();
 	}
-});
+}, 100);
 
 /** herf标签实现form提交 */
 lazyRun(function() {
@@ -222,7 +222,7 @@ lazyRun(function() {
 			formTag.submit();
 		}
 	});
-});
+}, 100);
 
 // 以下代码部分改为直接运行，而不是加载后运行
 // 百度收录推送
@@ -239,7 +239,7 @@ if (canBaiduIndex) {
 			var s = document.getElementsByTagName("script")[0];
 			s.parentNode.insertBefore(bp, s);
 		})();
-	});
+	}, 100);
 }
 
 // 360收录推送
@@ -257,12 +257,12 @@ if (canBaiduIndex) {
 			firstScript.parentNode.insertBefore(script, firstScript);
 			*/
 		})();
-	});
+	}, 100);
 }
 
 if (canBaiduRecord) {
+	// 百度统计
 	lazyRun(function() {
-		// 百度统计
 		var _hmt = _hmt || [];
 		(function() {
 			var hm = document.createElement("script");
@@ -270,7 +270,7 @@ if (canBaiduRecord) {
 			var s = document.getElementsByTagName("script")[0];
 			s.parentNode.insertBefore(hm, s);
 		})();
-	});
+	}, 100);
 
 	// 腾讯分析
 	/*
@@ -279,37 +279,29 @@ if (canBaiduRecord) {
 
 	// 站长统计
 	(function() {
+		/*
 		var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
 		document.write(unescape("%3Cspan id='cnzz_stat_icon_1259030003'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol
 				+ "s95.cnzz.com/z_stat.php%3Fid%3D1259030003%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
-
-		//声明_czc对象:
-		var _czc = _czc || [];
-		//绑定siteid，请用您的siteid替换下方"XXXXXXXX"部分
-		_czc.push(["_setAccount", "1259030003"]);
-
-		/*
-		// 改为加载后运行
-		var span = document.createElement('span');
-		span.id = "cnzz_stat_icon_1259030003";
-		var body = document.getElementsByTagName("body")[0];
-		body.appendChild(span);
-
-		var script = document.createElement('script');
-		script.src = document.location.protocol + "//s95.cnzz.com/z_stat.php%3Fid%3D1259030003%26online%3D1%26show%3Dline";
-		var firstScript = document.getElementsByTagName("script")[0];
-		firstScript.parentNode.insertBefore(script, firstScript);
 		*/
 
 		lazyRun(function() {
+			// 改为加载后运行
+			loadScript("//s95.cnzz.com/z_stat.php?id=1259030003&web_id=1259030003");
+
 			// 隐藏站长统计
 			if (!IS_MASTER) {
 				$("#cnzz_stat_icon_1259030003").attr("style", "display:none")
 				setTimeout(function() {
-					$("#cnzz_stat_icon_1259030003").remove();
+					// $("#cnzz_stat_icon_1259030003").remove();
 				}, 5000);
 			}
-		});
+
+			// 声明_czc对象:
+			var _czc = _czc || [];
+			// 绑定siteid，请用您的siteid替换下方"XXXXXXXX"部分
+			_czc.push([ "_setAccount", "1259030003" ]);
+		}, 100);
 	})();
 
 	// 360分析
@@ -321,7 +313,7 @@ if (canBaiduRecord) {
 			var scriptNode = document.getElementsByTagName("script")[0];
 			scriptNode.parentNode.insertBefore(script360, scriptNode);
 		})();
-	});
+	}, 100);
 	*/
 }
 

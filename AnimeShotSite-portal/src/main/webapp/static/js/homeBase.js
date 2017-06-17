@@ -910,29 +910,33 @@ function loadStyles(url) {
  * 动态加载js脚本文件
  */
 function loadScript(url, successCallback) {
-	// var script = document.createElement("script");
-	// script.type = "text/javascript";
-	// script.src = url;
-	// document.body.appendChild(script);
-
-	$.ajax({
-		url : url,
-		success : function(code) {
-			var script = document.createElement("script");
-			script.type = "text/javascript";
-			try {
-				// firefox、safari、chrome和Opera
-				script.appendChild(document.createTextNode(code));
-			} catch (ex) {
-				// IE早期的浏览器 ,需要使用script的text属性来指定javascript代码。
-				script.text = code;
+	if (successCallback == null) {
+		// 没有回调，则直接嵌入标签
+		var script = document.createElement("script");
+		script.type = "text/javascript";
+		script.src = url;
+		document.body.appendChild(script);
+	} else {
+		// 需要回调，则走ajax
+		$.ajax({
+			url : url,
+			success : function(code) {
+				var script = document.createElement("script");
+				script.type = "text/javascript";
+				try {
+					// firefox、safari、chrome和Opera
+					script.appendChild(document.createTextNode(code));
+				} catch (ex) {
+					// IE早期的浏览器 ,需要使用script的text属性来指定javascript代码。
+					script.text = code;
+				}
+				document.body.appendChild(script);
+				if (successCallback) {
+					successCallback();
+				}
 			}
-			document.body.appendChild(script);
-			if (successCallback) {
-				successCallback();
-			}
-		}
-	});
+		});
+	}
 }
 
 /**
