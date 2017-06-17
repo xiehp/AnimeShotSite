@@ -14,7 +14,7 @@
 
 <div>
 	<!-- 搜索框 -->
-	<mip-form url="${ctx}/search" method="get" clear>
+	<mip-form url="${siteBaseUrl}/search" method="get" clear>
 		<!-- 不要提交参数，即使是空
 		<div class="col-sm-12" style="margin-bottom: 20px;">
 			<span style="font-size: 20px;"><spring:message code='请输入要搜索的动画名' /></span>
