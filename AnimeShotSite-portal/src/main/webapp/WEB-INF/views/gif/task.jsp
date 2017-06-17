@@ -49,7 +49,7 @@
 		}
 	}
 
-	$(function() {
+	lazyRun(function() {
 		jqueryAutoComplete("animeNameSearch", "${ctx}/ajaxAutoComplete/getAnimeName", {
 			fillRelation : {
 				"animeInfoId" : "code",

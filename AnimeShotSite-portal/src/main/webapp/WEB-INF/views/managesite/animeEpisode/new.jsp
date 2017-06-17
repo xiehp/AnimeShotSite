@@ -49,7 +49,7 @@
 		});
 	}
 
-	$(function() {
+	lazyRun(function() {
 		$("#mainForm").find("input[name]").each(function() {
 			var params = {};
 			params.name = $(this).attr("name");

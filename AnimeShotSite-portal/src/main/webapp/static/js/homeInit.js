@@ -100,7 +100,7 @@
 })();
 
 // 表格内容滚动
-$(function() {
+lazyRun(function() {
 	// 设置表格属性
 	var jqueryTable = $(".table-body-scroll");
 	if (jqueryTable.length > 0) {
@@ -171,7 +171,7 @@ $(function() {
 });
 
 // 百度分享代码
-$(function() {
+lazyRun(function() {
 	var sslFlag = document.location.protocol == "https:" ? true : false; // 当前分享代码不支持https
 	var bdsharebuttonbox = $(".bdsharebuttonbox");
 	if (!sslFlag && bdsharebuttonbox.length > 0) {
@@ -213,7 +213,7 @@ $(function() {
 });
 
 /** herf标签实现form提交 */
-$(function() {
+lazyRun(function() {
 	$(".postByFrom").on("click", function(event) {
 		var formTag = $(this).closest("form");
 		if (formTag != null) {
@@ -227,7 +227,7 @@ $(function() {
 // 以下代码部分改为直接运行，而不是加载后运行
 // 百度收录推送
 if (canBaiduIndex) {
-	$(function() {
+	lazyRun(function() {
 		(function() {
 			var bp = document.createElement('script');
 			var curProtocol = window.location.protocol.split(':')[0];
@@ -244,7 +244,7 @@ if (canBaiduIndex) {
 
 // 360收录推送
 if (canBaiduIndex) {
-	$(function() {
+	lazyRun(function() {
 		(function() {
 			// var src = document.location.protocol + '//js.passport.qihucdn.com/11.0.1.js?a1d5ba23049ed1de4d6a6aa4db2557c6';
 			// document.write('<script src="' + src + '" id="sozz"><\/script>');
@@ -260,12 +260,8 @@ if (canBaiduIndex) {
 	});
 }
 
-lazyRun(function() {
-	console.log(3000);
-}, 3000);
-
 if (canBaiduRecord) {
-	$(function() {
+	lazyRun(function() {
 		// 百度统计
 		var _hmt = _hmt || [];
 		(function() {
@@ -305,7 +301,7 @@ if (canBaiduRecord) {
 		firstScript.parentNode.insertBefore(script, firstScript);
 		*/
 
-		$(function() {
+		lazyRun(function() {
 			// 隐藏站长统计
 			if (!IS_MASTER) {
 				$("#cnzz_stat_icon_1259030003").attr("style", "display:none")
@@ -318,7 +314,7 @@ if (canBaiduRecord) {
 
 	// 360分析
 	/*
-	$(function() {
+	lazyRun(function() {
 		(function() {
 			var script360 = document.createElement("script");
 			script360.src = "//s.union.360.cn/67006.js";
@@ -332,7 +328,7 @@ if (canBaiduRecord) {
 /**
  * 语言菜单初始化操作
  */
-$(function() {
+lazyRun(function() {
 	// 加载amazonmenu的js和css
 	loadStyles(global.ctx + "/static/plugins/menu/amazonmenu/amazonmenu.css");
 	loadScript(global.ctx + "/static/plugins/menu/amazonmenu/amazonmenu.js", function() {
@@ -439,4 +435,4 @@ $(function() {
 			}
 		});
 	}
-})
+}, 500)

@@ -43,7 +43,7 @@
 	</div>
 	<script type="text/javascript" src="${ctx}/static/js/uploadify/jquery.uploadify.min.js"></script>
 	<script type="text/javascript">
-		$(function() {
+		lazyRun(function() {
 			$('#fileUpload').uploadify({
 				swf : '${ctx}/static/js/uploadify/uploadify.swf',
 				fileObjName : "fileUpload",

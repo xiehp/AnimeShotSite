@@ -72,7 +72,7 @@ body {
 
 <script type="text/javascript">
 	// 复制按钮
-	$(function() {
+	lazyRun(function() {
 		$(".ZeroClipboardButton").each(function() {
 			initZeroClipboard(this, "复制成功-_-", "复制失败，\n请手动复制");
 		});
@@ -80,7 +80,7 @@ body {
 
 	var originalImg = null; // 原始图片
 
-	$(function() {
+	lazyRun(function() {
 		// 将cookie放到input中
 		readCookieAndSetWidth();
 

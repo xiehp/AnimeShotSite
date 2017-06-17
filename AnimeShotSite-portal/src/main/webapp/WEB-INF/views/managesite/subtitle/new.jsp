@@ -52,7 +52,7 @@
 		});
 	}
 
-	$(function() {
+	lazyRun(function() {
 		// 初始化input,select的更新按钮
 		$("#mainForm").find("select,input[name]").each(function() {
 			var params = {};

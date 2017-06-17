@@ -937,13 +937,13 @@ function loadScript(url, successCallback) {
 
 /**
  * 使用$(function() {})延迟加载，在文档加载后才计时<br>
- * 由于使用timeout做定时器，不能保证100%先后关系
+ * PS：当延迟时间>=0时，由于使用timeout做定时器，不能保证100%先后关系。
  * 
- * @Parm timeout 默认100毫秒，该值<0时，和$(function() {})处于同一队列
+ * @Parm timeout 该值<0时，和$(function() {})处于同一队列
  */
 function lazyRun(fun, timeout) {
 	if (timeout == null) {
-		timeout = 100;
+		timeout = -1;
 	}
 
 	$(function() {

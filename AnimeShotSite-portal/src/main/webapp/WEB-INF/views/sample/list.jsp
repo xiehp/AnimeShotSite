@@ -117,7 +117,7 @@
 <!-- END PAGE CONTENT-->
 </div>
 <script type="text/javascript">
-$(function(){
+lazyRun(function(){
 	$('.sample-del-btn').on('click', function(){
 		var id = $(this).data('id');
 		showComfirmAlert('确定要删除该数据吗?', function() {

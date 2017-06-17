@@ -29,7 +29,7 @@ body {
 </head>
 
 <script type="text/javascript">
-	$(function() {
+	lazyRun(function() {
 		// 如果数据有高级设置，则展示高级设置的数据
 		if ($("#advancedSettingFlag").val() == "1") {
 			$("#advancedSettingDiv").show();

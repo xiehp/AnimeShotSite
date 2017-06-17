@@ -89,8 +89,9 @@
 <script src="${ staticResourceUrl }jquery-cookie/${jqueryCookieVersion}/jquery.cookie.min.js" type="text/javascript"></script>
 <script src="${ staticResourceUrl }jqueryui/${jqueryUiVersion}/jquery-ui.min.js" type="text/javascript"></script>
 
-<!-- other -->
-<script src="${ staticResourceUrl }bootstrap-switch/${bootstrapSwitch}/js//bootstrap-switch.min.js" type="text/javascript"></script>
+<!-- other 
+<script src="${ staticResourceUrl }bootstrap-switch/${bootstrapSwitch}/js/bootstrap-switch.min.js" type="text/javascript"></script>
+-->
 
 <script src="${ ctx }/static/js/homeBase.js" type="text/javascript"></script>
 </head>

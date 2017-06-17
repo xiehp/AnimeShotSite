@@ -86,7 +86,7 @@
 	</div>
 </div>
 <script type="text/javascript">
-$(function(){
+lazyRun(function(){
 	$('#sample-form').validate({
 		errorElement : 'span', // default input error message container
 		errorClass : 'help-block', // default input error message class

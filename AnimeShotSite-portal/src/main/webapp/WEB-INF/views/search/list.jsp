@@ -51,7 +51,7 @@
 		}
 	};
 
-	$(function() {
+	lazyRun(function() {
 		// 初始化动画剧集名自动完成
 		jqueryAutoComplete("animeName", "${ctx}/ajaxAutoComplete/getEpisodeName", {
 			fillRelation : {
@@ -62,7 +62,7 @@
 		});
 	});
 
-	$(function() {
+	lazyRun(function() {
 		$(".enter-search-event").keydown(function(event) {
 			var e = event || window.event || arguments.callee.caller.arguments[0];
 			if (e && e.keyCode == 13) { // enter 键
