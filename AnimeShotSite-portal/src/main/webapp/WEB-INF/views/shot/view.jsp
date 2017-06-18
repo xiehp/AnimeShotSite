@@ -93,24 +93,16 @@ body {
 	color: <c:out value="${subtitleTranslatedTextColor}"></c:out>;
 }
 </style>
+</head>
 
 <script src="${ ctx }/static/js/shotView.js" type="text/javascript"></script>
 <script src="${ ctx }/static/plugins/subtitle/ass.js" type="text/javascript"></script>
 <!-- 
 <script src="${ ctx }/static/plugins/subtitle/[Kamigami] Sailor Moon Crystal - 01 [1920x1080 x264 AAC Sub(Chs,Cht,Jap)]_track3_und.ass" type="text/javascript"></script>
  -->
-</head>
 
 <script type="text/javascript">
-	// 复制按钮
-	lazyRun(function() {
-		$(".ZeroClipboardButton").each(function() {
-			initZeroClipboard(this, "复制成功-_-", "复制失败，\n请手动复制");
-		});
-	});
-
 	var originalImg = null; // 原始图片
-
 	lazyRun(function() {
 		// 将cookie放到input中
 		readCookieAndSetWidth();
@@ -148,7 +140,9 @@ body {
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noLeftRightPadding">
 	<div style="margin-bottom: 3px;">
-		<h1 style="font-size: 14px; margin: 0px;"><c:out value='${EpisodeFullNameWithTime}' /></h1>
+		<h1 style="font-size: 14px; margin: 0px;">
+			<c:out value='${EpisodeFullNameWithTime}' />
+		</h1>
 	</div>
 	<div style="margin-bottom: 3px;">
 		<div class="shotTitleInfo" style="white-space: nowrap; word-break: keep-all;">

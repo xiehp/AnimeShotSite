@@ -127,9 +127,20 @@ function initZeroClipboard(obj, successMessage, failMessage) {
 	};
 }
 
+function initScroll() {
+	// 设置初始滚动条值
+	document.getElementById("scorllTop").value = HomeCookie.getCookie("ShotViewScorllTop");
+	var scorllTop = document.getElementById("scorllTop").value;
+	if (scorllTop != null && scorllTop > 0) {
+		scrollTo(0, scorllTop);
+		$.log("设置初始滚动条高度:" + scorllTop);
+	}
+}
+
 /**
  * 定时执行获取图片的高宽
  */
+var firstScrollFlag = false;
 var checkImgSize = function(imgDomObject, maxCheckCount) {
 	if (maxCheckCount <= 0) {
 		return;
@@ -150,23 +161,7 @@ var checkImgSize = function(imgDomObject, maxCheckCount) {
 		changeShotViewImgWidth()
 
 		// 设置初始滚动条值
-		document.getElementById("scorllTop").value = HomeCookie.getCookie("ShotViewScorllTop");
-		var scorllTop = document.getElementById("scorllTop").value;
-		if (scorllTop != null && scorllTop > 0) {
-			scrollTo(0, scorllTop);
-			$.log("设置初始滚动条高度:" + scorllTop);
-		}
-
-		// 追加滚动事件
-		setTimeout(function() {
-			window.onscroll = function() {
-				var nowScrollTop = document.body.scrollTop;
-				document.getElementById("scorllTop").value = nowScrollTop;
-				HomeCookie.setCookie("ShotViewScorllTop", nowScrollTop);
-				$.log("滚动事件:" + nowScrollTop);
-			};
-			$.log("追加滚动事件");
-		});
+		initScroll();
 
 		// 动态生成左右图片热点
 		window.onresize = reCreateImgHotLink;
@@ -174,6 +169,13 @@ var checkImgSize = function(imgDomObject, maxCheckCount) {
 
 		$.log("读取到图片宽度后处理结束。");
 		return;
+	} else {
+		if (!firstScrollFlag) {
+			firstScrollFlag = true;
+
+			// 设置初始滚动条值
+			initScroll();
+		}
 	}
 
 	maxCheckCount = maxCheckCount - 1;
@@ -194,24 +196,24 @@ function reCreateImgHotLink(width, height) {
 		shotImgMapWidth = width;
 		shotImgMapHeight = height;
 	}
-    var $areaPrev = $("#areaPrev");
-    $areaPrev.attr("coords", "0,0," + shotImgMapWidth / 3 + "," + shotImgMapHeight);
-    var $areaNext = $("#areaNext");
-    $areaNext.attr("coords", shotImgMapWidth / 3 * 2 + ",0," + shotImgMapWidth + "," + shotImgMapHeight);
+	var $areaPrev = $("#areaPrev");
+	$areaPrev.attr("coords", "0,0," + shotImgMapWidth / 3 + "," + shotImgMapHeight);
+	var $areaNext = $("#areaNext");
+	$areaNext.attr("coords", shotImgMapWidth / 3 * 2 + ",0," + shotImgMapWidth + "," + shotImgMapHeight);
 	$.log("图片左热点设置：" + $areaPrev.attr("coords"));
 	$.log("图片右热点设置：" + $areaNext.attr("coords"));
 }
 
 function changeShotViewImgWidth(saveToCookieFlag) {
-    var $ShotViewImgWidth = $("#ShotViewImgWidth");
-    var ShotViewImgWidth = $ShotViewImgWidth.val();
+	var $ShotViewImgWidth = $("#ShotViewImgWidth");
+	var ShotViewImgWidth = $ShotViewImgWidth.val();
 	if (ShotViewImgWidth != null && isNaN(ShotViewImgWidth)) {
 		$ShotViewImgWidth.val("");
 		$.showMessageModal("请输入数字");
 		return;
 	}
 
-    var $shotImgDiv = $("#shotImgDiv");
+	var $shotImgDiv = $("#shotImgDiv");
 	if (ShotViewImgWidth <= 0) {
 		HomeCookie.removeCookie("ShotViewImgWidth");
 		// 设置图片尺寸
@@ -382,3 +384,21 @@ function deleteShotById(id) {
 		});
 	}
 }
+
+//追加滚动事件
+lazyRun(function() {
+	window.onscroll = function() {
+		var nowScrollTop = document.body.scrollTop;
+		document.getElementById("scorllTop").value = nowScrollTop;
+		HomeCookie.setCookie("ShotViewScorllTop", nowScrollTop);
+		$.log("滚动事件:" + nowScrollTop);
+	};
+	$.log("追加滚动事件");
+});
+
+// 复制按钮事件
+lazyRun(function() {
+	$(".ZeroClipboardButton").each(function() {
+		initZeroClipboard(this, "复制成功-_-", "复制失败，\n请手动复制");
+	});
+});
