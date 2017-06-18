@@ -9,4 +9,6 @@
 
 <mip-fixed type="gototop"> <mip-gototop threshold='400'></mip-gototop> </mip-fixed>
 
-<mip-stats-baidu token="292dc181c5dbc431b3ded9d841c0920e"></mip-stats-baidu>
+<c:if test="${canBaiduRecord}">
+	<mip-stats-baidu token="292dc181c5dbc431b3ded9d841c0920e"></mip-stats-baidu>
+</c:if>

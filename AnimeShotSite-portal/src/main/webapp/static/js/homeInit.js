@@ -210,7 +210,7 @@ lazyRun(function() {
 	} else {
 		$(".quickShareDivClass").hide();
 	}
-}, 100);
+}, 300);
 
 /** herf标签实现form提交 */
 lazyRun(function() {
