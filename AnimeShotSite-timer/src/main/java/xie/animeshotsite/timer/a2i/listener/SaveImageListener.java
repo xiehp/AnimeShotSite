@@ -232,4 +232,31 @@ public class SaveImageListener extends Video2ImageAdapter {
 
 		// TODO 其他网站
 	}
+
+	/**
+	 * 如果截图数量符合预期，则返回true
+	 */
+	@Override
+	public boolean canSuccessExit(long timeInterval) {
+		if (timeInterval <= 0) {
+			return false;
+		}
+
+		long totalTime = getTotalTime();
+		if (totalTime <= 0) {
+			return false;
+		}
+
+		int count = shotInfoDao.countByAnimeEpisodeId(animeEpisodeId);
+		if (count <= 0) {
+			return false;
+		}
+
+		int expectedCount = (int) (totalTime / timeInterval);
+		if (count <= expectedCount) {
+			return false;
+		}
+
+		return true;
+	}
 }
