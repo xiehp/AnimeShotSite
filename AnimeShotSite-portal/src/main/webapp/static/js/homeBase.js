@@ -896,6 +896,16 @@ Date.prototype.Format = function(fmt) {
 }
 
 /**
+ * 动态加载img文件
+ */
+function loadImg(url) {
+	var link = document.createElement("img");
+	link.src = url;
+	link.style = "display:none;";
+	document.body.appendChild(link);
+}
+
+/**
  * 动态加载css文件
  */
 function loadStyles(url) {

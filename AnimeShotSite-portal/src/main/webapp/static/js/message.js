@@ -100,7 +100,6 @@ var Message = function() {
 		var escapeContent = escapeContentByOption(content, options);
 
 		var layerOptions = {
-			title : title,
 			move : false,
 			closeBtn : 0
 		};
@@ -202,6 +201,7 @@ var Message = function() {
 	return {
 		alert : alert,
 		confirm : confirm,
+		msg : msg,
 		custom : custom,
 		openPage : openPage,
 		closeAll : closeAll,

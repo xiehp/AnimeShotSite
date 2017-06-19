@@ -4,6 +4,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
@@ -92,6 +93,22 @@ body {
 	font-size: <c:out value="${subtitleTranslatedTextFontsize}"></c:out>;
 	color: <c:out value="${subtitleTranslatedTextColor}"></c:out>;
 }
+
+.shotImgDivStyle {
+	position: relative;
+	margin-bottom: 10px;
+}
+
+.shotImgDivStyle #shotImg {
+	
+}
+
+.shotImgHotPoint {
+	height: 100%;
+	width: 40%;
+	position: absolute;
+	z-index: 2;
+}
 </style>
 </head>
 
@@ -136,6 +153,20 @@ body {
 			</c:forEach>
 		});
 	});
+
+	// 加载前后图片
+	<c:if test="${not empty previousShotInfo.id}">
+	lazyRun(function() {
+		loadImg("${PreFullImageUrl}");
+	}, 100);
+	</c:if>
+
+	// 加载前后图片
+	<c:if test="${not empty nextShotInfo.id}">
+	lazyRun(function() {
+		loadImg("${NextFullImageUrl}");
+	}, 200);
+	</c:if>
 </script>
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noLeftRightPadding">
@@ -162,10 +193,20 @@ body {
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noLeftRightPadding">
 			<!-- 图片 -->
 			<div id="shotImgDiv" class="thumbnail shotImgDivStyle" data-ImageAspectRatio="${ImageAspectRatio}" style="margin-bottom: 10px;<c:if test="${ShotImgDivWidth > 0}">width: ${ShotImgDivWidth}px; height: ${DivPaddingBorderHeight + (ShotImgDivWidth-DivPaddingBorderWidth) * ImageAspectRatio}px;</c:if>">
-				<script>
-					readCookieAndSetWidth(true);
-				</script>
-				<img id="shotImg" src="${FullImageUrl}" alt="<c:out value='${EpisodeFullNameWithTime}' />" title="<c:out value='${EpisodeFullNameWithTime}' />" usemap="#planetmap">
+				<img id="shotImg" src="${FullImageUrl}" alt="<c:out value='${EpisodeFullNameWithTime}' /> <c:out value="${fn:substring(subtitleLineTextStr100, 0, 50)}" />">
+
+				<c:if test="${not empty previousShotInfo.id}">
+					<a class="shotImgHotPoint left-0 top-0" href="${ctx}/shot/view/${previousShotInfo.id}"></a>
+				</c:if>
+				<c:if test="${empty previousShotInfo.id}">
+					<a class="shotImgHotPoint left-0 top-0" href="javascript:Message.msg('<spring:message code='没有上一张' />');" title="<spring:message code='没有上一张' />"></a>
+				</c:if>
+				<c:if test="${not empty nextShotInfo.id}">
+					<a class="shotImgHotPoint right-0 top-0" href="${ctx}/shot/view/${nextShotInfo.id}"></a>
+				</c:if>
+				<c:if test="${empty nextShotInfo.id}">
+					<a class="shotImgHotPoint right-0 top-0" href="javascript:Message.msg('<spring:message code='已经是最后一张了' />');" title="<spring:message code='已经是最后一张了' />"></a>
+				</c:if>
 			</div>
 			<!-- 字幕 -->
 			<c:if test="${!empty subtitleLineList}">
@@ -181,19 +222,6 @@ body {
 				</table>
 			</c:if>
 		</div>
-
-
-		<!-- 热点 -->
-		<map id="planetmap" name="planetmap">
-			<c:if test="${!empty previousShotInfo.id}">
-				<area id="areaPrev" class="postByFromXXX" shape="rect" coords="0,0,${coordsWidth/3},${coordsHeight}" href="${ctx}/shot/view/${previousShotInfo.id}" title="<spring:message code='上一张' />" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${previousShotInfo.formatedTimeChina}' />" />
-				<img style="display: none;" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${previousShotInfo.formatedTimeChina}' />" src="${PreFullImageUrl}">
-			</c:if>
-			<c:if test="${!empty nextShotInfo.id}">
-				<area id="areaNext" class="postByFromXXX" shape="rect" coords="${coordsWidth/3*2},0,${coordsWidth},${coordsHeight}" href="${ctx}/shot/view/${nextShotInfo.id}" title="<spring:message code='下一张' />" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${nextShotInfo.formatedTimeChina}' />" />
-				<img src="${NextFullImageUrl}" style="display: none;" alt="<c:out value='${EpisodeFullName}' /> <c:out value='${nextShotInfo.formatedTimeChina}' />">
-			</c:if>
-		</map>
 	</div>
 </div>
 

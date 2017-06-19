@@ -238,6 +238,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		}
 		String subtitleLineTextStr = subtitleLineTextStrSb.toString();
 		model.addAttribute("subtitleLineTextStr", subtitleLineTextStr);
+		model.addAttribute("subtitleLineTextStr50", StringUtils.substring(subtitleLineTextStr.toString(), 0, 50));
 		model.addAttribute("subtitleLineTextStr100", StringUtils.substring(subtitleLineTextStr.toString(), 0, 100));
 		model.addAttribute("subtitleLineTextStr200", StringUtils.substring(subtitleLineTextStr.toString(), 0, 200));
 		model.addAttribute("subtitleLineTextStr500", StringUtils.substring(subtitleLineTextStr.toString(), 0, 500));

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -48,7 +49,9 @@
 
 <div>
 	<div class="margin-bottom-3px">
-		<h1 class="font-size-14px margin-0"><c:out value='${EpisodeFullNameWithTime}' /></h1>
+		<h1 class="font-size-14px margin-0">
+			<c:out value='${EpisodeFullNameWithTime}' />
+		</h1>
 	</div>
 	<div class="margin-bottom-3px">
 		<div class="shotTitleInfo">
@@ -64,22 +67,22 @@
 	<div class="width-98">
 		<!-- 图片 -->
 		<div id="shotImgDiv" class="thumbnail shotImgDivStyle" data-ImageAspectRatio="${ImageAspectRatio}">
+			<mip-img id="shotImg" class="shotImg" src="${FullImageUrl}" alt="<c:out value='${EpisodeFullNameWithTime}' /> <c:out value="${fn:substring(subtitleLineTextStr100, 0, 50)}" />"></mip-img>
+
 			<c:if test="${not empty previousShotInfo.id}">
-				<a class="shotImgHotPoint left-0" href="${siteBaseUrl}/mip/shot/view/${previousShotInfo.id}" title="<spring:message code='上一张' />"> </a>
+				<a class="shotImgHotPoint left-0 top-0" href="${siteBaseUrl}/mip/shot/view/${previousShotInfo.id}"></a>
+				<mip-img src="${PreFullImageUrl}" class="display-none"></mip-img>
 			</c:if>
 			<c:if test="${empty previousShotInfo.id}">
-				<div class="shotImgHotPoint left-0" title="<spring:message code='没有上一张' />"> </div>
+				<div class="shotImgHotPoint left-0 top-0" title="<spring:message code='没有上一张' />"></div>
 			</c:if>
 			<c:if test="${not empty nextShotInfo.id}">
-				<a class="shotImgHotPoint right-0" href="${siteBaseUrl}/mip/shot/view/${nextShotInfo.id}" title="<spring:message code='下一张' />"></a>
+				<a class="shotImgHotPoint right-0 top-0" href="${siteBaseUrl}/mip/shot/view/${nextShotInfo.id}"></a>
+				<mip-img src="${NextFullImageUrl}" class="display-none"></mip-img>
 			</c:if>
 			<c:if test="${empty nextShotInfo.id}">
-				<div class="shotImgHotPoint right-0" title="<spring:message code='已经是最后一张了' />"> </div>
+				<div class="shotImgHotPoint right-0 top-0" title="<spring:message code='已经是最后一张了' />"></div>
 			</c:if>
-			<mip-img id="shotImg" class="shotImg" src="${FullImageUrl}" alt="<c:out value='${EpisodeFullNameWithTime}' />" title="<c:out value='${EpisodeFullNameWithTime}' />"></mip-img>
-
-			<mip-img src="${PreFullImageUrl}" class="display-none"></mip-img>
-			<mip-img src="${NextFullImageUrl}" class="display-none"></mip-img>
 		</div>
 		<!-- 字幕 -->
 		<c:if test="${!empty subtitleLineList}">

@@ -282,6 +282,9 @@
 	margin-bottom: 10px;
 }
 
+.shotImgDivStyle .shotImg {
+}
+
 .shotImgDivStyle .shotImg { ${shotImgHeightStyle
 	
 }
@@ -309,6 +312,10 @@
 
 .right-0 {
 	right: 0;
+}
+
+.top-0 {
+	top: 0;
 }
 
 .ShareLinkDiv {

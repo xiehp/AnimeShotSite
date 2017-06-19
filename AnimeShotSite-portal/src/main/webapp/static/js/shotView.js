@@ -164,8 +164,8 @@ var checkImgSize = function(imgDomObject, maxCheckCount) {
 		initScroll();
 
 		// 动态生成左右图片热点
-		window.onresize = reCreateImgHotLink;
-		reCreateImgHotLink();
+		window.onresize = resizeShotImg;
+		resizeShotImg();
 
 		$.log("读取到图片宽度后处理结束。");
 		return;
@@ -185,23 +185,26 @@ var checkImgSize = function(imgDomObject, maxCheckCount) {
 };
 
 /**
- * 动态生成左右图片热点链接
+ * 改变图像框大小动态生成左右图片热点链接
  */
-function reCreateImgHotLink(width, height) {
-	var jqueryShotImg = $("#shotImg");
-	var shotImg = jqueryShotImg[0];
+function resizeShotImg(width, height) {
+	var $shotImg = $("#shotImg");
+	var shotImg = $shotImg[0];
 	var shotImgMapWidth = shotImg.width;
 	var shotImgMapHeight = shotImg.height;
 	if (width != null && height != null) {
 		shotImgMapWidth = width;
 		shotImgMapHeight = height;
 	}
+
+	/* 热点代码删除
 	var $areaPrev = $("#areaPrev");
 	$areaPrev.attr("coords", "0,0," + shotImgMapWidth / 3 + "," + shotImgMapHeight);
 	var $areaNext = $("#areaNext");
 	$areaNext.attr("coords", shotImgMapWidth / 3 * 2 + ",0," + shotImgMapWidth + "," + shotImgMapHeight);
 	$.log("图片左热点设置：" + $areaPrev.attr("coords"));
 	$.log("图片右热点设置：" + $areaNext.attr("coords"));
+	*/
 }
 
 function changeShotViewImgWidth(saveToCookieFlag) {
@@ -244,7 +247,7 @@ function changeShotViewImgWidth(saveToCookieFlag) {
 		$.log("改变图片div尺寸：" + divWidth + ", " + divHeight);
 	}
 
-	reCreateImgHotLink();
+	resizeShotImg();
 }
 
 function setShotImgDivWidthCookie(value) {
@@ -385,7 +388,7 @@ function deleteShotById(id) {
 	}
 }
 
-//追加滚动事件
+// 追加滚动事件
 lazyRun(function() {
 	window.onscroll = function() {
 		var nowScrollTop = document.body.scrollTop;
