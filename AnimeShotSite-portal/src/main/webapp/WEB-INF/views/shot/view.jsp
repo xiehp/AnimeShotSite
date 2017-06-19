@@ -270,25 +270,18 @@ body {
 </div>
 
 <div id="createShotResultDiv" class="buttonDiv">
+	<spring:message code='获取新截图(单位:秒)' />
 	<c:if test="${!empty previousShotInfo.id}">
-		<a class="btn btn-primary btn-xs postByFromXXX" href="javascript:doCreateShot('${shotInfo.id}', 2000, true);">
-			<spring:message code='获取上2秒' />
-		</a>
+		<a class="btn btn-primary btn-xs postByFromXXX" href="javascript:doCreateShot('${shotInfo.id}', 2000, true);">-2</a>
 	</c:if>
 	<c:if test="${!empty previousShotInfo.id}">
-		<a class="btn btn-primary btn-xs postByFromXXX" href="javascript:doCreateShot('${shotInfo.id}', 1000, true);">
-			<spring:message code='获取上1秒' />
-		</a>
+		<a class="btn btn-primary btn-xs postByFromXXX" href="javascript:doCreateShot('${shotInfo.id}', 1000, true);">-1</a>
 	</c:if>
 	<c:if test="${!empty nextShotInfo.id}">
-		<a class="btn btn-primary btn-xs postByFromXXX" href="javascript:doCreateShot('${shotInfo.id}', 1000, false);">
-			<spring:message code='获取下1秒' />
-		</a>
+		<a class="btn btn-primary btn-xs postByFromXXX" href="javascript:doCreateShot('${shotInfo.id}', 1000, false);">1</a>
 	</c:if>
 	<c:if test="${!empty nextShotInfo.id}">
-		<a class="btn btn-primary btn-xs postByFromXXX" href="javascript:doCreateShot('${shotInfo.id}', 2000, false);">
-			<spring:message code='获取下2秒' />
-		</a>
+		<a class="btn btn-primary btn-xs postByFromXXX" href="javascript:doCreateShot('${shotInfo.id}', 2000, false);">2</a>
 	</c:if>
 </div>
 
