@@ -189,39 +189,37 @@ body {
 	</div>
 
 	<input type="hidden" id="scorllTop" name="scorllTop" value="<c:out value="${scorllTop}" />">
-	<div align="center">
-		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noLeftRightPadding">
-			<!-- 图片 -->
-			<div id="shotImgDiv" class="thumbnail shotImgDivStyle" data-ImageAspectRatio="${ImageAspectRatio}" style="margin-bottom: 10px;<c:if test="${ShotImgDivWidth > 0}">width: ${ShotImgDivWidth}px; height: ${DivPaddingBorderHeight + (ShotImgDivWidth-DivPaddingBorderWidth) * ImageAspectRatio}px;</c:if>">
-				<img id="shotImg" src="${FullImageUrl}" alt="<c:out value='${EpisodeFullNameWithTime}' /> <c:out value="${fn:substring(subtitleLineTextStr100, 0, 50)}" />">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noLeftRightPadding">
+		<!-- 图片 -->
+		<div id="shotImgDiv" class="thumbnail shotImgDivStyle" data-ImageAspectRatio="${ImageAspectRatio}" style="margin-bottom: 10px;<c:if test="${ShotImgDivWidth > 0}">width: ${ShotImgDivWidth}px; height: ${DivPaddingBorderHeight + (ShotImgDivWidth-DivPaddingBorderWidth) * ImageAspectRatio}px;</c:if>">
+			<img id="shotImg" src="${FullImageUrl}" alt="<c:out value='${EpisodeFullNameWithTime}' /> <c:out value="${fn:substring(subtitleLineTextStr100, 0, 50)}" />">
 
-				<c:if test="${not empty previousShotInfo.id}">
-					<a class="shotImgHotPoint left-0 top-0" href="${ctx}/shot/view/${previousShotInfo.id}"></a>
-				</c:if>
-				<c:if test="${empty previousShotInfo.id}">
-					<a class="shotImgHotPoint left-0 top-0" href="javascript:Message.msg('<spring:message code='没有上一张' />');" title="<spring:message code='没有上一张' />"></a>
-				</c:if>
-				<c:if test="${not empty nextShotInfo.id}">
-					<a class="shotImgHotPoint right-0 top-0" href="${ctx}/shot/view/${nextShotInfo.id}"></a>
-				</c:if>
-				<c:if test="${empty nextShotInfo.id}">
-					<a class="shotImgHotPoint right-0 top-0" href="javascript:Message.msg('<spring:message code='已经是最后一张了' />');" title="<spring:message code='已经是最后一张了' />"></a>
-				</c:if>
-			</div>
-			<!-- 字幕 -->
-			<c:if test="${!empty subtitleLineList}">
-				<table class="shotSubtitle" style="margin-top: 0px; margin-bottom: 10px;">
-					<c:forEach items="${subtitleLineList}" var="subtitleLine" varStatus="status">
-						<tr>
-							<td style="font-size: 10px;" class="noBreak" title="${subtitleLine.startTimeMinSecMicro}-${subtitleLine.endTimeMinSecMicro}">${subtitleLine.startTimeMinSec}-${subtitleLine.endTimeMinSec}</td>
-							<td class="subtitleText" data-lang="${subtitleLine.language}" data-text='<c:out value="${subtitleLine.text}" />' data-sign="${empty subtitleLineSignList ? '' : subtitleLineSignList[status.index]}">
-								<c:out value="${subtitleLine.text}" />
-							</td>
-						</tr>
-					</c:forEach>
-				</table>
+			<c:if test="${not empty previousShotInfo.id}">
+				<a class="shotImgHotPoint left-0 top-0" href="${ctx}/shot/view/${previousShotInfo.id}"></a>
+			</c:if>
+			<c:if test="${empty previousShotInfo.id}">
+				<a class="shotImgHotPoint left-0 top-0" href="javascript:Message.msg('<spring:message code='没有上一张' />');" title="<spring:message code='没有上一张' />"></a>
+			</c:if>
+			<c:if test="${not empty nextShotInfo.id}">
+				<a class="shotImgHotPoint right-0 top-0" href="${ctx}/shot/view/${nextShotInfo.id}"></a>
+			</c:if>
+			<c:if test="${empty nextShotInfo.id}">
+				<a class="shotImgHotPoint right-0 top-0" href="javascript:Message.msg('<spring:message code='已经是最后一张了' />');" title="<spring:message code='已经是最后一张了' />"></a>
 			</c:if>
 		</div>
+		<!-- 字幕 -->
+		<c:if test="${!empty subtitleLineList}">
+			<table class="shotSubtitle" style="margin-top: 0px; margin-bottom: 10px;">
+				<c:forEach items="${subtitleLineList}" var="subtitleLine" varStatus="status">
+					<tr>
+						<td style="font-size: 10px;" class="noBreak" title="${subtitleLine.startTimeMinSecMicro}-${subtitleLine.endTimeMinSecMicro}">${subtitleLine.startTimeMinSec}-${subtitleLine.endTimeMinSec}</td>
+						<td class="subtitleText" data-lang="${subtitleLine.language}" data-text='<c:out value="${subtitleLine.text}" />' data-sign="${empty subtitleLineSignList ? '' : subtitleLineSignList[status.index]}">
+							<c:out value="${subtitleLine.text}" />
+						</td>
+					</tr>
+				</c:forEach>
+			</table>
+		</c:if>
 	</div>
 </div>
 
