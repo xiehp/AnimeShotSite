@@ -85,7 +85,7 @@ public class EpisodeFileDownloadTimer extends BaseTaskTimer {
 			String doDownloadFlagValue = doDownloadFlagParam.getValue();
 			try {
 				AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
-				// 判断video_download_do_download_flag 状态 ：等待中 下载中 下载完成 已终止
+				// 判断video_download_do_download_flag 状态 ：0等待中 1下载中 2下载完成 3下载失败 4已终止
 				if ("0".equals(doDownloadFlagValue)) {
 					_log.info("开始处理剧集，animeEpisode：{}， 下载状态：{}", animeEpisode.getFullName(), doDownloadFlagValue);
 
@@ -97,7 +97,7 @@ public class EpisodeFileDownloadTimer extends BaseTaskTimer {
 							// 下载bt文件
 							String fileName = XUrlUtils.getFileName(url);
 							File torrentFile = FilePathUtils.getAnimeDetailFolderWithTorrent(null, animeEpisode, fileName);
-							_log.info("下载种子文件，url:{}， 保存到:{}" + url, torrentFile.getAbsolutePath());
+							_log.info("下载种子文件，url:{}， 保存到:{}", url, torrentFile.getAbsolutePath());
 							torrentFile = downloadTorrent(url, torrentFile);
 							autoRunParamService.saveEpisodeByTemplet(animeEpisodeId, "video_download_torrent_file_path", torrentFile.getAbsolutePath());
 
@@ -131,7 +131,7 @@ public class EpisodeFileDownloadTimer extends BaseTaskTimer {
 
 					if (percent == 1000) {
 						// 更新下载标记为下载完成
-						_log.info("下载完成，torrentFile:{}", torrentFile.getAbsolutePath());
+						_log.info("下载完成，更新下载状态为已完成，torrentFile:{}", torrentFile.getAbsolutePath());
 						autoRunParamService.updateEpisodeValue(animeEpisodeId, "video_download_do_download_flag", "2");
 					}
 				}
@@ -155,6 +155,7 @@ public class EpisodeFileDownloadTimer extends BaseTaskTimer {
 						}
 
 						// 将文件地址存放到自动运行参数中
+						_log.info("从vuze中获得文件地址：{}", videoFile.getAbsolutePath());
 						autoRunParamService.saveEpisodeByTemplet(animeEpisodeId, "video_download_video_file_path", videoFile.getAbsolutePath());
 
 						// 从vuze中删除下载
@@ -167,6 +168,7 @@ public class EpisodeFileDownloadTimer extends BaseTaskTimer {
 					_log.info("获取到视频文件地址：{}", videoFile.getAbsoluteFile());
 
 					// 开始提取字幕
+					_log.info("开始提取字幕");
 					MkvextractCmdUtils.extract(videoFile);
 
 					// 验证字幕是否提取
@@ -181,6 +183,7 @@ public class EpisodeFileDownloadTimer extends BaseTaskTimer {
 						}
 					});
 					if (subtitleFiles == null || subtitleFiles.length == 0) {
+						// TODO 视频中也可能没有字幕文件
 						throw new XException("未发现生成的字幕文件，videoFile：" + videoFile);
 					}
 
@@ -209,7 +212,7 @@ public class EpisodeFileDownloadTimer extends BaseTaskTimer {
 
 					// 添加字幕任务
 					ShotTask shotSubtitleTask = shotTaskService.addCreateSubtitleTask(null, animeEpisode.getAnimeInfoId(), new Date(), false, false);
-					_log.info("添加字幕任务：", shotSubtitleTask);
+					_log.info("添加字幕任务：{}", shotSubtitleTask);
 
 					// 移动视频文件（移动）
 					boolean success = videoFile.renameTo(newVideoFile);
@@ -220,7 +223,7 @@ public class EpisodeFileDownloadTimer extends BaseTaskTimer {
 
 					// 添加视频截图任务
 					ShotTask shotEpisodeTask = shotTaskService.addRunNormalEpisideTimeTask(animeEpisodeId, new Date(), false, null, null, 5000L);
-					_log.info("添加截图任务：", shotEpisodeTask);
+					_log.info("添加截图任务：{}", shotEpisodeTask);
 
 					// 更新自动运行参数
 					_log.info("视频处理完成，准备更新状态到4");
