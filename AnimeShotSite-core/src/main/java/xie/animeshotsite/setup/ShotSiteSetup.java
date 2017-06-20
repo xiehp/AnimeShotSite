@@ -43,7 +43,7 @@ public class ShotSiteSetup {
 	private String animesiteJsDebug;
 
 	/** 不需要进行网站访问统计的IP，一般为一些爬虫或漏洞检测IP */
-	private List<String> excludeIpsRuleList = new ArrayList<>();;
+	private List<String> excludeIpsRuleList;
 
 	/** 指定哪些贴图库网址转成自己的域名 */
 	private String[] tietukuChangeDoman = new String[] {
@@ -51,7 +51,7 @@ public class ShotSiteSetup {
 			"i1.buimg.com", "i2.buimg.com", "i3.buimg.com", "i4.buimg.com" };
 
 	/** 指定哪些贴图库网址转换方式 */
-	private Map<String, String> tietukuDomainConvert = new LinkedHashMap<>();
+	private Map<String, String> tietukuDomainConvert;
 
 	/** 百度翻译appid */
 	// @Value("#{" + XSpringConstants.SPRING_PROPERTIES_ID + "['baidu.translate.appid']}")
@@ -91,7 +91,11 @@ public class ShotSiteSetup {
 	}
 
 	public void resetExcludeIpsRuleList(HttpServletRequest httpServletRequest) {
-		excludeIpsRuleList = new ArrayList<>();
+		if (excludeIpsRuleList == null) {
+			excludeIpsRuleList = new ArrayList<>();
+		}
+		excludeIpsRuleList.clear();
+
 		try {
 			String filePath = httpServletRequest.getServletContext().getRealPath("/WEB-INF/resources/excludeIpsRuleList.txt");
 			excludeIpsRuleList = XFileWriter.readList(filePath);
@@ -121,6 +125,9 @@ public class ShotSiteSetup {
 	 * 读取贴图库网址转换方式文件
 	 */
 	public void resetTietukuDomainConvert(HttpServletRequest httpServletRequest) {
+		if (tietukuDomainConvert == null) {
+			tietukuDomainConvert = new LinkedHashMap<>();
+		}
 		tietukuDomainConvert.clear();
 
 		try {

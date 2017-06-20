@@ -65,6 +65,10 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response,
 			final Object handler) throws IOException {
 
+		if (shotSiteSetup.getTietukuDomainConvert() == null) {
+			shotSiteSetup.resetTietukuDomainConvert(request);
+		}
+
 		request.setAttribute("ControllerMethodHandler", handler);
 
 		// 检查访问地址是否正确
@@ -332,7 +336,6 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 		// 读取排除文件内容
 		if (shotSiteSetup.getExcludeIpsRuleList() == null) {
 			shotSiteSetup.resetExcludeIpsRuleList(request);
-			shotSiteSetup.resetTietukuDomainConvert(request);
 		}
 
 		// 查询是否排除
