@@ -6,6 +6,7 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
+<c:set var="ImageAspectRatio" value="${(not empty animeEpisode.height && not empty animeEpisode.width) ? animeEpisode.height/animeEpisode.width : 9/16}" />
 
 <title><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' /> 第${shotInfoPage.number + 1}页 - 动画截图网</title>
 <head>
@@ -53,6 +54,18 @@ pre {
 		home.masterLike("${MANAGE_URL_STR}/shot/masterLike", id, "#masterLike_" + id, "#publicLike_" + id);
 	}
 	</c:if>
+
+	lazyRun(function() {
+		var ImageAspectRatio = ${ImageAspectRatio};
+		var params = [ [ ".thumbnail", "img.imagelazy", ImageAspectRatio] ];
+
+		for (let [p1, p2, p3] of params) {
+			resetRowMaxHeightBySelector(p1, p2, p3);
+			$(window).resize(function() {
+				resetRowMaxHeightBySelector(p1, p2, p3);
+			});
+		}
+	});
 </script>
 
 <div>
