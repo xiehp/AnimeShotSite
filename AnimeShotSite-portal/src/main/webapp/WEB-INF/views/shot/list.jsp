@@ -58,7 +58,12 @@ pre {
 <div>
 	<!-- 标题 -->
 	<div class="blockTitle">
-		<h1 style="font-size: 20px; display: inline;"><c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <small><c:out value='${animeEpisode.title}' /></small></h1>
+		<h1 style="font-size: 20px; display: inline;">
+			<c:out value='${animeInfo.fullName}' />
+			<c:out value='${animeInfo.secondName}' />
+			<c:out value='${animeEpisode.divisionName}' />
+			<small><c:out value='${animeEpisode.title}' /></small>
+		</h1>
 		<c:if test="${!empty animeEpisode.summary and shotInfoPage.number == 0}">
 			<button type="button" class="btn btn-rimary btn-xs" data-toggle="collapse" data-target="#episodeSmmary">
 				<spring:message code='显示剧集简介' />
@@ -115,23 +120,17 @@ pre {
 	</a>
 </div>
 
-<div style="margin-top: 50px;">
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="row">
-				<c:if test="${!empty subtitleLineList}">
-					<div style="font-weight: 700;">
-						<spring:message code='动画字幕台词一览' />
-					</div>
-					<div>
-						<pre class="subtitleTable">
+<div class="row" style="margin-top: 50px;">
+	<c:if test="${!empty subtitleLineList}">
+		<div style="font-weight: 700;">
+			<spring:message code='动画字幕台词一览' />
+		</div>
+		<div>
+			<pre class="subtitleTable">
 <c:out value="${animeEpisode.fullName}" /> <c:out value='${animeEpisode.title}' />
 <c:forEach items="${ subtitleLineList }" var="subtitleLine">${subtitleLine.startTimeMinSecMicro} ${subtitleLine.endTimeMinSecMicro} <c:out value='${subtitleLine.text}' />
 </c:forEach>
 						</pre>
-					</div>
-				</c:if>
-			</div>
 		</div>
-	</div>
+	</c:if>
 </div>

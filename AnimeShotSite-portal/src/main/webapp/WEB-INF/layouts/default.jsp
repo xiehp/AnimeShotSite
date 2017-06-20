@@ -110,8 +110,8 @@
 		<input value="${thisPageUrl}" size="100">
 	</c:if>
 
-	<div id="section" class="page-container row-fluid" align="center">
-		<div class="page-content">
+	<div id="section" align="center">
+		<div class="page-content container-fluid">
 			<decorator:body />
 		</div>
 	</div>

@@ -91,23 +91,17 @@
 	<a href="${ctx}${MANAGE_URL_STR}/anime/list">返回上层</a>
 </form>
 
-<div>
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="row">
-				<c:forEach items="${ animeEpisodeList }" var="animeEpisode">
-					<div class="col-lg-3 col-sm-4 col-xs-6 thumbnail">
-						<a href="${ctx}${MANAGE_URL_STR}/animeEpisode/view/${animeEpisode.id}">
-							<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy">
-							<div style="margin-top: 5px;">
-								<c:out value="${animeEpisode.name}" />
-							</div>
-						</a>
-					</div>
-				</c:forEach>
-			</div>
+<div class="row">
+	<c:forEach items="${ animeEpisodeList }" var="animeEpisode">
+		<div class="col-lg-3 col-sm-4 col-xs-6 thumbnail">
+			<a href="${ctx}${MANAGE_URL_STR}/animeEpisode/view/${animeEpisode.id}">
+				<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy">
+				<div style="margin-top: 5px;">
+					<c:out value="${animeEpisode.name}" />
+				</div>
+			</a>
 		</div>
-	</div>
+	</c:forEach>
 </div>
 
 <div>

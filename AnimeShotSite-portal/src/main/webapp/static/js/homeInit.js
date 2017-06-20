@@ -1,102 +1,37 @@
 (function() {
-	// 图片懒加载
 	var imageLazyImg = $("img.imagelazy");
+
+	// 设定图片的max-height，防止非16:9图片过高导致排列异常
+	{
+		function setMaxHeight() {
+			// 获得当前图片高度，通常为默认的待加载图片
+			var $imageLazyDiv = imageLazyImg.parents(".thumbnail");
+			var width = $imageLazyDiv.width();
+			// var width = imageLazyImg.width();
+			var maxHeight = width * 9 / 16 - 0.5; // 因为宽度获取不到小数点，这里减去0.5
+			imageLazyImg.css("max-height", maxHeight);
+		}
+
+		// setMaxHeight();
+		$(window).resize(function() {
+			// setMaxHeight();
+		});
+	}
+
+	// 图片懒加载
 	imageLazyImg.lazyload({
 		// placeholder : global.ctx + "/static/img/imageLoading_mini.jpg",
 		effect : "fadeIn"
 	});
 	imageLazyImg.show();
 
-	var selectorStrDiv = "div.thumbnail";
-	var selectorStrImg = "img.imagelazy";
-
-	// resizeImg(imageLazyImg);
-	// resizeImgBySelector(selectorStrDiv, selectorStrImg);
-	$(window).resize(function() {
-		// resizeImg(imageLazyImg);
-		// resizeImgBySelector(selectorStrDiv, selectorStrImg);
-	});
-
-	function subWidth(width, subWidth) {
-		if (subWidth == null) {
-			return width;
-		}
-
-		return width - parseFloat(subWidth);
-	}
-
-	function resizeImgBySelector(selectorStrDiv, selectorStrImg) {
-		$(selectorStrDiv).each(function() {
-			var divParent = $(this);
-			var divWidth = divParent.css("width");
-			if (divWidth != null) {
-				divWidth = parseFloat(divWidth);
-				if (divWidth > 0) {
-					// var marginleft = divParent.css("margin-left");
-					// var marginright = divParent.css("margin-right");
-					var borderwidth = divParent.css("border-width");
-					var paddingleft = divParent.css("padding-left");
-					var paddingright = divParent.css("padding-right");
-
-					// divWidth = subWidth(divWidth, marginleft);
-					// divWidth = subWidth(divWidth, marginright);
-					divWidth = subWidth(divWidth, borderwidth);
-					divWidth = subWidth(divWidth, paddingleft);
-					divWidth = subWidth(divWidth, paddingright);
-					var maxHeight = divWidth * 9 / 16;
-
-					// if (divWidth >= 300) {
-					// // 300为缩略图宽度
-					// divWidth = 300;
-					// maxHeight = 168;
-					// }
-
-					// imageLazyImg.css("max-height", maxHeight);
-					divParent.find(selectorStrImg).css("height", maxHeight);
-				}
-			}
-		});
-
-	}
-
-	function resizeImg(imageLazyImg) {
-		if (imageLazyImg != null && imageLazyImg.length > 0) {
-			$divParentList = imageLazyImg.parents("div.thumbnail");
-			$divParentList.each(function() {
-				if ($divParentList != null & $divParentList.length > 0) {
-					var divParent = $(this);
-					var divWidth = divParent.css("width");
-					if (divWidth != null) {
-						divWidth = parseFloat(divWidth);
-						if (divWidth > 0) {
-							// var marginleft = divParent.css("margin-left");
-							// var marginright = divParent.css("margin-right");
-							var borderwidth = divParent.css("border-width");
-							var paddingleft = divParent.css("padding-left");
-							var paddingright = divParent.css("padding-right");
-
-							// divWidth = subWidth(divWidth, marginleft);
-							// divWidth = subWidth(divWidth, marginright);
-							divWidth = subWidth(divWidth, borderwidth);
-							divWidth = subWidth(divWidth, paddingleft);
-							divWidth = subWidth(divWidth, paddingright);
-							var maxHeight = divWidth * 9 / 16;
-
-							// if (divWidth >= 300) {
-							// // 300为缩略图宽度
-							// divWidth = 300;
-							// maxHeight = 168;
-							// }
-
-							// imageLazyImg.css("max-height", maxHeight);
-							imageLazyImg.css("height", maxHeight);
-						}
-					}
-				}
-			});
-
-		}
-	}
+//	var selectorStrDiv = "div.thumbnail";
+//	var selectorStrImg = "img.imagelazy";
+//
+//	resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg);
+//	$(window).resize(function() {
+//		resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg);
+//	});
 })();
 
 // 表格内容滚动

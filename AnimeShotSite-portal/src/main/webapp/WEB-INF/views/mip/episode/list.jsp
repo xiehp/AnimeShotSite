@@ -13,7 +13,7 @@
 </head>
 
 
-<div class="row-fluid">
+<div>
 	<div class="row width-95">
 		<!-- 图片 -->
 		<div class="col-sm-4 col-xs-12">

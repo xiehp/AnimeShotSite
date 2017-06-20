@@ -83,46 +83,44 @@
 		startTime = 0;
 	}
 </script>
-<div class="container-fluid">
-	<div class="row-fluid">
-		<div class="blockTitle row">
-			<div class="col-sm-3">
-				<span><spring:message code='动画列表一览' /></span>
-			</div>
-			<div class="col-sm-6">
-				<span style="font-size: smaller;"><spring:message code='请输入要搜索的动画名' /></span>
-				<input id="enter-search-event" class="input-sm enter-search-event">
-			</div>
-		</div>
-		<div class="row">
-			<%
-				Map<Integer, String> pinyinMap = new HashMap<>();
 
-				Page<AnimeInfo> animeInfopage = (Page<AnimeInfo>) request.getAttribute("animeInfoPage");
-				List<AnimeInfo> animeInfoList = animeInfopage.getContent();
-				for (int i = 0; i < animeInfoList.size(); i++) {
-					AnimeInfo info = animeInfoList.get(i);
-					String name = info.getFullName() + " " + info.getSecondName();
-					String pinyin = HanLP.convertToPinyinString(name, "", false);
-					pinyinMap.put(i, pinyin);
-				}
-
-				request.setAttribute("pinyinMap", pinyinMap);
-			%>
-			<c:forEach items="${ animeInfoPage.content }" var="anime" varStatus="status">
-				<div class="col-lg-3 col-sm-4 col-xs-6 thumbnail animeInfoDiv">
-					<a href="${ctx}/episode/list/${anime.id}" title="<c:out value='${anime.fullName}' /> <c:out value='${anime.secondName}' />">
-						<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${anime.titleUrl.urlS}" class="img-responsive imagelazy">
-						<div class="wordKeepLine" style="margin-top: 5px;">
-							<c:out value='${anime.fullName}' />
-							<c:out value='${anime.secondName}' />
-							<input class="hiddenPinyin" type="hidden" value="<c:out value='${pinyinMap[status.index]}' />">
-						</div>
-					</a>
-				</div>
-			</c:forEach>
-		</div>
+<div class="blockTitle row">
+	<div class="col-sm-3">
+		<span><spring:message code='动画列表一览' /></span>
 	</div>
+	<div class="col-sm-6">
+		<span style="font-size: smaller;"><spring:message code='请输入要搜索的动画名' /></span>
+		<input id="enter-search-event" class="input-sm enter-search-event">
+	</div>
+</div>
+
+<div class="row">
+	<%
+		Map<Integer, String> pinyinMap = new HashMap<>();
+
+		Page<AnimeInfo> animeInfopage = (Page<AnimeInfo>) request.getAttribute("animeInfoPage");
+		List<AnimeInfo> animeInfoList = animeInfopage.getContent();
+		for (int i = 0; i < animeInfoList.size(); i++) {
+			AnimeInfo info = animeInfoList.get(i);
+			String name = info.getFullName() + " " + info.getSecondName();
+			String pinyin = HanLP.convertToPinyinString(name, "", false);
+			pinyinMap.put(i, pinyin);
+		}
+
+		request.setAttribute("pinyinMap", pinyinMap);
+	%>
+	<c:forEach items="${ animeInfoPage.content }" var="anime" varStatus="status">
+		<div class="col-lg-3 col-sm-4 col-xs-6 thumbnail animeInfoDiv">
+			<a href="${ctx}/episode/list/${anime.id}" title="<c:out value='${anime.fullName}' /> <c:out value='${anime.secondName}' />">
+				<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${anime.titleUrl.urlS}" class="img-responsive imagelazy">
+				<div class="wordKeepLine" style="margin-top: 5px;">
+					<c:out value='${anime.fullName}' />
+					<c:out value='${anime.secondName}' />
+					<input class="hiddenPinyin" type="hidden" value="<c:out value='${pinyinMap[status.index]}' />">
+				</div>
+			</a>
+		</div>
+	</c:forEach>
 </div>
 
 <div>

@@ -8,7 +8,7 @@
 <title>500</title>
 </head>
 <body class="page-500-full-page">
-	<div class="row-fluid">
+	<div>
 		<p></p>
 		<div class="span12 page-500">
 

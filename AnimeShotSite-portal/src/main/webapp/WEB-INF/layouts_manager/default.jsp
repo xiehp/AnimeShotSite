@@ -82,7 +82,7 @@
 </head>
 <body class="page-header-fixed page-sidebar-fixed <shiro:principal property="showSidebar"></shiro:principal>">
 	<%@ include file="/WEB-INF/layouts/header.jsp"%>
-	<div class="page-container row-fluid">
+	<div>
 		<%@ include file="/WEB-INF/layouts/left.jsp"%>
 		<div id="main" class="page-content">
 			<sitemesh:body />

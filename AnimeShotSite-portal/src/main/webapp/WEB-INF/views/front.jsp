@@ -14,153 +14,163 @@
 <meta name="google-site-verification" content="xgQXjnyjdOEL3cepdnkjkgfsegefTyyOGKuSSSanTjI" />
 
 <style type="text/css">
-.row-fluid>div:NTH-CHILD(n+2) {
+.container-fluid>div:NTH-CHILD(n+2) {
 	margin-top: 50px;
 }
 </style>
-
 </head>
 
-<div class="container-fluid">
-	<div class="row-fluid">
-		<div id="最新动画剧集一览">
-			<div class="blockTitle">
-				<span><spring:message code='最新动画剧集一览' /></span> <span class="count"><a href="${ctx}/anime">
-						<spring:message code='当前剧集总数' />
-						：${animeEpisodeCount}
-					</a></span>
+<script type="text/javascript">
+	lazyRun(function() {
+		var params = [ [ "#最新动画剧集一览 .thumbnail", "img.imagelazy" ], [ "#推荐动漫图片 .thumbnail", "img.imagelazy" ], [ "#最新截图展示 .thumbnail", "img.imagelazy" ],
+				[ "#动画列表一览 .thumbnail", "img.imagelazy" ] ];
+
+		for (let [p1,p2] of params) {
+			resetRowMaxHeightBySelector(p1, p2);
+			$(window).resize(function() {
+				resetRowMaxHeightBySelector(p1, p2);
+			});
+		}
+	});
+</script>
+
+<div id="最新动画剧集一览">
+	<div class="blockTitle">
+		<span><spring:message code='最新动画剧集一览' /></span> <span class="count"><a href="${ctx}/anime">
+				<spring:message code='当前剧集总数' />
+				：${animeEpisodeCount}
+			</a></span>
+	</div>
+	<div class="row">
+		<c:forEach items="${ animeEpisodeList }" var="animeEpisode" end="35">
+			<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4 thumbnail">
+				<a href="${ctx}/shot/list/${animeEpisode.id}" title="<c:out value='${animeEpisode.animeInfo.fullName}' /> <c:out value='${animeEpisode.animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' />">
+					<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy" alt="<c:out value='${animeEpisode.fullName}' />">
+					<div class="wordKeepLine">
+						<c:out value='${animeEpisode.animeInfo.fullName}' />
+						<c:out value='${animeEpisode.animeInfo.secondName}' />
+					</div>
+					<div class="wordKeepLine">
+						<c:out value='${animeEpisode.divisionName}' />
+						<c:out value='${animeEpisode.title}' />
+					</div>
+				</a>
 			</div>
-			<div>
-				<div class="row">
-					<c:forEach items="${ animeEpisodeList }" var="animeEpisode" end="35">
-						<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4 thumbnail">
-							<a href="${ctx}/shot/list/${animeEpisode.id}" title="<c:out value='${animeEpisode.animeInfo.fullName}' /> <c:out value='${animeEpisode.animeInfo.secondName}' /> <c:out value='${animeEpisode.divisionName}' /> <c:out value='${animeEpisode.title}' />">
-								<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${animeEpisode.titleUrl.urlS}" class="img-responsive imagelazy" alt="<c:out value='${animeEpisode.fullName}' />">
-								<div class="wordKeepLine">
-									<c:out value='${animeEpisode.animeInfo.fullName}' />
-									<c:out value='${animeEpisode.animeInfo.secondName}' />
-								</div>
-								<div class="wordKeepLine">
-									<c:out value='${animeEpisode.divisionName}' />
-									<c:out value='${animeEpisode.title}' />
-								</div>
-							</a>
+		</c:forEach>
+	</div>
+</div>
+
+<div id="推荐动漫图片">
+	<div class="blockTitle">
+		<span><spring:message code='推荐动漫图片' /></span>
+	</div>
+	<div class="row">
+		<c:forEach items="${ masterRecommandShotList }" var="shot" varStatus="status" end="29">
+			<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
+				<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
+					<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${shot.urlS}" class="img-responsive imagelazy">
+					<div class="wordKeepLine">
+						<c:out value="${shot.animeInfo.fullName}" />
+						<c:out value='${shot.animeInfo.secondName}' />
+					</div>
+					<div class="wordKeepLine">
+						<c:out value="${shot.animeEpisode.divisionName}" />
+						${shot.formatedTimeChina}
+					</div>
+				</a>
+			</div>
+		</c:forEach>
+	</div>
+</div>
+
+<c:if test="${false}">
+	<div id="点击热度图片">
+		<div class="blockTitle">
+			<span><spring:message code='点击热度图片' /></span>
+		</div>
+		<div class="row">
+			<c:forEach items="${ publicLikeShotList }" var="shot" varStatus="status" end="23">
+				<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
+					<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
+						<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${shot.urlS}" class="img-responsive imagelazy">
+						<div class="wordKeepLine">
+							<c:out value="${shot.animeInfo.fullName}" />
+							<c:out value='${shot.animeInfo.secondName}' />
 						</div>
-					</c:forEach>
-				</div>
-			</div>
-		</div>
-
-		<div id="推荐动漫图片">
-			<div class="blockTitle">
-				<span><spring:message code='推荐动漫图片' /></span>
-			</div>
-			<div class="row">
-				<c:forEach items="${ masterRecommandShotList }" var="shot" varStatus="status" end="29">
-					<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
-						<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
-							<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${shot.urlS}" class="img-responsive imagelazy">
-							<div class="wordKeepLine">
-								<c:out value="${shot.animeInfo.fullName}" />
-								<c:out value='${shot.animeInfo.secondName}' />
-							</div>
-							<div class="wordKeepLine">
-								<c:out value="${shot.animeEpisode.divisionName}" />
-								${shot.formatedTimeChina}
-							</div>
-						</a>
-					</div>
-				</c:forEach>
-			</div>
-		</div>
-
-		<c:if test="${false}">
-			<div id="点击热度图片">
-				<div class="blockTitle">
-					<span><spring:message code='点击热度图片' /></span>
-				</div>
-				<div class="row">
-					<c:forEach items="${ publicLikeShotList }" var="shot" varStatus="status" end="23">
-						<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
-							<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
-								<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${shot.urlS}" class="img-responsive imagelazy">
-								<div class="wordKeepLine">
-									<c:out value="${shot.animeInfo.fullName}" />
-									<c:out value='${shot.animeInfo.secondName}' />
-								</div>
-								<div class="wordKeepLine">
-									<c:out value="${shot.animeEpisode.divisionName}" />
-									${shot.formatedTimeChina}
-								</div>
-							</a>
+						<div class="wordKeepLine">
+							<c:out value="${shot.animeEpisode.divisionName}" />
+							${shot.formatedTimeChina}
 						</div>
-					</c:forEach>
+					</a>
 				</div>
-			</div>
-		</c:if>
-
-		<div id="最新截图展示">
-			<div class="blockTitle">
-				<span><spring:message code='最新截图展示' /></span> <span class="count"><spring:message code='当前截图总数' />：${shotCount}</span>
-			</div>
-			<div class="row">
-				<c:forEach items="${ newestShotList }" var="shot" varStatus="status" end="11">
-					<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
-						<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
-							<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${shot.urlS}" class="img-responsive imagelazy">
-							<div class="wordKeepLine">
-								<c:out value="${shot.animeInfo.fullName}" />
-								<c:out value='${shot.animeInfo.secondName}' />
-							</div>
-							<div class="wordKeepLine">
-								<c:out value="${shot.animeEpisode.divisionName}" />
-								${shot.formatedTimeChina}
-							</div>
-						</a>
-					</div>
-				</c:forEach>
-			</div>
-		</div>
-
-		<div id="最新截图展示">
-			<div class="blockTitle">
-				<span><spring:message code='动画列表一览' /></span>
-			</div>
-			<div class="row">
-				<c:forEach items="${ animeInfoPage.content }" var="anime">
-					<div class="col-lg-3 col-sm-4 col-xs-6 thumbnail">
-						<a href="${ctx}/episode/list/${anime.id}" title="<c:out value='${anime.fullName}' /> <c:out value='${anime.secondName}' />">
-							<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${anime.titleUrl.urlS}" class="img-responsive imagelazy">
-							<div class="wordKeepLine" style="margin-top: 5px;">
-								<c:out value='${anime.fullName}' />
-								<c:out value='${anime.secondName}' />
-							</div>
-						</a>
-					</div>
-				</c:forEach>
-			</div>
-		</div>
-
-		<div align="left">
-			<h1 style="font-size: 16px;"><spring:message code='动画截图网' /> <spring:message code='本站说明' /></h1>
-			<p style="font-size: 14px;">
-				<spring:message code='本站说明具体内容' />
-			</p>
-		</div>
-
-		<div style="padding-top: 1px;" class="bdsharebuttonbox quickShareDivClass">
-			<a style="background-position: 0 -32px; padding-left: 0px; padding-right: 10px;" title="<spring:message code='分享本站' />">
-				<spring:message code='分享本站' />
-			</a>
-			<a href="#" class="bds_mshare" data-cmd="mshare" title="百度一键分享"></a>
-			<a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
-			<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
-			<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
-			<a href="#" class="bds_bdxc" data-cmd="bdxc" title="分享到百度相册"></a>
-			<a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a>
-			<a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
-			<a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
-			<a href="#" class="bds_more" data-cmd="more" title="<spring:message code='更多' />"></a>
+			</c:forEach>
 		</div>
 	</div>
+</c:if>
+
+<div id="最新截图展示">
+	<div class="blockTitle">
+		<span><spring:message code='最新截图展示' /></span> <span class="count"><spring:message code='当前截图总数' />：${shotCount}</span>
+	</div>
+	<div class="row">
+		<c:forEach items="${ newestShotList }" var="shot" varStatus="status" end="11">
+			<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
+				<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
+					<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${shot.urlS}" class="img-responsive imagelazy">
+					<div class="wordKeepLine">
+						<c:out value="${shot.animeInfo.fullName}" />
+						<c:out value='${shot.animeInfo.secondName}' />
+					</div>
+					<div class="wordKeepLine">
+						<c:out value="${shot.animeEpisode.divisionName}" />
+						${shot.formatedTimeChina}
+					</div>
+				</a>
+			</div>
+		</c:forEach>
+	</div>
+</div>
+
+<div id="动画列表一览">
+	<div class="blockTitle">
+		<span><spring:message code='动画列表一览' /></span>
+	</div>
+	<div class="row">
+		<c:forEach items="${ animeInfoPage.content }" var="anime">
+			<div class="col-lg-3 col-sm-4 col-xs-6 thumbnail">
+				<a href="${ctx}/episode/list/${anime.id}" title="<c:out value='${anime.fullName}' /> <c:out value='${anime.secondName}' />">
+					<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${anime.titleUrl.urlS}" class="img-responsive imagelazy">
+					<div class="wordKeepLine" style="margin-top: 5px;">
+						<c:out value='${anime.fullName}' />
+						<c:out value='${anime.secondName}' />
+					</div>
+				</a>
+			</div>
+		</c:forEach>
+	</div>
+</div>
+
+<div align="left">
+	<h1 style="font-size: 16px;">
+		<spring:message code='动画截图网' />
+		<spring:message code='本站说明' />
+	</h1>
+	<p style="font-size: 14px;">
+		<spring:message code='本站说明具体内容' />
+	</p>
+</div>
+
+<div style="padding-top: 1px;" class="bdsharebuttonbox quickShareDivClass">
+	<a style="background-position: 0 -32px; padding-left: 0px; padding-right: 10px;" title="<spring:message code='分享本站' />">
+		<spring:message code='分享本站' />
+	</a>
+	<a href="#" class="bds_mshare" data-cmd="mshare" title="百度一键分享"></a>
+	<a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_bdxc" data-cmd="bdxc" title="分享到百度相册"></a>
+	<a href="#" class="bds_duitang" data-cmd="duitang" title="分享到堆糖"></a>
+	<a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
+	<a href="#" class="bds_evernotecn" data-cmd="evernotecn" title="分享到印象笔记"></a>
+	<a href="#" class="bds_more" data-cmd="more" title="<spring:message code='更多' />"></a>
 </div>

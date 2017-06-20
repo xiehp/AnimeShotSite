@@ -313,22 +313,16 @@
 <br />
 <br />
 
-<div>
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="row">
-				<table border="1" style="padding: 5px;">
-					<c:forEach items="${ subtitleLineList }" var="subtitleLine">
-						<tr>
-							<td style="padding: 5px;">${subtitleLine.startTimeMinSecMicro}</td>
-							<td style="padding: 5px;">${subtitleLine.endTimeMinSecMicro}</td>
-							<td style="padding: 5px;">${subtitleLine.text}</td>
-						</tr>
-					</c:forEach>
-				</table>
-			</div>
-		</div>
-	</div>
+<div class="row">
+	<table border="1" style="padding: 5px;">
+		<c:forEach items="${ subtitleLineList }" var="subtitleLine">
+			<tr>
+				<td style="padding: 5px;">${subtitleLine.startTimeMinSecMicro}</td>
+				<td style="padding: 5px;">${subtitleLine.endTimeMinSecMicro}</td>
+				<td style="padding: 5px;">${subtitleLine.text}</td>
+			</tr>
+		</c:forEach>
+	</table>
 </div>
 
 <br />
