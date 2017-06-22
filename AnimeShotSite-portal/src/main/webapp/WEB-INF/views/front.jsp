@@ -21,9 +21,11 @@
 </head>
 
 <script type="text/javascript">
+	resetRowMaxHeightBySelectorDoneFlag = true;
+
 	lazyRun(function() {
 		var params = [ [ "#最新动画剧集一览 .thumbnail", "img.imagelazy" ], [ "#推荐动漫图片 .thumbnail", "img.imagelazy" ], [ "#最新截图展示 .thumbnail", "img.imagelazy" ],
-				[ "#动画列表一览 .thumbnail", "img.imagelazy" ] ];
+			[ "#动画列表一览 .thumbnail", "img.imagelazy" ] ];
 
 		for (let [p1,p2] of params) {
 			resetRowMaxHeightBySelector(p1, p2);

@@ -55,16 +55,16 @@ pre {
 	}
 	</c:if>
 
+	resetRowMaxHeightBySelectorDoneFlag = true;
 	lazyRun(function() {
-		var ImageAspectRatio = ${ImageAspectRatio};
-		var params = [ [ ".thumbnail", "img.imagelazy", ImageAspectRatio] ];
+		var selectorStrDiv = ".thumbnail";
+		var selectorStrImg = "img.imagelazy";
+		var ImageAspectRatio = "${ImageAspectRatio}";
 
-		for (let [p1, p2, p3] of params) {
-			resetRowMaxHeightBySelector(p1, p2, p3);
-			$(window).resize(function() {
-				resetRowMaxHeightBySelector(p1, p2, p3);
-			});
-		}
+		resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg, ImageAspectRatio);
+		$(window).resize(function() {
+			resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg, ImageAspectRatio);
+		});
 	});
 </script>
 

@@ -12,7 +12,9 @@
 <c:set var="EpisodeFullNameWithTime" value="${EpisodeFullName} ${shotInfo.formatedTimeChina}" />
 <%
 	//ShotInfoVO vo = request.getAttribute("shotInfo");
-	//vo.setTietukuOUrlChangeDomain(XSSHttpUtil.changeToHttp(vo.getTietukuOUrlChangeDomain()));
+	//if (vo.getUrlL().contains("05bc88b3992add5d")){
+	//	vo.setTietukuUrlPrefix("http://sdfsdfsdfsdf3254354.com/ddd/")
+	//}
 %>
 <c:set var="FullImageUrl" value="${shotInfo.urlL}" />
 <c:set var="PreFullImageUrl" value="${previousShotInfo.urlL}" />
@@ -21,8 +23,6 @@
 <c:set var="DivPaddingBorderWidth" value="10" />
 <c:set var="DivPaddingBorderHeight" value="10" />
 <c:set var="ImageAspectRatio" value="${(!empty animeEpisode.height && !empty animeEpisode.width) ? animeEpisode.height/animeEpisode.width : 9/16}" />
-<c:set var="coordsWidth" value="${ShotImgDivWidth > 0 ? ShotImgDivWidth-DivPaddingBorderWidth : 800}" />
-<c:set var="coordsHeight" value="${ShotImgDivWidth > 0 ? (ShotImgDivWidth-DivPaddingBorderWidth) * ImageAspectRatio : 5000}" />
 
 <head>
 <title><c:out value='${EpisodeFullNameWithTime}' /> - 动画截图网</title>
@@ -192,7 +192,7 @@ body {
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noLeftRightPadding">
 		<!-- 图片 -->
 		<div id="shotImgDiv" class="thumbnail shotImgDivStyle" data-ImageAspectRatio="${ImageAspectRatio}" style="margin-bottom: 10px;<c:if test="${ShotImgDivWidth > 0}">width: ${ShotImgDivWidth}px; height: ${DivPaddingBorderHeight + (ShotImgDivWidth-DivPaddingBorderWidth) * ImageAspectRatio}px;</c:if>">
-			<img id="shotImg" src="${FullImageUrl}" alt="<c:out value='${EpisodeFullNameWithTime}' /> <c:out value="${fn:substring(subtitleLineTextStr100, 0, 50)}" />">
+			<img id="shotImg" style="width:100%;" src="${FullImageUrl}" alt="<c:out value='${EpisodeFullNameWithTime}' /> <c:out value="${fn:substring(subtitleLineTextStr100, 0, 50)}" />">
 
 			<c:if test="${not empty previousShotInfo.id}">
 				<a class="shotImgHotPoint left-0 top-0" href="${ctx}/shot/view/${previousShotInfo.id}"></a>

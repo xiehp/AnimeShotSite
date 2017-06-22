@@ -163,9 +163,9 @@ var checkImgSize = function(imgDomObject, maxCheckCount) {
 		// 设置初始滚动条值
 		initScroll();
 
-		// 动态生成左右图片热点
-		window.onresize = resizeShotImg;
-		resizeShotImg();
+		// // 动态生成左右图片热点
+		// window.onresize = resizeShotImg;
+		// resizeShotImg();
 
 		$.log("读取到图片宽度后处理结束。");
 		return;
@@ -187,6 +187,7 @@ var checkImgSize = function(imgDomObject, maxCheckCount) {
 /**
  * 改变图像框大小动态生成左右图片热点链接
  */
+/* 热点代码删除
 function resizeShotImg(width, height) {
 	var $shotImg = $("#shotImg");
 	var shotImg = $shotImg[0];
@@ -197,15 +198,14 @@ function resizeShotImg(width, height) {
 		shotImgMapHeight = height;
 	}
 
-	/* 热点代码删除
 	var $areaPrev = $("#areaPrev");
 	$areaPrev.attr("coords", "0,0," + shotImgMapWidth / 3 + "," + shotImgMapHeight);
 	var $areaNext = $("#areaNext");
 	$areaNext.attr("coords", shotImgMapWidth / 3 * 2 + ",0," + shotImgMapWidth + "," + shotImgMapHeight);
 	$.log("图片左热点设置：" + $areaPrev.attr("coords"));
 	$.log("图片右热点设置：" + $areaNext.attr("coords"));
-	*/
 }
+*/
 
 function changeShotViewImgWidth(saveToCookieFlag) {
 	var $ShotViewImgWidth = $("#ShotViewImgWidth");
@@ -239,7 +239,8 @@ function changeShotViewImgWidth(saveToCookieFlag) {
 		}
 
 		// 设置图片尺寸
-		var divWidth = ShotViewImgWidth * 1 + divPaddingLen * 2 + divBorderLen * 2;
+		//var divWidth = ShotViewImgWidth * 1 + divPaddingLen * 2 + divBorderLen * 2;
+		var divWidth = ShotViewImgWidth;
 		var divHeight = '';
 		$shotImgDiv.css("width", divWidth);
 		$shotImgDiv.css("height", divHeight);
@@ -247,7 +248,7 @@ function changeShotViewImgWidth(saveToCookieFlag) {
 		$.log("改变图片div尺寸：" + divWidth + ", " + divHeight);
 	}
 
-	resizeShotImg();
+	// resizeShotImg();
 }
 
 function setShotImgDivWidthCookie(value) {

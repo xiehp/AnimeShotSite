@@ -66,9 +66,9 @@ body {
 }
 </style>
 
-<script src="${ ctx }/static/js/shotView.js" type="text/javascript"></script>
-
 </head>
+
+<script src="${ ctx }/static/js/shotView.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 	// 复制按钮

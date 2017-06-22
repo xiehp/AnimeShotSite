@@ -52,6 +52,8 @@
 	<c:if test="${canBaiduIndex eq true}">
 	canBaiduIndex = "${canBaiduIndex}";
 	</c:if>
+
+	var resetRowMaxHeightBySelectorDoneFlag = false;
 </script>
 
 <!-- 定义使用的资源版本 -->

@@ -25,13 +25,15 @@
 	});
 	imageLazyImg.show();
 
-//	var selectorStrDiv = "div.thumbnail";
-//	var selectorStrImg = "img.imagelazy";
-//
-//	resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg);
-//	$(window).resize(function() {
-//		resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg);
-//	});
+	if (!resetRowMaxHeightBySelectorDoneFlag) {
+		var selectorStrDiv = "div.thumbnail";
+		var selectorStrImg = "img.imagelazy";
+
+		resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg);
+		$(window).resize(function() {
+			resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg);
+		});
+	}
 })();
 
 // 表格内容滚动
