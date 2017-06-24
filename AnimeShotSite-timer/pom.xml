@@ -156,7 +156,7 @@
 			<artifactId>spring-boot-starter-batch</artifactId>
 		</dependency>
 		 -->
-		 		<dependency>
+		<dependency>
 			<groupId>xie</groupId>
 			<artifactId>Vuze_custom</artifactId>
 			<version>5750</version>
