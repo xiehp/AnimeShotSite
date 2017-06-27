@@ -34,6 +34,8 @@
 				document.location.href = "${ctx}/search";
 			}
 		} else {
+			trackEvent("字幕", "搜索", animeName == "" ? keyword : (animeName + ", " + keyword), 0);
+
 			var encodeAnimeName = encodeURIComponent(animeName);
 			var encodeKeyword = encodeURIComponent(keyword);
 			if (searchMode) {

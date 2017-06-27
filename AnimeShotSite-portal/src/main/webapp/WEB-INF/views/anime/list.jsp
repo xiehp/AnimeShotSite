@@ -74,12 +74,7 @@
 		$("body").scroll();
 
 		// 进行统计
-		if (isDefinedVariable("_czc") && _czc != null) {
-			_czc.push([ "_trackEvent", "动画", "搜索", searchAnimeNameS, timeMark - startTime, "enter-search-event" ]);
-		}
-		if (isDefinedVariable("_hmt") && _hmt != null) {
-			_hmt.push([ '_trackEvent', '动画', '搜索', searchAnimeNameS, timeMark - startTime ]);
-		}
+		trackEvent("动画", "搜索", searchAnimeNameS, timeMark - startTime, "enter-search-event");
 		startTime = 0;
 	}
 </script>

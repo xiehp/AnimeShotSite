@@ -106,6 +106,9 @@ function initZeroClipboard(obj, successMessage, failMessage) {
 
 	// execCommand
 	obj.onclick = function(event) {
+
+		trackEvent("截图", "复制", "", 0);
+
 		copyResult = false;
 
 		if (targetObj) {

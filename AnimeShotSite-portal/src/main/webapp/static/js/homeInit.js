@@ -203,7 +203,7 @@ if (canBaiduRecord) {
 		var _hmt = _hmt || [];
 		(function() {
 			var hm = document.createElement("script");
-			hm.src = "//hm.baidu.com/hm.js?292dc181c5dbc431b3ded9d841c0920e";
+			hm.src = "https://hm.baidu.com/hm.js?292dc181c5dbc431b3ded9d841c0920e";
 			var s = document.getElementsByTagName("script")[0];
 			s.parentNode.insertBefore(hm, s);
 		})();
@@ -224,7 +224,7 @@ if (canBaiduRecord) {
 
 		lazyRun(function() {
 			// 改为加载后运行
-			loadScript("https//s95.cnzz.com/z_stat.php?id=1259030003&web_id=1259030003");
+			loadScript("https://s95.cnzz.com/z_stat.php?id=1259030003&web_id=1259030003");
 
 			// 隐藏站长统计
 			if (!IS_MASTER) {
