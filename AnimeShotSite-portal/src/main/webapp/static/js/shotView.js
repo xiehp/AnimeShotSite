@@ -242,7 +242,7 @@ function changeShotViewImgWidth(saveToCookieFlag) {
 		}
 
 		// 设置图片尺寸
-		//var divWidth = ShotViewImgWidth * 1 + divPaddingLen * 2 + divBorderLen * 2;
+		// var divWidth = ShotViewImgWidth * 1 + divPaddingLen * 2 + divBorderLen * 2;
 		var divWidth = ShotViewImgWidth;
 		var divHeight = '';
 		$shotImgDiv.css("width", divWidth);
@@ -409,3 +409,13 @@ lazyRun(function() {
 		initZeroClipboard(this, "复制成功-_-", "复制失败，\n请手动复制");
 	});
 });
+
+// https://whatanime.ga/?loop&url=${FullImageUrl}
+function openWhatanimeSite(thisLink, imgUrl) {
+	trackEvent("截图", "短视频", imgUrl, 0);
+
+	//thisLink.href = "https://whatanime.ga/?loop&url=" + imgUrl;
+	//thisLink.onclick = null;
+	//thisLink.click();
+	window.open("https://whatanime.ga/?loop&url=" + imgUrl);
+}
