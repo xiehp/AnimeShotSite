@@ -31,7 +31,7 @@
 		}
 	}
 
-	function createSubtitleTask(type) {
+	function submitSubtitleTask(type) {
 		if (confirm("是否继续？")) {
 			$("#mainForm").attr("action", "${ctx}${MANAGE_URL_STR}/subtitle/createSubtitleTask");
 			$("#mainForm").submit();
@@ -300,7 +300,7 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<input type="button" value="生成字幕" onclick="createSubtitleTask(1);" />
+		<input type="button" value="生成字幕" onclick="submitSubtitleTask(1);" />
 	</div>
 
 </form>

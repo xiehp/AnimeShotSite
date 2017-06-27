@@ -224,7 +224,7 @@ if (canBaiduRecord) {
 
 		lazyRun(function() {
 			// 改为加载后运行
-			loadScript("//s95.cnzz.com/z_stat.php?id=1259030003&web_id=1259030003");
+			loadScript("https//s95.cnzz.com/z_stat.php?id=1259030003&web_id=1259030003");
 
 			// 隐藏站长统计
 			if (!IS_MASTER) {
