@@ -249,7 +249,6 @@ body {
 	<a class="btn btn-primary btn-sm" href="${FullImageUrl}" target="_blank">
 		<spring:message code='查看原图' />
 	</a>
-	<!-- https://whatanime.ga/?loop&url=${FullImageUrl} -->
 	<a class="btn btn-primary btn-sm" href="javascript:void(0);" onclick="openWhatanimeSite(this, '${FullImageUrl}');" target="_blank">
 		<spring:message code='查看短视频' />
 	</a>
