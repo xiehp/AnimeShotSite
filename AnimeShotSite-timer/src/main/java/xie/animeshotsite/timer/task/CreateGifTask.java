@@ -135,7 +135,7 @@ public class CreateGifTask extends XBaseTask {
 
 			// 贴图库内容保存到数据库中
 			String tietukuUrl = tietukuUploadResponse.getLinkurl();
-			String tietukuImageUrlPrefix = TietukuUtils.getImageUrlPrefix(tietukuUrl, true);
+			String tietukuImageUrlPrefix = TietukuUtils.getImageUrlPrefix(tietukuUrl, false);
 			String tietukuImageUrlId = TietukuUtils.getImageUrlID(tietukuUrl);
 
 			// 更新贴图库数据库
