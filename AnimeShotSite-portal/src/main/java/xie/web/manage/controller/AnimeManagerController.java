@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,7 +68,9 @@ public class AnimeManagerController extends BaseManagerController<AnimeInfo, Str
 	public String list(HttpSession session, HttpServletRequest request) {
 
 		// 获得动画 列表
-		List<AnimeInfo> animeInfoList = animeInfoService.findAll();
+		Order order = new Order(Direction.DESC, "showDate");
+		Sort sort = new Sort(order);
+		List<AnimeInfo> animeInfoList = animeInfoService.findAll(sort);
 		request.setAttribute("animeInfoList", animeInfoList);
 
 		return getJspFilePath("list");
