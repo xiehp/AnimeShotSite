@@ -33,9 +33,12 @@
 }
 
 .subtitleTable {
-	padding-right: 5px;
+	padding-top: 3px;
+	padding-left: 3px;
 	font-size: 10px;
 	text-align: left;
+	height: 500px;
+	max-width: 92vw;
 }
 
 pre {
@@ -138,12 +141,12 @@ pre {
 		<div style="font-weight: 700;">
 			<spring:message code='动画字幕台词一览' />
 		</div>
-		<div>
+		<div align="left">
 			<pre class="subtitleTable">
 <c:out value="${animeEpisode.fullName}" /> <c:out value='${animeEpisode.title}' />
 <c:forEach items="${ subtitleLineList }" var="subtitleLine">${subtitleLine.startTimeMinSecMicro} ${subtitleLine.endTimeMinSecMicro} <c:out value='${subtitleLine.text}' />
 </c:forEach>
-						</pre>
+			</pre>
 		</div>
 	</c:if>
 </div>
