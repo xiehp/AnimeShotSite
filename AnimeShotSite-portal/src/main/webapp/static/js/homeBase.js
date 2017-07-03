@@ -1014,6 +1014,12 @@ function resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg, radio) {
 		maxHeight = divWidth * parseFloat(radio);
 	}
 	maxHeight = maxHeight - 1 // 因为宽度获取不到小数点，这里减去一些
+
+	if (maxHeight > 168) {
+		// 168为贴图库小图尺寸
+		maxHeight = 168;
+	}
+
 	$selectorStrDiv.find(selectorStrImg).css("max-height", maxHeight);
 }
 
