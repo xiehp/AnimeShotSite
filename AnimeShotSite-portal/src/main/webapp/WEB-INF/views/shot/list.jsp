@@ -64,9 +64,9 @@ pre {
 		var selectorStrImg = "img.imagelazy";
 		var ImageAspectRatio = "${ImageAspectRatio}";
 
-		resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg, ImageAspectRatio);
+		resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg, ImageAspectRatio, 300);
 		$(window).resize(function() {
-			resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg, ImageAspectRatio);
+			resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg, ImageAspectRatio, 300);
 		});
 	});
 </script>

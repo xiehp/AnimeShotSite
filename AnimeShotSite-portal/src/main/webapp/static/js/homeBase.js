@@ -1005,7 +1005,7 @@ function subWidth(width, subWidth) {
 /**
  * 设定图片的max-height，防止非16:9图片过高导致排列异常
  */
-function resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg, radio) {
+function resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg, radio, setMaxHeight) {
 	// 获得当前容器的宽度
 	var $selectorStrDiv = $(selectorStrDiv);
 	var divWidth = $selectorStrDiv.width();
@@ -1015,9 +1015,12 @@ function resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg, radio) {
 	}
 	maxHeight = maxHeight - 1 // 因为宽度获取不到小数点，这里减去一些
 
-	if (maxHeight > 168) {
+	if (setMaxHeight == null) {
 		// 168为贴图库小图尺寸
-		maxHeight = 168;
+		setMaxHeight = 168;
+	}
+	if (maxHeight > setMaxHeight) {
+		maxHeight = setMaxHeight;
 	}
 
 	$selectorStrDiv.find(selectorStrImg).css("max-height", maxHeight);
