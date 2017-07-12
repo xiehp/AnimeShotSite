@@ -28,6 +28,7 @@ import xie.base.entity.IdEntity;
 import xie.base.page.PageRequestUtil;
 import xie.base.repository.BaseRepository;
 import xie.base.repository.BaseSearchFilter;
+import xie.base.repository.BaseSearchParams;
 import xie.base.repository.BaseSpecifications;
 import xie.common.Constants;
 import xie.common.string.XStringUtils;
@@ -258,8 +259,9 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 		}
 
 		// 搜索条件
-		Map<String, Object> searchParams = new HashMap<>();
-		searchParams.put(BaseSearchFilter.BaseOperator.EQ.getStr(BaseEntity.COLUMN_DELETE_FLAG), Constants.FLAG_INT_NO);
+		BaseSearchParams baseSearchParams = new BaseSearchParams();
+		baseSearchParams.EQ(BaseEntity.COLUMN_DELETE_FLAG, Constants.FLAG_INT_NO);
+		Map<String, Object >searchParams = baseSearchParams.getParams();
 		searchParams.putAll(addSearchParams);
 
 		// 获得开始点

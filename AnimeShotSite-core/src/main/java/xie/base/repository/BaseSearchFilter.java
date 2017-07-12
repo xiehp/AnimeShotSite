@@ -5,6 +5,7 @@
  *******************************************************************************/
 package xie.base.repository;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -14,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.common.collect.Maps;
 
 import xie.common.date.DateUtil;
+import xie.common.string.XStringUtils;
 import xie.common.utils.Validator;
 
 /**
@@ -50,6 +52,11 @@ public class BaseSearchFilter {
 
 		public String getStr(String columnName) {
 			return name() + "_" + columnName;
+		}
+
+		public void put(Map<String, Object> searchParams, String columnName, Object value) {
+			String key = getStr(columnName);
+			searchParams.put(key, value);
 		}
 	}
 
@@ -118,6 +125,38 @@ public class BaseSearchFilter {
 			Date endDate = DateUtil.convertFromString(endDateStr, DateUtil.YMD1);
 			endDate = DateUtil.seekDate(endDate, 1);
 			searchParams.put(searchKey, endDate);
+		}
+	}
+
+	/**
+	 * 适用于精度为日(yyyyMMdd)，形式为>=startDate AND <=endDate 的开始和结束日
+	 * 
+	 * @param startDateName 开始日期的key
+	 * @param endDateName 结束日期的key
+	 * @throws ParseException
+	 */
+	public static void convertStartAndEndDate(
+			Map<String, Object> searchParams,
+			String startDateName, String endDateName) throws ParseException {
+
+		if (searchParams == null) {
+			return;
+		}
+
+		// 开始日期
+		if (!XStringUtils.isBlank(startDateName) && searchParams.get(startDateName) != null) {
+			Object startDateObj = searchParams.get(startDateName);
+			Date startDate = DateUtil.fromString(startDateObj);
+			startDate = DateUtil.getStartTimeOfDay(startDate);
+			searchParams.put(startDateName, startDate);
+		}
+
+		// 结束日期
+		if (!XStringUtils.isBlank(endDateName) && searchParams.get(endDateName) != null) {
+			Object endDateObj = searchParams.get(endDateName);
+			Date endDate = DateUtil.fromString(endDateObj);
+			endDate = DateUtil.getEndTimeOfDay(endDate);
+			searchParams.put(endDateName, endDate);
 		}
 	}
 }

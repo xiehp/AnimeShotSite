@@ -919,13 +919,17 @@ function loadStyles(url) {
 /**
  * 动态加载js脚本文件
  */
-function loadScript(url, successCallback) {
+function loadScript(url, successCallback, appendAfterDom) {
 	if (successCallback == null) {
 		// 没有回调，则直接嵌入标签
 		var script = document.createElement("script");
 		script.type = "text/javascript";
 		script.src = url;
-		document.body.appendChild(script);
+		if (appendAfterDom != null) {
+			appendAfterDom.appendChild(script);
+		} else {
+			document.body.appendChild(script);
+		}
 	} else {
 		// 需要回调，则走ajax
 		$.ajax({
@@ -940,7 +944,11 @@ function loadScript(url, successCallback) {
 					// IE早期的浏览器 ,需要使用script的text属性来指定javascript代码。
 					script.text = code;
 				}
-				document.body.appendChild(script);
+				if (appendAfterDom != null) {
+					appendAfterDom.appendChild(script);
+				} else {
+					document.body.appendChild(script);
+				}
 				if (successCallback) {
 					successCallback();
 				}

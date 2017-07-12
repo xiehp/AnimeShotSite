@@ -464,7 +464,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 	}
 
 	@RequestMapping(value = "/random_old")
-	public String random(Model model) throws Exception {
+	public String random_old(Model model) throws Exception {
 		List<ShotInfo> shotInfoList = new ArrayList<ShotInfo>();
 		for (int i = 0; i < 9; i++) {
 			List<ShotInfo> list = shotInfoService.findRandomShot(1, null, null);
@@ -476,7 +476,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 	}
 
 	@RequestMapping(value = "/random")
-	public String random2(Model model) throws Exception {
+	public String random(Model model) throws Exception {
 		List<AnimeEpisode> episodeList = new ArrayList<AnimeEpisode>();
 		for (int i = 0; i < 12; i++) {
 			List<AnimeEpisode> list = animeEpisodeService.findRandom(1);

@@ -55,7 +55,8 @@ public class WebHandlerExceptionResolver implements HandlerExceptionResolver {
 		log.error(log.getName() + "截获住异常，开始处理");
 		log.error("handler: {}", handler);
 
-		String url = request.getRequestURL().toString() + "?" + request.getQueryString();
+		String query = request.getQueryString() == null ? "" : "?" + request.getQueryString();
+		String url = request.getRequestURL().toString() + query;
 		String uri = request.getRequestURI();
 		String contextPath = request.getContextPath();
 		log.error("请求发生错误：contextPath: {}", contextPath);

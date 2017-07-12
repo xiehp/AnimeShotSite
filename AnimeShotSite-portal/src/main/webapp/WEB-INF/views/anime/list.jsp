@@ -107,7 +107,9 @@
 	<c:forEach items="${ animeInfoPage.content }" var="anime" varStatus="status">
 		<div class="col-lg-3 col-sm-4 col-xs-6 thumbnail animeInfoDiv">
 			<a href="${ctx}/episode/list/${anime.id}" title="<c:out value='${anime.fullName}' /> <c:out value='${anime.secondName}' />">
-				<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${anime.titleUrl.urlS}" class="img-responsive imagelazy">
+				<div class="imagelazyDIv">
+					<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${anime.titleUrl.urlS}" class="img-responsive imagelazy">
+				</div>
 				<div class="wordKeepLine" style="margin-top: 5px;">
 					<c:out value='${anime.fullName}' />
 					<c:out value='${anime.secondName}' />

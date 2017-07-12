@@ -104,12 +104,18 @@
 	</div>
 
 	<c:if test="${IS_MASTER}">
-		<input id="aaaaa">
-		<script type="text/javascript">
-			document.getElementById("aaaaa").value = document.documentElement.clientWidth + "," + window.innerWidth;
-		</script>
-		<input value="${siteBaseUrl}" size="50">
-		<input value="${thisPageUrl}" size="100">
+		<div>
+			<input id="aaaaa">
+			<script type="text/javascript">
+				document.getElementById("aaaaa").value = document.documentElement.clientWidth + "," + window.innerWidth;
+			</script>
+		</div>
+		<div>
+			<c:out value="${thisPageUrl}"></c:out>
+		</div>
+		<div>
+			<c:out value="${thisPageUrl}"></c:out>
+		</div>
 	</c:if>
 
 	<div id="section" align="center">

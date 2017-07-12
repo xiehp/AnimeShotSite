@@ -108,14 +108,13 @@ public class MipAnimeShotController extends AnimeShotController {
 	}
 
 	@RequestMapping(value = "/random_old")
-	public String random(Model model) throws Exception {
-		return super.random(model);
+	public String random_old(Model model) throws Exception {
+		return super.random_old(model);
 	}
 
 	@RequestMapping(value = "/random")
-	public String random2(Model model) throws Exception {
-
-		return super.random2(model);
+	public String random(Model model) throws Exception {
+		return super.random(model);
 	}
 
 	@RequestMapping(value = "/recommend")

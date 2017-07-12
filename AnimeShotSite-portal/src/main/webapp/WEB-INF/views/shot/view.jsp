@@ -192,7 +192,7 @@ body {
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noLeftRightPadding">
 		<!-- 图片 -->
 		<div id="shotImgDiv" class="thumbnail shotImgDivStyle" data-ImageAspectRatio="${ImageAspectRatio}" style="margin-bottom: 10px;<c:if test="${ShotImgDivWidth > 0}">width: ${ShotImgDivWidth}px; height: ${DivPaddingBorderHeight + (ShotImgDivWidth-DivPaddingBorderWidth) * ImageAspectRatio}px;</c:if>">
-			<img id="shotImg" style="width:100%;" src="${FullImageUrl}" alt="<c:out value='${EpisodeFullNameWithTime}' /> <c:out value="${fn:substring(subtitleLineTextStr100, 0, 50)}" />">
+			<img id="shotImg" style="width: 100%;" src="${FullImageUrl}" alt="<c:out value='${EpisodeFullNameWithTime}' /> <c:out value="${fn:substring(subtitleLineTextStr100, 0, 50)}" />">
 
 			<c:if test="${not empty previousShotInfo.id}">
 				<a class="shotImgHotPoint left-0 top-0" href="${ctx}/shot/view/${previousShotInfo.id}"></a>
@@ -332,4 +332,43 @@ body {
 		</div>
 		<div class="col-sm-3 ShareLinkButton"></div>
 	</div>
+</div>
+
+<div id="viewAD" style="margin-top: 40px; overflow: hidden;">
+	<script type="text/javascript">
+		/*120*240 创建于 2017/7/6*/
+		//var cpro_id = "u3028774";
+		/*960*90 创建于 2017/7/6*/
+		//var cpro_id = "u3028781";
+		/*468*60 创建于 2017/7/6*/
+		//var cpro_id = "u3028813";
+		/*640*60 创建于 2017/7/6*/
+		//var cpro_id = "u3028819";
+		var baiduApIds = [ "u3028819", "u3030884", "u3030880", "u3030894" ];
+		var cpro_id = baiduApIds[3];
+
+		/*
+		var viewAD = document.getElementById("viewAD");
+		lazyRun(function() {
+			// loadScript("http://cpro.baidustatic.com/cpro/ui/c.js", null, viewAD);
+			// loadScript("${ctx}/static/plugins/ad/baidu_c.js", null, viewAD);
+		}, 500);
+
+		function moveAD() {
+			var baiduSSP = document.querySelector("div[id^=BAIDU_SSP]");
+			if (baiduSSP == null) {
+				setTimeout(function() {
+					moveAD();
+				}, 1000);
+			} else {
+				viewAD.appendChild(baiduSSP);
+			}
+		}
+
+		setTimeout(function() {
+			moveAD();
+		}, 1000);
+		*/
+	</script>
+	<script type="text/javascript" src="${ctx}/static/plugins/ad/baidu_c.js"></script>
 </div>
