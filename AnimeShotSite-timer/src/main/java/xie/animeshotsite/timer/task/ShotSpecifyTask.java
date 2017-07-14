@@ -81,6 +81,7 @@ public class ShotSpecifyTask extends XBaseTask {
 			if (forceUpload != null) {
 				saveImageListener.setForceUpload(forceUpload);
 			}
+			saveImageListener.setPerHourLimitCount(300);
 
 			Video2Image video2Image = new Video2Image(fileMrl.getAbsolutePath(), saveImageListener);
 			video2Image.setRunMode(Video2ImageProperties.RUN_MODE_SPECIAL);

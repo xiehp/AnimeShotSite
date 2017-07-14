@@ -46,6 +46,8 @@ public class SaveImageListener extends Video2ImageAdapter {
 	/** 如果图片已经有贴图库信息，是否强制重新上传更新 */
 	private boolean forceUpload = false;
 
+	private int perHourLimitCount = 295;
+
 	private String animeInfoId;
 	private String animeEpisodeId;
 	private AnimeEpisode animeEpisode;
@@ -194,7 +196,7 @@ public class SaveImageListener extends Video2ImageAdapter {
 		if (forceUpload || XStringUtils.isBlank(shotInfo.getTietukuUrlId())) {
 			// 增加次数，同时判断当前是否刷新上传次数，以及暂停操作
 			// 控制295张图，留5张备用
-			uploadPerHourCouter.addCount();
+			uploadPerHourCouter.addCount(perHourLimitCount);
 
 			// 保存截图到贴图库网站
 			logger.info("贴图库上传, " + "shotInfoId:" + shotInfo.getId());
@@ -258,5 +260,9 @@ public class SaveImageListener extends Video2ImageAdapter {
 		}
 
 		return true;
+	}
+
+	public void setPerHourLimitCount(int perHourLimitCount) {
+		this.perHourLimitCount = perHourLimitCount;
 	}
 }

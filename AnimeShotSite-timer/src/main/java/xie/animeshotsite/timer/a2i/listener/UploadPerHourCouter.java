@@ -13,16 +13,21 @@ import xie.common.utils.XWaitTime;
 public class UploadPerHourCouter {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	private int maxUploadPerHour = 295;
+	private final int maxUploadPerHour = 295;
 
 	private int nowUploadPerHour = 0;
 
 	private XWaitTime uploadPerHourWait = new XWaitTime(XTimeUtils.getNeedTimeNextHour() + 150000);
 
+	public void addCount() {
+		addCount(maxUploadPerHour);
+	}
+
 	/**
 	 * 增加次数，同时判断当前是否刷新上传次数，以及暂停操作
 	 */
-	public void addCount() {
+	public void addCount(int maxUploadPerHour) {
+
 		// 判断当前是否刷新上传次数
 		if (uploadPerHourWait.isTimeout()) {
 			logger.info("时间到，刷新上传次数，当前时间:{}", new Date());
