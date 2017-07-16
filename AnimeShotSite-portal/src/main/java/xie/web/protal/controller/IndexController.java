@@ -72,7 +72,7 @@ public class IndexController extends BaseController {
 		{
 			List<ShotInfo> newestShotList = entityCache.get("newestShotList" + "Index", () -> {
 				return shotInfoService.getNewestShotList(6);
-			}, XConst.SECOND_05_MIN * 1000 + XConst.SECOND_01_MIN * 1000);
+			}, XConst.SECOND_20_MIN * 1000 + XConst.SECOND_01_MIN * 1000);
 
 			request.setAttribute("newestShotList", newestShotList);
 		}
@@ -81,7 +81,7 @@ public class IndexController extends BaseController {
 		{
 			Long shotCount = entityCache.get("shotCount" + "Index", () -> {
 				return shotInfoDao.count();
-			}, XConst.SECOND_05_MIN * 1000 + XConst.SECOND_01_MIN * 1000);
+			}, XConst.SECOND_05_HOUR * 1000 + XConst.SECOND_01_MIN * 1000);
 
 			request.setAttribute("shotCount", shotCount);
 		}
@@ -116,7 +116,7 @@ public class IndexController extends BaseController {
 					list = shotInfoService.getMasterRecommandShotList(1, 3650, 42);
 				}
 				return list;
-			}, XConst.SECOND_05_MIN * 1000);
+			}, XConst.SECOND_30_MIN * 1000);
 
 			request.setAttribute("masterRecommandShotList", masterRecommandShotList);
 		}
@@ -139,7 +139,7 @@ public class IndexController extends BaseController {
 				searchParams.put("EQ_showFlg", Constants.FLAG_STR_YES);
 				Page<AnimeInfo> page = animeInfoService.searchPageByParams(searchParams, 1, 500, "showDate", Sort.Direction.DESC, AnimeInfo.class);
 				return page;
-			}, XConst.SECOND_10_MIN * 1000 - XConst.SECOND_01_MIN * 1000);
+			}, XConst.SECOND_10_HOUR * 1000 - XConst.SECOND_01_MIN * 1000);
 
 			request.setAttribute("animeInfoPage", animeInfoPage);
 		}

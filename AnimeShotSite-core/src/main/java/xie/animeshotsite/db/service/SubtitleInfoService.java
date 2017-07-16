@@ -197,7 +197,7 @@ public class SubtitleInfoService extends BaseService<SubtitleInfo, String> {
 			defaultLanguageList = defaultLanguageListTemp;
 		}
 
-		entityCache.put(key, defaultLanguageList, XConst.SECOND_05_HOUR * 1000);
+		entityCache.put(key, defaultLanguageList);
 		List<String> returnList = XListUtils.copy(defaultLanguageList);
 		return returnList;
 	}
