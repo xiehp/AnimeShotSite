@@ -200,6 +200,9 @@ public class EpisodeFileDownloadTimer extends BaseTaskTimer {
 					}
 					SubtitleInfo subtitleInfo = listSubtitleInfo.get(0);
 					File targetSubtitleFolder = FilePathUtils.getCommonFolder(subtitleInfo.getLocalRootPath(), subtitleInfo.getLocalDetailPath());
+					if (!targetSubtitleFolder.exists()) {
+						targetSubtitleFolder.mkdirs();
+					}
 					_log.info("生成字幕文件移动目标目录：{}", targetSubtitleFolder.getAbsoluteFile());
 					for (File file : subtitleFiles) {
 						File target = new File(targetSubtitleFolder, file.getName());
