@@ -172,7 +172,7 @@
 			<artifactId>jedis</artifactId>
 		</dependency>
 
-		<!-- CACHE begin -->
+		<!-- CACHE begin
 		<dependency>
 			<groupId>net.spy</groupId>
 			<artifactId>spymemcached</artifactId>
@@ -181,9 +181,8 @@
 		<dependency>
 			<groupId>com.thimbleware.jmemcached</groupId>
 			<artifactId>jmemcached-core</artifactId>
-			<!-- 为演示而改为runtime -->
 			<scope>runtime</scope>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>

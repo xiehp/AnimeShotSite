@@ -34,7 +34,8 @@
 								<configuration>
 									<target>
 										<copy file="target/${project.build.finalName}.jar" todir="D:\work\server\application\AnimeShotTimerTest"></copy>
-										<copy file="bat/startTimer.bat" todir="D:\work\server\application\AnimeShotTimer"></copy>
+										<copy file="bat/startTimer.bat" todir="D:\work\server\application\AnimeShotTimerTest"></copy>
+										<copy file="bat/startDownloadTimer.bat" todir="D:\work\server\application\AnimeShotTimerTest"></copy>
 									</target>
 								</configuration>
 							</execution>
@@ -92,6 +93,7 @@
 									<target>
 										<copy file="target/${project.build.finalName}.jar" todir="D:\work\server\application\AnimeShotTimer"></copy>
 										<copy file="bat/startTimer.bat" todir="D:\work\server\application\AnimeShotTimer"></copy>
+										<copy file="bat/startDownloadTimer.bat" todir="D:\work\server\application\AnimeShotTimer"></copy>
 									</target>
 								</configuration>
 							</execution>
