@@ -94,11 +94,11 @@ public class MipAnimeShotController extends AnimeShotController {
 	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/delete/{id}")
 	@ResponseBody
-	public Map<String, Object> checkCreateShot(
+	public Map<String, Object> delete(
 			@PathVariable String id,
 			Model model, HttpServletRequest request) throws Exception {
 
-		return super.checkCreateShot(id, model, request);
+		return super.delete(id, model, request);
 	}
 
 	@RequestMapping(value = "/publicLike")

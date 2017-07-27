@@ -9,7 +9,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -261,7 +261,7 @@ public class GifInfoService extends BaseService<GifInfo, String> {
 	}
 
 	public List<GifInfo> findRandom(int range, int number) {
-		int from = RandomUtils.nextInt(range);
+		int from = RandomUtils.nextInt(1, range);
 		List<GifInfo> list = gifInfoDao.findRandom(from, number);
 		list = fillParentData(list);
 		return list;

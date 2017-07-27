@@ -1,7 +1,11 @@
 package xie.web.controller;
 
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -65,6 +69,8 @@ public class ToolController extends BaseController {
 
 		// 重新读取贴图库网址转换方式文件
 		shotSiteSetup.resetTietukuDomainConvert(request);
+
+//		System.gc();
 
 		return map;
 	}
@@ -221,7 +227,7 @@ public class ToolController extends BaseController {
 			userConfig.setTranLanguageColor(newTranLanColor);
 			// map = getSuccessCode(messageSource.getMessage("切换翻译颜色成功", null, localeResolver.resolveLocale(request)));
 			goPageResult = createSuccess(request, "切换翻译颜色成功");
-			//goPageResult.setNotAlertFlag(true);
+			// goPageResult.setNotAlertFlag(true);
 		} catch (Exception ex) {
 			// map = getFailCode(messageSource.getMessage("切换翻译颜色失败", null, localeResolver.resolveLocale(request)));
 			goPageResult = createFail(request, "切换翻译颜色失败");

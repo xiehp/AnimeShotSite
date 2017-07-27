@@ -89,6 +89,10 @@
 			<groupId>opensymphony</groupId>
 			<artifactId>sitemesh</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+		</dependency>
 
 		<!-- WEB end -->
 
@@ -103,7 +107,7 @@
 		</dependency>
 		<!-- SECURITY end -->
 
-		<!-- SOAP begin -->
+		<!-- SOAP begin
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
@@ -111,14 +115,14 @@
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http</artifactId>
-		</dependency>
+		</dependency> -->
 		<!-- SOAP end -->
 
-		<!-- JAX-RS begin -->
+		<!-- JAX-RS begin
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
-		</dependency>
+		</dependency> -->
 		<!-- JAX-RS end -->
 
 		<!-- TIMER -->
@@ -127,11 +131,11 @@
 			<artifactId>quartz</artifactId>
 		</dependency>
 
-		<!-- Redis -->
+		<!-- Redis
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
-		</dependency>
+		</dependency> -->
 
 		<!-- CACHE begin
 		<dependency>
@@ -151,20 +155,20 @@
 		</dependency>
 		<!-- CACHE end -->
 
-		<!-- jolokia Restful JMX -->
+		<!-- jolokia Restful JMX
 		<dependency>
 			<groupId>org.jolokia</groupId>
 			<artifactId>jolokia-core</artifactId>
-		</dependency>
+		</dependency> -->
 
-		<!-- hystrix -->
+		<!-- hystrix
 		<dependency>
 			<groupId>com.netflix.hystrix</groupId>
 			<artifactId>hystrix-core</artifactId>
-		</dependency>
+		</dependency> -->
 
 		<!-- MONITOR begin -->
-		<!-- javasimon -->
+		<!-- javasimon
 		<dependency>
 			<groupId>org.javasimon</groupId>
 			<artifactId>javasimon-spring</artifactId>
@@ -176,12 +180,12 @@
 		<dependency>
 			<groupId>org.javasimon</groupId>
 			<artifactId>javasimon-console-embed</artifactId>
-		</dependency>
+		</dependency> -->
 		<!-- MONITOR end -->
 
 		<!-- JSON -->
 
-		<!-- XML begin -->
+		<!-- XML begin
 		<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
@@ -190,32 +194,29 @@
 		<dependency>
 			<groupId>jaxen</groupId>
 			<artifactId>jaxen</artifactId>
-		</dependency>
+		</dependency> -->
 		<!-- XML end -->
-
+		<!--
 		<dependency>
 			<groupId>com.googlecode.log4jdbc</groupId>
 			<artifactId>log4jdbc</artifactId>
-		</dependency>
+		</dependency>-->
 		<!-- LOGGING end -->
 
 		<!-- GENERAL UTILS begin -->
 		<!-- GENERAL UTILS end -->
 
 		<!-- OTHER TOOLS begin -->
+		<!--
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 		</dependency>
+		-->
 
 		<dependency>
 			<groupId>net.sf.dozer</groupId>
 			<artifactId>dozer</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.liferay</groupId>
-			<artifactId>org.apache.commons.fileupload</artifactId>
 		</dependency>
 
 		<!-- email -->

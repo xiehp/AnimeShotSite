@@ -1,5 +1,3 @@
-<%@tag import="freemarker.template.utility.HtmlEscape"%>
-<%@tag import="org.springframework.boot.autoconfigure.condition.SearchStrategy"%>
 <%@ tag pageEncoding="UTF-8"%>
 <%@ attribute name="page" type="org.springframework.data.domain.Page" required="true"%>
 <%@ attribute name="paginationSize" type="java.lang.Integer"%>

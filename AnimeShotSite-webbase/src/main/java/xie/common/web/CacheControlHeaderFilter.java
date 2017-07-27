@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springside.modules.web.Servlets;
 
+import com.google.common.net.HttpHeaders;
+
 /**
  * 为Response设置客户端缓存控制Header的Filter.
  * 
@@ -45,7 +47,11 @@ public class CacheControlHeaderFilter implements Filter {
 
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException,
 			ServletException {
-		Servlets.setExpiresHeader((HttpServletResponse) res, expiresSeconds);
+		// Servlets.setExpiresHeader((HttpServletResponse) res, expiresSeconds);
+		// Http 1.0 header, set a fix expires date.
+		((HttpServletResponse) res).setDateHeader(HttpHeaders.EXPIRES, System.currentTimeMillis() + (expiresSeconds * 1000));
+		// Http 1.1 header, set a time after now.
+		((HttpServletResponse) res).setHeader(HttpHeaders.CACHE_CONTROL, "public, max-age=" + expiresSeconds);
 		chain.doFilter(req, res);
 	}
 

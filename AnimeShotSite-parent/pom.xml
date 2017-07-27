@@ -88,7 +88,6 @@
 		<commons-io.version>2.4</commons-io.version>
 		<joda-time.version>2.3</joda-time.version>
 		<dozer.version>5.5.1</dozer.version>
-		<freemarker.version>2.3.21</freemarker.version>
 		<aspectj.version>1.8.4</aspectj.version>
 		<assertj.version>1.7.0</assertj.version>
 		<mockito.version>1.10.8</mockito.version>
@@ -97,7 +96,6 @@
 		<nosqlunit.version>0.8.0</nosqlunit.version>
 		<jetty.version>8.1.16.v20140903</jetty.version>
 		<oracle.version>11.2.0</oracle.version>
-		<fileupload.version>1.2.2.LIFERAY-PATCHED-1</fileupload.version>
 		<apache.poi.version>3.12</apache.poi.version>
 		<dom4j.version>2.6.0</dom4j.version>
 
@@ -215,11 +213,6 @@
 				</exclusions>
 			</dependency> -->
 			
-			<!--<dependency>
-				<groupId>aopalliance</groupId>
-				<artifactId>aopalliance</artifactId>
-				<version>1.0</version>
-				</dependency> -->
 			<!-- <dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-aspects</artifactId>
@@ -379,7 +372,7 @@
 				</dependency> -->
 			<!-- jolokia end -->
 
-			<!-- hystrix begin -->
+			<!-- hystrix begin
 			<dependency>
 				<groupId>com.netflix.hystrix</groupId>
 				<artifactId>hystrix-core</artifactId>
@@ -390,7 +383,7 @@
 						<artifactId>commons-logging</artifactId>
 					</exclusion>
 				</exclusions>
-			</dependency>
+			</dependency> -->
 			<!-- hystrix end -->
 
 			<!-- Monitor begin -->
@@ -462,19 +455,6 @@
 						<artifactId>slf4j-log4j12</artifactId>
 					</exclusion>
 				</exclusions>
-			</dependency>
-
-			<!-- template engine
-				<dependency>
-				<groupId>org.freemarker</groupId>
-				<artifactId>freemarker</artifactId>
-				<version>${freemarker.version}</version>
-				</dependency> -->
-
-			<dependency>
-				<groupId>com.liferay</groupId>
-				<artifactId>org.apache.commons.fileupload</artifactId>
-				<version>${fileupload.version}</version>
 			</dependency>
 
 			<!-- commons-pool -->

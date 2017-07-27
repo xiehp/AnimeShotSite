@@ -6,17 +6,18 @@ import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import xie.animeshotsite.db.entity.ShotTask;
 import xie.animeshotsite.timer.timer.BaseTaskTimer;
 import xie.animeshotsite.timer.timer.ShotTaskTimer;
+import xie.animeshotsite.timer.timer.beforeshot.EpisodeFileDownloadTimer;
+import xie.animeshotsite.timer.timer.beforeshot.EpisodeUpdateMonitorTimer;
 import xie.module.spring.SpringUtil;
 
 //@SpringBootApplication
 //@Configuration
 //@ComponentScan("xie")
-public class MainTimer {
+public class DownloadMainTimer {
 
-	private static Logger logger = LoggerFactory.getLogger(MainTimer.class);
+	private static Logger logger = LoggerFactory.getLogger(DownloadMainTimer.class);
 
 	public static void main(String[] args) {
 
@@ -30,14 +31,14 @@ public class MainTimer {
 		// System.setProperty("spring.profiles.default", "productRemote");
 
 		// 截图
-		createTimer(ShotTaskTimer.class, 20 * 1000, ShotTask.TASK_TYPE_SHOT);
-		createTimer(ShotTaskTimer.class, 5 * 1000, ShotTask.TASK_TYPE_SPECIAL_SHOT);
-		createTimer(ShotTaskTimer.class, 20 * 1000, ShotTask.TASK_TYPE_SUBTITLE);
-		createTimer(ShotTaskTimer.class, 20 * 1000, ShotTask.TASK_TYPE_GIF);
+		// createTimer(ShotTaskTimer.class, 20 * 1000, ShotTask.TASK_TYPE_SHOT);
+		// createTimer(ShotTaskTimer.class, 5 * 1000, ShotTask.TASK_TYPE_SPECIAL_SHOT);
+		// createTimer(ShotTaskTimer.class, 20 * 1000, ShotTask.TASK_TYPE_SUBTITLE);
+		// createTimer(ShotTaskTimer.class, 20 * 1000, ShotTask.TASK_TYPE_GIF);
 
 		// 自动化处理，监视下载url地址
-		// createTimer(EpisodeUpdateMonitorTimer.class, 36000 * 1000);
-		// createTimer(EpisodeFileDownloadTimer.class, 60 * 1000);
+		createTimer(EpisodeUpdateMonitorTimer.class, 36000 * 1000);
+		createTimer(EpisodeFileDownloadTimer.class, 60 * 1000);
 
 		printProfile();
 

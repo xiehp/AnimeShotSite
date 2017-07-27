@@ -418,7 +418,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 	@RequiresPermissions(value = "userList:add")
 	@RequestMapping(value = "/delete/{id}")
 	@ResponseBody
-	public Map<String, Object> checkCreateShot(
+	public Map<String, Object> delete(
 			@PathVariable String id,
 			Model model, HttpServletRequest request) throws Exception {
 

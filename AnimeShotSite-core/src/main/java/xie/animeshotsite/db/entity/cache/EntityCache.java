@@ -60,7 +60,7 @@ public class EntityCache {
 		}
 	}
 
-	public int clear() {
+	public synchronized int clear() {
 		int size = cacheMap.size();
 		logger.info("准备清除所有缓存，当前缓存个数：" + size);
 		cacheMap.clear();
@@ -98,7 +98,15 @@ public class EntityCache {
 	}
 
 	private int clearExpire() {
+		if (!processExpireTime.isTimeout()) {
+			return 0;
+		}
+
 		synchronized (this) {
+			if (!processExpireTime.isTimeout()) {
+				return 0;
+			}
+
 			logger.info("准备清除过期缓存，当前缓存个数：{}", cacheMap.size());
 
 			// 处理过期对象
@@ -115,10 +123,21 @@ public class EntityCache {
 					break;
 				}
 			}
-			processExpireTime.resetNowtime();
 
 			logger.info("清除缓存个数:{}, 剩余缓存个数:{}", count, cacheMap.size());
 
+			if (cacheMap.size() > 5000) {
+				logger.info("缓存个数大于5000，继续清理");
+				timeoutMap.keySet().forEach(key -> {
+					if (cacheMap.size() > 4000) {
+						remove(key);
+					}
+				});
+			}
+
+			logger.info("剩余缓存个数:{}", cacheMap.size());
+
+			processExpireTime.resetNowtime();
 			return count;
 		}
 	}
@@ -134,17 +153,11 @@ public class EntityCache {
 	 * @param timeoutMili 微妙
 	 */
 	public void put(String cacheId, Object value, long timeoutMili) {
+		clearExpire();
+
 		remove(cacheId);
 		cacheMap.put(cacheId, value);
 		timeoutMap.put(cacheId, new XWaitTime(timeoutMili));
-
-		if (processExpireTime.isTimeout()) {
-			clearExpire();
-
-			if (processExpireTime.isTimeout()) {
-				processExpireTime.resetNowtime();
-			}
-		}
 	}
 
 	public Object remove(String cacheId) {
@@ -192,7 +205,7 @@ public class EntityCache {
 		}
 
 		if (xWaitTime.isTimeout()) {
-			remove(cacheId);
+			remove(cacheId); // 这里不清楚掉，则contain函数中将无法正确判断缓存虽然存在，但是实际已经过期这种情况
 			return null;
 		}
 

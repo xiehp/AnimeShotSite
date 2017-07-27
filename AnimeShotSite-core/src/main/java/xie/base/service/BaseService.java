@@ -10,7 +10,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -270,13 +270,13 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 			Page<M> page = searchPageByParams(searchParams, 1, 1, null, clazz);
 			int totalElement = (int) page.getTotalElements();
 			if (totalElement > 0) {
-				from = RandomUtils.nextInt(totalElement) + 1;
+				from = RandomUtils.nextInt(1, totalElement) + 1;
 			} else {
 				logging.warn("搜出数据总数为0，range:{}，number:{}，clazz:{}，参数：{}", range, number, clazz, searchParams);
 				return new ArrayList<>();
 			}
 		} else {
-			from = RandomUtils.nextInt(range) + 1;
+			from = RandomUtils.nextInt(1, range) + 1;
 		}
 
 		Page<M> animeEpisodePage = searchPageByParams(searchParams, from, number, null, clazz);
