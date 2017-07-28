@@ -98,7 +98,7 @@ public class EpisodeUpdateMonitorTimer extends BaseTaskTimer {
 			Matcher matcher = pattern.matcher(str);
 			if (matcher.find()) {
 				String findStr = matcher.group(1);
-				System.out.println(findStr);
+				_log.info(findStr);
 				urlMap.put(findStr, str);
 			} else {
 				_log.error("没有在下载链接中找到需要的信息, url:{}, reg:{}", str, reg);
@@ -115,19 +115,22 @@ public class EpisodeUpdateMonitorTimer extends BaseTaskTimer {
 				AutoRunParam episodeMonitorFlagParam = episodeMonitorFlagMap.get(animeEpisodeId);
 				// 剧集的下载地址监视状态为1的情况下，更新数据
 				if (episodeMonitorFlagParam != null && Constants.FLAG_STR_YES.equals(episodeMonitorFlagParam.getValue())) {
-					// 将种子下载url地址放入自动运行参数，
+					// 将种子下载url地址放入自动运行参数
 					autoRunParamService.saveEpisodeByTemplet(animeEpisodeId, "video_download_do_download_url", urlMap.get(number));
+					_log.info("将种子下载url地址放入自动运行参数video_download_do_download_url:{}", urlMap.get(number));
 
 					// 开始下载状态(video_download_do_download_flag)更新为0
 					autoRunParamService.saveEpisodeByTemplet(animeEpisodeId, "video_download_do_download_flag", "0");
+					_log.info("开始下载状态(video_download_do_download_flag)更新为0");
 
-					// 同时将监视状态(video_download_monitor_do_flag)更新为2，
+					// 同时将监视状态(video_download_monitor_do_flag)更新为2
 					autoRunParamService.saveEpisodeByTemplet(animeEpisodeId, "video_download_monitor_do_flag", "2");
+					_log.info("同时将监视状态(video_download_monitor_do_flag)更新为2");
 				} else {
 					_log.debug("当前剧集[{}]为不监视下载地址，跳过更新。", animeEpisode.getFullName());
 				}
 			} else {
-				_log.info("没有找到剧集, animeInfoId:{}, number:{}", animeInfoId, number);
+				_log.warn("没有找到剧集, animeInfoId:{}, number:{}", animeInfoId, number);
 			}
 		}
 
