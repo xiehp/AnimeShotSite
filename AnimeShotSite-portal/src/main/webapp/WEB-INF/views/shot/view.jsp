@@ -268,7 +268,7 @@ body {
 </div>
 
 <div id="createShotResultDiv" class="buttonDiv">
-	<spring:message code='获取新截图(单位:秒)' />
+	<spring:message code='获取新截图' />
 	<c:if test="${!empty previousShotInfo.id}">
 		<a class="btn btn-primary btn-xs postByFromXXX" href="javascript:doCreateShot('${shotInfo.id}', 2000, true);">-2</a>
 	</c:if>
