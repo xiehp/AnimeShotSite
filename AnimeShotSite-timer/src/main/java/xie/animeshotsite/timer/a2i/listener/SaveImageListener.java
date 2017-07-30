@@ -19,6 +19,7 @@ import xie.animeshotsite.db.repository.ShotInfoDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotInfoService;
+import xie.animeshotsite.utils.AutoCollectUtils;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.common.date.DateUtil;
 import xie.common.string.XStringUtils;
@@ -63,6 +64,7 @@ public class SaveImageListener extends Video2ImageAdapter {
 	private ShotInfoDao shotInfoDao;
 	private AnimeEpisodeService animeEpisodeService;
 	private AnimeInfoService animeInfoService;
+	private AutoCollectUtils autoCollectUtils;
 
 	private PostImage postImage;
 
@@ -85,6 +87,7 @@ public class SaveImageListener extends Video2ImageAdapter {
 		animeEpisodeService = SpringUtil.getBean(AnimeEpisodeService.class);
 		animeInfoService = SpringUtil.getBean(AnimeInfoService.class);
 		uploadPerHourCouter = SpringUtil.getBean(UploadPerHourCouter.class);
+		autoCollectUtils = SpringUtil.getBean(AutoCollectUtils.class);
 
 		this.animeEpisode = animeEpisode;
 		this.animeInfoId = animeEpisode.getAnimeInfoId();
@@ -228,11 +231,27 @@ public class SaveImageListener extends Video2ImageAdapter {
 					animeInfoService.saveTitleUrl(animeinfo, rootPath.getAbsolutePath(), detailPathWithNumber.getPath(), file.getName(), shotInfo.getTietukuUrlId(), shotInfo.getTietukuUrlPrefix());
 				}
 
+				// 剧集设置为显示状态
+				animeEpisodeService.show(animeEpisodeId);
+
 				hasSavedEpisodeImageFlg = true;
 			}
 		}
 
 		// TODO 其他网站
+	}
+
+	@Override
+	public void onSuccessComplete() {
+		try {
+			// 进行一次title获取
+			AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
+			if (animeEpisode.getSummary() == null) {
+				autoCollectUtils.collectEpisodeSummary(animeInfoId, false);
+			}
+		} catch (Exception e) {
+			logger.error("结束处理出错：", e);
+		}
 	}
 
 	/**

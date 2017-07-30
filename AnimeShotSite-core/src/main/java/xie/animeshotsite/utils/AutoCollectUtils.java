@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
+import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
+import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.module.spring.SpringUtil;
 
 import javax.annotation.Resource;
@@ -18,6 +20,8 @@ import javax.annotation.Resource;
 public class AutoCollectUtils {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	@Resource
+	private AnimeInfoService animeInfoService;
 	@Resource
 	private AnimeEpisodeService animeEpisodeService;
 	@Resource
@@ -33,7 +37,16 @@ public class AutoCollectUtils {
 		System.exit(0);
 	}
 
+	public void collectEpisodeSummary(String animeInfoId, boolean forceUpdate) throws Exception {
+		AnimeInfo animeInfo = animeInfoService.findOne(animeInfoId);
+		collectEpisodeSummary(animeInfoId, animeInfo.getSummaryCollectUrl(), animeInfo.getSummaryCollectTitleExp(), forceUpdate);
+	}
+
 	public void collectEpisodeSummary(String animeInfoId, String url, String titleReplaceReg, boolean forceUpdate) throws Exception {
+		if (url == null) {
+			return;
+		}
+
 		LinkedHashMap<Integer, Map<String, String>> summaryMaps = resourceCollectUtils.collectBaiduEpisodeSummary(url, titleReplaceReg);
 
 		List<AnimeEpisode> list;
@@ -52,11 +65,11 @@ public class AutoCollectUtils {
 				Map<String, String> summaryMap = summaryMaps.get(index);
 				if (summaryMap != null) {
 					boolean updateFlag = false;
-					if (forceUpdate || animeEpisode.getTitle() == null){
+					if (forceUpdate || animeEpisode.getTitle() == null) {
 						animeEpisode.setTitle(summaryMap.get("title"));
 						updateFlag = true;
 					}
-					if (forceUpdate || animeEpisode.getSummary() == null){
+					if (forceUpdate || animeEpisode.getSummary() == null) {
 						animeEpisode.setSummary(summaryMap.get("summary"));
 						updateFlag = true;
 					}

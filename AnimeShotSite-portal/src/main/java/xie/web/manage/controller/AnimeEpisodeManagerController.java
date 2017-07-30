@@ -255,9 +255,7 @@ public class AnimeEpisodeManagerController extends BaseManagerController<AnimeEp
 
 		Map<String, Object> map;
 
-		AnimeInfo animeInfo = animeInfoService.findOne(animeInfoId);
-
-		autoCollectUtils.collectEpisodeSummary(animeInfoId, animeInfo.getSummaryCollectUrl(), animeInfo.getSummaryCollectTitleExp(), forceUpdate);
+		autoCollectUtils.collectEpisodeSummary(animeInfoId, forceUpdate);
 
 		map = getSuccessCode("操作成功");
 		return map;

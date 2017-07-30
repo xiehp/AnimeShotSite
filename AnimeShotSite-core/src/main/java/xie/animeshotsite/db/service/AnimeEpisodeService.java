@@ -1,10 +1,7 @@
 package xie.animeshotsite.db.service;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
@@ -138,10 +135,10 @@ public class AnimeEpisodeService extends BaseService<AnimeEpisode, String> {
 	/**
 	 * 新增加一个图片title
 	 */
-	public void saveTitleUrl(AnimeEpisode animeEpisode, String rootPath, String detailPath, String name, String tietukuImageUrlId, String tietukuImageUrlPrefix) {
+	public AnimeEpisode saveTitleUrl(AnimeEpisode animeEpisode, String rootPath, String detailPath, String name, String tietukuImageUrlId, String tietukuImageUrlPrefix) {
 		ImageUrl imageUrl = imageUrlService.saveImageInfo(rootPath, detailPath, name, tietukuImageUrlId, tietukuImageUrlPrefix);
 		animeEpisode.setTitleUrlId(imageUrl.getId());
-		animeEpisodeDao.save(animeEpisode);
+		return animeEpisodeDao.save(animeEpisode);
 	}
 
 	public List<AnimeEpisode> findRandom(int number) {
@@ -149,5 +146,21 @@ public class AnimeEpisodeService extends BaseService<AnimeEpisode, String> {
 		searchParams.put(BaseOperator.EQ.getStr(AnimeEpisode.COLUMN_SHOW_FLG), Constants.FLAG_INT_YES);
 		List<AnimeEpisode> list = findRandom(-1, number, AnimeEpisode.class, searchParams);
 		return list;
+	}
+
+	/**
+	 * 时的剧集变成显示状态，同时修改显示时间
+	 * 
+	 * @param animeEpisodeId
+	 */
+	public AnimeEpisode show(String animeEpisodeId) {
+		AnimeEpisode animeEpisode = findOne(animeEpisodeId);
+		if (!Constants.FLAG_INT_YES.equals(animeEpisode.getShowFlg())) {
+			animeEpisode.setShowFlg(Constants.FLAG_INT_YES);
+			animeEpisode.setShowDate(new Date());
+			save(animeEpisode);
+		}
+
+		return animeEpisode;
 	}
 }
