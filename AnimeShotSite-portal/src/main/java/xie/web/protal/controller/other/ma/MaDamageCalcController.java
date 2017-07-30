@@ -331,13 +331,13 @@ public class MaDamageCalcController extends BaseController {
 	 * @param request
 	 * @param content
 	 * @param userName
-	 * @param name
 	 * @param class2 all, main
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	@RequestMapping(value = "/comment/createComment")
+	@RequestMapping(value = "/ma/comment/createComment")
 	@ResponseBody
+	@Deprecated
 	public Map<String, Object> create(
 			HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(required = false) String content,

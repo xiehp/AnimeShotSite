@@ -41,6 +41,15 @@ public class CommentRecord extends BaseEntity {
 	/** 评论所属对象ID */
 	private String targetId;
 
+	/** 评论所属对象其他信息1 */
+	private String targetAttr1;
+
+	/** 评论所属对象其他信息2 */
+	private String targetAttr2;
+
+	/** 评论所属对象其他信息3 */
+	private String targetAttr3;
+
 	/** 评论时间 */
 	private Date commentDate;
 
@@ -132,6 +141,30 @@ public class CommentRecord extends BaseEntity {
 	 */
 	public void setTargetId(String targetId) {
 		this.targetId = targetId;
+	}
+
+	public String getTargetAttr1() {
+		return targetAttr1;
+	}
+
+	public void setTargetAttr1(String targetAttr1) {
+		this.targetAttr1 = targetAttr1;
+	}
+
+	public String getTargetAttr2() {
+		return targetAttr2;
+	}
+
+	public void setTargetAttr2(String targetAttr2) {
+		this.targetAttr2 = targetAttr2;
+	}
+
+	public String getTargetAttr3() {
+		return targetAttr3;
+	}
+
+	public void setTargetAttr3(String targetAttr3) {
+		this.targetAttr3 = targetAttr3;
 	}
 
 	/**

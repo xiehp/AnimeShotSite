@@ -572,7 +572,7 @@ tr.locktop {
 		</c:if>
 
 		<div align="left" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			<form id="createCommentForm" action="${ctx}/comment/createComment" method="post">
+			<form id="createCommentForm" action="${ctx}/ma/comment/createComment" method="post">
 
 				<input type="hidden" name="replyCommentId" />
 				<input type="hidden" name="class2" value="${CommentRecordClass2}" />

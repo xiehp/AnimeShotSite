@@ -30,6 +30,7 @@ import xie.animeshotsite.setup.ShotSiteSetup;
 import xie.animeshotsite.setup.UserConfig;
 import xie.animeshotsite.utils.SiteUtils;
 import xie.base.controller.BaseFunctionController;
+import xie.base.page.PageRequestUtil;
 import xie.base.user.UserUtils;
 import xie.common.Constants;
 import xie.common.constant.XConst;
@@ -40,6 +41,8 @@ import xie.common.utils.XSSHttpUtil;
 import xie.common.web.util.ConstantsWeb;
 import xie.module.language.XELangLocal;
 import xie.module.language.translate.baidu.XELangBaidu;
+import xie.other.ma.db.entity.CommentRecord;
+import xie.other.ma.db.service.CommentRecordService;
 import xie.web.util.SiteConstants;
 
 @Controller
@@ -70,6 +73,8 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 	private ShotTaskService shotTaskService;
 	@Resource
 	private ShotSiteSetup shotSiteSetup;
+	@Resource
+	private CommentRecordService commentRecordService;
 
 	protected String getJspFileRootPath() {
 		return "/shot/";
@@ -215,7 +220,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		List<String> actualShowLanage = subtitleInfoService.findActualShowLanguage(animeEpisode.getId(), localeLanguage, showLanage, showAllSubtitleFlag);
 		Long startTime = shotInfo.getTimeStamp();
 		Long endTime = nextShotInfo == null ? startTime + 5000 : nextShotInfo.getTimeStamp();
-		actualShowLanage.addAll(toTranLanguage); // TODO  有错误
+		actualShowLanage.addAll(toTranLanguage); // TODO 有错误
 		List<SubtitleLine> subtitleLineList = subtitleLineService.findByTimeRemoveDuplicate(animeEpisode.getId(), actualShowLanage, startTime, endTime);
 		// 如果显示语言在搜索到的字幕中不存在，则删除掉
 		deleteNoSubtitleLanguage(actualShowLanage, subtitleLineList);
@@ -264,6 +269,18 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 
 		model.addAttribute("subtitleTranslatedTextColor", userConfig.getTranLanguageColor());
 		model.addAttribute("subtitleTranslatedTextFontsize", userConfig.getTranLanFonsize() == null ? "smaller" : userConfig.getTranLanFonsize());
+
+		// 显示评论
+		// 主页面评论
+		final String shotId = shotInfo.getId();
+		Page<CommentRecord> shotCommentPage = entityCache.get("shot_comment_" + shotId, () -> {
+			Map<String, Object> searchParamsMain = new HashMap<>();
+			searchParamsMain.put("EQ_" + CommentRecord.COLUMN_TARGET_ID, shotId);
+			searchParamsMain.put("EQ_" + CommentRecord.COLUMN_CLASS1, "shot");
+			Page<CommentRecord> page = commentRecordService.searchPageByParams(searchParamsMain, 1, 50, PageRequestUtil.SORT_TYPE_AUTO, CommentRecord.class);
+			return page;
+		});
+		model.addAttribute("shotCommentPage", shotCommentPage);
 
 		return getJspFilePath("view");
 	}

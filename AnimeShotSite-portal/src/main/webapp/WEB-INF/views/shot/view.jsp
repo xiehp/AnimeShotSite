@@ -167,6 +167,12 @@ body {
 		loadImg("${NextFullImageUrl}");
 	}, 200);
 	</c:if>
+
+	function createCommentRecord() {
+		$.homeAjaxSubmit("createCommentForm", null, function() {
+			location.reload();
+		});
+	}
 </script>
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noLeftRightPadding">
@@ -331,5 +337,45 @@ body {
 			</div>
 		</div>
 		<div class="col-sm-3 ShareLinkButton"></div>
+	</div>
+</div>
+
+<!-- 评论 -->
+<div id="截图评论" align="center" class="row ShareLinkDiv" style="margin-left: 0; margin-right: 0;">
+<c:if test="${!empty shotCommentPage}">
+	<div align="left" class="col-lg-9 col-md-9 col-sm-10 col-xs-11" style="float: none;">
+		<c:if test="${shotCommentPage.content.size() > 0}">
+			网友评论
+			<c:forEach items="${ shotCommentPage.content }" var="commentRecord">
+				<div style="margin-top: 10px;">
+					<fmt:formatDate value="${commentRecord.commentDate}" pattern="yyyy-MM-dd HH:mm:ss" />
+					<span style="margin-left: 10px;"><c:out value='${empty commentRecord.userName ? "某网友" : commentRecord.userName}' /></span>
+						<pre><c:out value='${commentRecord.content}' /></pre>
+				</div>
+			</c:forEach>
+		</c:if>
+	</div>
+</c:if>
+</div>
+<div id="创建评论" align="center" class="row ShareLinkDiv" style="margin-left: 0; margin-right: 0;">
+	<div align="left" class="col-sm-9" style="float: none;">
+		<form id="createCommentForm" action="${ctx}/comment/createComment" method="post">
+
+			<input type="hidden" name="replyCommentId"/>
+			<input type="hidden" name="class1" value="shot"/>
+			<input type="hidden" name="targetId" value="${shotInfo.id}"/>
+
+			<div class="col-sm-10">输入评论：</div>
+			<div class="col-sm-10">
+				<textarea name="content" rows="5" style="width: 100%;"></textarea>
+			</div>
+			<div class="col-sm-10">
+				您的昵称：
+				<input type="text" name="userName" value="<c:out value='${cookieUserName}' />"/>
+			</div>
+			<div class="col-sm-10">
+				<input type="button" value="发表评论" onclick="createCommentRecord();" class="btn btn-sm btn-primary"/>
+			</div>
+		</form>
 	</div>
 </div>
