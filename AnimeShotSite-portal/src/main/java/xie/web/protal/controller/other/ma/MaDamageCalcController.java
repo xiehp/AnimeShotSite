@@ -347,17 +347,17 @@ public class MaDamageCalcController extends BaseController {
 			@RequestParam(required = false) String targetId) throws UnsupportedEncodingException {
 		Map<String, Object> map = null;
 		if (XStringUtils.isBlank(content)) {
-			map = getFailCode("请输入评论内容");
+			map = getFailCode(messageSourceUtils.getMessage("请输入评论内容"));
 			return map;
 		}
 
 		if (content.length() > 2000) {
-			map = getFailCode("对不起，最多只能输入2000个字");
+			map = getFailCode(messageSourceUtils.getMessage("对不起，评论最多只能输入2000个字"));
 			return map;
 		}
 
 		if (userName != null && userName.length() > 50) {
-			map = getFailCode("对不起，昵称最多只能输入50个字");
+			map = getFailCode(messageSourceUtils.getMessage("对不起，昵称最多只能输入50个字"));
 			return map;
 		}
 
@@ -386,10 +386,10 @@ public class MaDamageCalcController extends BaseController {
 		entityCache.remove("commentPageSingle_" + targetId);
 
 		if (commentRecord != null) {
-			map = getSuccessCode("评论成功");
+			map = getSuccessCode(messageSourceUtils.getMessage("评论成功"));
 			map.put("content", content);
 		} else {
-			map = getFailCode("评论失败");
+			map = getFailCode(messageSourceUtils.getMessage("评论失败"));
 		}
 
 		return map;

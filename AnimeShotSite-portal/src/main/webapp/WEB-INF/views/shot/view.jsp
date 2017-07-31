@@ -167,12 +167,6 @@ body {
 		loadImg("${NextFullImageUrl}");
 	}, 200);
 	</c:if>
-
-	function createCommentRecord() {
-		$.homeAjaxSubmit("createCommentForm", null, function() {
-			location.reload();
-		});
-	}
 </script>
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noLeftRightPadding">
@@ -374,7 +368,7 @@ body {
 				<input type="text" name="userName" value="<c:out value='${cookieUserName}' />"/>
 			</div>
 			<div class="col-sm-10">
-				<input type="button" value="发表评论" onclick="createCommentRecord();" class="btn btn-sm btn-primary"/>
+				<input type="button" value="发表评论" onclick="createShotCommentRecord();" class="btn btn-sm btn-primary"/>
 			</div>
 		</form>
 	</div>

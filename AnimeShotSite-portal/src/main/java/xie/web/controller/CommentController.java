@@ -2,7 +2,6 @@ package xie.web.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -59,15 +58,15 @@ public class CommentController extends BaseController {
 			@RequestParam(required = false) String targetAttr3) throws XException, UnsupportedEncodingException {
 
 		if (XStringUtils.isBlank(content)) {
-			throw new XException("请输入评论内容");
+			throw new XException(messageSourceUtils.getMessage("请输入评论内容"));
 		}
 
 		if (content.length() > 2000) {
-			throw new XException("对不起，最多只能输入2000个字");
+			throw new XException(messageSourceUtils.getMessage("对不起，评论最多只能输入2000个字"));
 		}
 
 		if (userName != null && userName.length() > 50) {
-			throw new XException("对不起，昵称最多只能输入50个字");
+			throw new XException(messageSourceUtils.getMessage("对不起，昵称最多只能输入50个字"));
 		}
 
 		if (userName != null) {
@@ -92,9 +91,9 @@ public class CommentController extends BaseController {
 
 		GoPageResult goPageResult;
 		if (commentRecord != null) {
-			goPageResult = createSuccess(request, "评论成功");
+			goPageResult = createSuccess(request, messageSourceUtils.getMessage("评论成功"));
 		} else {
-			goPageResult = createFail(request, "评论失败");
+			goPageResult = createFail(request, messageSourceUtils.getMessage("评论失败"));
 		}
 
 		return goPageResult;

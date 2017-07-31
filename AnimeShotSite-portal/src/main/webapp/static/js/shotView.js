@@ -419,3 +419,12 @@ function openWhatanimeSite(thisLink, imgUrl) {
 	//thisLink.click();
 	window.open("https://whatanime.ga/?loop&url=" + imgUrl);
 }
+
+/**
+ * 创建评论
+ */
+function createShotCommentRecord() {
+	$.homeAjaxSubmit("createCommentForm", null, function() {
+		location.reload();
+	});
+}
