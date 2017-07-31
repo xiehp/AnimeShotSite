@@ -166,7 +166,7 @@
 			var maxLen = oneKeywordStrLen > 20 ? 20 : oneKeywordStrLen;
 			// 单词从最大长度20到最小2
 			for (var wordLen = maxLen; wordLen >= 2; wordLen--) {
-				// 每个长度，都从新从文本开头进行文字截取
+				// 每个长度，都重新从文本开头进行文字截取
 				for (var startIndex = 0; startIndex < oneKeywordStrLen - wordLen + 1; startIndex++) {
 					var segWord = oneKeywordStr.substring(startIndex, startIndex + wordLen);
 					if (segWordArray.indexOf(segWord) < 0) {

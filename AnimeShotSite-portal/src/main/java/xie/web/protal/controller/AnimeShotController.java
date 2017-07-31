@@ -551,27 +551,27 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 			Model model, HttpServletRequest request) {
 
 		if (refShotInfoId == null) {
-			return getFailCode("未指定图片");
+			return getFailCode(messageSourceUtils.getMessage("未指定图片"));
 		}
 		if (offsetTime == null) {
-			return getFailCode("未指定偏移时间");
+			return getFailCode(messageSourceUtils.getMessage("未指定偏移时间"));
 		}
 
 		if (!UserUtils.hasRole(SysConstants.ROLE_ADMIN)) {
 			// 非管理員不能指定1000和2000之外
 			if (offsetTime != 1000 && offsetTime != 2000) {
-				return getFailCode("指定时间不正确，只能指定1000或2000");
+				return getFailCode(messageSourceUtils.getMessage("指定时间不正确，只能指定1000或2000"));
 			}
 		}
 
 		ShotInfo shotInfo = shotInfoDao.findById(refShotInfoId);
 		if (shotInfo == null || Constants.FLAG_INT_YES.equals(shotInfo.getDeleteFlag())) {
-			return getFailCode("指定图片不存在，请从新操作");
+			return getFailCode(messageSourceUtils.getMessage("指定图片不存在，请重新操作"));
 		}
 		String animeEpidodeId = shotInfo.getAnimeEpisodeId();
 		AnimeEpisode animeEpisode = animeEpisodeDao.findById(animeEpidodeId);
 		if (animeEpisode == null) {
-			return getFailCode("指定图片的剧集不存在，请从新操作");
+			return getFailCode(messageSourceUtils.getMessage("指定图片的剧集不存在，请重新操作"));
 		}
 
 		long toGetTimestamp = shotInfo.getTimeStamp();
@@ -584,7 +584,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		// 判断图片是否已经存在
 		ShotInfo toGetShotInfo = shotInfoDao.findByAnimeEpisodeIdAndTimeStamp(animeEpidodeId, toGetTimestamp);
 		if (toGetShotInfo != null) {
-			return getFailCode("指定截图已存在，请刷新页面");
+			return getFailCode(messageSourceUtils.getMessage("指定截图已存在，请刷新页面"));
 		}
 
 		// TODO 判断相同任务是否已经存在，等待中或执行中
@@ -596,7 +596,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		ShotTask shotTask = shotTaskService.addUserSelfRunSpecifyEpisideTimeTask(animeEpidodeId, new Date(), false, String.valueOf(toGetTimestamp), XSSHttpUtil.getForwardedRemoteIpAddr(request));
 
 		Map<String, Object> map = null;
-		map = getSuccessCode("正在截图中，请耐心等候，此过程大概需要1分钟");
+		map = getSuccessCode(messageSourceUtils.getMessage("正在截图中，请耐心等候，此过程大概需要1分钟"));
 		map.put("taskId", shotTask.getId());
 		map.put("animeEpisodeId", animeEpidodeId);
 		map.put("timestamp", toGetTimestamp);
@@ -621,13 +621,13 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 			Model model, HttpServletRequest request) {
 
 		if (taskId == null) {
-			return getFailCode("未指定任务ID");
+			return getFailCode(messageSourceUtils.getMessage("未指定任务ID"));
 		}
 		if (animeEpisodeId == null) {
-			return getFailCode("未指定剧集ID");
+			return getFailCode(messageSourceUtils.getMessage("未指定剧集ID"));
 		}
 		if (timestamp == null) {
-			return getFailCode("未指定时间");
+			return getFailCode(messageSourceUtils.getMessage("未指定时间"));
 		}
 
 		Map<String, Object> map = null;
@@ -635,7 +635,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		// 查看任务状态
 		ShotTask shotTask = shotTaskService.findById(taskId);
 		if (shotTask == null) {
-			return getFailCode("指定任务不存在");
+			return getFailCode(messageSourceUtils.getMessage("指定任务不存在"));
 		}
 
 		long pastTime = (new Date().getTime() - shotTask.getCreateDate().getTime()) / 1000;
@@ -644,23 +644,23 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		map.put("taskResutStatus", shotTask.getTaskResult());
 		if (ShotTask.TASK_RESULT_WAIT.equals(shotTask.getTaskResult())) {
 			if (pastTime < 30) {
-				map.put("taskMessage", "任务等待中，请稍后，请不要关闭画面");
+				map.put("taskMessage", messageSourceUtils.getMessage("任务等待中，请稍后，请不要关闭画面"));
 			} else if (pastTime < 120) {
 				map.put("taskResutStatus", 11);
-				map.put("taskMessage", "任务等待超时，或许是服务器正忙");
+				map.put("taskMessage", messageSourceUtils.getMessage("任务等待超时，或许是服务器正忙"));
 			} else {
 				map.put("taskResutStatus", 12);
-				map.put("taskMessage", "任务等待超时，请改天再来查看您需要的截图");
+				map.put("taskMessage", messageSourceUtils.getMessage("任务等待超时，请改天再来查看您需要的截图"));
 			}
 		}
 		if (ShotTask.TASK_RESULT_PROCESSING.equals(shotTask.getTaskResult())) {
-			map.put("taskMessage", "正在获取截图，请稍后，请不要关闭画面");
+			map.put("taskMessage", messageSourceUtils.getMessage("正在获取截图，请稍后，请不要关闭画面"));
 		}
 		if (ShotTask.TASK_RESULT_FAIL.equals(shotTask.getTaskResult())) {
-			map.put("taskMessage", "获取截图失败，请联系管理员");
+			map.put("taskMessage", messageSourceUtils.getMessage("获取截图失败，请联系管理员"));
 		}
 		if (ShotTask.TASK_RESULT_SUCCESS.equals(shotTask.getTaskResult())) {
-			map.put("taskMessage", "获取截图已成功，等待返回截图，请不要关闭画面");
+			map.put("taskMessage", messageSourceUtils.getMessage("获取截图已成功，等待返回截图，请不要关闭画面"));
 		}
 
 		// 判断图片是否已经存在
@@ -668,8 +668,8 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 		if (shotInfo != null) {
 			clearPreNextShotCache();
 			map.put("taskResutStatus", ShotTask.TASK_RESULT_SUCCESS);
-			map.put("taskMessage", "已成功获取到截图");
-			map.put(Constants.JSON_RESPONSE_KEY_MESSAGE, "已成功获取到截图");
+			map.put("taskMessage", messageSourceUtils.getMessage("已成功获取到截图"));
+			map.put(Constants.JSON_RESPONSE_KEY_MESSAGE, messageSourceUtils.getMessage("已成功获取到截图"));
 			map.put("shotInfoId", shotInfo.getId());
 		}
 

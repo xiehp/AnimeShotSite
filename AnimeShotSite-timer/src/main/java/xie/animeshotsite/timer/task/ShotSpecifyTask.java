@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
+import xie.animeshotsite.db.repository.ShotInfoDao;
 import xie.animeshotsite.db.service.AnimeEpisodeService;
 import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.timer.a2i.listener.SaveImageListener;
@@ -28,6 +29,8 @@ import xie.v2i.config.Video2ImageProperties;
 public class ShotSpecifyTask extends XBaseTask {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	@Resource
+	ShotInfoDao shotInfoDao;
 	@Resource
 	AnimeInfoService animeInfoService;
 	@Resource
@@ -64,6 +67,14 @@ public class ShotSpecifyTask extends XBaseTask {
 			long[] timeStampArray = XNumberUtils.split((String) paramMap.get(Video2ImageProperties.KEY_specifyTimes));
 			Boolean forceUpload = (Boolean) paramMap.get(Video2ImageProperties.KEY_forceUpload);
 
+			// TODO  如果是用户（非管理员），则判断图片是否已经存在
+//			if (timeStampArray.length == 1) {
+//				ShotInfo toGetShotInfo = shotInfoDao.findByAnimeEpisodeIdAndTimeStamp(animeEpisodeId, timeStampArray[0]);
+//				if (toGetShotInfo != null) {
+//					throw new XException(MessageFormat.format("指定截图已存在, time:{0}", timeStampArray[0]));
+//				}
+//			}
+
 			AnimeEpisode animeEpisode = animeEpisodeService.findOne(animeEpisodeId);
 			AnimeInfo animeInfo = animeInfoService.findOne(animeEpisode.getAnimeInfoId());
 			logger.info("begin process : " + animeInfo.getName() + ", " + animeEpisode.getFullName());
@@ -75,7 +86,7 @@ public class ShotSpecifyTask extends XBaseTask {
 				throw new FileNotFoundException("文件不存在：" + animeEpisodeFile.getAbsolutePath());
 			}
 
-//			SaveImageListener saveImageListener = new SaveImageListener(animeEpisode.getAnimeInfoId(), animeEpisode.getId(), animeEpisode.getLocalRootPath(), animeEpisode.getLocalDetailPath(), animeEpisode.getNumber());
+			// SaveImageListener saveImageListener = new SaveImageListener(animeEpisode.getAnimeInfoId(), animeEpisode.getId(), animeEpisode.getLocalRootPath(), animeEpisode.getLocalDetailPath(), animeEpisode.getNumber());
 			SaveImageListener saveImageListener = new SaveImageListener(animeEpisode);
 			File fileMrl = animeEpisodeFile;
 			if (forceUpload != null) {

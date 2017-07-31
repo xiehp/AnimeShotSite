@@ -121,7 +121,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 		logger.debug("X-Forwarded-Host:{}", request.getHeader("X-Forwarded-Host"));
 		if (shotSiteSetup == null) {
 			shotSiteSetup = SpringUtils.getBean(ShotSiteSetup.class);
-			logger.warn("shotSiteSetup未初始化，从新获取shotSiteSetup：{}", shotSiteSetup);
+			logger.warn("shotSiteSetup未初始化，重新获取shotSiteSetup：{}", shotSiteSetup);
 		}
 
 		return true;
