@@ -71,3 +71,15 @@ update gif_info set TIETUKU_URL_PREFIX='http://i2.muimg.com/541950/' where TIETU
 update image_url set TIETUKU_URL_PREFIX='http://i2.muimg.com/541950/' where TIETUKU_URL_PREFIX = 'https://i2.muimg.com/541950/';
 
 
+-- 删除垃圾数据
+select * from comment_record order by CREATE_DATE desc;
+delete  from comment_record where user_name = 'hacker';
+delete  from comment_record where user_name = 'angelina';
+delete  from comment_record where content = '88888';
+delete  from comment_record where content = 'angelina';
+
+select * from common_record order by CREATE_DATE desc;
+delete  from common_record where name = '李明';
+delete  from common_record where name = '88888';
+delete  from common_record where user_name = 'hacker';
+delete  from common_record where user_name = 'angelina';
