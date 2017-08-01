@@ -1,6 +1,7 @@
 package xie.animeshotsite.timer.a2i.listener;
 
 import java.util.Date;
+import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,13 @@ public class UploadPerHourCouter {
 	 * 增加次数，同时判断当前是否刷新上传次数，以及暂停操作
 	 */
 	public void addCount(int maxUploadPerHour) {
+		addCount(maxUploadPerHour, null);
+	}
+
+	/**
+	 * 增加次数，同时判断当前是否刷新上传次数，以及暂停操作
+	 */
+	public void addCount(int maxUploadPerHour, Function<Object, Object> fun) {
 
 		// 判断当前是否刷新上传次数
 		if (uploadPerHourWait.isTimeout()) {
@@ -42,6 +50,10 @@ public class UploadPerHourCouter {
 		if (nowUploadPerHour > maxUploadPerHour) {
 			logger.info("达到最大每小时上传限制" + maxUploadPerHour + ", 等待到下个整点。");
 			try {
+				if (fun != null) {
+					fun.apply(null);
+				}
+
 				long sleepTime = XTimeUtils.getNeedTimeNextHour() + 150000;
 				Thread.sleep(sleepTime);
 			} catch (InterruptedException e) {

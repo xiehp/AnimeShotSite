@@ -424,6 +424,7 @@ function openWhatanimeSite(thisLink, imgUrl) {
  * 创建评论
  */
 function createShotCommentRecord() {
+	$("#createCommentForm").attr("action", $("#createCommentForm").data("action"));
 	$.homeAjaxSubmit("createCommentForm", null, function() {
 		location.reload();
 	});

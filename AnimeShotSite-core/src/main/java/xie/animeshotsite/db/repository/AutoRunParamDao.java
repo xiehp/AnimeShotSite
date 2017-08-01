@@ -9,6 +9,8 @@ import xie.base.repository.BaseRepository;
 
 public interface AutoRunParamDao extends BaseRepository<AutoRunParam, String> {
 
+	AutoRunParam findByKey(String key);
+
 	List<AutoRunParam> findByAnimeInfoId(String animeInfoId);
 
 	@Query(" select a from AutoRunParam a where a.animeInfoId = ?1 and a.animeEpisodeId is null and a.key = ?2")
@@ -22,6 +24,7 @@ public interface AutoRunParamDao extends BaseRepository<AutoRunParam, String> {
 
 	/**
 	 * 找到监视flag和下载flag同时为1的数据
+	 * 
 	 * @return
 	 */
 	@Query("select a from AutoRunParam a, AutoRunParam b where a.animeInfoId = b.animeInfoId and a.animeEpisodeId is not null and b.animeEpisodeId is null and  a.key = 'video_download_monitor_do_flag' and b.key = 'video_download_monitor_do_flag' and a.value = '1' and b.value = '1' ")

@@ -353,7 +353,7 @@ body {
 </div>
 <div id="创建评论" align="center" class="row ShareLinkDiv" style="margin-left: 0; margin-right: 0;">
 	<div align="left" class="col-sm-9" style="float: none;">
-		<form id="createCommentForm" action="${ctx}/comment/createComment" method="post">
+		<form id="createCommentForm" data-action="${ctx}/comment/createComment" method="post">
 
 			<input type="hidden" name="replyCommentId"/>
 			<input type="hidden" name="class1" value="shot"/>

@@ -397,4 +397,8 @@ public class AutoRunParamService extends BaseService<AutoRunParam, String> {
 		List<AutoRunParam> list = page.getContent();
 		return list;
 	}
+
+	public AutoRunParam findByKey(String key) {
+		return autoRunParamDao.findByKey(key);
+	}
 }

@@ -15,6 +15,7 @@ import com.tietuku.entity.main.PostImage;
 import com.tietuku.entity.util.TietukuUtils;
 import com.tietuku.entity.vo.TietukuUploadResponse;
 
+import xie.animeshotsite.bo.AutoRunParamBo;
 import xie.animeshotsite.constants.ShotCoreConstants;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
@@ -49,6 +50,8 @@ public class CreateGifTask extends XBaseTask {
 	private ApplicationContext applicationContext;
 	@Resource
 	TietukuConfig tietukuConfig;
+	@Resource
+	AutoRunParamBo autoRunParamBo;
 
 	// private String gifCmdStr = "ffmpeg -ss 25 -t 10 -i E:\\AnimeShotSIte\\anime\\J\\吉卜力\\听到涛声\\Umi.ga.Kikoeru.2015.BluRay.1080p.FLAC.x265-MGRT.mkv -s 384x216 -f gif -r 12 D:\b.gif";
 	/** 参数1:开始时间 参数2:持续时间 参数3:视频文件路径4:gif存放路径 */
@@ -81,7 +84,7 @@ public class CreateGifTask extends XBaseTask {
 			logger.info("begin process animeEpisodeId: " + paramMap);
 
 			String animeEpisodeId = (String) paramMap.get(AnimeEpisode.COLUMN_ID);
-			//String animeInfoId = (String) paramMap.get(AnimeEpisode.COLUMN_ANIME_INFO_ID);
+			// String animeInfoId = (String) paramMap.get(AnimeEpisode.COLUMN_ANIME_INFO_ID);
 			long startTime = XNumberUtils.getLongValue(paramMap.get("startTime"));
 			long continueTime = XNumberUtils.getLongValue(paramMap.get("continueTime"));
 
@@ -131,7 +134,10 @@ public class CreateGifTask extends XBaseTask {
 
 			// 向贴图库传文件
 			PostImage postImage = new PostImage();
-			TietukuUploadResponse tietukuUploadResponse = postImage.uploadToTietuku(gifFilePath, tietukuConfig.getTietukuTokenGif());
+			TietukuUploadResponse tietukuUploadResponse = postImage.uploadToTietuku(gifFilePath, tietukuConfig.getTietukuTokenGif(), (obj) -> {
+				autoRunParamBo.recordUploadFullInfo();
+				return null;
+			});
 
 			// 贴图库内容保存到数据库中
 			String tietukuUrl = tietukuUploadResponse.getLinkurl();

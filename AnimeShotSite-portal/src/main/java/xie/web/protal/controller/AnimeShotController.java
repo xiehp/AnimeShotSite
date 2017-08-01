@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springside.modules.web.Servlets;
 
+import xie.animeshotsite.bo.AutoRunParamBo;
 import xie.animeshotsite.constants.SysConstants;
 import xie.animeshotsite.db.entity.*;
 import xie.animeshotsite.db.entity.cache.EntityCache;
@@ -75,6 +76,8 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 	private ShotSiteSetup shotSiteSetup;
 	@Resource
 	private CommentRecordService commentRecordService;
+	@Resource
+	private AutoRunParamBo autoRunParamBo;
 
 	protected String getJspFileRootPath() {
 		return "/shot/";
@@ -562,6 +565,10 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 			if (offsetTime != 1000 && offsetTime != 2000) {
 				return getFailCode(messageSourceUtils.getMessage("指定时间不正确，只能指定1000或2000"));
 			}
+		}
+		
+		if (autoRunParamBo.isWaitUploadFullUnlock()) {
+			return getFailCode(messageSourceUtils.getMessage("对不起，截图队列已满，请在下个整点（一小时后）再来"));
 		}
 
 		ShotInfo shotInfo = shotInfoDao.findById(refShotInfoId);

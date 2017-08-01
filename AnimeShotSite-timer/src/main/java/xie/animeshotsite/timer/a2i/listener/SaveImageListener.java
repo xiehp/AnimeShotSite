@@ -12,6 +12,7 @@ import com.tietuku.entity.main.PostImage;
 import com.tietuku.entity.util.TietukuUtils;
 import com.tietuku.entity.vo.TietukuUploadResponse;
 
+import xie.animeshotsite.bo.AutoRunParamBo;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.entity.ShotInfo;
@@ -65,6 +66,7 @@ public class SaveImageListener extends Video2ImageAdapter {
 	private AnimeEpisodeService animeEpisodeService;
 	private AnimeInfoService animeInfoService;
 	private AutoCollectUtils autoCollectUtils;
+	private AutoRunParamBo autoRunParamBo;
 
 	private PostImage postImage;
 
@@ -88,6 +90,7 @@ public class SaveImageListener extends Video2ImageAdapter {
 		animeInfoService = SpringUtil.getBean(AnimeInfoService.class);
 		uploadPerHourCouter = SpringUtil.getBean(UploadPerHourCouter.class);
 		autoCollectUtils = SpringUtil.getBean(AutoCollectUtils.class);
+		autoRunParamBo = SpringUtil.getBean(AutoRunParamBo.class);
 
 		this.animeEpisode = animeEpisode;
 		this.animeInfoId = animeEpisode.getAnimeInfoId();
@@ -199,11 +202,17 @@ public class SaveImageListener extends Video2ImageAdapter {
 		if (forceUpload || XStringUtils.isBlank(shotInfo.getTietukuUrlId())) {
 			// 增加次数，同时判断当前是否刷新上传次数，以及暂停操作
 			// 控制295张图，留5张备用
-			uploadPerHourCouter.addCount(perHourLimitCount);
+			uploadPerHourCouter.addCount(perHourLimitCount, (obj) -> {
+				autoRunParamBo.recordUploadFullInfo();
+				return null;
+			});
 
 			// 保存截图到贴图库网站
 			logger.info("贴图库上传, " + "shotInfoId:" + shotInfo.getId());
-			TietukuUploadResponse tietukuUploadResponse = postImage.uploadToTietuku(file, tietukuToken);
+			TietukuUploadResponse tietukuUploadResponse = postImage.uploadToTietuku(file, tietukuToken, (obj) -> {
+				autoRunParamBo.recordUploadFullInfo();
+				return null;
+			});
 			String tietukuUrl = tietukuUploadResponse.getLinkurl();
 
 			String tietukuImageUrlPrefix = TietukuUtils.getImageUrlPrefix(tietukuUrl, false);

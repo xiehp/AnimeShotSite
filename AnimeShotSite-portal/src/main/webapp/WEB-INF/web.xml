@@ -74,7 +74,7 @@
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
-	<!-- 所有资源，包括动态资源的过期时间 -->
+	<!-- 所有资源，包括动态资源的过期时间
 	<filter>
 		<filter-name>cacheControlHeaderFilter2</filter-name>
 		<filter-class>xie.common.web.CacheControlHeaderFilter</filter-class>
@@ -86,7 +86,7 @@
 	<filter-mapping>
 		<filter-name>cacheControlHeaderFilter2</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+	</filter-mapping> 改到单独页面配置-->
 	<!-- 静态资源的过期时间 -->
 	<filter>
 		<filter-name>cacheControlHeaderFilter</filter-name>
