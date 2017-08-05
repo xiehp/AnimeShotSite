@@ -566,9 +566,13 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 				return getFailCode(messageSourceUtils.getMessage("指定时间不正确，只能指定1000或2000"));
 			}
 		}
-		
-		if (autoRunParamBo.isWaitUploadFullUnlock()) {
-			return getFailCode(messageSourceUtils.getMessage("对不起，截图队列已满，请在下个整点（一小时后）再来"));
+
+		try {
+			if (autoRunParamBo.isWaitUploadFullUnlock()) {
+				return getFailCode(messageSourceUtils.getMessage("对不起，截图队列已满，请在下个整点（一小时后）再来"));
+			}
+		} catch (Exception e) {
+			_log.error("", e);
 		}
 
 		ShotInfo shotInfo = shotInfoDao.findById(refShotInfoId);

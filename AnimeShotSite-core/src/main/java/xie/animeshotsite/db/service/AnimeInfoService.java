@@ -1,5 +1,6 @@
 package xie.animeshotsite.db.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,5 +49,13 @@ public class AnimeInfoService extends BaseService<AnimeInfo, String> {
 		searchParams.put(BaseOperator.EQ.getStr(AnimeInfo.COLUMN_SHOW_FLG), Constants.FLAG_INT_YES);
 		List<AnimeInfo> list = findRandom(-1, number, AnimeInfo.class, searchParams);
 		return list;
+	}
+
+	public List<AnimeInfo> findSameSeriesList(String series) {
+		if (series == null) {
+			return new ArrayList<>();
+		}
+
+		return animeInfoDao.findBySeriesOrderBySort(series);
 	}
 }

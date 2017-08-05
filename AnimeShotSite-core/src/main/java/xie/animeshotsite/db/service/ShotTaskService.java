@@ -213,6 +213,7 @@ public class ShotTaskService extends BaseService<ShotTask, String> {
 		shotTask.setTaskResult(ShotTask.TASK_RESULT_WAIT);
 
 		shotTask = shotTaskDao.save(shotTask);
+		logging.info("创建了任务：{}", shotTask);
 		return shotTask;
 	}
 }

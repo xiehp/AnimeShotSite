@@ -46,6 +46,30 @@
 	</div>
 </div>
 
+<!-- 系列 -->
+<div class="blockTitle">
+	<c:if test="${not empty seriesList and seriesList.size() > 1}">
+		<div class="layui-tab layui-tab-brief">
+			<ul class="layui-tab-title">
+				<c:forEach items="${seriesList}" var="seriesInfo">
+					<c:if test="${seriesInfo.id eq animeInfo.id}">
+						<li class="layui-this">
+							<c:out value='${empty seriesInfo.divisionName ? "其他" : seriesInfo.divisionName}' />
+						</li>
+					</c:if>
+					<c:if test="${seriesInfo.id ne animeInfo.id}">
+						<li class="${seriesInfo.id eq animeInfo.id ? 'layui-this' : ''}">
+							<a href="${ctx}/episode/list/${seriesInfo.id}">
+								<c:out value='${empty seriesInfo.divisionName ? "其他" : seriesInfo.divisionName}' />
+							</a>
+						</li>
+					</c:if>
+				</c:forEach>
+			</ul>
+		</div>
+	</c:if>
+</div>
+
 <!-- 列表 -->
 <div class="blockTitle">
 	<span><spring:message code='动画剧集一览' /></span>

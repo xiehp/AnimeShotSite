@@ -1,5 +1,6 @@
 package xie.web.protal.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -39,7 +40,7 @@ public class AnimeEpisodeController extends BaseFunctionController<AnimeEpisode,
 			@RequestParam(value = "sortType", defaultValue = "sort") String sortType,
 			@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			Model model, ServletRequest request, HttpServletResponse response)
-					throws Exception {
+			throws Exception {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		// 增加删除过滤
 		searchParams.put("EQ_animeInfoId", animeInfoId);
@@ -59,6 +60,12 @@ public class AnimeEpisodeController extends BaseFunctionController<AnimeEpisode,
 		model.addAttribute("animeEpisodePage", animeEpisodePage);
 		// 将搜索条件编码成字符串，用于排序，分页的URL
 		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
+
+		// 系列数据
+		if (animeInfo.getSeries() != null) {
+			List<AnimeInfo> seriesList = animeInfoService.findSameSeriesList(animeInfo.getSeries());
+			model.addAttribute("seriesList", seriesList);
+		}
 
 		return getJspFilePath("list");
 	}

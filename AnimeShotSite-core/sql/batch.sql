@@ -83,3 +83,17 @@ delete  from common_record where name = '李明';
 delete  from common_record where name = '88888';
 delete  from common_record where user_name = 'hacker';
 delete  from common_record where user_name = 'angelina';
+
+
+-- 更新字幕信息
+SELECT * FROM animeshotsiteinst1.subtitle_info where ANIME_INFO_ID = '2c9380845d947532015d9c1f79790010';
+SELECT * FROM animeshotsiteinst1.subtitle_info where ANIME_INFO_ID = '2c9380845d947532015d9c1f79790010' and LANGUAGE = 'sc' order by create_date desc;
+update subtitle_info set FILTER_REMOVE='Style#OPJP' where ANIME_INFO_ID = '2c9380845d947532015d9c1f79790010';
+
+
+-- 更新剧集显示时间
+select * from anime_episode where ANIME_INFO_ID = '2c9380845d849445015d91a763690051';
+update  anime_episode set SHOW_DATE = null where ANIME_INFO_ID = '2c9380845d849445015d91a763690051' and number >= '02' and number <= '23';
+
+
+
