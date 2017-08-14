@@ -15,7 +15,6 @@ FROM anime_episode episode
 left outer join auto_run_param a on 
 a.ANIME_EPISODE_ID = episode.id and a.param_key = 'video_download_do_download_flag' 
 
-
 left outer join auto_run_param b on 
 b.ANIME_EPISODE_ID = episode.id and b.param_key = 'video_download_completed_percent' 
 
@@ -28,9 +27,28 @@ d.ANIME_EPISODE_ID = episode.id and d.param_key = 'video_download_torrent_file_p
 where 
 1=1
 and a.name is not null
+and a.VALUE <> 4
 
 order by episode.FULL_NAME ;
 
+
+
+-- 还在监视中的动画
+SELECT 
+anime_info.FULL_NAME
+
+, auto_run_param.name, auto_run_param.remark, auto_run_param.param_key, auto_run_param.value, auto_run_param.message
+,auto_run_param.*
+from anime_info, auto_run_param
+where 1=1
+and anime_info.id = auto_run_param.ANIME_INFO_ID
+and auto_run_param.ANIME_EPISODE_ID is null
+and auto_run_param.param_key = 'video_download_monitor_do_flag'
+
+and value = 1
+
+order by anime_info.FULL_NAME 
+;
 
 
 -- 获取一个自动运行参数
