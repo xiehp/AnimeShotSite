@@ -181,7 +181,6 @@
 								</ul>
 							</nav>
 						</li>
-
 					</ul>
 				</li>
 				<c:if test="${IS_MASTER}">
@@ -212,6 +211,11 @@
 						</ul>
 					</li>
 				</c:if>
+				<li>
+					<a href="${ctx}/msgboard">
+						<spring:message code='留言板' />
+					</a>
+				</li>
 
 				<c:if test="${! empty aaaaadasdasdasdas  }">
 					<li class="dropdown">

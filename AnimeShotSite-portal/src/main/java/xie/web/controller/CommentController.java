@@ -88,6 +88,8 @@ public class CommentController extends BaseController {
 		entityCache.remove("commentPageALl");
 		entityCache.remove("commentPageSingle_" + targetId);
 		entityCache.remove("shot_comment_" + targetId);
+		entityCache.clearBegin("msgboard");
+		
 
 		GoPageResult goPageResult;
 		if (commentRecord != null) {

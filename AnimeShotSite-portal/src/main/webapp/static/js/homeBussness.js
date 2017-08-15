@@ -228,3 +228,16 @@ function trackEvent(category, action, label, value, domId) {
 		console.error(err);
 	}
 }
+
+/**
+ * 创建评论
+ */
+function createCommentRecord(formId, options) {
+	$("#" + formId).attr("action", $("#" + formId).data("action"));
+	$.homeAjaxSubmit("createCommentForm", null, function() {
+		if (options != null && options.notReload) {
+		} else {
+			location.reload();
+		}
+	});
+}
