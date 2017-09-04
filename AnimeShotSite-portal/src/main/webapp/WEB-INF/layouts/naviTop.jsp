@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
-<c:set var="ctxManage" value="${ctx}${MANAGE_URL_STR}" />
 
 <style>
 <!--
@@ -68,6 +67,11 @@
 				<li>
 					<a href="${ctx}/shot/random">
 						<spring:message code='随便看' />
+					</a>
+				</li>
+				<li>
+					<a href="${ctx}/msgboard">
+						<spring:message code='留言板' />
 					</a>
 				</li>
 				<!-- <li>
@@ -208,14 +212,14 @@
 									<spring:message code='动画列表' />
 								</a>
 							</li>
+							<li>
+								<a href="${ctxManage}/logout">
+									<spring:message code='登出' />
+								</a>
+							</li>
 						</ul>
 					</li>
 				</c:if>
-				<li>
-					<a href="${ctx}/msgboard">
-						<spring:message code='留言板' />
-					</a>
-				</li>
 
 				<c:if test="${! empty aaaaadasdasdasdas  }">
 					<li class="dropdown">

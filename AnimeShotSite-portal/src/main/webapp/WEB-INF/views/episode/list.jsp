@@ -54,13 +54,13 @@
 				<c:forEach items="${seriesList}" var="seriesInfo">
 					<c:if test="${seriesInfo.id eq animeInfo.id}">
 						<li class="layui-this">
-							<c:out value='${empty seriesInfo.divisionName ? "其他" : seriesInfo.divisionName}' />
+							<c:out value='${empty seriesInfo.divisionName ? seriesInfo.name : seriesInfo.divisionName}' />
 						</li>
 					</c:if>
 					<c:if test="${seriesInfo.id ne animeInfo.id}">
 						<li class="${seriesInfo.id eq animeInfo.id ? 'layui-this' : ''}">
 							<a href="${ctx}/episode/list/${seriesInfo.id}">
-								<c:out value='${empty seriesInfo.divisionName ? "其他" : seriesInfo.divisionName}' />
+								<c:out value='${empty seriesInfo.divisionName ? seriesInfo.name : seriesInfo.divisionName}' />
 							</a>
 						</li>
 					</c:if>

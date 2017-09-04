@@ -153,9 +153,7 @@
 				"password" : password
 			}
 
-			$.homePost("${MANAGE_URL_STR}/webLoginAjax", param, function(data) {
-				window.location.href="${ctx}/anime";
-			});
+			$.homePost("/webLoginAjax", param);
 			
 			/*
 			$.ajax({

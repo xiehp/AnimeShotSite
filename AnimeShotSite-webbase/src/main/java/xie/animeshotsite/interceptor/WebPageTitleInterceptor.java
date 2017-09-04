@@ -216,8 +216,9 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 
 			// 系统常量
 			{
-				// 其他
+				// URL 路径相关
 				request.setAttribute("MANAGE_URL_STR", ConstantsWeb.MANAGE_URL_PREFIX_STR);
+				request.setAttribute("ctxManage", request.getContextPath() + ConstantsWeb.MANAGE_URL_PREFIX_STR);
 
 				// json
 				request.setAttribute("JSON_RESPONSE_KEY_CODE", Constants.JSON_RESPONSE_KEY_CODE);
