@@ -37,6 +37,9 @@
 			<property name="validationQuery" value="SELECT 1" />
 			<property name="initialSize" value="1" />
 			<property name="testWhileIdle" value="true" />
+			<property name="testOnBorrow" value="true" />
+			<property name="removeAbandoned" value="true" />
+			<property name="removeAbandonedTimeout" value="6000000" />
 		</bean>
 	</beans>
 
