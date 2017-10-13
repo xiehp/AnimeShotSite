@@ -37,6 +37,25 @@
 	});
 </script>
 
+<div id="动画列表一览">
+	<div class="blockTitle">
+		<span><spring:message code='动画列表一览' /></span>
+	</div>
+	<div class="row">
+		<c:forEach items="${ animeInfoPage.content }" var="anime" end="7">
+			<div class="col-lg-3 col-sm-4 col-xs-6 thumbnail">
+				<a href="${ctx}/episode/list/${anime.id}" title="<c:out value='${anime.fullName}' /> <c:out value='${anime.secondName}' />">
+					<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${anime.titleUrl.urlS}" class="img-responsive imagelazy">
+					<div class="wordKeepLine" style="margin-top: 5px;">
+						<c:out value='${anime.fullName}' />
+						<c:out value='${anime.secondName}' />
+					</div>
+				</a>
+			</div>
+		</c:forEach>
+	</div>
+</div>
+
 <div id="最新动画剧集一览">
 	<div class="blockTitle">
 		<span><spring:message code='最新动画剧集一览' /></span> <span class="count"><a href="${ctx}/anime">
