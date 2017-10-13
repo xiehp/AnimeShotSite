@@ -25,6 +25,7 @@ import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.AutoRunParamService;
 import xie.animeshotsite.db.service.ShotTaskService;
 import xie.animeshotsite.timer.timer.BaseTaskTimer;
+import xie.animeshotsite.utils.AutoCollectUtils;
 import xie.common.Constants;
 import xie.common.string.XStringUtils;
 import xie.function.collection.CollectKamigami;
@@ -53,33 +54,44 @@ public class EpisodeUpdateMonitorTimer extends BaseTaskTimer {
 	@Resource
 	AutoRunParamDao autoRunParamDao;
 
+	@Resource
+	AutoCollectUtils autoCollectUtils;
+	
 	@Override
 	protected void taskTimer() throws Exception {
 		List<AutoRunParam> animeMonitorFlagList = autoRunParamService.findAnimeMonitorDownloadLUrlList();
 		_log.info("获取到当前监视中的动画数量：{}", animeMonitorFlagList.size());
 
 		for (AutoRunParam monitorFlagParam : animeMonitorFlagList) {
-			String animeInfoId = monitorFlagParam.getAnimeInfoId();
-			Map<String, AutoRunParam> animeAutoRunParamMap = autoRunParamService.getStringAutoRunParamMap(animeInfoId, true, false);
+			try {
+				// 获得种子url等参数
+				String animeInfoId = monitorFlagParam.getAnimeInfoId();
+				Map<String, AutoRunParam> animeAutoRunParamMap = autoRunParamService.getStringAutoRunParamMap(animeInfoId, true, false);
 
-			String url = animeAutoRunParamMap.get("video_download_monitor_page_url").getValue();
-			String reg = animeAutoRunParamMap.get("video_download_monitor_torrent_url_reg").getValue();
-			Assert.hasText(url, "自动运行参数video_download_monitor_page_url不能为空, animeInfoId:" + animeInfoId);
+				String url = animeAutoRunParamMap.get("video_download_monitor_page_url").getValue();
+				String reg = animeAutoRunParamMap.get("video_download_monitor_torrent_url_reg").getValue();
+				Assert.hasText(url, "自动运行参数video_download_monitor_page_url不能为空, animeInfoId:" + animeInfoId);
 
-			List<String> urlList = new ArrayList<>();
-			if (url.contains("kamigami.org")) {
-				// 诸神
-				if (XStringUtils.isNotBlank(reg)) {
-					urlList = CollectKamigami.getTorrentUrlList(url, reg);
-				} else {
-					urlList = CollectKamigami.getTorrentUrlList(url);
+				List<String> urlList = new ArrayList<>();
+				if (url.contains("kamigami.org")) {
+					// 诸神
+					if (XStringUtils.isNotBlank(reg)) {
+						urlList = CollectKamigami.getTorrentUrlList(url, reg);
+					} else {
+						urlList = CollectKamigami.getTorrentUrlList(url);
+					}
+				} else if (url.contains("comicat.org")) {
+					// TODO comicat.org
 				}
-			} else if (url.contains("comicat.org")) {
-				// TODO comicat.org
-			}
 
-			_log.info("获取到url：{}", urlList);
-			updateEpisodeParamByUrlList(animeInfoId, reg, urlList);
+				_log.info("获取到url：{}", urlList);
+				updateEpisodeParamByUrlList(animeInfoId, reg, urlList);
+
+				// 更新剧集名称
+				autoCollectUtils.collectEpisodeSummary(animeInfoId, false);
+			} catch (Exception e) {
+				_log.info("发生异常", e);
+			}
 		}
 	}
 
