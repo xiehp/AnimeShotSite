@@ -530,7 +530,7 @@
 	<script src="https://mipcache.bdstatic.com/static/v1/mip-stats-baidu/mip-stats-baidu.js"></script>
 	<script src="https://mipcache.bdstatic.com/static/v1/mip-link/mip-link.js"></script>
 	<script src="https://mipcache.bdstatic.com/static/v1/mip-accordion/mip-accordion.js"></script>
-	<script src="http://mipcache.bdstatic.com/static/v1/mip-list/mip-list.js"></script>
+	<script src="https://mipcache.bdstatic.com/static/v1/mip-list/mip-list.js"></script>
 	<script src="https://mipcache.bdstatic.com/static/v1/mip-mustache/mip-mustache.js"></script>
 	<script src="https://mipcache.bdstatic.com/static/v1/mip-form/mip-form.js"></script>
 </body>
