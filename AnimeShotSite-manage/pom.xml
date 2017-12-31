@@ -4,7 +4,6 @@
 		<groupId>xie</groupId>
 		<artifactId>AnimeShotSite-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../AnimeShotSite-parent</relativePath>
 	</parent>
 	<artifactId>AnimeShotSite-manage</artifactId>
 	<name>AnimeShotSite-manage</name>

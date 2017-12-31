@@ -1,5 +1,4 @@
-*.class
-
+ï»¿
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
@@ -15,10 +14,13 @@ hs_err_pid*
 
 .classpath
 .project
-MANIFEST.MF
 /*/target
-/*/.settings
+**/.settings
 /*/.externalToolBuilders
+
+
+
+# é¡¹ç›®æ–‡ä»¶
 /*/logs
 AnimeShotSite-manage
 application.development.properties
@@ -30,13 +32,15 @@ animeshotsiteinst1_329761_all_sql.zip
 
 sitemap_detail.xml
 
+
+
 # idea file
 *.iml
 .idea
 
 
 
-# vuzeµÄÖ´ÐÐÁÙÊ±Ä¿Â¼
+# vuzeçš„æ‰§è¡Œä¸´æ—¶ç›®å½•
 jcpuid.dll
 jbigi.dll
 aereg64.dll
@@ -47,5 +51,5 @@ AzureusUpdater.exe
 
 
 
-# python ÉèÖÃ
+# python è®¾ç½®
 .pydevproject

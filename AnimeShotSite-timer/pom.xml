@@ -17,6 +17,8 @@
 		</profile>
 		<profile>
 			<id>test</id>
+			
+			<properties></properties>
 
 			<build>
 				<plugins>

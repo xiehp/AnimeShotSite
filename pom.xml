@@ -40,16 +40,16 @@
 		<profile>
 			<id>web</id>
 			<modules>
-				<module>../AnimeShotSite-core</module>
-				<module>../AnimeShotSite-webbase</module>
-				<module>../AnimeShotSite-portal</module>
+				<module>AnimeShotSite-core</module>
+				<module>AnimeShotSite-webbase</module>
+				<module>AnimeShotSite-portal</module>
 			</modules>
 		</profile>
 		<profile>
 			<id>timer</id>
 			<modules>
-				<module>../AnimeShotSite-core</module>
-				<module>../AnimeShotSite-timer</module>
+				<module>AnimeShotSite-core</module>
+				<module>AnimeShotSite-timer</module>
 			</modules>
 		</profile>
 	</profiles>
