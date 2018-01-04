@@ -8,6 +8,7 @@
 <html>
 <head>
 <title><decorator:title default="动画截图网" /></title>
+<script type="text/javascript">window._MM_HS=+new Date;</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta http-equiv="Cache-Control" content="public, max-age=1" />
@@ -96,6 +97,72 @@
 -->
 
 <script src="${ ctx }/static/js/homeBase.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	window._MM_CID = "1", window._MM_TP = "pc", function (a) {
+	"use strict";
+	a.JSMON = {
+		_head_end: +new Date,
+		_head_start: a._MM_HS || 0,
+		_customer_id: a._MM_CID,
+		_part2_url: "http://s1.mmtrix.com/jm/v1/" + a._MM_CID + "/p.js",
+		_part2_expire_minutes: 60,
+		_tp: a._MM_TP,
+		_time_stamps: {},
+		_fs_marks: [],
+		_waiting_list: a._MM_WL && a._MM_WL.split(",") || [],
+		_mark: function (a) {
+			this._time_stamps[a] = +new Date
+		},
+		mark: function (a, b) {
+			var c, d = +b || +new Date, e = this._time_stamps, f = this._waiting_list, g = [];
+			for ((!e[a] || e[a] < d) && (e[a] = d), c = f.length - 1; c >= 0; c--) f[c] !== a && g.push(f[c]);
+			g.length < f.length && (this._waiting_list = g, this.goahead && this.goahead())
+		}
+	};
+	var b = function (a, b) {
+		var c = !1, d = !0, e = a.document, f = e.documentElement, g = !!e.addEventListener, h = g ? "addEventListener" : "attachEvent", i = g ? "removeEventListener" : "detachEvent", j = g ? "" : "on", k = function (d) {
+			("readystatechange" != d.type || /complete|interactive/.test(e.readyState)) && (d.type && ("load" == d.type ? a : e)[i](j + d.type, k, !1), !c && (c = !0) && b.call(a, d.type || d))
+		}, l = function () {
+			try {
+				f.doScroll("left")
+			} catch (a) {
+				return void setTimeout(l, 50)
+			}
+			k("poll")
+		};
+		if ("complete" == e.readyState) b.call(a, "lazy"); else {
+			if (!g && f.doScroll) {
+				try {
+					d = !a.frameElement
+				} catch (m) {
+				}
+				d && l()
+			}
+			e[h](j + "DOMContentLoaded", k, !1), e[h](j + "readystatechange", k, !1), a[h](j + "load", k, !1)
+		}
+	};
+	b(a, function (a) {
+		window.JSMON && window.JSMON._mark && window.JSMON._mark("_dc2");
+		var b, c, d, e, f, g = window, h = g.document, i = h.getElementsByTagName("img"), j = h.getElementsByTagName("IFRAME");
+		for (f = function () {
+			g.JSMON._fs_marks.push({img: this, time: +new Date}), this.removeEventListener ? this.removeEventListener("load", f, !1) : this.detachEvent && this.detachEvent("IFRAME" === this.nodeName ? "onload" : "onreadystatechange", f)
+		}, b = 0, c = i.length; c > b; b++) d = i[b], d.addEventListener ? !d.complete && d.addEventListener("load", f, !1) : d.attachEvent && d.attachEvent("onreadystatechange", function () {
+			"complete" == d.readyState && f.call(d)
+		});
+		for (b = 0, c = j.length; c > b; b++) e = j[b], e.addEventListener ? e.addEventListener("load", f, !1) : e.attachEvent && e.attachEvent("onload", function () {
+			f.call(e)
+		})
+	});
+	var c = function () {
+		window.JSMON && window.JSMON._mark && window.JSMON._mark("_lt"), setTimeout(function () {
+			var a, b = document.createElement("script"), c = window.JSMON;
+			b.type = "text/javascript", a = c._part2_url, b.src = a, document.getElementsByTagName("body")[0].appendChild(b)
+		}, 0)
+	};
+	document.addEventListener ? a.addEventListener("load", c, !1) : a.attachEvent("onload", c)
+}(window);
+</script>
 </head>
 
 <body class="<shiro:principal property="showSidebar"></shiro:principal>">
