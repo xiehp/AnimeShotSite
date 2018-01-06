@@ -147,6 +147,6 @@ function backToIndex(){
 		<h5>登录超时，请重新登录</h5>
 	</div>
 	<div class="modal-footer">
-		<button type="button" class="btn green" id="global-relogin-comfirm-ok">我知道了</button>
+		<button type="button" class="btn green" id="global-relogin-confirm-ok">我知道了</button>
 	</div>
 </div>

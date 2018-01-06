@@ -1,15 +1,26 @@
 //去左空格;
-function ltrim(s) {
+function lTrim(s) {
+	if (isNull(s) || (s == "")) {
+		return "";
+	}
 	return s.replace(/^\s*/, "");
 }
 // 去右空格;
-function rtrim(s) {
+function rTrim(s) {
+	if (isNull(s) || (s == "")) {
+		return "";
+	}
 	return s.replace(/\s*$/, "");
 }
 function trim(s) {
-	return rtrim(ltrim(s));
+	return rTrim(lTrim(s));
 }
 
+/** @namespace data.alertMessage */
+/** @namespace options.notAlertFlag */
+/** @namespace options.notLoading */
+/** @namespace options.failCallback */
+/** @namespace XMLHttpRequest.responseText */
 (function($) {
 
 	function processGoPageResult(data, callback, failCallback, options) {
@@ -50,8 +61,16 @@ function trim(s) {
 			}
 		} else {
 			// 执行失败callback
-			if (failCallback) {
-				failCallback(data);
+			if (data.message != null && data.message.length > 0) {
+				Message.alert(data.message, null, function() {
+					if (failCallback) {
+						failCallback(data);
+					}
+				});
+			} else {
+				if (failCallback) {
+					failCallback(data);
+				}
 			}
 		}
 
@@ -65,11 +84,12 @@ function trim(s) {
 	}
 
 	function validateForm(options) {
-		var isValid = true;
+		//var isValid = true;
 		/**
 		 * easyui功能 if (options != null && options.validFormId != null) { isValid = $("#" + options.validFormId).form("validate"); // if (!isValid) { // Message.alert("提示", "输入内容有误，请修改后重新提交"); // } }
 		 */
-		return isValid;
+		//return isValid;
+		return true
 	}
 
 	function getDocumentCharset() {
@@ -169,18 +189,19 @@ function trim(s) {
 		});
 
 		if (easyUIForm) {
+			var jqueryFromId = $("#" + formId);
 			ajaxParam.ajax = true;
 			ajaxParam.iframe = false;
-			ajaxParam.url = $("#" + formId).attr("action");
+			ajaxParam.url = jqueryFromId.attr("action");
 			ajaxParam.accept = "application/json";
-			$('#' + formId).form("submit", ajaxParam);
+			jqueryFromId.form("submit", ajaxParam);
 		} else {
 			// alert("need jquery.form.3.51.0.js ajaxSubmit")
 			// jquery.form.3.51.0.js
 			$('#' + formId).ajaxSubmit(ajaxParam);
 		}
 
-	}
+	};
 
 	$.homePost = function(url, param, callback, options) {
 		if (options == null) {
@@ -207,7 +228,7 @@ function trim(s) {
 				doSomethingOnError(options, XMLHttpRequest, textStatus, errorThrown, callback);
 			}
 		});
-	}
+	};
 
 	$.homeGet = function(url, callback, options, runCallBackFlag) {
 		if (options == null) {
@@ -237,7 +258,7 @@ function trim(s) {
 				doSomethingOnError(options, XMLHttpRequest, textStatus, errorThrown, callback);
 			}
 		});
-	}
+	};
 
 	$.homePostNotAsync = function(url, param, callback, options) {
 		if (options == null) {
@@ -265,7 +286,7 @@ function trim(s) {
 				doSomethingOnError(options, XMLHttpRequest, textStatus, errorThrown, callback);
 			}
 		});
-	}
+	};
 
 	function alertErrorMsg(XMLHttpRequest, msg) {
 		if (XMLHttpRequest && XMLHttpRequest.responseText && XMLHttpRequest.responseText.indexOf('login page do not delete') != -1) {
@@ -274,8 +295,8 @@ function trim(s) {
 				show : true,
 				keyboard : false
 			});
-			$('#global-relogin-comfirm-ok').off('click');
-			$('#global-relogin-comfirm-ok').on('click', function() {
+			$('#global-relogin-confirm-ok').off('click');
+			$('#global-relogin-confirm-ok').on('click', function() {
 				backToLogin();
 			});
 		} else {
@@ -288,13 +309,13 @@ function trim(s) {
 
 	$.showMessageModal = function(message) {
 		$('#messageModal').modal('show');
-		$('#messageModal .modal-body').text(message);
-	}
+		$('#messageModal').find('.modal-body').text(message);
+	};
 
 	$.showConfirmModal = function(message) {
 		$('#messageModal').modal('show');
-		$('#messageModal .modal-body').text(message);
-	}
+		$('#messageModal').find('.modal-body').text(message);
+	};
 
 	/** 将值从json填充到对应的form */
 	$.homeLoadJsonToForm = function(containerId, jsonObj) {
@@ -331,7 +352,7 @@ function trim(s) {
 				}
 			});
 		}
-	}
+	};
 
 	/** 将值填充到form的对应name中 */
 	$.homeSetValueToForm = function(containerId, objName, value) {
@@ -361,26 +382,26 @@ function trim(s) {
 		} else if (tagName == 'SPAN') {
 			obj.text(value);
 		}
-	}
+	};
 
 	$.log = function(message) {
 		if (IS_JS_DEBUG) {
 			console.log(message);
 			// alert(message);
 		}
-	}
+	};
 
 	$.warn = function(message) {
 		if (IS_JS_DEBUG) {
 			console.warn(message);
 		}
-	}
+	};
 
 	$.error = function(message) {
 		if (IS_JS_DEBUG) {
 			console.error(message);
 		}
-	}
+	};
 
 	$.homeAutoComplete = function(element, url) {
 		$('#' + element).autocomplete({
@@ -393,7 +414,7 @@ function trim(s) {
 			},
 			minLength : 2
 		});
-	}
+	};
 
 	// 日期增加年数
 	$.homeAddYear = function(date, years) {
@@ -401,7 +422,7 @@ function trim(s) {
 		d.setFullYear(d.getFullYear() + years);
 		var m = d.getMonth() + 1;
 		return d.getFullYear() + '-' + m + '-' + d.getDate();
-	}
+	};
 
 	// 日期增加天数
 	$.homeAddDate = function(date, days) {
@@ -411,38 +432,38 @@ function trim(s) {
 		if (m < 10) {
 			m = '0' + m
 		}
-		var tag = ""
+		var tag = "";
 		if (d.getDate() < 10) {
 			tag = "0"
 		}
 		return d.getFullYear() + '-' + m + '-' + tag + d.getDate();
-	}
+	};
 
 	$.homeDateCompare = function(startDateID, endDateID) {
 		$('#' + startDateID).on('change', function() {
-			endDate = new Date($('#' + endDateID).val())
-			startDate = new Date($(this).val())
+			var endDate = new Date($('#' + endDateID).val());
+			var startDate = new Date($(this).val());
 			if (endDate != null && endDate != "") {
 				if (startDate >= endDate) {
 					$(this).val($.homeAddDate(endDate, -1))
 				}
 			}
-		})
+		});
 		$('#' + endDateID).on('change', function() {
-			startDate = new Date($('#' + startDateID).val())
-			endDate = new Date($(this).val())
+			var startDate = new Date($('#' + startDateID).val());
+			var endDate = new Date($(this).val());
 			if (startDate != null && startDate != "") {
 				if (startDate >= endDate) {
 					$(this).val($.homeAddDate(startDate, 1))
 				}
 			}
 		})
-	}
+	};
 
 	/** 编码html特殊字符 */
 	$.escapeHtml = function(s) {
 		return (s) ? $("<p>").text(s).html() : "";
-	}
+	};
 
 	/** 替换正则特殊字符，（加斜杠） */
 	$.replaceExp = function(keywordHidden) {
@@ -461,7 +482,7 @@ function trim(s) {
 		keywordHidden = keywordHidden.replace(/\(/g, "\\(");
 		keywordHidden = keywordHidden.replace(/\)/g, "\\)");
 		return keywordHidden;
-	}
+	};
 
 	/** 根据父级tag名获得对象的父级对象 */
 	$.getParentTagByTagName = function(object, parentTagName) {
@@ -487,15 +508,15 @@ function trim(s) {
 var HomeCookie = {};
 HomeCookie.setCookie = function(name, value) {
 	return $.cookie(name, value);
-}
+};
 
 HomeCookie.getCookie = function(name) {
 	return $.cookie(name);
-}
+};
 
 HomeCookie.removeCookie = function(name) {
 	return $.cookie(name, null);
-}
+};
 
 /**
  * url:/SimpleDataxWeb/renderSndData param:{"userName":form.userName.value,"password":form.password.value}
@@ -710,16 +731,6 @@ function isNull(obj) {
 
 }
 
-// trim str.
-function trim(str) {
-	if (isNull(str) || (str == "")) {
-		return "";
-	} else {
-		// trim str.
-		return str.replace(/(^\s*)|(\s*$)/g, "");
-	}
-}
-
 function getURLTimeStamp() {
 	var dt = new Date();
 	return "ts=" + dt.getTime();
@@ -893,7 +904,7 @@ Date.prototype.Format = function(fmt) {
 		}
 	}
 	return fmt;
-}
+};
 
 /**
  * 动态加载img文件
@@ -990,11 +1001,7 @@ function lazyRun(fun, timeout) {
  */
 function isDefinedVariable(variableName) {
 	try {
-		if (eval("typeof (" + variableName + ")") == "undefined") {
-			return false;
-		} else {
-			return true;
-		}
+		return eval("typeof (" + variableName + ")") != "undefined";
 	} catch (e) {
 	}
 	return false;
@@ -1021,7 +1028,7 @@ function resetRowMaxHeightBySelector(selectorStrDiv, selectorStrImg, radio, setM
 	if (radio != null) {
 		maxHeight = divWidth * parseFloat(radio);
 	}
-	maxHeight = maxHeight - 1 // 因为宽度获取不到小数点，这里减去一些
+	maxHeight = maxHeight - 1; // 因为宽度获取不到小数点，这里减去一些
 
 	if (setMaxHeight == null) {
 		// 168为贴图库小图尺寸
@@ -1046,15 +1053,15 @@ function resetRowMaxHeightBySelectorOneByOne(selectorStrDiv, selectorStrImg, rad
 			if (divWidth > 0) {
 				// var marginleft = divParent.css("margin-left");
 				// var marginright = divParent.css("margin-right");
-				var borderwidth = divParent.css("border-width");
-				var paddingleft = divParent.css("padding-left");
-				var paddingright = divParent.css("padding-right");
+				var borderWidth = divParent.css("border-width");
+				var paddingLeft = divParent.css("padding-left");
+				var paddingRight = divParent.css("padding-right");
 
 				// divWidth = subWidth(divWidth, marginleft);
 				// divWidth = subWidth(divWidth, marginright);
-				divWidth = subWidth(divWidth, borderwidth);
-				divWidth = subWidth(divWidth, paddingleft);
-				divWidth = subWidth(divWidth, paddingright);
+				divWidth = subWidth(divWidth, borderWidth);
+				divWidth = subWidth(divWidth, paddingLeft);
+				divWidth = subWidth(divWidth, paddingRight);
 
 				var maxHeight = divWidth * 9 / 16;
 				if (radio != null) {
