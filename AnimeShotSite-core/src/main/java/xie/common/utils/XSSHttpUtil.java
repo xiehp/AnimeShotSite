@@ -1,5 +1,16 @@
 package xie.common.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import xie.common.string.XStringUtils;
+import xie.common.utils.string.StringUtil;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -7,19 +18,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.http.HttpHeaders;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
-
-import xie.common.string.XStringUtils;
-import xie.common.utils.string.StringUtil;
 
 /**
  * JSTL: ${s} ==== <c:out value="${s}" escapeXml="false"></c:out> ==== out.print(s) ==== <%=s%> JSTL: <c:out value="${s}"></c:out> ==== encodeHtml(s) JavaScript alert: must use javaScriptEncode(s) This is a 1-sentence description of this class. This is high level description of this class's
@@ -88,7 +86,7 @@ public class XSSHttpUtil {
 	 * 
 	 * 获取站点根目录
 	 * 
-	 * @param request
+	 * @param request request
 	 * @return
 	 */
 	public static String getRootURL(final HttpServletRequest request) {
@@ -97,7 +95,7 @@ public class XSSHttpUtil {
 
 	/**
 	 * 
-	 * @param 根据协议（http/https）修改的 url 的端口
+	 * @param url 根据协议（http/https）修改的 url 的端口
 	 * @param protocol 要转化的协议
 	 * @param portMap 协议对应的端口，格式<协议，端口>
 	 * @return
@@ -139,7 +137,7 @@ public class XSSHttpUtil {
 	/**
 	 * 获得url中的主机名
 	 * 
-	 * @param url
+	 * @param urlStr urlStr
 	 * @return null，未找到或格式不正确
 	 */
 	public static String getHost(final String urlStr) {
@@ -230,29 +228,28 @@ public class XSSHttpUtil {
 	}
 
 	/**
-	 * @param 修改 url 中的domain name
-	 * 
-	 * @param newdomain
-	 * @return
+	 * @param url 中的domain name
+	 * @param newDomain
+	 *
+	 * @return changeDomain
 	 * @deprecated 未完成
 	 */
-	public static String changeDomain(final String url, final String newdomain) {
+	public static String changeDomain(final String url, final String newDomain) {
 		final Pattern p = Pattern.compile("^(https?://)([\\.\\w\\-_]+)(:?\\d*/?.*)$");
 		final Matcher m = p.matcher(url);
 
 		String rtn = url;
 		if (m.find()) {
-			rtn = m.replaceAll("$1" + newdomain + "$3");
+			rtn = m.replaceAll("$1" + newDomain + "$3");
 		}
 
 		return rtn;
 	}
 
 	/**
-	 * @param 修改 url 中的host name
-	 * 
-	 * @param newdomain
-	 * @return
+	 * @param url 中的host name
+	 * @param newHost
+	 * @return 修改过的host
 	 */
 	public static String changeHost(final String url, final String newHost) {
 		final Pattern p = Pattern.compile("^(https?://)([\\.\\w\\-_]+)(:?\\d*/?.*)$");
@@ -267,12 +264,13 @@ public class XSSHttpUtil {
 	}
 
 	/**
-	 * @param 修改 url 中的domain name
-	 * 
-	 * @param newdomain
-	 * @return
+	 * @param url 中的domain name
+	 * @param newHostAndPort
+	 *
+	 * @return 修改过的host和port
 	 * @deprecated 未完成
 	 */
+	@Deprecated
 	public static String changeHostAndPort(final String url, final String newHostAndPort) {
 		final Pattern p = Pattern.compile("^(https?://)([\\.\\w\\-_]+)(:?\\d*/?.*)$");
 		final Matcher m = p.matcher(url);
@@ -372,11 +370,7 @@ public class XSSHttpUtil {
 
 		final boolean isMultipart;
 
-		if (contentType.indexOf("multipart/form-data") == 0) {
-			isMultipart = true;
-		} else {
-			isMultipart = false;
-		}
+		isMultipart = contentType.indexOf("multipart/form-data") == 0;
 		return isMultipart;
 	}
 
@@ -391,11 +385,7 @@ public class XSSHttpUtil {
 		final String loc = StringUtil.removeNullTrim(url);
 		final boolean safe;
 
-		if (loc.indexOf("http://") == 0 || loc.indexOf("https://") == 0) {
-			safe = false;
-		} else {
-			safe = true;
-		}
+		safe = loc.indexOf("http://") != 0 && loc.indexOf("https://") != 0;
 		return safe;
 	}
 
