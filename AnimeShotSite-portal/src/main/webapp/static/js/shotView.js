@@ -396,6 +396,9 @@ function deleteShotById(id) {
 lazyRun(function() {
 	window.onscroll = function() {
 		var nowScrollTop = document.body.scrollTop;
+		if (nowScrollTop == 0) {
+            nowScrollTop = document.documentElement.scrollTop;
+		}
 		document.getElementById("scorllTop").value = nowScrollTop;
 		HomeCookie.setCookie("ShotViewScorllTop", nowScrollTop);
 		$.log("滚动事件:" + nowScrollTop);
