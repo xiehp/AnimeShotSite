@@ -40,6 +40,7 @@ import java.util.regex.Pattern;
  */
 public class XSSHttpUtil {
 	private static final Logger LOG = LoggerFactory.getLogger(XSSHttpUtil.class);
+	private static final Pattern whiteSpacePattern = Pattern.compile("\\s");
 
 	/**
 	 * 
@@ -49,8 +50,7 @@ public class XSSHttpUtil {
 	 * @return 替换后字符串
 	 */
 	private static String replaceLinearWhiteSpace(final String input) {
-		final Pattern p = Pattern.compile("\\s");
-		return p.matcher(input).replaceAll(" ");
+		return whiteSpacePattern.matcher(input).replaceAll(" ");
 	}
 
 	/**
@@ -58,8 +58,8 @@ public class XSSHttpUtil {
 	 * 创建一个 header
 	 * 
 	 * @param response HttpServletResponse
-	 * @param name
-	 * @param value
+	 * @param name name
+	 * @param value value
 	 */
 	public static void addHeader(final HttpServletResponse response,
 			final String name, final String value) {
@@ -72,8 +72,7 @@ public class XSSHttpUtil {
 	 * 
 	 * 获取网站地址
 	 * 
-	 * @param request
-	 * @return
+	 * @param request request
 	 */
 	public static String getTotalRootURL(final HttpServletRequest request) {
 		final String totalUrl = request.getRequestURL().toString();
@@ -87,7 +86,6 @@ public class XSSHttpUtil {
 	 * 获取站点根目录
 	 * 
 	 * @param request request
-	 * @return
 	 */
 	public static String getRootURL(final HttpServletRequest request) {
 		return request.getContextPath() + "/";
@@ -98,7 +96,6 @@ public class XSSHttpUtil {
 	 * @param url 根据协议（http/https）修改的 url 的端口
 	 * @param protocol 要转化的协议
 	 * @param portMap 协议对应的端口，格式<协议，端口>
-	 * @return
 	 */
 	public static String changeProtocol(final String url, final String protocol, final Map<String, String> portMap) {
 		final Pattern p = Pattern.compile("^(https?)(://[\\.\\w\\-_]+)(:?\\d*)(.*)$");
@@ -134,6 +131,17 @@ public class XSSHttpUtil {
 		}
 	}
 
+	public static String changeToHttpOrHttps(String url) {
+		if (url == null) {
+			return null;
+		}
+		if (url.startsWith("http")) {
+			url = url.replaceFirst("http://", "//");
+			url = url.replaceFirst("https://", "//");
+		}
+		return url;
+	}
+
 	/**
 	 * 获得url中的主机名
 	 * 
@@ -152,15 +160,18 @@ public class XSSHttpUtil {
 	/**
 	 * 将贴图库的url改为本站url
 	 * 
-	 * @param url
-	 * @param newDomain
-	 * @param canChangeDomain
-	 * @return
+	 * @param url url
+	 * @param newDomain newDomain
+	 * @param canChangeDomain canChangeDomain
 	 */
 	public static String changeTietukuDomain(String url, String newDomain, String[] canChangeDomain) {
 		if (XStringUtils.isBlank(url)) {
 			return url;
 		}
+
+		// 由于cdn的https收费，图片链接改为http
+		// 20180125 改为跟随页面
+		url = XSSHttpUtil.changeToHttps(url);
 
 		if (XStringUtils.isBlank(newDomain)) {
 			return url;
@@ -173,8 +184,6 @@ public class XSSHttpUtil {
 
 		// 改变域名
 		url = url.replaceAll("\\.[a-z0-9]+\\.[a-z]+", "." + newDomain);
-		// 由于cdn的https收费，图片链接改为http
-		url = XSSHttpUtil.changeToHttp(url);
 
 		return url;
 	}
@@ -182,15 +191,17 @@ public class XSSHttpUtil {
 	/**
 	 * 将贴图库url中的domain改为指定domain
 	 * 
-	 * @param url
-	 * @param newDomain
-	 * @param domainConvertMap
-	 * @return
+	 * @param url url
+	 * @param domainConvertMap domainConvertMap
 	 */
-	public static String convertTietukuDomain(final String url, final Map<String, String> domainConvertMap) {
+	public static String convertTietukuDomain(String url, final Map<String, String> domainConvertMap) {
 		if (XStringUtils.isBlank(url)) {
 			return url;
 		}
+
+		// 由于cdn的https收费，图片链接改为http
+		// 20180125 改为跟随页面
+		url = XSSHttpUtil.changeToHttps(url);
 
 		if (domainConvertMap == null || domainConvertMap.size() == 0) {
 			return url;
@@ -208,12 +219,9 @@ public class XSSHttpUtil {
 		toHost = toHost.trim();
 
 		// 改变域名
-		String newUrl = url.replaceFirst("[a-z0-9]+\\.[a-z0-9]+\\.[a-z]+", toHost);
+		url = url.replaceFirst("[a-z0-9]+\\.[a-z0-9]+\\.[a-z]+", toHost);
 
-		// 由于cdn的https收费，图片链接改为http
-		newUrl = XSSHttpUtil.changeToHttp(newUrl);
-
-		return newUrl;
+		return url;
 	}
 
 	private static String getPortByProtocol(final String protocol, final Map<String, String> portMap) {
@@ -229,7 +237,7 @@ public class XSSHttpUtil {
 
 	/**
 	 * @param url 中的domain name
-	 * @param newDomain
+	 * @param newDomain newDomain
 	 *
 	 * @return changeDomain
 	 * @deprecated 未完成
@@ -264,8 +272,8 @@ public class XSSHttpUtil {
 	}
 
 	/**
-	 * @param url 中的domain name
-	 * @param newHostAndPort
+	 * @param url url
+	 * @param newHostAndPort newHostAndPort
 	 *
 	 * @return 修改过的host和port
 	 * @deprecated 未完成
@@ -287,7 +295,7 @@ public class XSSHttpUtil {
 	 * 
 	 * 设定不保留cache
 	 * 
-	 * @param response
+	 * @param response response
 	 */
 	public static void setNoCacheHeaders(final HttpServletResponse response) {
 		// HTTP 1.1
@@ -303,7 +311,7 @@ public class XSSHttpUtil {
 	 * 
 	 * 设定保留cache
 	 * 
-	 * @param response
+	 * @param response response
 	 */
 	public static void setCacheHeaders(final HttpServletResponse response) {
 		// HTTP 1.1
@@ -318,11 +326,11 @@ public class XSSHttpUtil {
 	 * 
 	 * 跳转
 	 * 
-	 * @param request
-	 * @param response
+	 * @param request request
+	 * @param response response
 	 * @param location 要跳转的地址
-	 * @throws ServletException
-	 * @throws IOException
+	 * @throws ServletException ServletException
+	 * @throws IOException IOException
 	 */
 	public static void sendForward(final HttpServletRequest request,
 			final HttpServletResponse response, final String location)
