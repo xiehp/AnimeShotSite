@@ -29,8 +29,8 @@
 		global.baseUrl = global.baseUrl.replace("http://", "//");
 		global.baseUrl = global.baseUrl.replace("https://", "//");
 		global.ctx = '${ctx}';
-		baseUrl = '${siteBaseUrl}';
-		ctx = '${ctx}';
+		baseUrl = global.baseUrl;
+		ctx = global.ctx;
 	}
 	var IS_MASTER = false;
 	var MANAGE_URL_STR = "";
