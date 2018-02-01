@@ -268,6 +268,7 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 				// 带contextPath的基本URL
 				String siteBaseUrl = XSSHttpUtil.getForwardedRemoteProto(request) + "://" + serverName + portStr + request.getContextPath();
 				String siteBaseUrlHttps = "https" + "://" + serverName + portStr + request.getContextPath();
+				siteBaseUrl = siteBaseUrlHttps; // 全站改为https
 				request.setAttribute("siteBaseUrl", siteBaseUrl);
 				request.setAttribute("siteBaseUrlHttps", siteBaseUrlHttps);
 
