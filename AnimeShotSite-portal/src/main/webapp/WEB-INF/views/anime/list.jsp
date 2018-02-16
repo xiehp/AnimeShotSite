@@ -126,8 +126,9 @@
 
 <div id="viewAD" style="margin-top: 40px; overflow: hidden;">
 	<script type="text/javascript">
-		var baiduApIds = [ "u3028819", "u3030884", "u3030880", "u3030894" ];
-		var cpro_id = baiduApIds[3];
+        /*468*60 创建于 2017/7/8 动画列表*/
+        var cpro_id = "u3030894";
 	</script>
-	<script type="text/javascript" src="${ctx}/static/plugins/ad/baidu_c.js"></script>
+	<script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/c.js"></script>
+	<!--<script type="text/javascript" src="${ctx}/static/plugins/ad/baidu_c.js"></script>-->
 </div>

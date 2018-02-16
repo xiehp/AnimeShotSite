@@ -334,6 +334,15 @@ body {
 	</div>
 </div>
 
+<!-- ad -->
+<div id="viewAD" style="margin-top: 40px; overflow: hidden;">
+	<script type="text/javascript">
+		/*640*60 创建于 2018/2/7 截图详细页面*/
+		var cpro_id = "u3204336";
+	</script>
+	<script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/c.js"></script>
+</div>
+
 <!-- 评论 -->
 <div id="截图评论" align="center" class="row ShareLinkDiv" style="margin-left: 0; margin-right: 0;">
 	<c:if test="${!empty shotCommentPage}">
@@ -367,8 +376,7 @@ body {
 			<input type="hidden" name="targetId" value="${shotInfo.id}" />
 
 			<div class="col-sm-10">
-				<spring:message code='输入评论' />
-				:
+				<spring:message code='输入评论' />:
 			</div>
 			<div class="col-sm-10">
 				<textarea name="content" rows="5" style="width: 100%;"></textarea>

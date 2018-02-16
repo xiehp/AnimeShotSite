@@ -277,6 +277,10 @@ var taskResultStatus = 0;
 var taskResultMessage = "";
 var taskResultWriteCount = 0;
 function doCreateShot(shotInfoId, offsetTime, preFlg, doneCallback) {
+
+	alert("对不起，该功能已不可用。");
+	return;
+
 	if (confirm("是否继续？")) {
 		var param = {};
 		param.refShotInfoId = shotInfoId;
