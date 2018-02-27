@@ -1,6 +1,9 @@
 package xie.animeshotsite.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URL;
 
 import xie.animeshotsite.constants.ShotCoreConstants;
 import xie.animeshotsite.db.entity.AnimeEpisode;
@@ -326,7 +329,18 @@ public class FilePathUtils {
 	 * 获得找不到图片的图片路径
 	 */
 	public static File getNoImageFilePath() {
-		// TODO 图片配置
-		return new File("F:\\AnimeShotSite\\shot\\动画4\\719992.jpg");
+		URL url = Thread.currentThread().getContextClassLoader().getResource("/notExistsImage.jpg");
+		File file = new File(url.getFile());
+		return file;
 	}
+
+	/**
+	 * 获得找不到图片的图片路径
+	 */
+	public static InputStream getNoImageFileStream() {
+		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("/notExistsImage.jpg");
+		return is;
+	}
+
+
 }

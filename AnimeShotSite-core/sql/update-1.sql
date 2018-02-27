@@ -194,6 +194,10 @@ ALTER TABLE `comment_record`
   ADD COLUMN `TARGET_ATTR3` VARCHAR(100) COMMENT '评论所属对象其他信息3' AFTER `TARGET_ATTR2`;
 
 
+
+ALTER TABLE `shot_info` CHANGE COLUMN `TIETUKU_URL_ID` `TIETUKU_URL_ID` VARCHAR(32) NULL DEFAULT NULL COMMENT '贴图库所在url的ID' ;
+
+
 -----------------------------以上为已更新sql---------------------------------------
 -----------------------------以上为已更新sql---------------------------------------
 -----------------------------以上为已更新sql---------------------------------------
