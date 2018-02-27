@@ -312,10 +312,12 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
 
             String shotId = shotIdTemp;
             ShotInfo shotInfo = shotInfoService.findOne(shotId);
-            AnimeEpisode animeEpisode = animeEpisodeService.findOne(shotInfo.getAnimeEpisodeId());
-            AnimeInfo animeInfo = animeInfoService.findOne(shotInfo.getAnimeInfoId());
             if (shotInfo != null) {
-                file = FilePathUtils.getShotFullFilePath(shotInfo, animeEpisode, animeInfo);
+                AnimeEpisode animeEpisode = animeEpisodeService.findOne(shotInfo.getAnimeEpisodeId());
+                AnimeInfo animeInfo = animeInfoService.findOne(shotInfo.getAnimeInfoId());
+                if (shotInfo != null) {
+                    file = FilePathUtils.getShotFullFilePath(shotInfo, animeEpisode, animeInfo);
+                }
             }
             if (file != null) {
                 fis = new FileInputStream(file);
