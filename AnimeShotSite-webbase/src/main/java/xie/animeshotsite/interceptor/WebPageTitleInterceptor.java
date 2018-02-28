@@ -137,12 +137,28 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 	 * @param modelAndView 可视化对象
 	 */
 	@Override
-	public void postHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler, final ModelAndView modelAndView) {
+	public void postHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler, final ModelAndView modelAndView) throws IOException {
 		// final WebPathVO webPathVO = ThreadUtil.getWebPathVO();
 		//
 		// if(CommonConstants.FLAG_YES.equals(request.getAttribute(CHANGE_PAGE_DATA_FALG_NAME))){
 		// generatePageData(request , webPathVO);
 		// }
+
+		boolean isImageRequest = (boolean)request.getAttribute("isImageRequest");
+		if (isImageRequest) {
+			String hostName = XSSHttpUtil.getForwardedServerName(request);
+			String remoteIp = XSSHttpUtil.getForwardedRemoteIpAddr(request);
+			if ("img.acgimage.com".equals(hostName) || "localhost".equals(hostName) || hostName.startsWith("192.168.4.")) {
+			} else {
+				// serverName不符合配置文件设定的值，进行跳转
+				logger.warn("当前主机地址不符合访问规则，跳转到www域名。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
+				System.err.println("当前主机地址不符合访问规则，跳转到www域名。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
+				response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+				response.setHeader("Location", "//" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
+
+				return;
+			}
+		}
 
 		String requestURL = request.getRequestURL().toString();
 

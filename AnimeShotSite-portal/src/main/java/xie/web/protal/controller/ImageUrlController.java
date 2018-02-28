@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import xie.animeshotsite.db.service.ShotInfoService;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseFunctionController;
 import xie.common.image.XImageUtils;
+import xie.common.utils.XSSHttpUtil;
 
 @Controller
 public class ImageUrlController extends BaseFunctionController<ImageUrl, String> {
@@ -36,9 +38,18 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 	ShotInfoService shotInfoService;
 
 	@RequestMapping(value = "/image/{type}/{idTemp}")
-	public void getImageByType(@PathVariable String type, @PathVariable String idTemp, ServletResponse servletResponse) throws Exception {
+	public void getImageByType(@PathVariable String type, @PathVariable String idTemp, HttpServletRequest request, ServletResponse servletResponse) throws Exception {
+
+		// 图片访问，将在后面判断
+		request.setAttribute("isImageRequest", true);
+
+		// 首先判断当前访问是否正确，
+		String hostName = XSSHttpUtil.getForwardedServerName(request);
+		String remoteIp = XSSHttpUtil.getForwardedRemoteIpAddr(request);
+
+
 		InputStream is = null;
-		servletResponse.setContentType("image/jpg");
+		servletResponse.setContentType("image/png");
 		try {
 			idTemp = idTemp.trim();
 			String id = idTemp.trim();
@@ -89,14 +100,14 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 				if (idTemp.endsWith("s")) {
 					width = 800;
 				}
-				int height = oldHeight / oldWidth * width;
+				int height = (int)(1.0 * oldHeight / oldWidth * width);
 
 				//构建图片流
 				BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 				//绘制改变尺寸后的图
 				tag.getGraphics().drawImage(bi, 0, 0, width, height, null);
 				//输出流
-				ImageIO.write(tag, "jpg", out);
+				ImageIO.write(tag, "png", out);
 			} else {
 				byte[] b = new byte[is.available()];
 				is.read(b);
@@ -118,13 +129,13 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 	}
 
 	@RequestMapping(value = "/{id}")
-	public void getImageWithTietuku1(@PathVariable String id, ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-		getImageByType(ShotCoreConstants.IMAGE_URL_TYPE_SHOT, id, servletResponse);
+	public void getImageWithTietuku1(@PathVariable String id, HttpServletRequest request, ServletResponse servletResponse) throws Exception {
+		getImageByType(ShotCoreConstants.IMAGE_URL_TYPE_SHOT, id, request, servletResponse);
 	}
 
 	@RequestMapping(value = "/541950/{id}")
-	public void getImageWithTietuku2(@PathVariable String id, ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-		getImageByType(ShotCoreConstants.IMAGE_URL_TYPE_SHOT, id, servletResponse);
+	public void getImageWithTietuku2(@PathVariable String id, HttpServletRequest request, ServletResponse servletResponse) throws Exception {
+		getImageByType(ShotCoreConstants.IMAGE_URL_TYPE_SHOT, id, request, servletResponse);
 	}
 
 }
