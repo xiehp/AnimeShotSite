@@ -1,11 +1,12 @@
 package xie.web.protal.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import org.springframework.stereotype.Controller;
@@ -22,9 +23,9 @@ import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotInfoService;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseFunctionController;
+import xie.common.image.XImageUtils;
 
 @Controller
-@RequestMapping(value = "/image")
 public class ImageUrlController extends BaseFunctionController<ImageUrl, String> {
 
 	@Resource
@@ -34,11 +35,20 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 	@Resource
 	ShotInfoService shotInfoService;
 
-	@RequestMapping(value = "/{type}/{id}")
-	public void getImage(@PathVariable String type, @PathVariable String id, ServletResponse servletResponse) throws Exception {
-		FileInputStream fis = null;
+	@RequestMapping(value = "/image/{type}/{idTemp}")
+	public void getImageByType(@PathVariable String type, @PathVariable String idTemp, ServletResponse servletResponse) throws Exception {
+		InputStream is = null;
 		servletResponse.setContentType("image/jpg");
 		try {
+			idTemp = idTemp.trim();
+			String id = idTemp.trim();
+			if (id.endsWith("t")) {
+				id = id.substring(0, id.length() - 1);
+			}
+			if (id.endsWith("s")) {
+				id = id.substring(0, id.length() - 1);
+			}
+
 			OutputStream out = servletResponse.getOutputStream();
 			File file = null;
 			if (ShotCoreConstants.IMAGE_URL_TYPE_ANIME.equals(type)) {
@@ -53,35 +63,68 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 					file = FilePathUtils.getAnimeFullFilePath(animeInfo, animeEpisode, animeEpisode.getLocalFileName());
 				}
 			} else if (ShotCoreConstants.IMAGE_URL_TYPE_SHOT.equals(type)) {
-				ShotInfo shotInfo = shotInfoService.findOne(id);
-				AnimeEpisode animeEpisode = animeEpisodeService.findOne(shotInfo.getAnimeEpisodeId());
-				AnimeInfo animeInfo = animeInfoService.findOne(shotInfo.getAnimeInfoId());
+				ShotInfo shotInfo = shotInfoService.findByTietukuUrlId(id);
 				if (shotInfo != null) {
+					AnimeEpisode animeEpisode = animeEpisodeService.findOne(shotInfo.getAnimeEpisodeId());
+					AnimeInfo animeInfo = animeInfoService.findOne(shotInfo.getAnimeInfoId());
 					file = FilePathUtils.getShotFullFilePath(shotInfo, animeEpisode, animeInfo);
 				}
 			}
-			if (file == null) {
-				file = FilePathUtils.getNoImageFilePath();
+
+			if (file != null) {
+				is = new FileInputStream(file);
+			} else {
+				is = FilePathUtils.getNoImageFileStream();
 			}
 
-			fis = new FileInputStream(file);
-			byte[] b = new byte[fis.available()];
-			fis.read(b);
-			out.write(b);
-			out.flush();
-		} catch (
+			if (idTemp.endsWith("t") || idTemp.endsWith("s")) {
+				// 字节流转图片对象
+				Image bi = ImageIO.read(is);
 
-		Exception e) {
+				// 设置尺寸大小
+				int oldWidth = bi.getWidth(null);
+				int oldHeight = bi.getHeight(null);
+
+				int width = 300;
+				if (idTemp.endsWith("s")) {
+					width = 800;
+				}
+				int height = oldHeight / oldWidth * width;
+
+				//构建图片流
+				BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+				//绘制改变尺寸后的图
+				tag.getGraphics().drawImage(bi, 0, 0, width, height, null);
+				//输出流
+				ImageIO.write(tag, "jpg", out);
+			} else {
+				byte[] b = new byte[is.available()];
+				is.read(b);
+				out.write(b);
+			}
+			out.flush();
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if (fis != null) {
+			if (is != null) {
 				try {
-					fis.close();
+					is.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 		}
+	}
+
+	@RequestMapping(value = "/{id}")
+	public void getImageWithTietuku1(@PathVariable String id, ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
+		getImageByType(ShotCoreConstants.IMAGE_URL_TYPE_SHOT, id, servletResponse);
+	}
+
+	@RequestMapping(value = "/541950/{id}")
+	public void getImageWithTietuku2(@PathVariable String id, ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
+		getImageByType(ShotCoreConstants.IMAGE_URL_TYPE_SHOT, id, servletResponse);
 	}
 
 }

@@ -31,6 +31,8 @@ public class ShotCoreConstants {
 	public static final String IMAGE_URL_TYPE_EPISODE = "episode";
 	/** 图片类型 截图 */
 	public static final String IMAGE_URL_TYPE_SHOT = "shot";
+	/** 图片类型 GIF */
+	public static final String IMAGE_URL_TYPE_GIF = "gif";
 	/** 图片类型 图片 */
 	public static final String IMAGE_URL_TYPE_IMAGE = "image";
 	/** 图片类型 无图 */

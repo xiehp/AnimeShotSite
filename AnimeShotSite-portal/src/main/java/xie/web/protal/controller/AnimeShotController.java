@@ -295,7 +295,7 @@ public class AnimeShotController extends BaseFunctionController<ShotInfo, String
     }
 
     @RequestMapping(value = "/img/{shotIdTemp}")
-    public void getImage(@PathVariable String shotIdTemp, ServletResponse servletResponse) throws Exception {
+    public void getImage(@PathVariable String shotIdTemp, ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
         InputStream fis = null;
         servletResponse.setContentType("image/jpg");
         try {

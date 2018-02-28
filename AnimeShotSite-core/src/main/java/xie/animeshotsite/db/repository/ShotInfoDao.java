@@ -54,4 +54,5 @@ public interface ShotInfoDao extends BaseRepository<ShotInfo, String> {
 	 */
 	int countByAnimeEpisodeId(String animeEpisodeId);
 
+	List<ShotInfo> findByTietukuUrlId(String id);
 }

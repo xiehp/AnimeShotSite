@@ -272,8 +272,7 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 
 	/**
 	 * 随机获得数据
-	 * 
-	 * @param range
+	 *
 	 * @param number
 	 * @param animeInfoId 可以为空
 	 * @param animeEpisodeId 可以为空
@@ -285,5 +284,14 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		searchParams.put(BaseOperator.EQ.getStr(ShotInfo.COLUMN_ANIME_EPISODE_ID), animeEpisodeId);
 		List<ShotInfo> list = findRandom(-1, number, ShotInfo.class, searchParams);
 		return list;
+	}
+
+	public ShotInfo findByTietukuUrlId(String id) {
+		List<ShotInfo> list = shotInfoDao.findByTietukuUrlId(id);
+		if (list.size() > 0) {
+			return list.get(0);
+		} else {
+			return null;
+		}
 	}
 }
