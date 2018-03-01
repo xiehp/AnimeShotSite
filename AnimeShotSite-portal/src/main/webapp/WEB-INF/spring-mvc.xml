@@ -82,20 +82,20 @@
 	
 	<!-- 拦截器 -->
 	<mvc:interceptors>
-		<bean class="xie.common.interceptor.HttpResourceCacheInterceptor"></bean>
-		<bean class="xie.animeshotsite.interceptor.StopWatchHandlerInterceptor"></bean>
+		<bean class="xie.common.interceptor.HttpResourceCacheInterceptor"/>
+		<bean class="xie.animeshotsite.interceptor.StopWatchHandlerInterceptor"/>
 		<!-- <bean class="xie.animeshotsite.interceptor.WebPageTitleInterceptor"></bean> -->
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
 			<mvc:exclude-mapping path="/static/**" />
 			<mvc:exclude-mapping path="/test/**" />
-			<bean class="xie.animeshotsite.interceptor.WebPageTitleInterceptor"></bean>
+			<bean class="xie.animeshotsite.interceptor.WebPageTitleInterceptor"/>
 		</mvc:interceptor>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
 			<mvc:exclude-mapping path="/static/**" />
 			<mvc:exclude-mapping path="/test/**" />
-			<bean class="xie.animeshotsite.interceptor.LanguageLocaleInterceptor"></bean>
+			<bean class="xie.animeshotsite.interceptor.LanguageLocaleInterceptor"/>
 		</mvc:interceptor>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
@@ -103,9 +103,9 @@
 			<mvc:exclude-mapping path="/login" />
 			<mvc:exclude-mapping path="/menu/**" />
 			<mvc:exclude-mapping path="/test/**" />
-			<bean class="xie.common.interceptor.MenuStatusInterceptor"></bean>
+			<bean class="xie.common.interceptor.MenuStatusInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
 
-	<bean id="exceptionHandler" class="xie.base.module.exception.WebHandlerExceptionResolver"></bean>
+	<bean id="exceptionHandler" class="xie.base.module.exception.WebHandlerExceptionResolver"/>
 </beans>

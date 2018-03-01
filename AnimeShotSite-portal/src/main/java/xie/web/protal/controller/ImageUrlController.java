@@ -6,14 +6,15 @@ import java.io.*;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
-import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springside.modules.web.Servlets;
 import xie.animeshotsite.constants.ShotCoreConstants;
 import xie.animeshotsite.db.entity.AnimeEpisode;
 import xie.animeshotsite.db.entity.AnimeInfo;
@@ -24,7 +25,6 @@ import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotInfoService;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseFunctionController;
-import xie.common.image.XImageUtils;
 import xie.common.utils.XSSHttpUtil;
 
 @Controller
@@ -38,7 +38,7 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 	ShotInfoService shotInfoService;
 
 	@RequestMapping(value = "/image/{type}/{idTemp}")
-	public void getImageByType(@PathVariable String type, @PathVariable String idTemp, HttpServletRequest request, ServletResponse servletResponse) throws Exception {
+	public void getImageByType(@PathVariable String type, @PathVariable String idTemp, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		// 图片访问，将在后面判断
 		request.setAttribute("isImageRequest", true);
@@ -47,9 +47,8 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 		String hostName = XSSHttpUtil.getForwardedServerName(request);
 		String remoteIp = XSSHttpUtil.getForwardedRemoteIpAddr(request);
 
-
+		// 写入内容
 		InputStream is = null;
-		servletResponse.setContentType("image/png");
 		try {
 			idTemp = idTemp.trim();
 			String id = idTemp.trim();
@@ -60,7 +59,7 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 				id = id.substring(0, id.length() - 1);
 			}
 
-			OutputStream out = servletResponse.getOutputStream();
+			OutputStream out = response.getOutputStream();
 			File file = null;
 			if (ShotCoreConstants.IMAGE_URL_TYPE_ANIME.equals(type)) {
 				AnimeInfo animeInfo = animeInfoService.findOne(id);
@@ -88,6 +87,13 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 				is = FilePathUtils.getNoImageFileStream();
 			}
 
+			// 设置返回头
+			response.setContentType("image/jpg");
+			Servlets.setExpiresHeader(response, Servlets.ONE_YEAR_SECONDS);
+			Servlets.setLastModifiedHeader(response, file.lastModified());
+			Servlets.setEtag(response, "W/\"" + file.lastModified() + "\"");
+
+			// 根据结尾字符判断是否要修改尺寸
 			if (idTemp.endsWith("t") || idTemp.endsWith("s")) {
 				// 字节流转图片对象
 				Image bi = ImageIO.read(is);
@@ -100,14 +106,14 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 				if (idTemp.endsWith("s")) {
 					width = 800;
 				}
-				int height = (int)(1.0 * oldHeight / oldWidth * width);
+				int height = (int) (1.0 * oldHeight / oldWidth * width);
 
-				//构建图片流
+				// 构建图片流
 				BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-				//绘制改变尺寸后的图
+				// 绘制改变尺寸后的图
 				tag.getGraphics().drawImage(bi, 0, 0, width, height, null);
-				//输出流
-				ImageIO.write(tag, "png", out);
+				// 输出流
+				ImageIO.write(tag, "jpg", out);
 			} else {
 				byte[] b = new byte[is.available()];
 				is.read(b);

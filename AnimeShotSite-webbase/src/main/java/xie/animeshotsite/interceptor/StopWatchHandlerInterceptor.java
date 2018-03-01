@@ -8,6 +8,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 /**
  * 时间测定拦截器
+ * @author xie
  */
 public class StopWatchHandlerInterceptor extends HandlerInterceptorAdapter {
 	private NamedThreadLocal<Long> startTimeThreadLocal = new NamedThreadLocal<Long>("StopWatch-StartTime");

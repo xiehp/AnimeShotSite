@@ -38,8 +38,8 @@ public class WebHandlerExceptionResolver implements HandlerExceptionResolver {
 
 	// private static boolean LogFlag = GetterUtil.getBoolean(PropsUtil.getProperty(PropsKeys.SYSTEM_ERROR_LOG_ENABLED), false);
 
-	public ModelAndView resolveException(HttpServletRequest request,
-			HttpServletResponse response, Object handler, Exception ex) {
+	@Override
+	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 		return processException(request, response, handler, ex, _log);
 	}
 
