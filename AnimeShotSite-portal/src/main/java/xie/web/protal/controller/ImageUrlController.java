@@ -6,7 +6,6 @@ import java.io.*;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -135,12 +134,12 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 	}
 
 	@RequestMapping(value = "/{id}")
-	public void getImageWithTietuku1(@PathVariable String id, HttpServletRequest request, ServletResponse servletResponse) throws Exception {
+	public void getImageWithTietuku1(@PathVariable String id, HttpServletRequest request, HttpServletResponse servletResponse) throws Exception {
 		getImageByType(ShotCoreConstants.IMAGE_URL_TYPE_SHOT, id, request, servletResponse);
 	}
 
 	@RequestMapping(value = "/541950/{id}")
-	public void getImageWithTietuku2(@PathVariable String id, HttpServletRequest request, ServletResponse servletResponse) throws Exception {
+	public void getImageWithTietuku2(@PathVariable String id, HttpServletRequest request, HttpServletResponse servletResponse) throws Exception {
 		getImageByType(ShotCoreConstants.IMAGE_URL_TYPE_SHOT, id, request, servletResponse);
 	}
 

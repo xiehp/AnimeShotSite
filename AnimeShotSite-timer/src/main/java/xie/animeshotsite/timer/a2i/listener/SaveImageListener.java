@@ -197,15 +197,16 @@ public class SaveImageListener extends Video2ImageAdapter {
 
 		// 保存到数据库
 		shotInfo = shotInfoService.createShotInfo(animeInfoId, animeEpisodeId, setTime, originalTime, null, null, file.getName(), forceUpdate);
+		shotInfo = shotInfoService.save(shotInfo);
 		logger.info("保存到数据库, " + "id:" + shotInfo.getId() + ", timeStamp:" + shotInfo.getTimeStamp() + ", version:" + shotInfo.getVersion());
 
 		if (forceUpload || XStringUtils.isBlank(shotInfo.getTietukuUrlId())) {
 			// 增加次数，同时判断当前是否刷新上传次数，以及暂停操作
 			// 控制295张图，留5张备用
-			uploadPerHourCouter.addCount(perHourLimitCount, (obj) -> {
-				autoRunParamBo.recordUploadFullInfo();
-				return null;
-			});
+//			uploadPerHourCouter.addCount(perHourLimitCount, (obj) -> {
+//				autoRunParamBo.recordUploadFullInfo();
+//				return null;
+//			});
 
 //			// 保存截图到贴图库网站
 //			logger.info("贴图库上传, " + "shotInfoId:" + shotInfo.getId());
@@ -219,12 +220,11 @@ public class SaveImageListener extends Video2ImageAdapter {
 //			String tietukuImageUrlId = TietukuUtils.getImageUrlID(tietukuUrl);
 
 			// 更新贴图库数据库
-			String tietukuImageUrlPrefix = shotInfo.getId();
-			String tietukuImageUrlId = "https://img.acgimage.com/";
+			String tietukuImageUrlPrefix = "https://img.acgimage.com/";
+			String tietukuImageUrlId = shotInfo.getId();
 			shotInfo = shotInfoService.setTietukuUrl(shotInfo, tietukuImageUrlId, tietukuImageUrlPrefix);
+			shotInfo = shotInfoService.save(shotInfo);
 		}
-
-		shotInfo = shotInfoService.save(shotInfo);
 
 		// 修改剧集图片信息
 		if (!hasSavedEpisodeImageFlg) {
