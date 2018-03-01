@@ -196,6 +196,7 @@ ALTER TABLE `comment_record`
 
 
 ALTER TABLE `shot_info` CHANGE COLUMN `TIETUKU_URL_ID` `TIETUKU_URL_ID` VARCHAR(32) NULL DEFAULT NULL COMMENT '贴图库所在url的ID' ;
+ALTER TABLE `shot_info` ADD INDEX `IDX_TIRTUKU_URL_ID` USING BTREE (`TIETUKU_URL_ID` ASC)  COMMENT '贴图库图片ID的索引';
 
 
 -----------------------------以上为已更新sql---------------------------------------

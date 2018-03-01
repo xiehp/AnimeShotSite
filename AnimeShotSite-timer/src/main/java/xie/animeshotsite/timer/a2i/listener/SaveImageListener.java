@@ -207,18 +207,20 @@ public class SaveImageListener extends Video2ImageAdapter {
 				return null;
 			});
 
-			// 保存截图到贴图库网站
-			logger.info("贴图库上传, " + "shotInfoId:" + shotInfo.getId());
-			TietukuUploadResponse tietukuUploadResponse = postImage.uploadToTietuku(file, tietukuToken, (obj) -> {
-				autoRunParamBo.recordUploadFullInfo();
-				return null;
-			});
-			String tietukuUrl = tietukuUploadResponse.getLinkurl();
-
-			String tietukuImageUrlPrefix = TietukuUtils.getImageUrlPrefix(tietukuUrl, false);
-			String tietukuImageUrlId = TietukuUtils.getImageUrlID(tietukuUrl);
+//			// 保存截图到贴图库网站
+//			logger.info("贴图库上传, " + "shotInfoId:" + shotInfo.getId());
+//			TietukuUploadResponse tietukuUploadResponse = postImage.uploadToTietuku(file, tietukuToken, (obj) -> {
+//				autoRunParamBo.recordUploadFullInfo();
+//				return null;
+//			});
+//			String tietukuUrl = tietukuUploadResponse.getLinkurl();
+//
+//			String tietukuImageUrlPrefix = TietukuUtils.getImageUrlPrefix(tietukuUrl, false);
+//			String tietukuImageUrlId = TietukuUtils.getImageUrlID(tietukuUrl);
 
 			// 更新贴图库数据库
+			String tietukuImageUrlPrefix = shotInfo.getId();
+			String tietukuImageUrlId = "https://img.acgimage.com/";
 			shotInfo = shotInfoService.setTietukuUrl(shotInfo, tietukuImageUrlId, tietukuImageUrlPrefix);
 		}
 

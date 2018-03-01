@@ -62,8 +62,16 @@ public abstract class BaseService<M extends IdEntity, ID extends Serializable> {
 		return getBaseRepository().findOne(id);
 	}
 
+	public M findOneCache(String id) {
+		return entityCache.findOne((BaseRepository<M, String>)getBaseRepository(), id.toString());
+	}
+
 	public M findOne(ID id, boolean useCache) {
-		return getBaseRepository().findOne(id);
+		if (useCache) {
+			return entityCache.findOne((BaseRepository<M, String>)getBaseRepository(), id.toString());
+		} else {
+			return getBaseRepository().findOne(id);
+		}
 	}
 
 	public M findById(ID id) {

@@ -76,8 +76,8 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 			} else if (ShotCoreConstants.IMAGE_URL_TYPE_SHOT.equals(type)) {
 				ShotInfo shotInfo = shotInfoService.findByTietukuUrlId(id);
 				if (shotInfo != null) {
-					AnimeEpisode animeEpisode = animeEpisodeService.findOne(shotInfo.getAnimeEpisodeId());
-					AnimeInfo animeInfo = animeInfoService.findOne(shotInfo.getAnimeInfoId());
+					AnimeEpisode animeEpisode = animeEpisodeService.findOneCache(shotInfo.getAnimeEpisodeId());
+					AnimeInfo animeInfo = animeInfoService.findOneCache(shotInfo.getAnimeInfoId());
 					file = FilePathUtils.getShotFullFilePath(shotInfo, animeEpisode, animeInfo);
 				}
 			}
