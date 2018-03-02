@@ -2,6 +2,7 @@ package xie.animeshotsite.db.entity.cache;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javax.annotation.Resource;
@@ -194,6 +195,16 @@ public class EntityCache {
 			RR rr = fun.get();
 			put(cacheId, rr, timeoutMili);
 			return rr;
+		}
+	}
+
+	public <T, R> R get(String cacheId, Function<T, R> fun, T funParam, long timeoutMili) {
+		if (contain(cacheId)) {
+			return get(cacheId);
+		} else {
+			R r = fun.apply(funParam);
+			put(cacheId, r, timeoutMili);
+			return r;
 		}
 	}
 

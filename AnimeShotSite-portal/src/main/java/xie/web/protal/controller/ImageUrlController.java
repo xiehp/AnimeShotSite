@@ -3,6 +3,7 @@ package xie.web.protal.controller;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.function.Function;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import xie.animeshotsite.db.entity.cache.EntityCache;
 import org.springside.modules.web.Servlets;
 import xie.animeshotsite.constants.ShotCoreConstants;
 import xie.animeshotsite.db.entity.AnimeEpisode;
@@ -24,17 +26,20 @@ import xie.animeshotsite.db.service.AnimeInfoService;
 import xie.animeshotsite.db.service.ShotInfoService;
 import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.controller.BaseFunctionController;
+import xie.common.constant.XConst;
 import xie.common.utils.XSSHttpUtil;
 
 @Controller
 public class ImageUrlController extends BaseFunctionController<ImageUrl, String> {
 
 	@Resource
-	AnimeInfoService animeInfoService;
+	private AnimeInfoService animeInfoService;
 	@Resource
-	AnimeEpisodeService animeEpisodeService;
+	private AnimeEpisodeService animeEpisodeService;
 	@Resource
-	ShotInfoService shotInfoService;
+	private ShotInfoService shotInfoService;
+	@Resource
+	private EntityCache entityCache;
 
 	@RequestMapping(value = "/image/{type}/{idTemp}")
 	public void getImageByType(@PathVariable String type, @PathVariable String idTemp, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -72,12 +77,18 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 					file = FilePathUtils.getAnimeFullFilePath(animeInfo, animeEpisode, animeEpisode.getLocalFileName());
 				}
 			} else if (ShotCoreConstants.IMAGE_URL_TYPE_SHOT.equals(type)) {
-				ShotInfo shotInfo = shotInfoService.findByTietukuUrlId(id);
-				if (shotInfo != null) {
-					AnimeEpisode animeEpisode = animeEpisodeService.findOneCache(shotInfo.getAnimeEpisodeId());
-					AnimeInfo animeInfo = animeInfoService.findOneCache(shotInfo.getAnimeInfoId());
-					file = FilePathUtils.getShotFullFilePath(shotInfo, animeEpisode, animeInfo);
-				}
+				Function<String, File> fun = (tempId) -> {
+					ShotInfo shotInfo = shotInfoService.findByTietukuUrlId(tempId);
+					if (shotInfo != null) {
+						AnimeEpisode animeEpisode = animeEpisodeService.findOneCache(shotInfo.getAnimeEpisodeId());
+						AnimeInfo animeInfo = animeInfoService.findOneCache(shotInfo.getAnimeInfoId());
+						File imageFile = FilePathUtils.getShotFullFilePath(shotInfo, animeEpisode, animeInfo);
+						return imageFile;
+					} else {
+						return null;
+					}
+				};
+				file = entityCache.get("imageId_" + id, fun, id, XConst.SECOND_10_MIN);
 			}
 
 			if (file != null) {
@@ -86,8 +97,18 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 				is = FilePathUtils.getNoImageFileStream();
 			}
 
+			// 判断http head是否有modify属性
+			long lastModified = file.lastModified();
+			long contentLength = file.length();
+			String eTag = "W/\"" + contentLength + "-" + lastModified + "\"";
+			if (!checkIfModifiedSince(request, response, file.lastModified(), eTag)) {
+				return;
+			} else {
+				System.out.println("获取图片文件：" + file.getAbsolutePath());
+			}
+
 			// 设置返回头
-			response.setContentType("image/jpg");
+			response.setContentType("image/jpeg");
 			Servlets.setExpiresHeader(response, Servlets.ONE_YEAR_SECONDS);
 			Servlets.setLastModifiedHeader(response, file.lastModified());
 			Servlets.setEtag(response, "W/\"" + file.lastModified() + "\"");
@@ -112,7 +133,7 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 				// 绘制改变尺寸后的图
 				tag.getGraphics().drawImage(bi, 0, 0, width, height, null);
 				// 输出流
-				ImageIO.write(tag, "jpg", out);
+				ImageIO.write(tag, "jpeg", out);
 			} else {
 				byte[] b = new byte[is.available()];
 				is.read(b);
@@ -143,4 +164,26 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 		getImageByType(ShotCoreConstants.IMAGE_URL_TYPE_SHOT, id, request, servletResponse);
 	}
 
+	public static boolean checkIfModifiedSince(HttpServletRequest request, HttpServletResponse response, long lastModified, String etag) {
+		try {
+			long headerValue = request.getDateHeader("If-Modified-Since");
+			if (headerValue != -1) {
+				// If an If-None-Match header has been specified, if modified since
+				// is ignored.
+				if ((request.getHeader("If-None-Match") == null)
+						&& (lastModified < headerValue + 1000)) {
+					// The entity has not been modified since the date
+					// specified by the client. This is not an error case.
+					response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+					response.setHeader("ETag", etag);
+
+					return false;
+				}
+			}
+		} catch (IllegalArgumentException illegalArgument) {
+			illegalArgument.printStackTrace();
+		}
+
+		return true;
+	}
 }
