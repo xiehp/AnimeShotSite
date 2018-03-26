@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.common.net.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -91,27 +92,35 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 				file = entityCache.get("imageId_" + id, fun, id, XConst.SECOND_10_MIN);
 			}
 
-			if (file != null) {
+			// file 可能存在于jar文件中，因此要小心
+			long lastModified = 10000000;
+			long contentLength = 1000;
+			String absolutePath = "/notExistsImage.jpg";
+			if (file != null && file.exists()) {
 				is = new FileInputStream(file);
+				lastModified = file.lastModified();
+				contentLength = file.length();
+				absolutePath = file.getAbsolutePath();
 			} else {
 				is = FilePathUtils.getNoImageFileStream();
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			}
 
 			// 判断http head是否有modify属性
-			long lastModified = file.lastModified();
-			long contentLength = file.length();
 			String eTag = "W/\"" + contentLength + "-" + lastModified + "\"";
-			if (!checkIfModifiedSince(request, response, file.lastModified(), eTag)) {
+			if (!checkIfModifiedSince(request, response, lastModified, eTag)) {
+				System.out.println("304:" + absolutePath);
 				return;
 			} else {
-				System.out.println("获取图片文件：" + file.getAbsolutePath());
+				System.out.println("获取图片文件：" + absolutePath);
 			}
 
 			// 设置返回头
 			response.setContentType("image/jpeg");
-			Servlets.setExpiresHeader(response, Servlets.ONE_YEAR_SECONDS);
-			Servlets.setLastModifiedHeader(response, file.lastModified());
-			Servlets.setEtag(response, "W/\"" + file.lastModified() + "\"");
+			response.setDateHeader(HttpHeaders.EXPIRES, System.currentTimeMillis() + (Servlets.ONE_YEAR_SECONDS * 1000));
+			//response.setHeader(HttpHeaders.CACHE_CONTROL, "public, max-age=" + Servlets.ONE_YEAR_SECONDS);
+			Servlets.setLastModifiedHeader(response, lastModified);
+			Servlets.setEtag(response, "W/\"" + lastModified + "_" + contentLength + "\"");
 
 			// 根据结尾字符判断是否要修改尺寸
 			if (idTemp.endsWith("t") || idTemp.endsWith("s")) {

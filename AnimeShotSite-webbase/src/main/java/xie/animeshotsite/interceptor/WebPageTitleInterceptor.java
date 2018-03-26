@@ -84,15 +84,15 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 				if (!shotSiteSetup.getAnimesiteServerHost().startsWith(hostName)) {
 					if (hostName.endsWith("acgimage.cn") || hostName.endsWith("acgimage.com")) {
 						// serverName不符合配置文件设定的值，进行跳转
-						logger.warn("当前主机地址不符合访问规则，跳转到www域名。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
-						System.err.println("当前主机地址不符合访问规则，跳转到www域名。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
+						logger.warn("域名要求不符，当前主机地址不符合访问规则，跳转到www域名。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
+						System.err.println("域名要求不符，当前主机地址不符合访问规则，跳转到www域名。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
 						response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
 						response.setHeader("Location", "//" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
 						return false;
 					} else {
 						// 除了acgimage.cn，acgimage.com 其他都显示404
-						logger.warn("当前主机地址不符合访问规则，禁止访问，地址必须为acgimage。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
-						System.err.println("当前主机地址不符合访问规则，禁止访问，地址必须为acgimage。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
+						logger.warn("非正确域名，当前主机地址不符合访问规则，禁止访问，地址必须为acgimage。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
+						System.err.println("非正确域名，当前主机地址不符合访问规则，禁止访问，地址必须为acgimage。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
 						response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 						return false;
 					}
@@ -144,21 +144,22 @@ public class WebPageTitleInterceptor extends HandlerInterceptorAdapter {
 		// generatePageData(request , webPathVO);
 		// }
 
-		boolean isImageRequest = (boolean)request.getAttribute("isImageRequest");
-		if (isImageRequest) {
-			String hostName = XSSHttpUtil.getForwardedServerName(request);
-			String remoteIp = XSSHttpUtil.getForwardedRemoteIpAddr(request);
-			if ("img.acgimage.com".equals(hostName) || "localhost".equals(hostName) || hostName.startsWith("192.168.4.")) {
-			} else {
-				// serverName不符合配置文件设定的值，进行跳转
-				logger.warn("当前主机地址不符合访问规则，跳转到www域名。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
-				System.err.println("当前主机地址不符合访问规则，跳转到www域名。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
-				response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-				response.setHeader("Location", "//" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
-
-				return;
-			}
-		}
+		// TODO 代码有问题
+//		boolean isImageRequest = (boolean)request.getAttribute("isImageRequest");
+//		if (isImageRequest) {
+//			String hostName = XSSHttpUtil.getForwardedServerName(request);
+//			String remoteIp = XSSHttpUtil.getForwardedRemoteIpAddr(request);
+//			if ("img.acgimage.com".equals(hostName) || "localhost".equals(hostName) || hostName.startsWith("192.168.4.")) {
+//			} else {
+//				// serverName不符合配置文件设定的值，进行跳转
+//				logger.warn("图片访问，当前主机地址不符合访问规则，跳转到www域名。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
+//				System.err.println("图片访问，当前主机地址不符合访问规则，跳转到www域名。当前地址:" + hostName + ", 客户端IP:" + remoteIp);
+//				response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+//				response.setHeader("Location", "//" + shotSiteSetup.getAnimesiteServerHost() + request.getRequestURI());
+//
+//				return;
+//			}
+//		}
 
 		String requestURL = request.getRequestURL().toString();
 
