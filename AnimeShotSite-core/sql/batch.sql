@@ -29,7 +29,11 @@ UPDATE shot_info SET time_stamp = ROUND(time_stamp / 1000, 1) * 1000;
 
 
 -- 更新所有字幕文件名
-update subtitle_info
+update subtitle_info a, anime_episode b
+set a.LOCAL_FILE_NAME = CONCAT('pre', b.NUMBER, 'after') 
+where 1=1
+and a.anime_episode_id = b.id
+and a.ANIME_INFO_ID = 'anime id';
 
 
 -- 显示时间为空的字段，设置为更新时间

@@ -130,6 +130,14 @@ pre {
 	<tags:paginationRestPage page="${shotInfoPage}" paginationSize="5" />
 </div>
 
+<!-- ad -->
+<div id="viewAD" style="margin-top: 40px; overflow: hidden;">
+	<script type="text/javascript">
+		var cpro_id = "u3397888";
+	</script>
+	<script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/c.js"></script>
+</div>
+
 <div>
 	<a class="btn btn-primary" href="${ctx}/episode/list/${animeEpisode.animeInfoId}" title="<c:out value='${animeInfo.fullName}' /> <c:out value='${animeInfo.secondName}' />">
 		<spring:message code='返回剧集列表' />

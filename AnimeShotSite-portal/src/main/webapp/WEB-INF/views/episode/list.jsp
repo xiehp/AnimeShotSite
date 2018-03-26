@@ -98,3 +98,11 @@
 	</a>
 </div>
 
+<!-- ad -->
+<div id="viewAD" style="margin-top: 40px; overflow: hidden;">
+	<script type="text/javascript">
+		var cpro_id = "u3397890";
+	</script>
+	<script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/c.js"></script>
+</div>
+
