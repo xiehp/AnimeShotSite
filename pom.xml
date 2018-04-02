@@ -5,37 +5,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<repositories>
-		<!--<repository>
-			<id>central</id>
-			<name>Central Repository</name>
-			<url>http://repo.maven.apache.org/maven2</url>
-			<layout>default</layout>
-			<releases>
-			<updatePolicy>daily</updatePolicy>
-			<enabled>true</enabled>
-			<checksumPolicy>warn</checksumPolicy>
-			</releases>
-			<snapshots>
-			<enabled>false</enabled>
-			</snapshots>
-			</repository>
-		-->
-
-	</repositories>
-
-	<!--
-		<modules>
-		<module>../AnimeShotSite-core</module>
-		<module>../AnimeShotSite-webbase</module>
-		<module>../AnimeShotSite-portal</module>
-		<module>../AnimeShotSite-timer</module>
-		</modules>
-	-->
-	<!--
-		<module>../AnimeShotSite-manage</module>
-	-->
-
 	<profiles>
 		<profile>
 			<id>web</id>
@@ -43,6 +12,14 @@
 				<module>AnimeShotSite-core</module>
 				<module>AnimeShotSite-webbase</module>
 				<module>AnimeShotSite-portal</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>image</id>
+			<modules>
+				<module>AnimeShotSite-core</module>
+				<module>AnimeShotSite-webbase</module>
+				<module>AnimeShotSite-portal-image</module>
 			</modules>
 		</profile>
 		<profile>
@@ -677,4 +654,17 @@
 				</plugin> -->
 		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>aliyun-maven</id>
+			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>aliyun-maven</id>
+			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+		</pluginRepository>
+	</pluginRepositories>
 </project>

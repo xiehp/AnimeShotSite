@@ -1,0 +1,240 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>xie</groupId>
+		<artifactId>AnimeShotSite-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>AnimeShotSite-portal-image</artifactId>
+	<name>AnimeShotSite-portal-image</name>
+	<packaging>war</packaging>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<tomcat.deploy.active.spring.profile>development</tomcat.deploy.active.spring.profile>
+				<tomcat.deploy.server>
+				</tomcat.deploy.server>
+				<tomcat.deploy.url>
+				</tomcat.deploy.url>
+				<tomcat.deploy.war.exclude.jar>
+				</tomcat.deploy.war.exclude.jar>
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<tomcat.deploy.active.spring.profile>test</tomcat.deploy.active.spring.profile>
+				<tomcat.deploy.server>tomcat8_test</tomcat.deploy.server>
+				<tomcat.deploy.url>http://192.168.4.50:8680/manager/text</tomcat.deploy.url>
+				<tomcat.deploy.war.exclude.jar>%regex[WEB-INF/lib/(?!Anime)(?!video2img)(?!xcommon)(?!XSubtitle)(?!tietuku-api).*]</tomcat.deploy.war.exclude.jar>
+			</properties>
+		</profile>
+		<profile>
+			<id>product</id>
+			<properties>
+				<tomcat.deploy.active.spring.profile>production</tomcat.deploy.active.spring.profile>
+				<tomcat.deploy.server>tomcat8_product</tomcat.deploy.server>
+				<tomcat.deploy.url>http://115.28.215.116:34801/manager11223344551qaz2wsx/text</tomcat.deploy.url>
+				<!--<tomcat.deploy.war.exclude.jar>%regex[WEB-INF/lib/(?!Anime)(?!video2img)(?!xcommon)(?!XSubtitle)(?!tietuku-api).*]</tomcat.deploy.war.exclude.jar>-->
+				<tomcat.deploy.war.exclude.jar />
+			</properties>
+		</profile>
+	</profiles>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<dependencies>
+		<!-- 本项目 -->
+		<dependency>
+			<groupId>xie</groupId>
+			<artifactId>AnimeShotSite-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>xie</groupId>
+			<artifactId>AnimeShotSite-webbase</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>xie</groupId>
+			<artifactId>video2img-config</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>sitemesh</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+		</dependency>
+
+		<!-- WEB end -->
+
+		<!-- SECURITY begin -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-ehcache</artifactId>
+		</dependency>
+		<!-- SECURITY end -->
+
+		<!-- SOAP begin
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http</artifactId>
+		</dependency> -->
+		<!-- SOAP end -->
+
+		<!-- JAX-RS begin
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+		</dependency> -->
+		<!-- JAX-RS end -->
+
+		<!-- TIMER -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+		</dependency>
+		<!-- CACHE end -->
+
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+		</dependency>
+
+		<!-- email -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-json-provider</artifactId>
+		</dependency>
+		<!-- OTHER TOOLS end -->
+
+		<!-- TEST begin -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+		</dependency>
+
+		<!--<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			</dependency>
+		-->
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- sftp -->
+		<dependency>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<warName>${project.artifactId}</warName>
+					<!-- 激活spring profile -->
+					<webResources>
+						<resource>
+							<filtering>true</filtering>
+							<directory>src/main/webapp</directory>
+							<includes>
+								<include>**/web.xml</include>
+							</includes>
+						</resource>
+					</webResources>
+					<warSourceDirectory>src/main/webapp</warSourceDirectory>
+					<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+					<packagingExcludes>${tomcat.deploy.war.exclude.jar}</packagingExcludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<url>${tomcat.deploy.url}</url>
+					<server>${tomcat.deploy.server}</server>
+					<path>/</path>
+					<!--
+						<path>/${project.artifactId}</path>
+						<port>8680</port>
+					-->
+					<!-- spring profile -->
+					<systemProperties>
+						<systemProperty>
+							<name>spring.profiles.active</name>
+							<value>${tomcat.deploy.active.spring.profile}</value>
+						</systemProperty>
+					</systemProperties>
+				</configuration>
+
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>timer-test-dependency-copy-otherLib</id>
+						<phase>install</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<excludeGroupIds>xie</excludeGroupIds>
+							<outputDirectory>OtherLib</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+</project>

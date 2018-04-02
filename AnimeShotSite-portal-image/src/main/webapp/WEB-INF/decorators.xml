@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/layouts/">
+	<excludes>
+		<pattern>/static/*</pattern>
+		<pattern>/test/*</pattern>
+		<pattern>/login</pattern>
+		<pattern>/282f707a1a8abba0d668e5cd6214cda6.html</pattern>
+		<pattern>/sitemap.xml</pattern>
+	</excludes>
+
+	<decorator name="default" page="default.jsp">
+		<pattern>/*</pattern>
+	</decorator>
+
+	<decorator name="manage" page="default.jsp">
+		<pattern>/managesite333/*</pattern>
+	</decorator>
+
+	<decorator name="mip" page="mip/default.jsp">
+		<pattern>/mip*</pattern>
+	</decorator>
+</decorators>
