@@ -84,7 +84,7 @@
 <link href="${ staticResourceUrl }jqueryui/${jqueryUiVersion}/jquery-ui.min.css" rel="stylesheet" type="text/css" />
 <link href="${ ctx }/static/css/style.css" rel="stylesheet" type="text/css" />
 <link href="${ ctx }/static/js/layui/css/layui.css" rel="stylesheet" type="text/css" />
-<link href="${ staticResourceUrl }bootstrap-switch/${bootstrapSwitch}//css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+<link href="${ staticResourceUrl }bootstrap-switch/${bootstrapSwitch}/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
 
 <!-- jquery -->
 <script src="${ staticResourceUrl }jquery/${jqueryVersion}/jquery.min.js" type="text/javascript"></script>
