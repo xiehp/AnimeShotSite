@@ -342,5 +342,13 @@ public class FilePathUtils {
 		return is;
 	}
 
+	/**
+	 * 获得禁止的图片路径
+	 */
+	public static InputStream getProhibitFileStream() {
+		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("/prohibit.jpg");
+		return is;
+	}
+
 
 }

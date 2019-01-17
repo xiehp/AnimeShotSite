@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -32,7 +33,9 @@
 				<tomcat.deploy.active.spring.profile>test</tomcat.deploy.active.spring.profile>
 				<tomcat.deploy.server>tomcat8_test</tomcat.deploy.server>
 				<tomcat.deploy.url>http://192.168.4.50:8680/manager/text</tomcat.deploy.url>
-				<tomcat.deploy.war.exclude.jar>%regex[WEB-INF/lib/(?!Anime)(?!video2img)(?!xcommon)(?!XSubtitle)(?!tietuku-api).*]</tomcat.deploy.war.exclude.jar>
+				<tomcat.deploy.war.exclude.jar>
+					%regex[WEB-INF/lib/(?!Anime)(?!video2img)(?!xcommon)(?!XSubtitle)(?!tietuku-api).*]
+				</tomcat.deploy.war.exclude.jar>
 			</properties>
 		</profile>
 		<profile>
@@ -42,7 +45,7 @@
 				<tomcat.deploy.server>tomcat8_product</tomcat.deploy.server>
 				<tomcat.deploy.url>http://115.28.215.116:34801/manager11223344551qaz2wsx/text</tomcat.deploy.url>
 				<!--<tomcat.deploy.war.exclude.jar>%regex[WEB-INF/lib/(?!Anime)(?!video2img)(?!xcommon)(?!XSubtitle)(?!tietuku-api).*]</tomcat.deploy.war.exclude.jar>-->
-				<tomcat.deploy.war.exclude.jar />
+				<tomcat.deploy.war.exclude.jar/>
 			</properties>
 		</profile>
 	</profiles>
@@ -134,6 +137,11 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.jaxrs</groupId>
 			<artifactId>jackson-jaxrs-json-provider</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>0.4.8</version>
 		</dependency>
 		<!-- OTHER TOOLS end -->
 
