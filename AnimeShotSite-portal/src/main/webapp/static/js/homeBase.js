@@ -169,7 +169,7 @@ function trim(s) {
 					// easyui
 					$.extend(param, otherParam);
 				}
-				param.extend_param_josn_response = true;
+				param.extend_param_json_response = true;
 
 				doSomethingBeforeSubmit(options);
 			},

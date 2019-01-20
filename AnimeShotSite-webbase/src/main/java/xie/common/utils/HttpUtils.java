@@ -12,8 +12,8 @@ public class HttpUtils {
 	public static boolean needJsonResponse(HttpServletRequest request) {
 		// 非异步请求，直接跳转到错误页面
 		boolean ajaxFlg = false;
-		logger.debug("extend_param_josn_response:" + request.getParameter("extend_param_josn_response"));
-		if ("true".equals(request.getParameterMap().get("extend_param_josn_response"))) {
+		logger.debug("extend_param_json_response:" + request.getParameter("extend_param_json_response"));
+		if ("true".equals(request.getParameterMap().get("extend_param_json_response"))) {
 			// 方法内设置了ajax提交标志，则一定是ajax
 			ajaxFlg = true;
 		} else {
