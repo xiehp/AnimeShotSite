@@ -10,15 +10,30 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <c:set var="EpisodeFullName" value="${animeInfo.fullName} ${animeInfo.secondName} ${animeEpisode.divisionName}" />
 <c:set var="EpisodeFullNameWithTime" value="${EpisodeFullName} ${shotInfo.formatedTimeChina}" />
+
 <%
-	//ShotInfoVO vo = request.getAttribute("shotInfo");
-	//if (vo.getUrlL().contains("05bc88b3992add5d")){
-	//	vo.setTietukuUrlPrefix("http://sdfsdfsdfsdf3254354.com/ddd/")
-	//}
+	try {
+		ShotInfoVO[] shotInfos = new ShotInfoVO[3];
+		shotInfos[0] = (ShotInfoVO) request.getAttribute("shotInfo");
+		shotInfos[1] = (ShotInfoVO) request.getAttribute("previousShotInfo");
+		shotInfos[2] = (ShotInfoVO) request.getAttribute("nextShotInfo");
+
+		for (ShotInfoVO shotInfo : shotInfos) {
+			if (shotInfo != null && shotInfo.getTimeStamp() != null && shotInfo.getUrlL() != null) {
+				if ((shotInfo.getTimeStamp() / 1000) % 2 == 1) {
+					shotInfo.setTietukuUrlPrefix(shotInfo.getTietukuUrlPrefix().replace("img.acgimage.com", "img2.acgimage.com"));
+				}
+			}
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
 %>
+	
 <c:set var="FullImageUrl" value="${shotInfo.urlL}" />
 <c:set var="PreFullImageUrl" value="${previousShotInfo.urlL}" />
 <c:set var="NextFullImageUrl" value="${nextShotInfo.urlL}" />
+
 <c:set var="ThisPageUrl" value="${siteBaseUrl}/shot/view/${shotInfo.id}" />
 <c:set var="DivPaddingBorderWidth" value="10" />
 <c:set var="DivPaddingBorderHeight" value="10" />
