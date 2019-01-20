@@ -53,3 +53,7 @@ AzureusUpdater.exe
 
 # python 设置
 .pydevproject
+
+
+# 临时生成文件
+*.log.zip
