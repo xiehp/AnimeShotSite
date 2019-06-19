@@ -2,7 +2,6 @@ package xie.web.protal.image.controller;
 
 import com.google.common.net.HttpHeaders;
 import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.geometry.Positions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -23,15 +22,19 @@ import xie.base.controller.BaseFunctionController;
 import xie.common.constant.XConst;
 import xie.common.date.DateUtil;
 import xie.common.utils.XSSHttpUtil;
+import xie.common.utils.XWaitTime;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Controller
 public class ImageUrlController extends BaseFunctionController<ImageUrl, String> {
@@ -44,13 +47,17 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 	private ShotInfoService shotInfoService;
 	@Resource
 	private EntityCache entityCache;
-
 	Logger logger = LoggerFactory.getLogger(this.getClass());
+	private Map<String, ShotInfo> shotInfoMap;
+	private Map<String, AnimeInfo> animeInfoMap;
+	private Map<String, AnimeEpisode> animeEpisodeMap;
 
 	@RequestMapping(value = "/image/{type}/{idTemp}")
 	public void getImageByTypeAndId(@PathVariable String type, @PathVariable String idTemp, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		// 图片访问，将在后面判断
+		XWaitTime aaaa = new XWaitTime(5111100);
+		logger.info(aaaa.getPastTime() + "");
 		request.setAttribute("isImageRequest", true);
 		String url = request.getRequestURL().toString();
 		String idTempLower = idTemp.toLowerCase();
@@ -63,6 +70,7 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 		String hostName = XSSHttpUtil.getForwardedServerName(request);
 		String remoteIp = XSSHttpUtil.getForwardedRemoteIpAddr(request);
 
+		logger.info(aaaa.getPastTime() + "");
 		// 写入内容
 		InputStream is = null;
 		try {
@@ -85,6 +93,7 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 				return;
 			}
 
+			logger.info("开始 get info from db, " + aaaa.getPastTime() + "");
 			// 去除可能带有的t或s
 			String shotInfoId = id;
 			if (id.endsWith("t")) {
@@ -106,13 +115,41 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 					file = FilePathUtils.getAnimeFullFilePath(animeInfo, animeEpisode, animeEpisode.getLocalFileName());
 				}
 			} else if (ShotCoreConstants.IMAGE_URL_TYPE_SHOT.equals(type)) {
+				if (shotInfoMap == null || animeInfoMap == null || animeEpisodeMap == null) {
+					synchronized (this){
+						if (shotInfoMap == null) {
+//							List<ShotInfo> shotList = shotInfoService.findAll();
+//							shotInfoMap = shotList.stream().collect(Collectors.toMap(ShotInfo::getTietukuUrlId, shotInfo -> shotInfo));
+							shotInfoMap = new HashMap<>();
+						}
+						if (animeInfoMap == null) {
+//							List<AnimeInfo> animeList = animeInfoService.findAll();
+//							animeInfoMap = animeList.stream().collect(Collectors.toMap(AnimeInfo::getId,animeInfo -> animeInfo));
+							animeInfoMap = new HashMap<>();
+						}
+						if (animeEpisodeMap == null) {
+//							List<AnimeEpisode> episodeList = animeEpisodeService.findAll();
+//							animeEpisodeMap = episodeList.stream().collect(Collectors.toMap(AnimeEpisode::getId, animeEpisode -> animeEpisode));
+							animeEpisodeMap = new HashMap<>();
+						}
+					}
+				}
 				Function<String, File> fun = (tempId) -> {
-					ShotInfo shotInfo = shotInfoService.findByTietukuUrlId(tempId);
+					ShotInfo shotInfo = shotInfoMap.get(tempId);
+					if (shotInfo == null) {
+						shotInfo = shotInfoService.findByTietukuUrlId(tempId);
+					}
 					if (shotInfo != null) {
-						AnimeEpisode animeEpisode = animeEpisodeService.findOneCache(shotInfo.getAnimeEpisodeId());
-						AnimeInfo animeInfo = animeInfoService.findOneCache(shotInfo.getAnimeInfoId());
-						File imageFile = FilePathUtils.getShotFullFilePath(shotInfo, animeEpisode, animeInfo);
-						return imageFile;
+						AnimeEpisode animeEpisode = animeEpisodeMap.get(shotInfo.getAnimeEpisodeId());
+						AnimeInfo animeInfo = animeInfoMap.get(shotInfo.getAnimeInfoId());
+
+						if (animeEpisode == null) {
+							animeEpisode = animeEpisodeService.findOneCache(shotInfo.getAnimeEpisodeId());
+						}
+						if (animeInfo == null) {
+							animeInfo = animeInfoService.findOneCache(shotInfo.getAnimeInfoId());
+						}
+						return FilePathUtils.getShotFullFilePath(shotInfo, animeEpisode, animeInfo);
 					} else {
 						return null;
 					}
@@ -120,23 +157,27 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 				file = entityCache.get("imageId_" + shotInfoId, fun, shotInfoId, XConst.SECOND_10_MIN);
 			}
 
+			logger.info("end get info from db, " + aaaa.getPastTime() + "");
 			// file 可能存在于jar文件中，因此要小心
 			String absolutePath = "/notExistsImage.jpg";
 			if (file == null) {
 				is = FilePathUtils.getNoImageFileStream();
 				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				logger.info("查询ID不存在：{}", url);
-			} else if (!file.exists()) {
-				is = FilePathUtils.getNoImageFileStream();
-				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-				logger.info("文件未找到：{}", file.getAbsolutePath());
 			} else {
-				is = new FileInputStream(file);
-				lastModified = file.lastModified();
-				contentLength = file.length();
-				absolutePath = file.getAbsolutePath();
+				try {
+					is = new FileInputStream(file);
+					lastModified = file.lastModified();
+					contentLength = file.length();
+					absolutePath = file.getAbsolutePath();
+				} catch (FileNotFoundException e) {
+					is = FilePathUtils.getNoImageFileStream();
+					response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+					logger.info("文件未找到：{}", file.getAbsolutePath());
+				}
 			}
 
+			logger.info("结束find file, new stream, " + aaaa.getPastTime() + "");
 			// 判断http head是否有modify属性
 			String eTag = "W/\"" + contentLength + "-" + lastModified + "\"";
 			if (!checkAndSetIfModifiedSince(request, response, lastModified, eTag)) {
@@ -146,8 +187,10 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 				logger.info("获取图片文件：" + absolutePath + ", 大小：" + contentLength / 1024 + "K, 更新时间：" + DateUtil.formatTime(lastModified, DateUtil.YMD_FULL));
 			}
 
+			logger.info("Before write, " + aaaa.getPastTime() + "");
 			writeImage(url, id, is, response, lastModified, contentLength);
 
+			logger.info("After write, " + aaaa.getPastTime());
 		} catch (Exception e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			logger.info("程序出错：{}", url);
@@ -222,17 +265,20 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 		}
 	}
 
+
 	@RequestMapping(value = "/{id}")
 	public void getImageWithTietuku1(@PathVariable String id, HttpServletRequest request, HttpServletResponse
 			servletResponse) throws Exception {
 		getImageByTypeAndId(ShotCoreConstants.IMAGE_URL_TYPE_SHOT, id, request, servletResponse);
 	}
 
+
 	@RequestMapping(value = "/541950/{id}")
 	public void getImageWithTietuku2(@PathVariable String id, HttpServletRequest request, HttpServletResponse
 			servletResponse) throws Exception {
 		getImageByTypeAndId(ShotCoreConstants.IMAGE_URL_TYPE_SHOT, id, request, servletResponse);
 	}
+
 
 	public static boolean checkAndSetIfModifiedSince(HttpServletRequest request, HttpServletResponse response,
 													 long lastModified, String etag) {
@@ -257,4 +303,6 @@ public class ImageUrlController extends BaseFunctionController<ImageUrl, String>
 
 		return true;
 	}
+
+
 }
