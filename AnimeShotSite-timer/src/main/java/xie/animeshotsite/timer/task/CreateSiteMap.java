@@ -61,6 +61,7 @@ public class CreateSiteMap {
 	private int urlCount = 0;
 
 	public void runTask(Map<String, Object> paramMap) {
+		logger.info("sitemap生成开始");
 		xSiteMap = new XSiteMap();
 
 		// 增加首页loc
@@ -94,7 +95,7 @@ public class CreateSiteMap {
 			}
 		}
 
-		File file = new File("D:\\work\\project\\AnimeShotSite\\AnimeShotSite-portal\\src\\main\\webapp\\sitemap.xml");
+		File file = new File("AnimeShotSite-portal\\src\\main\\webapp\\sitemap.xml");
 		try {
 			xSiteMap.save(file);
 			logger.info("sitemap生成结束，url数：{}，路径：{}", urlCount, file.getAbsolutePath());
@@ -109,6 +110,7 @@ public class CreateSiteMap {
 				String[] urlArray = new String[urls.size()];
 				urls.toArray(urlArray);
 				XPostBaiduUrls.Post(postBaiduUrl, urlArray);
+				logger.error("百度推送成功");
 			} catch (Exception e) {
 				logger.error("百度推送失败：", e);
 			}

@@ -20,22 +20,27 @@ import xie.animeshotsite.timer.base.XTask;
 import xie.common.json.XJsonUtil;
 import xie.common.string.XStringUtils;
 
+/**
+ *
+ */
 @Component
 @Scope("prototype")
 public class ShotTaskTimer extends BaseTaskTimer {
 
 	@Resource
-	private AnimeInfoService animeInfoService;
-	@Resource
 	private AnimeEpisodeService animeEpisodeService;
 	@Resource
-	private ShotTaskService shotTaskService;
+	private AnimeInfoService animeInfoService;
+	@Resource
+	private ApplicationContext applicationContext;
 	@Resource
 	private ShotTaskDao shotTaskDao;
 	@Resource
-	private ApplicationContext applicationContext;
-
-	String taskType;
+	private ShotTaskService shotTaskService;
+	private XTask task;
+	private Map<String, Object> taskParam;
+	private String taskResult;
+	private String taskType;
 
 	public void setTaskType(String taskType) {
 		this.taskType = taskType;
@@ -43,6 +48,10 @@ public class ShotTaskTimer extends BaseTaskTimer {
 
 	@Override
 	protected void taskTimer() {
+		task = null;
+		taskParam = new HashMap<>();
+		taskResult = null;
+
 		shotTaskDao.count();
 		List<ShotTask> list = shotTaskService.findNeedRunTask(taskType);
 		if (list.size() > 0) {
@@ -56,14 +65,12 @@ public class ShotTaskTimer extends BaseTaskTimer {
 			try {
 				String taskClass = shotTask.getTaskClass();
 				String paramStr = shotTask.getTaskParam();
-				Map<String, Object> param = new HashMap<>();
 				if (XStringUtils.isNotBlank(paramStr)) {
-					param = XJsonUtil.fromJsonString(paramStr);
+					taskParam = XJsonUtil.fromJsonString(paramStr);
 				}
 
-				_log.info("任务类：{}, 任务参数:{}", taskClass, param);
+				_log.info("任务类：{}, 任务参数:{}", taskClass, taskParam);
 
-				XTask task;
 				try {
 					task = (XTask) applicationContext.getBean(taskClass);
 				} catch (Exception e) {
@@ -73,10 +80,24 @@ public class ShotTaskTimer extends BaseTaskTimer {
 				// 更改标志
 				shotTask = shotTaskService.beginTask(shotTask.getId());
 
-				task.runTask(param);
+				Thread thread = new Thread(() -> {
+					try {
+						task.runTask(taskParam);
+					} catch (Exception e) {
+						taskResult = e.toString();
+						e.printStackTrace();
+					}
+				});
+				thread.setDaemon(true);
+				thread.start();
+				thread.join();
 
-				shotTaskService.endTask(shotTask.getId(), true, null);
-				_log.info("process 结束 : " + shotTask.getId());
+				if (taskResult == null) {
+					shotTaskService.endTask(shotTask.getId(), true, null);
+					_log.info("process 结束 : " + shotTask.getId());
+				} else {
+					throw new Exception(taskResult);
+				}
 			} catch (Exception e) {
 				_log.error("process 失败", e);
 				shotTaskService.endTask(shotTask.getId(), false, "处理失败， " + StringUtils.substring(e.getMessage(), 0, 512 / 3));
