@@ -1,10 +1,8 @@
 package xie.animeshotsite.db.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.util.*;
+import java.util.function.Function;
 
 import javax.annotation.Resource;
 
@@ -15,6 +13,8 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 import org.springside.modules.mapper.BeanMapper;
 
+import xie.animeshotsite.db.entity.AnimeEpisode;
+import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.db.repository.AnimeEpisodeDao;
@@ -22,13 +22,16 @@ import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.repository.ShotInfoDao;
 import xie.animeshotsite.db.vo.ShotInfoVO;
 import xie.animeshotsite.setup.ShotSiteSetup;
+import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.page.PageRequestUtil;
 import xie.base.repository.BaseRepository;
 import xie.base.repository.BaseSearchFilter.BaseOperator;
 import xie.base.service.BaseService;
+import xie.common.constant.XConst;
 import xie.common.date.DateUtil;
 import xie.common.number.XNumberUtils;
 import xie.common.utils.XSSHttpUtil;
+import xie.common.utils.XWaitTime;
 
 @Service
 public class ShotInfoService extends BaseService<ShotInfo, String> {
@@ -293,5 +296,25 @@ public class ShotInfoService extends BaseService<ShotInfo, String> {
 		} else {
 			return null;
 		}
+	}
+
+	public File getShotFile(String urlImageId) {
+		XWaitTime aaaa = new XWaitTime(5111100);
+		Function<String, File> fun = (tempId) -> {
+			ShotInfo shotInfo = findByTietukuUrlId(tempId);
+			logging.info("get shotInfo, " + aaaa.getPastTime() + "");
+			if (shotInfo != null) {
+				AnimeEpisode animeEpisode = animeEpisodeDao.findOne(shotInfo.getAnimeEpisodeId());
+				logging.info("get animeEpisode, " + aaaa.getPastTime() + "");
+				AnimeInfo animeInfo = animeInfoDao.findOne(shotInfo.getAnimeInfoId());
+				logging.info("get animeInfo, " + aaaa.getPastTime() + "");
+
+				return FilePathUtils.getShotFullFilePath(shotInfo, animeEpisode, animeInfo);
+			} else {
+				return null;
+			}
+		};
+		File file = entityCache.get("imageId_" + urlImageId, fun, urlImageId, XConst.SECOND_10_MIN);
+		return file;
 	}
 }

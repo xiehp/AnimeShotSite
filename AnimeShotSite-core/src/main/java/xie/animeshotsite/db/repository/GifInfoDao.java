@@ -12,6 +12,8 @@ public interface GifInfoDao extends BaseRepository<GifInfo, String> {
 
 	GifInfo findByAnimeEpisodeIdAndTimeStamp(String animeEpisodeId, Long timeStamp);
 
+	List<GifInfo> findByTietukuUrlId(String id);
+
 	/**
 	 * 获得某个时间戳之前的一条记录
 	 */

@@ -1,11 +1,13 @@
 package xie.animeshotsite.db.service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import javax.annotation.Resource;
 
@@ -17,19 +19,26 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 import org.springside.modules.mapper.BeanMapper;
 
+import xie.animeshotsite.constants.ShotCoreConstants;
+import xie.animeshotsite.db.entity.AnimeEpisode;
+import xie.animeshotsite.db.entity.AnimeInfo;
 import xie.animeshotsite.db.entity.GifInfo;
+import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.db.repository.AnimeEpisodeDao;
 import xie.animeshotsite.db.repository.AnimeInfoDao;
 import xie.animeshotsite.db.repository.GifInfoDao;
 import xie.animeshotsite.db.vo.GifInfoVO;
 import xie.animeshotsite.setup.ShotSiteSetup;
+import xie.animeshotsite.utils.FilePathUtils;
 import xie.base.page.PageRequestUtil;
 import xie.base.repository.BaseRepository;
 import xie.base.service.BaseService;
+import xie.common.constant.XConst;
 import xie.common.date.DateUtil;
 import xie.common.number.XNumberUtils;
 import xie.common.utils.XSSHttpUtil;
+import xie.common.utils.XWaitTime;
 
 @Service
 public class GifInfoService extends BaseService<GifInfo, String> {
@@ -265,5 +274,36 @@ public class GifInfoService extends BaseService<GifInfo, String> {
 		List<GifInfo> list = gifInfoDao.findRandom(from, number);
 		list = fillParentData(list);
 		return list;
+	}
+
+	public GifInfo findGifByTietukuUrlId(String id) {
+		List<GifInfo> list = gifInfoDao.findByTietukuUrlId(id);
+		if (list.size() > 0) {
+			return list.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	public File getGifFile(String urlImageId) {
+		XWaitTime aaaa = new XWaitTime(5111100);
+		Function<String, File> fun = (tempId) -> {
+			GifInfo gifInfo = findGifByTietukuUrlId(tempId);
+			logging.info("get gifInfo, " + aaaa.getPastTime() + "");
+			if (gifInfo != null) {
+				AnimeEpisode animeEpisode = animeEpisodeDao.findOne(gifInfo.getAnimeEpisodeId());
+				logging.info("get animeEpisode, " + aaaa.getPastTime() + "");
+				AnimeInfo animeInfo = animeInfoDao.findOne(gifInfo.getAnimeInfoId());
+				logging.info("get animeInfo, " + aaaa.getPastTime() + "");
+
+				String path = FilePathUtils.getShotFullFilePath(gifInfo.copyTo(new ShotInfo()), animeEpisode, animeInfo).getAbsolutePath();
+				path = path.replace(ShotCoreConstants.LOCAL_ROOT_SHOT_PATH, ShotCoreConstants.LOCAL_ROOT_GIF_PATH);
+				return new File(path);
+			} else {
+				return null;
+			}
+		};
+		File file = entityCache.get("imageId_" + urlImageId, fun, urlImageId, XConst.SECOND_10_MIN);
+		return file;
 	}
 }

@@ -75,7 +75,11 @@ public abstract class BaseTietukuUrl extends BaseEntity {
 	 * @return tietuku T url
 	 */
 	public String getTietukuTUrl() {
-		return TietukuUtils.getImageThumbnailUrl(getTietukuUrlPrefix(), getTietukuUrlId());
+		String suffix = ".jpg";
+		if (this.getClass().equals(GifInfo.class)) {
+			suffix = ".gif";
+		}
+		return TietukuUtils.getImageThumbnailUrl(getTietukuUrlPrefix(), getTietukuUrlId(), suffix);
 	}
 
 	/**
