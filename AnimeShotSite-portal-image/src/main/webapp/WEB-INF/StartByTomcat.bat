@@ -2,6 +2,7 @@
 
 :: chcp 65001
 :: set "JAVA_OPTS=-Dfile.encoding=GBK"
+set "JAVA_HOME=D:\work\java\jdk1.8.0_201"
 set "CATALINA_OPTS=-Dspring.profiles.active=productRemote -Xmx500m"
 set "TITLE=%~f0"
 
