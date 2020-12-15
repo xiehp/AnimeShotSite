@@ -16,6 +16,7 @@ public class Profiles {
 	public static final String DEFAULT_PROFILE = "spring.profiles.default";
 	
 	public static final String PRODUCTREMOTE = "productRemote";
+	public static final String PRODUCT181 = "product181";
 	public static final String PRODUCTION = "production";
 	public static final String DEVELOPMENT = "development";
 	public static final String UNIT_TEST = "test";

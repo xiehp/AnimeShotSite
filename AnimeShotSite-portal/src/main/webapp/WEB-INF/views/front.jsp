@@ -37,6 +37,29 @@
 	});
 </script>
 
+<div id="最新截图展示">
+	<div class="blockTitle">
+		<span><spring:message code='最新截图展示' /></span> <span class="count"><spring:message code='当前截图总数' />：${shotCount}</span>
+	</div>
+	<div class="row">
+		<c:forEach items="${ newestShotList }" var="shot" varStatus="status" end="11">
+			<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
+				<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
+					<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${shot.urlS}" class="img-responsive imagelazy">
+					<div class="wordKeepLine">
+						<c:out value="${shot.animeInfo.fullName}" />
+						<c:out value='${shot.animeInfo.secondName}' />
+					</div>
+					<div class="wordKeepLine">
+						<c:out value="${shot.animeEpisode.divisionName}" />
+							${shot.formatedTimeChina}
+					</div>
+				</a>
+			</div>
+		</c:forEach>
+	</div>
+</div>
+
 <div id="动画列表一览">
 	<div class="blockTitle">
 		<span><spring:message code='动画列表一览' /></span>
@@ -82,76 +105,53 @@
 	</div>
 </div>
 
-<div id="推荐动漫图片">
-	<div class="blockTitle">
-		<span><spring:message code='推荐动漫图片' /></span>
-	</div>
-	<div class="row">
-		<c:forEach items="${ masterRecommandShotList }" var="shot" varStatus="status" end="29">
-			<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
-				<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
-					<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${shot.urlS}" class="img-responsive imagelazy">
-					<div class="wordKeepLine">
-						<c:out value="${shot.animeInfo.fullName}" />
-						<c:out value='${shot.animeInfo.secondName}' />
-					</div>
-					<div class="wordKeepLine">
-						<c:out value="${shot.animeEpisode.divisionName}" />
-						${shot.formatedTimeChina}
-					</div>
-				</a>
-			</div>
-		</c:forEach>
-	</div>
-</div>
+<%--<div id="推荐动漫图片">--%>
+	<%--<div class="blockTitle">--%>
+		<%--<span><spring:message code='推荐动漫图片' /></span>--%>
+	<%--</div>--%>
+	<%--<div class="row">--%>
+		<%--<c:forEach items="${ masterRecommandShotList }" var="shot" varStatus="status" end="29">--%>
+			<%--<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">--%>
+				<%--<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">--%>
+					<%--<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${shot.urlS}" class="img-responsive imagelazy">--%>
+					<%--<div class="wordKeepLine">--%>
+						<%--<c:out value="${shot.animeInfo.fullName}" />--%>
+						<%--<c:out value='${shot.animeInfo.secondName}' />--%>
+					<%--</div>--%>
+					<%--<div class="wordKeepLine">--%>
+						<%--<c:out value="${shot.animeEpisode.divisionName}" />--%>
+						<%--${shot.formatedTimeChina}--%>
+					<%--</div>--%>
+				<%--</a>--%>
+			<%--</div>--%>
+		<%--</c:forEach>--%>
+	<%--</div>--%>
+<%--</div>--%>
 
-<c:if test="${false}">
-	<div id="点击热度图片">
-		<div class="blockTitle">
-			<span><spring:message code='点击热度图片' /></span>
-		</div>
-		<div class="row">
-			<c:forEach items="${ publicLikeShotList }" var="shot" varStatus="status" end="23">
-				<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
-					<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
-						<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${shot.urlS}" class="img-responsive imagelazy">
-						<div class="wordKeepLine">
-							<c:out value="${shot.animeInfo.fullName}" />
-							<c:out value='${shot.animeInfo.secondName}' />
-						</div>
-						<div class="wordKeepLine">
-							<c:out value="${shot.animeEpisode.divisionName}" />
-							${shot.formatedTimeChina}
-						</div>
-					</a>
-				</div>
-			</c:forEach>
-		</div>
-	</div>
-</c:if>
-
-<div id="最新截图展示">
-	<div class="blockTitle">
-		<span><spring:message code='最新截图展示' /></span> <span class="count"><spring:message code='当前截图总数' />：${shotCount}</span>
-	</div>
-	<div class="row">
-		<c:forEach items="${ newestShotList }" var="shot" varStatus="status" end="11">
-			<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">
-				<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">
-					<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${shot.urlS}" class="img-responsive imagelazy">
-					<div class="wordKeepLine">
-						<c:out value="${shot.animeInfo.fullName}" />
-						<c:out value='${shot.animeInfo.secondName}' />
-					</div>
-					<div class="wordKeepLine">
-						<c:out value="${shot.animeEpisode.divisionName}" />
-						${shot.formatedTimeChina}
-					</div>
-				</a>
-			</div>
-		</c:forEach>
-	</div>
-</div>
+<%--<c:if test="${false}">--%>
+	<%--<div id="点击热度图片">--%>
+		<%--<div class="blockTitle">--%>
+			<%--<span><spring:message code='点击热度图片' /></span>--%>
+		<%--</div>--%>
+		<%--<div class="row">--%>
+			<%--<c:forEach items="${ publicLikeShotList }" var="shot" varStatus="status" end="23">--%>
+				<%--<div class="col-lg-2 col-sm-3 col-xs-4 thumbnail">--%>
+					<%--<a href="${ctx}/shot/view/${shot.id}" title="<c:out value='${shot.animeEpisode.fullName}' /> <c:out value='${shot.animeInfo.secondName}' /> ${shot.formatedTimeChina}">--%>
+						<%--<img src="${ctx}/static/img/imageLoading_mini.jpg" data-original="${shot.urlS}" class="img-responsive imagelazy">--%>
+						<%--<div class="wordKeepLine">--%>
+							<%--<c:out value="${shot.animeInfo.fullName}" />--%>
+							<%--<c:out value='${shot.animeInfo.secondName}' />--%>
+						<%--</div>--%>
+						<%--<div class="wordKeepLine">--%>
+							<%--<c:out value="${shot.animeEpisode.divisionName}" />--%>
+							<%--${shot.formatedTimeChina}--%>
+						<%--</div>--%>
+					<%--</a>--%>
+				<%--</div>--%>
+			<%--</c:forEach>--%>
+		<%--</div>--%>
+	<%--</div>--%>
+<%--</c:if>--%>
 
 <div id="动画列表一览">
 	<div class="blockTitle">

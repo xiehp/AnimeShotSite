@@ -105,7 +105,7 @@
 		_head_end: +new Date,
 		_head_start: a._MM_HS || 0,
 		_customer_id: a._MM_CID,
-		_part2_url: "http://s1.mmtrix.com/jm/v1/" + a._MM_CID + "/p.js",
+		_part2_url: "https://s1.mmtrix.com/jm/v1/" + a._MM_CID + "/p.js",
 		_part2_expire_minutes: 60,
 		_tp: a._MM_TP,
 		_time_stamps: {},

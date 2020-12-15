@@ -1,12 +1,9 @@
 package xie.web.protal.controller;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,11 +16,15 @@ import org.springside.modules.web.Servlets;
 
 import xie.animeshotsite.db.entity.ShotInfo;
 import xie.animeshotsite.db.entity.SubtitleLine;
+import xie.animeshotsite.db.entity.SubtitleSearchHistory;
 import xie.animeshotsite.db.entity.cache.EntityCache;
 import xie.animeshotsite.db.service.SubtitleLineService;
+import xie.animeshotsite.db.service.SubtitleSearchHistoryService;
 import xie.base.controller.BaseController;
 import xie.base.page.PageRequestUtil;
 import xie.common.string.XStringUtils;
+import xie.common.utils.XCookieUtils;
+import xie.common.web.util.ConstantsWeb;
 import xie.module.language.XLanguageUtils;
 
 @Controller
@@ -31,6 +32,8 @@ public class SearchController extends BaseController {
 
 	@Resource
 	private SubtitleLineService subtitleLineService;
+	@Resource
+	private SubtitleSearchHistoryService historyService;
 	@Resource
 	private EntityCache entityCache;
 
@@ -46,7 +49,7 @@ public class SearchController extends BaseController {
 			@RequestParam(value = "searchMode", required = false) Boolean searchMode,
 			@RequestParam(value = "keyword", required = false) String keyword,
 			@RequestParam(value = "name", required = false) String name,
-			Model model, ServletRequest request) throws Exception {
+			Model model, HttpServletRequest request) throws Exception {
 
 		if (keyword == null && name == null) {
 			// 没有进行检索操作标志
@@ -72,9 +75,24 @@ public class SearchController extends BaseController {
 		try {
 			direction = Direction.fromStringOrNull(sort);
 		} catch (Exception e) {
-			e.printStackTrace();
+			_log.error("fromStringOrNull出错", e);
 		}
 		// Order order1 = PageRequestUtil.createOrder(SubtitleLine, Direction.ASC);
+
+		// TODO 保存到搜索历史
+		String cookieId  = XCookieUtils.getCookieValue(request, ConstantsWeb.SITE_COOKIE_ID);
+		if (XStringUtils.isNotBlank(keyword)) {
+			try {
+				Map<String, Object> historySearchMap = new HashMap<>();
+				historySearchMap.put("EQ_searchText", keyword);
+				Page<SubtitleSearchHistory>	historyList = historyService.searchPageByParams(historySearchMap, SubtitleSearchHistory.class);
+
+				int count = historyList.getSize() + 1;
+				historyService.saveHistory(keyword, count, cookieId, "0", "0");
+			} catch (Exception e) {
+				_log.error("保存搜索历史出错", e);
+			}
+		}
 
 		PageRequest pageRequest = PageRequestUtil.buildPageRequest(pageNumber, 10, sortType, direction);
 		// Page<SubtitleLine> subtitleLinePage = subtitleLineService.searchPageByParams(searchParams, pageRequest, SubtitleLine.class);
@@ -82,7 +100,7 @@ public class SearchController extends BaseController {
 
 		// Map<String, AnimeEpisode> animeEpisodeMap = new HashMap<>();
 		// Map<String, AnimeInfo> animeInfoMap = new HashMap<>();
-		Map<String, ShotInfo> shotInfoMap = new LinkedHashMap<String, ShotInfo>();
+		Map<String, ShotInfo> shotInfoMap = new LinkedHashMap<>();
 		// Map<String, List<SubtitleLine>> subtitleLineMap = new LinkedHashMap<>();
 		List<SubtitleLine> subtitleLineList = subtitleLinePage.getContent();
 
@@ -157,6 +175,19 @@ public class SearchController extends BaseController {
 		} else {
 			// 有数据
 			request.setAttribute("searchPageNumber", "第" + (subtitleLinePage.getNumber() + 1) + "页");
+		}
+
+
+		// TODO 搜索历史
+		try {
+			List<SubtitleSearchHistory>	historyTopList = historyService.searchTop(20);
+			List<SubtitleSearchHistory>	historyCurrentList = historyService.searchCurrentTop(20);
+			List<SubtitleSearchHistory>	historyCurrentByCookieIdList = historyService.searchCurrentByCookieId(20, cookieId);
+			request.setAttribute("historyTopList", historyTopList);
+			request.setAttribute("historyCurrentList", historyCurrentList);
+			request.setAttribute("historyCurrentByCookieIdList", historyCurrentByCookieIdList);
+		} catch (Exception e) {
+			_log.error("保存搜索历史出错", e);
 		}
 
 		return getJspFilePath("list");

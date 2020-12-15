@@ -14,6 +14,7 @@ public class Constants {
 	public static final String MAVEN_PROFILE_TEST = "test";
 	public static final String MAVEN_PROFILE_PRODUCTION = "production";
 	public static final String MAVEN_PROFILE_PRODUCTREMOTE = "productRemote";
+	public static final String MAVEN_PROFILE_PRODUCT181 = "product181";
 
 	/**
 	 * 未登录

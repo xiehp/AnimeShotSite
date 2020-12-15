@@ -2,6 +2,7 @@ package xie.web.protal.controller.mip;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +35,7 @@ public class MipSearchController extends SearchController {
 			@RequestParam(value = "searchMode", required = false) Boolean searchMode,
 			@RequestParam(value = "keyword", required = false) String keyword,
 			@RequestParam(value = "name", required = false) String name,
-			Model model, ServletRequest request) throws Exception {
+			Model model, HttpServletRequest request) throws Exception {
 
 		return super.keyword(pageNumber, sortType, sort, searchMode, keyword, name, model, request);
 	}

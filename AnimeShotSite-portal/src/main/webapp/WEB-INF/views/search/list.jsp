@@ -247,8 +247,8 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		var searchMode = $("#searchMode");
-		var searchModeSwitch = searchMode.bootstrapSwitch();
+		// var searchMode = $("#searchMode");
+		// var searchModeSwitch = searchMode.bootstrapSwitch();
 		//searchModeSwitch.state = ${searchMode ? true : false};
 	</script>
 
@@ -335,6 +335,44 @@
 			<tags:paginationKeyword page="${subtitleLinePage}" paginationSize="6" searchKey1="searchMode" />
 		</div>
 	</c:if>
-</div>
 
+	<!-- 搜索历史 -->
+	<div class="row" style="text-align: center;">
+
+		<div class="col-xs-6" style="margin-top: 20px;">
+            <h3 style="font-weight: 700">最近搜索</h3>
+            <ul class="list-group" style="margin-top: 20px;">
+                <c:forEach items="${historyCurrentList}" var="history">
+                    <li class="list-group-item" title="${history.searchCount} ${history.firstDate} ">
+                    <a href="${ctx}/search?name=&keyword=${history.searchText}"><c:out value='${history.searchText}' /></a>
+                </li>
+                </c:forEach>
+            </ul>
+        </div>
+
+        <div class="col-xs-6" style="margin-top: 20px;">
+            <h3 style="font-weight: 700">历史搜索</h3>
+            <ul class="list-group" style="margin-top: 20px;">
+                <c:forEach items="${historyTopList}" var="history">
+                    <li class="list-group-item" title="${history.searchCount} ${history.firstDate} ">
+                        <a href="${ctx}/search?name=&keyword=${history.searchText}"><c:out value='${history.searchText}' /></a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
+
+        <c:if test="${historyCurrentByCookieIdList.size() > 0 }">
+            <div class="col-xs-6" style="margin-top: 20px;">
+                <h3 style="font-weight: 700">我的搜索</h3>
+                <ul class="list-group" style="margin-top: 20px;">
+                    <c:forEach items="${historyCurrentByCookieIdList}" var="history">
+                        <li class="list-group-item" title="${history.searchCount} ${history.firstDate} ">
+                            <a href="${ctx}/search?name=&keyword=${history.searchText}"><c:out value='${history.searchText}' /></a>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+        </c:if>
+	</div>
+</div>
 
