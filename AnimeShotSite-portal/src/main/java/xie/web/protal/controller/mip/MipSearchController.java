@@ -28,7 +28,7 @@ public class MipSearchController extends SearchController {
 	};
 
 	@RequestMapping(value = "/search")
-	public String keyword(
+	public String searchByKeyword(
 			@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "sortType", defaultValue = "createDate") String sortType,
 			@RequestParam(value = "sort", defaultValue = "DESC") String sort,
@@ -37,6 +37,6 @@ public class MipSearchController extends SearchController {
 			@RequestParam(value = "name", required = false) String name,
 			Model model, HttpServletRequest request) throws Exception {
 
-		return super.keyword(pageNumber, sortType, sort, searchMode, keyword, name, model, request);
+		return super.searchByKeyword(pageNumber, sortType, sort, searchMode, keyword, name, model, request);
 	}
 }
